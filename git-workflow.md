@@ -2,7 +2,7 @@
  
 This project will use a **feature branch workflow**. In summary, developers create feature branches off the main branch and work only within their branch before merging the feature to the main branch. This aims to keep the main branch stable and deployable at all times. Please follow these steps.  
 
-Wherever there is a `<branch>`, replace with `feature-<name>`, where \<name> is a descriptive name eg. feature-login, feature-setup-db-connection. **Always use this naming convention for naming feature branches**. Similarly for bugfixes, use `bugfix-<name-of-bugfix>` eg. bugfix-login-error. Follow the steps below to create a new feature branch:
+Wherever there is a `branch`, replace with `feature-name`, where `name` is a descriptive name eg. feature-login, feature-setup-db-connection. **Always use this naming convention for naming feature branches**. Similarly for bugfixes, use `bugfix-name-of-bugfix` eg. bugfix-login-error. Follow the steps below to create a new feature branch:
 
 ## 1. Ensure you are on the main branch
 
@@ -19,19 +19,19 @@ git pull origin main
 
 To create the branch:
 ```bash
-git checkout -b <branch>
+git checkout -b branch
 ``` 
 
-This will create a branch called "\<branch>" locally on your machine and move you inside this branch.   
+This will create a branch called "branch" locally on your machine and move you inside this branch.   
 
 To push this branch to GitHub:  
 
 ```bash
-git push origin <branch>
+git push origin branch
 ```   
 If you choose to push the branch this way you will need to specify the branch name with each subsequent push to this branch. Instead you may set upstream tracking for this branch:
 ```bash
-git push -u origin <branch>
+git push -u origin branch
 ```
 then simply use:
 ``` bash
@@ -45,7 +45,7 @@ for all subsequent pushes to this branch.
 Once the branch is created and pushed to GitHub, move into it and edit files locally on your machine:  
 
 ```bash
-git checkout <branch>
+git checkout branch
 ```
 
 ## 4. Push to GitHub  
@@ -56,7 +56,7 @@ git add .
 ```
 or just specific files that you altered (**preferred**):
 ```bash
-git add <filename1> <filename2>
+git add filename1 filename2
 ```   
 Next commit your changes. Always use meaningful commit messages, ideally one main message summarising the change made and a secondary more descriptive message describing the change in more detail and why it was made:  
  ```bash
@@ -64,7 +64,7 @@ Next commit your changes. Always use meaningful commit messages, ideally one mai
  ```  
 Finally, push changes to GitHub. **Always push commits into your feature branch, never the main branch**:
 ```bash
-git push origin <branch>
+git push origin branch
 ```
 
 ## 5. Merge feature branch to main branch
@@ -86,9 +86,9 @@ git checkout main
 ``` 
 To delete your local branch:
 ```bash
-git branch -d <branch>
+git branch -d branch
 ```  
 To delete the remote branch:
 ```bash
-git push origin --delete <branch>
+git push origin --delete branch
 ``` 
