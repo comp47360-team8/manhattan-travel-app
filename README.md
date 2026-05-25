@@ -1,2 +1,2 @@
 # COMP47360-Research-Project
-Journey planner application catered to tourists visiting Manhattan, New York. Features AI route planner &amp; attraction recommendations.
+This project involves the development of a trip itinerary planner application catered to tourists visiting Manhattan, New York.
