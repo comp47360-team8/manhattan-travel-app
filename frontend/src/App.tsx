@@ -2,28 +2,33 @@ import "./App.css";
 import AttractionCard from "./components/AttractionCard";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
+import CategoryTabs from "./components/CategoryTabs";
 
 //rudimentary data to generate cards 
 const attractionsArray=[
   {
     image:"https://placehold.co/300x180",
     name:"Central Park",
-    crowdLevel:50
+    crowdLevel:50,
+    bestTime: "before 11am"
   },
     {
     image:"https://placehold.co/300x180",
     name:"Empire state building",
-    crowdLevel:100
+    crowdLevel:100,
+    bestTime: "before 11am"
   },
     {
     image:"https://placehold.co/300x180",
     name:"Wall street",
-    crowdLevel:65
+    crowdLevel:65,
+    bestTime: "before 11am"
   },
     {
     image:"https://placehold.co/300x180",
     name:"China Town",
-    crowdLevel:20
+    crowdLevel:20,
+    bestTime: "before 11am"
   },
 ]
 
@@ -38,11 +43,8 @@ function App() {
         {/* Searchbar was extracted and is in components again for future reuse  */}
         <SearchBar />
 
-        <div className="tabs">
-          <button>Landmarks</button>
-          <button>Museums</button>
-          <button>Parks</button>
-        </div>
+        {/* Category tabs to filter are again in components for later reuse */}
+       <CategoryTabs />
 
         <section className="cards">
         
@@ -55,6 +57,7 @@ function App() {
             image={attraction.image}
             name={attraction.name}
             crowdLevel={attraction.crowdLevel}
+            bestTime={attraction.bestTime}
              />
 
             ))
