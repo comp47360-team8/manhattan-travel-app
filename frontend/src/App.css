@@ -1,23 +1,13 @@
 .app {
   min-height: 100vh;
   background: #eef1f5;
-  display: flex;
-  justify-content: center;
+  color: #0f172a;
+}
+
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 40px;
-  color: #1e293b;
-}
-
-.phone {
-  width: 380px;
-  background: #f8fafc;
-  border-radius: 28px;
-  padding: 24px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
-}
-
-.header h1 {
-  margin: 8px 0;
-  font-size: 32px;
 }
 
 .location {
@@ -49,7 +39,8 @@
 
 .cards {
   display: grid;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 .spot-card {
@@ -89,3 +80,10 @@
   background: #fef3c7;
   color: #92400e;
 }
+
+.attraction-card{
+  background: rgb(226, 226, 226);
+  border-radius: 12px;
+  padding: 16px;
+}
+

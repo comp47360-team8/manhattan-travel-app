@@ -1,9 +1,33 @@
 import "./App.css";
+import AttractionCard from "./components/AttractionCard";
 
+//rudimentary data to generate cards 
+const attractionsArray=[
+  {
+    image:"https://placehold.co/300x180",
+    name:"Central Park",
+    crowdLevel:50
+  },
+    {
+    image:"https://placehold.co/300x180",
+    name:"Empire state building",
+    crowdLevel:100
+  },
+    {
+    image:"https://placehold.co/300x180",
+    name:"Wall street",
+    crowdLevel:65
+  },
+    {
+    image:"https://placehold.co/300x180",
+    name:"China Town",
+    crowdLevel:20
+  },
+]
 function App() {
   return (
     <main className="app">
-      <section className="phone">
+      <section className="page-container">
         <header className="header">
           <p className="location">📍 Manhattan, NY</p>
           <h1>OffPeak NYC</h1>
@@ -19,19 +43,24 @@ function App() {
         </div>
 
         <section className="cards">
-          <article className="spot-card">
-            <div className="image-placeholder">Central Park</div>
-            <h2>Central Park</h2>
-            <p className="tag low">Low crowd</p>
-            <p>Best time: 10:00 AM</p>
-          </article>
+        
+         {
+          //the .map function basically goes through the array we created up top and for each attraction creates a card on the page
+         attractionsArray.map((attraction) => (
+            <AttractionCard
+            // a key is used in react to give an identifier, for now its the name but presuming the db we use will have an id or something later 
+            key={attraction.name}
+            image={attraction.image}
+            name={attraction.name}
+            crowdLevel={attraction.crowdLevel}
+             />
 
-          <article className="spot-card">
-            <div className="image-placeholder">Brooklyn Bridge</div>
-            <h2>Brooklyn Bridge</h2>
-            <p className="tag medium">Moderate</p>
-            <p>Best time: 8:30 AM</p>
-          </article>
+            ))
+         }
+        
+
+          
+          
         </section>
       </section>
     </main>
