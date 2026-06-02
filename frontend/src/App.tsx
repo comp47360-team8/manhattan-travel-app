@@ -10,25 +10,29 @@ const attractionsArray=[
     image:"https://placehold.co/300x180",
     name:"Central Park",
     crowdLevel:50,
-    bestTime: "before 11am"
+    bestTime: "before 11am",
+    category: "Park"
   },
     {
     image:"https://placehold.co/300x180",
     name:"Empire state building",
     crowdLevel:100,
-    bestTime: "before 11am"
+    bestTime: "before 11am",
+    category: "Landmark"
   },
     {
     image:"https://placehold.co/300x180",
     name:"Wall street",
     crowdLevel:65,
-    bestTime: "before 11am"
+    bestTime: "before 11am",
+    category: "Landmark"
   },
     {
     image:"https://placehold.co/300x180",
     name:"China Town",
     crowdLevel:20,
-    bestTime: "before 11am"
+    bestTime: "before 11am",
+    category: "Landmark"
   },
 ]
 
@@ -58,6 +62,7 @@ function App() {
             name={attraction.name}
             crowdLevel={attraction.crowdLevel}
             bestTime={attraction.bestTime}
+            category={attraction.category}
              />
 
             ))
