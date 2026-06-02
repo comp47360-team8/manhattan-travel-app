@@ -1,5 +1,7 @@
 import "./App.css";
 import AttractionCard from "./components/AttractionCard";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
 
 //rudimentary data to generate cards 
 const attractionsArray=[
@@ -24,17 +26,17 @@ const attractionsArray=[
     crowdLevel:20
   },
 ]
+
 function App() {
   return (
     <main className="app">
       <section className="page-container">
-        <header className="header">
-          <p className="location">📍 Manhattan, NY</p>
-          <h1>OffPeak NYC</h1>
-          <p>Plan quieter trips around Manhattan.</p>
-        </header>
-
-        <input className="search" placeholder="Search Manhattan spots..." />
+        
+        {/* The header was extracted and put in the components so it can be reused later  */}
+        <Header />
+        
+        {/* Searchbar was extracted and is in components again for future reuse  */}
+        <SearchBar />
 
         <div className="tabs">
           <button>Landmarks</button>

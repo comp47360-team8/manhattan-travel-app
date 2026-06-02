@@ -1,4 +1,4 @@
-//props are the data passed from a parent to a child to customize behaviour, need them to generate the cards on the main page 
+//props are the data passed from a parent to a child to customize behaviour, allows for reusable assets with customizable info thats different for each
 type AttactionCardProps={
     image: string;
     name: string;
