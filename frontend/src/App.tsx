@@ -3,6 +3,8 @@ import AttractionCard from "./components/AttractionCard";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import CategoryTabs from "./components/CategoryTabs";
+import Authform from "./components/AuthForm";
+import { useState } from "react";
 
 //rudimentary data to generate cards 
 const attractionsArray=[
@@ -37,12 +39,40 @@ const attractionsArray=[
 ]
 
 function App() {
+
+   const[isLoginOpen,setIsLoginOpen] = useState(false);
+   const [authMode, setAuthMode] = useState("login");
+
+
+        function openLogin() {
+          setAuthMode("login");
+          setIsLoginOpen(true);
+          
+        };
+
+        function closeLogin() {
+          setIsLoginOpen(false);
+        };
+
+        function openRegister() {
+          setAuthMode("register");
+          setIsLoginOpen(true);
+        };
+        
+        function switchToLogin(){
+          setAuthMode("login");
+        }
+        
+
+
   return (
+    
     <main className="app">
       <section className="page-container">
+       
         
         {/* The header was extracted and put in the components so it can be reused later  */}
-        <Header />
+        <Header onLoginClick={openLogin} onRegisterClick={openRegister} />
         
         {/* Searchbar was extracted and is in components again for future reuse  */}
         <SearchBar />
@@ -65,14 +95,19 @@ function App() {
             category={attraction.category}
              />
 
+            
+
             ))
          }
-        
-
-          
-          
         </section>
       </section>
+
+         {isLoginOpen && (
+              <div className="modal-overlay">
+              <Authform authMode={authMode} onXClick={closeLogin} onRegisterClick={openRegister} onLoginClick={switchToLogin} />
+              </div>
+          )}
+      
     </main>
   );
 }
