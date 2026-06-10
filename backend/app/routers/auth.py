@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_users.password import PasswordHelper
+from pwdlib import PasswordHash
+from pwdlib.hashers.argon2 import Argon2Hasher
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import User
 from pydantic import BaseModel, EmailStr, field_validator, model_validator
 from pydantic_core import PydanticCustomError
 
-router = APIRouter(tags=["authentication"])
+router = APIRouter(prefix="/auth", tags=["authentication"])
 
 class SignupUser(BaseModel):
     email: EmailStr
@@ -53,9 +56,15 @@ class LoginUser(BaseModel):
 class ForgotPasswordUser(BaseModel):
     email: EmailStr
 
+# password hashing algorithm
+password_hash = PasswordHash((
+    Argon2Hasher(),
+))
+password_helper = PasswordHelper(password_hash)
+
+# define routes
 @router.post("/signup")
 def signup(user: SignupUser, db: Session = Depends(get_db)):
-
     existing_user = db.query(User).filter(User.email == user.email).first()
 
     if existing_user:
@@ -64,9 +73,11 @@ def signup(user: SignupUser, db: Session = Depends(get_db)):
             detail="This email is already registered. Please login or use a different email."
         )
     
+    hashed_password = password_hash.hash(user.password)
+    
     new_user = User(
         email=user.email, 
-        password_hash=user.password, # Remenber To Do: implement hashing function for password instead of storing raw 
+        password_hash=hashed_password,
         display_name=user.display_name
     )
 
@@ -88,4 +99,5 @@ def login(user: LoginUser, db: Session = Depends(get_db)):
         status_code=401,
         detail="Incorrect email or password. Please try again."
     )
+
     
