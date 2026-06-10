@@ -92,9 +92,24 @@ def login(user: LoginUser, db: Session = Depends(get_db)):
 
     existing_user = db.query(User).filter(User.email == user.email).first()
 
-    if existing_user and existing_user.password_hash == user.password:
-        return {"message": "Login successful."} # Remember To Do: replace with actual functions later
+    if not existing_user:
+        raise HTTPException(
+        status_code=401,
+        detail="Incorrect email or password. Please try again."
+    )
 
+    valid, updated_hash = password_helper.verify_and_update(
+        user.password,
+        existing_user.password_hash
+    )
+
+    if updated_hash:
+        existing_user.password_hash = updated_hash
+        db.commit()
+
+    if valid:
+        return {"message": "Login successful."} # Remember To Do: replace with actual functions later
+    
     raise HTTPException(
         status_code=401,
         detail="Incorrect email or password. Please try again."
