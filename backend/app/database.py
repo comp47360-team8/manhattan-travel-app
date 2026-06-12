@@ -9,16 +9,16 @@ DATABASE_URL = os.getenv("MANHATTAN_TRAVEL_APP_DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(
-  autoflush=False,
-  autocommit=False,
-  bind=engine)
+    autoflush=False, 
+    autocommit=False, 
+    bind=engine)
 
 class Base(DeclarativeBase):
-  pass
+    pass
 
 def get_db():
-  db = SessionLocal()
-  try:
-    yield db
-  finally:
-    db.close()
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
