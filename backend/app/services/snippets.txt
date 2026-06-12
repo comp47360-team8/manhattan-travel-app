@@ -1,0 +1,24 @@
+def create_login_token(user_id: int):
+    payload = {
+        "sub":str(user_id),
+        "exp":datetime.now(timezone.utc) + timedelta(hours=24)
+    }
+    token = jwt.encode(payload, os.getenv("JWT_LOGIN_STATUS_SECRET_KEY"), os.getenv("ALGORITHM"))
+    return token
+
+
+oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+def get_current_user(token: str = Depends(oauth2)):
+    try:
+        payload = jwt.decode(
+            token, 
+            os.getenv("JWT_LOGIN_STATUS_SECRET_KEY"), 
+            os.getenv("ALGORITHM")
+            )
+        user_id = payload["sub"]
+        return user_id
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED
+        )
