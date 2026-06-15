@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type AuthFormProps={
      onXClick: ()=> void,
      onLoginClick: ()=> void,
@@ -6,6 +8,58 @@ type AuthFormProps={
 }
 
 function Authform({onXClick,onRegisterClick,onLoginClick, authMode}: AuthFormProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
+
+
+    async function handleLogin() {
+    const response = await fetch("http://localhost:8000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.ok){
+      setAuthMessage(data.message || "Success");
+    }
+    else{
+      setAuthMessage(data.detail || "Something went wrong");
+    }
+    console.log(data);
+    }
+
+    async function handleRegister() {
+    const response = await fetch("http://localhost:8000/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        display_name: username,
+        password: password,
+        confirm_password: confirmPassword,
+      }),
+    });
+
+  const data = await response.json();
+  if (response.ok){
+      setAuthMessage(data.message || "Success");
+    }
+    else{
+      setAuthMessage(data.detail || "Something went wrong");
+    }
+  console.log(data);
+}
     if (authMode === "login") {
          return(
         <section className="auth-card">
@@ -16,13 +70,22 @@ function Authform({onXClick,onRegisterClick,onLoginClick, authMode}: AuthFormPro
             
 
             <label>Email</label>
-            <input type="email" placeholder="Please enter your email"/>
+            <input type="email"
+              placeholder="Please enter your email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              />
             
             <label>Password</label>
-            <input type="password" placeholder="Please enter your password"/>
+            <input type="password"
+              placeholder="Please enter your password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              />
             <p className="forgot-password" /*onClick={handleForgotPassword}*/ >Forgot password?</p>
 
-            <button type="button">Login</button>
+            {authMessage && <p className="auth-message">{authMessage}</p>}
+            <button type="button" onClick={handleLogin}>Login</button>
             <p className="signup-link">Don't have an account? <span onClick={onRegisterClick}>Sign up</span></p>
             
 
@@ -36,19 +99,36 @@ function Authform({onXClick,onRegisterClick,onLoginClick, authMode}: AuthFormPro
 
         <h2>Sign Up</h2>
 
-        <label>Username</label>
-        <input type="text" placeholder="Please enter a username" />
+        <label>Display Name</label>
+        <input type="text"
+          placeholder="Please enter a username"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          />
 
         <label>Email</label>
-        <input type="email" placeholder="Please enter your email" />
+        <input type="email"
+          placeholder="Please enter your email" 
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          />
 
         <label>Password</label>
-        <input type="password" placeholder="Please enter your password" />
+        <input type="password"
+          placeholder="Please enter your password" 
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+         />
 
         <label>Confirm Password</label>
-        <input type="password" placeholder="Please confirm your password" />
-
-        <button type="button">Sign Up</button>
+        <input type="password"
+          placeholder="Please confirm your password" 
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
+           />
+        
+        {authMessage && <p className="auth-message">{authMessage}</p>}
+        <button type="button" onClick={handleRegister}>Sign Up</button>
 
         <p className="signup-link">
           Already have an account? <span onClick={onLoginClick}>Log in</span>
