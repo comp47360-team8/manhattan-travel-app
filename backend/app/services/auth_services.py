@@ -1,60 +1,62 @@
-from fastapi import Depends
-from dotenv import load_dotenv
 from sqlalchemy.orm import Session
-from app.security import hash_password, verify_and_update_password
-from app.models.user_model import User
-from app.schemas.user import UserCreate, UserLogin
-from app.database import get_db
+from app.core.security.passwords import verify_password, verify_token
+from app.core.security.tokens import create_access_token,decode_token
+from app.core.exceptions import AuthenticationError
+from app.services.user_services import get_user_by_email
+from app.services.session_service import create_session, get_session_by_sid, rotate_session
 
-load_dotenv()
-
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    normalised_email = user.email.lower().strip()
-    existing_user = db.query(User).filter(
-        User.email == normalised_email
-        ).first()
-
-    if existing_user:
-        raise ValueError(
-            "This email is already registered. Please log in or use a different email."
-        )
-
-    hashed_password = hash_password(user.password)
-
-    new_user = User(
-        email=normalised_email,
-        password_hash=hashed_password,
-        display_name=user.display_name.strip(),
-    )
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return new_user
+INVALID_CREDENTIALS="Incorrect email or password. Please try again."
+INVALID_TOKEN="Invalid or expired refresh token."
 
 
-def authenticate_user(user: UserLogin, db: Session = Depends(get_db)):
-    normalised_email = user.email.lower().strip()
-    existing_user = db.query(User).filter(
-        User.email == normalised_email
-        ).first()
+def authenticate_user(username: str, password: str, db: Session):
+    existing_user = get_user_by_email(username, db)
 
     if existing_user is None:
-        raise ValueError(
-            "Incorrect email or password. Please try again."
-            )
+        raise AuthenticationError(INVALID_CREDENTIALS)
 
-    verified, update = verify_and_update_password(user.password, existing_user.password_hash)
+    password_verified, hash_update = verify_password(
+        password, 
+        existing_user.password_hash
+    )
 
-    if not verified:
-        raise ValueError(
-            "Incorrect email or password. Please try again."
-            )
+    if not password_verified:
+        raise AuthenticationError(INVALID_CREDENTIALS)
 
-    if update:
-        existing_user.password_hash = update
+    if hash_update:
+        existing_user.password_hash = hash_update
         db.commit()
 
-    return {"message": "Login Successful."}
+    access_token = create_access_token(existing_user.id)
+    refresh_token = create_session(existing_user.id, db)
+
+    return {
+        "access_token": access_token, 
+        "refresh_token": refresh_token}
+
+
+def refresh(refresh_token: str, db: Session):
+    payload = decode_token(refresh_token)
+
+    if payload.get("type") != "refresh":
+        raise AuthenticationError(INVALID_TOKEN)
+
+    existing_session = get_session_by_sid(payload["sid"], db)
+
+    if (
+        not existing_session
+        or existing_session.revoked
+        or not verify_token(refresh_token, existing_session.refresh_token_hash)
+    ):
+        raise AuthenticationError(INVALID_TOKEN)
+
+    user_id = existing_session.user_id
+
+    new_access_token = create_access_token(user_id)
+    new_refresh_token = rotate_session(existing_session.id, user_id, db)
+
+    return {"access_token": new_access_token, 
+            "refresh_token": new_refresh_token}
+
+
 
