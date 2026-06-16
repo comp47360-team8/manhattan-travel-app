@@ -1,8 +1,10 @@
+alembic==1.18.4
 fastapi==0.136.3
 fastapi_users==15.0.5
 psycopg2-binary==2.9.12
 pwdlib==0.3.0
 pydantic==2.13.4
-python-dotenv==1.2.2
-SQLAlchemy==2.0.50
+pydantic_settings==2.14.1
+python_jose==3.5.0
+SQLAlchemy==2.0.39
 uvicorn==0.39.0
