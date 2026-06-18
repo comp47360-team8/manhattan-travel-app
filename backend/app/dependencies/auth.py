@@ -21,3 +21,5 @@ def authorise_access(token: str = Depends(oauth2_scheme)):
             detail="Not authorised for this resource. Please log in first.",
         )
     
+    return payload["sub"]
+    
