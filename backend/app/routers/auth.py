@@ -6,10 +6,9 @@ from app.database import get_db
 from app.services.user_services import create_user
 from app.services.auth_services import authenticate_user, refresh
 from app.services.session_service import revoke_session
-from app.dependencies.auth import authorise_access
 from app.core.exceptions import UserAlreadyExists, AuthenticationError
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/signup", response_model=UserResponse)
 def signup(user: UserCreate, db: Session = Depends(get_db)):
@@ -37,6 +36,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 def refresh_session(refresh_token: str, db: Session = Depends(get_db)):
     try:
         return refresh(refresh_token, db)
+    
     except AuthenticationError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
