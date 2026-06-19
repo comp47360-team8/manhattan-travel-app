@@ -9,8 +9,8 @@ INVALID_CREDENTIALS="Incorrect email or password. Please try again."
 INVALID_TOKEN="Invalid or expired refresh token."
 
 
-def authenticate_user(username: str, password: str, db: Session):
-    existing_user = get_user_by_email(username, db)
+def authenticate_user(email: str, password: str, db: Session):
+    existing_user = get_user_by_email(email, db)
 
     if existing_user is None:
         raise AuthenticationError(INVALID_CREDENTIALS)
@@ -32,8 +32,8 @@ def authenticate_user(username: str, password: str, db: Session):
 
     return {
         "access_token": access_token, 
-        "refresh_token": refresh_token}
-
+        "refresh_token": refresh_token
+        }
 
 def refresh(refresh_token: str, db: Session):
     payload = decode_token(refresh_token)
@@ -41,7 +41,7 @@ def refresh(refresh_token: str, db: Session):
     if payload.get("type") != "refresh":
         raise AuthenticationError(INVALID_TOKEN)
 
-    existing_session = get_session_by_sid(payload["sid"], db)
+    existing_session = get_session_by_sid(payload.get("sid"), db)
 
     if (
         not existing_session
@@ -55,8 +55,10 @@ def refresh(refresh_token: str, db: Session):
     new_access_token = create_access_token(user_id)
     new_refresh_token = rotate_session(existing_session.id, user_id, db)
 
-    return {"access_token": new_access_token, 
-            "refresh_token": new_refresh_token}
+    return {
+        "access_token": new_access_token, 
+        "refresh_token": new_refresh_token
+        }
 
 
 
