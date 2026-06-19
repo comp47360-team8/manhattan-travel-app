@@ -4,7 +4,7 @@ from app.schemas.user import UserResponse, UserCreate, UserLogin, UserLoginRespo
 from app.schemas.auth import RefreshTokenRequest, LogoutRequest, RefreshTokenResponse, LogoutResponse
 from app.database import get_db
 from app.services.user_services import create_user
-from app.services.auth_services import authenticate_user, refresh
+from app.services.auth_service import authenticate_user, refresh
 from app.services.session_service import revoke_session
 from app.core.exceptions import UserAlreadyExists, AuthenticationError
 from app.dependencies.auth import authorise_access
