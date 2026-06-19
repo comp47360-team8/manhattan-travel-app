@@ -9,6 +9,11 @@ def get_session_by_sid(sid: str, db: Session):
     session = db.execute(select(UserSession).where(UserSession.id == sid))
     return session.scalar_one_or_none()
 
+def get_session_by_user(id: uuid, db: Session):
+    statement = select(UserSession).where(UserSession.user_id == id)
+    result = db.execute(statement)
+    return result
+
 def create_session(subject: uuid, db: Session):
     session_id = str(uuid.uuid4())
     refresh_token = create_refresh_token(session_id)
@@ -35,13 +40,11 @@ def rotate_session(sid: uuid, subject: uuid, db: Session):
 
 def revoke_session(token: str, db: Session):
     payload = decode_token(token)
+    session = get_session_by_sid(payload.get("sid"), db)
 
-    session = get_session_by_sid(payload["sid"], db)
     if session:
         session.revoked = True
         db.commit()
-
-    
     
 
 
