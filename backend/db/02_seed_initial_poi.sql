@@ -1,3 +1,5 @@
+BEGIN;
+
 INSERT INTO poi (
   slug, name, type, summary, description,
   borough, neighborhood, address, latitude, longitude,
