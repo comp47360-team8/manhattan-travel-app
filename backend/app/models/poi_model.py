@@ -25,7 +25,7 @@ class BusynessLevel(str, enum.Enum):
     very_busy = "very_busy"
 
 class POI(Base):
-    __tablename__ = "pois"
+    __tablename__ = "poi"
 
     __table_args__ = (
         CheckConstraint("borough IN ('Manhattan','Brooklyn','Queens','Bronx','Staten Island')"),
@@ -241,7 +241,7 @@ class SavedPOI(Base):
 
     poi_id: Mapped[int] = mapped_column(
         BigInteger,
-        ForeignKey("pois.id", ondelete="CASCADE"),
+        ForeignKey("poi.id", ondelete="CASCADE"),
         primary_key=True
     )
 
