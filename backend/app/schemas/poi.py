@@ -74,4 +74,4 @@ class POISaveResponse(BaseModel):
     message: str
 
 class POIUnsaveResponse(BaseModel):
-    messgae: str
+    message: str
