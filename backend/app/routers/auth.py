@@ -7,7 +7,6 @@ from app.services.user_services import create_user
 from app.services.auth_service import authenticate_user, refresh
 from app.services.session_service import revoke_session
 from app.core.exceptions import UserAlreadyExists, AuthenticationError
-from app.dependencies.auth import authorise_access
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
