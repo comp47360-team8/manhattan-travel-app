@@ -1,7 +1,12 @@
 import enum
 import uuid
 from app.database import Base
-from sqlalchemy import BigInteger, String, Enum, Text, Double, CheckConstraint, ARRAY, Numeric, Integer, DateTime, Time, Boolean, text, func, ForeignKey
+from sqlalchemy import (
+    BigInteger, String, Enum, Text, Double, 
+    CheckConstraint, ARRAY, Numeric, Integer, 
+    DateTime, Time, Boolean, text, func, ForeignKey,
+    SmallInteger, Index
+    )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 from decimal import Decimal
@@ -253,6 +258,63 @@ class SavedPOI(Base):
 
     poi = relationship("POI", back_populates="saved_by")
 
+
+class POIBusynessForecast(Base):
+    __tablename__ = "poi_busyness_forecast"
+
+    __table_args__ = (
+        CheckConstraint("day_of_week BETWEEN 0 AND 6"),
+        CheckConstraint("hour_of_day BETWEEN 0 AND 23"),
+        CheckConstraint("busyness_pct BETWEEN 0 AND 100"),
+        Index("idx_forecast_poi", "poi_id"),
+        Index("idx_forecast_level", "level")
+    )
+
+    poi_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey("poi.id", ondelete="CASCADE"),
+        nullable=False,
+        primary_key=True
+    )
+
+    day_of_week: Mapped[int] = mapped_column(
+        SmallInteger,
+        nullable=False,
+        primary_key=True
+    )
+
+    hour_of_day: Mapped[int] = mapped_column(
+        SmallInteger,
+        nullable=False,
+        primary_key=True
+    )
+
+    busyness_pct: Mapped[int] = mapped_column(
+        SmallInteger,
+        nullable=False,
+    )
+
+    level: Mapped[BusynessLevel] = mapped_column(
+        Enum(BusynessLevel, name = "busyness_level", create_type=False),
+        nullable=False
+    )
+
+    source: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        server_default=text("'model'")
+    )
+
+    model_version: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True
+    )
+
+    computed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+    )
 
 
     
