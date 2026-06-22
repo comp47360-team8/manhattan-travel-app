@@ -7,7 +7,7 @@ from app.core.exceptions import POINotFoundError
 from app.dependencies.auth import authorise_access
 from app.schemas.poi import POIDetailedResponse, POISaveResponse, POIUnsaveResponse
 
-router = APIRouter(prefix="/pois", tags=["pois"])
+router = APIRouter(prefix="/api/pois", tags=["pois"])
 
 @router.get("", response_model=list[POIDetailedResponse])
 def get_pois(db: Session = Depends(get_db)):
