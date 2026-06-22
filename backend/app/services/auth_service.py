@@ -35,7 +35,7 @@ def authenticate_user(email: str, password: str, db: Session):
         "refresh_token": refresh_token
         }
 
-def refresh(refresh_token: str, db: Session):
+def refresh_session(refresh_token: str, db: Session):
     payload = decode_token(refresh_token)
 
     if payload.get("type") != "refresh":
@@ -56,9 +56,9 @@ def refresh(refresh_token: str, db: Session):
     new_refresh_token = rotate_session(existing_session.id, user_id, db)
 
     return {
-        "access_token": new_access_token, 
+        "access_token": new_access_token,
         "refresh_token": new_refresh_token
-        }
+    }
 
 
 
