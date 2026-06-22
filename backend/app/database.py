@@ -1,10 +1,8 @@
-import os
-from dotenv import load_dotenv
+from app.core.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-load_dotenv()
-DATABASE_URL = os.getenv("MANHATTAN_TRAVEL_APP_DATABASE_URL")
+DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 
