@@ -6,7 +6,7 @@ from app.schemas.poi import POICreate
 from app.core.exceptions import POINotFoundError, POIAlreadySavedError
 from app.dependencies.auth import authorise_access
 
-router = APIRouter(prefix="/saved-pois", tags=["saved-pois"])
+router = APIRouter(prefix="/api/saved-pois", tags=["saved-pois"])
 
 
 @router.post("")

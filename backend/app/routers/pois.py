@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.poi_service import get_all_pois, get_poi_by_slug
 
-router = APIRouter(prefix="/pois", tags=["pois"])
+router = APIRouter(prefix="/api/pois", tags=["pois"])
 
 @router.get("")
 def get_pois(db: Session = Depends(get_db)):
