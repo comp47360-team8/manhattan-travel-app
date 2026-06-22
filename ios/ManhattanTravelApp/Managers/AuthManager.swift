@@ -11,8 +11,11 @@ final class AuthManager: ObservableObject {
     @Published var emailError: String?
     @Published var passwordError: String?
     @Published var generalError: String?
+    @Published var usernameError: String?
+    @Published var confirmPasswordError: String?
 
     private let isLoggedInKey = "auth.isLoggedIn"
+    private let authService = AuthService()
 
     static let mockUser = User(
         name: "Amelia Chen",
@@ -30,39 +33,57 @@ final class AuthManager: ObservableObject {
         self.currentUser = storedLoginState ? AuthManager.mockUser : nil
     }
     // Login check
-    func login(email: String, password: String) {
-        emailError = nil
-        passwordError = nil
+    func login(email: String, password: String) async {
+        
+        // sync
+        emailError = AuthValidator.emailError(email)
+        passwordError = AuthValidator.passwordError(password)
         generalError = nil
+        guard emailError == nil, passwordError == nil else { return }
         
-        //email check
-        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if trimmedEmail.isEmpty {
-            emailError = "Please enter your email."
-        }else if !trimmedEmail.contains("@"){
-            emailError = "Please enter a valid email address."
+        // asyn
+        do {
+            let tokens = try await authService.login(LoginRequest(email: email, password: password))
+            print("access:", tokens.accessToken)
+            currentUser = AuthManager.mockUser
+            isLoggedIn = true
+            UserDefaults.standard.set(true, forKey: isLoggedInKey)
+        }catch{
+            generalError = error.localizedDescription
         }
-        
-        //password check
-        if password.isEmpty {
-            passwordError = "Please enter your password."
-        }else if password.count < 8 {
-            passwordError = "Password must be at least 8 characters."
-        }
-        
-        guard emailError == nil, passwordError == nil else {
-            return
-        }
-        
-        
-        currentUser = AuthManager.mockUser
-        isLoggedIn = true
-        UserDefaults.standard.set(true, forKey: isLoggedInKey)
     }
     
-    func register(){
+    func register(email: String, userName: String, password: String, confirmPassword: String) async {
         
+        emailError = AuthValidator.emailError(email)
+        passwordError = AuthValidator.passwordError(password)
+        usernameError = AuthValidator.usernameError(userName)
+        confirmPasswordError = AuthValidator.confirmPasswordError(
+            password: password,
+            confirmPassword: confirmPassword
+        )
+        generalError = nil
+        
+        guard emailError == nil, usernameError == nil,
+                  passwordError == nil, confirmPasswordError == nil else { return }   
+
+        
+        do{
+            _ = try await authService.signup(SignUpRequest(email: email, displayName: userName, password: password, confirmPassword: confirmPassword))
+            let tokens = try await authService.login(LoginRequest(email: email, password: password))
+            print("access:", tokens.accessToken)
+            currentUser = AuthManager.mockUser
+            isLoggedIn = true
+            UserDefaults.standard.set(true, forKey: isLoggedInKey)
+        } catch let error as AuthError {
+            if case .http(let status, let detail) = error, status == 409 {
+                emailError = detail
+            }else{
+                generalError = error.localizedDescription
+            }
+        }catch{
+            generalError = error.localizedDescription
+        }
     }
 
     func logout() {
@@ -73,4 +94,13 @@ final class AuthManager: ObservableObject {
         generalError = nil
         UserDefaults.standard.set(false, forKey: isLoggedInKey)
     }
+    
+    func clearErrors() {
+        emailError = nil
+        usernameError = nil
+        passwordError = nil
+        confirmPasswordError = nil
+        generalError = nil
+    }
+
 }

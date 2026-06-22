@@ -243,3 +243,6 @@ ios/**/.build/
 
 ## CocoaPods (if ever used — keep the Podfile, ignore the installed Pods)
 ios/**/Pods/
+
+## ignore ios doc
+ios/docs/

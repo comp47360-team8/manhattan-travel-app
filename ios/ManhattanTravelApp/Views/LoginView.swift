@@ -5,7 +5,6 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @State private var hasLoginError: Bool = false
     @State private var isPasswordVisible: Bool = false
     @State private var showRegister: Bool = false
     
@@ -23,6 +22,13 @@ struct LoginView: View {
         .presentationDetents([.medium])
         .presentationDragIndicator(.hidden)
         .interactiveDismissDisabled()
+        .onAppear{
+            authManager.clearErrors()
+        }
+        .fullScreenCover(isPresented: $showRegister){
+            RegisterView()
+                .environmentObject(authManager)
+        }
         
     }
 
@@ -106,7 +112,9 @@ struct LoginView: View {
             .frame(maxWidth: .infinity, alignment: .trailing)
             
             // Login Botton
-            Button(action: logIn) {
+            Button(action: {
+                Task {await authManager.login(email: email, password: password)}
+            }) {
                 Text("Log In")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -136,9 +144,6 @@ struct LoginView: View {
         .padding(.horizontal, 10)
     }
 
-    private func logIn() {
-        authManager.login(email: email, password: password)
-    }
 }
 
 #Preview {

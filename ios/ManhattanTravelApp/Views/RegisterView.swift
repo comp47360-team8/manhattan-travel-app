@@ -29,16 +29,14 @@ struct RegisterView: View {
                         signUpButton
                         footer
                     }
-                    
-
                 }
-                
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             .background(Color(.systemGroupedBackground))
-            
-            
+            .onAppear{
+                authManager.clearErrors()
+            }
     }
         
     
@@ -82,26 +80,27 @@ struct RegisterView: View {
     private var form: some View {
         VStack(alignment: .leading, spacing: 8){
             //Email
-            LabeledField(title: "Email"){
+            LabeledField(title: "Email", errorMessage: authManager.emailError){
                 TextField("you@example.com", text: $email)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
             }
             
-            LabeledField(title: "Username"){
+            LabeledField(title: "Username", errorMessage: authManager.usernameError){
                 TextField("What should we call you?", text: $username)
                     .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
             }
             
             //Password
-            LabeledField(title: "Password"){
+            LabeledField(title: "Password", errorMessage: authManager.passwordError){
                 HStack{
                     Group{
                         if isPasswordVisible{
-                            TextField("At least 8 characters", text: $password)
+                            TextField("At least 6 characters", text: $password)
                         } else{
-                            SecureField("At least 8 characters", text: $password)
+                            SecureField("At least 6 characters", text: $password)
                         }
                     }
                     Button{
@@ -115,7 +114,7 @@ struct RegisterView: View {
             }
             
             //Confirm your password
-            LabeledField(title: "Confirm password"){
+            LabeledField(title: "Confirm password", errorMessage: authManager.confirmPasswordError){
                 HStack{
                     Group{
                         if isConfirmVisible{
@@ -139,7 +138,13 @@ struct RegisterView: View {
     //Sign Up Button
     private var signUpButton: some View{
         Button{
-            //register() // to be provide
+            Task {
+                await authManager.register(
+                    email: email,
+                    userName: username,
+                    password: password,
+                    confirmPassword: confirmPassword)
+            }
         } label:{
             Text("Sign up & Log in")
                 .font(.headline)
