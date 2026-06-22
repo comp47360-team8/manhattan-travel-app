@@ -5,7 +5,7 @@ from app.services.poi_service import get_saved_pois
 from app.dependencies.auth import authorise_access
 from app.schemas.poi import POIDetailedResponse
 
-router = APIRouter(prefix="/users/me/saved-pois", tags=["saved-pois"])
+router = APIRouter(prefix="/api/users/me/saved-pois", tags=["saved-pois"])
 
 @router.get("", response_model=list[POIDetailedResponse])
 def display_saved_pois(db: Session = Depends(get_db), user=Depends(authorise_access)):
