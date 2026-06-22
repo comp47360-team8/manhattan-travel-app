@@ -8,6 +8,3 @@ class AuthenticationError(Exception):
 class POINotFoundError(Exception):
     pass
 
-class POIAlreadySavedError(Exception):
-    pass
-
