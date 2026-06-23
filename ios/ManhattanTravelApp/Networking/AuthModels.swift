@@ -34,3 +34,13 @@ struct LoginResponse: Decodable {
     let accessToken: String
     let refreshToken: String
 }
+
+// logout request
+struct LogoutRequest: Encodable {
+    let refreshToken: String
+}
+
+// logout Response
+struct LogoutResponse: Decodable {
+    let message: String
+}

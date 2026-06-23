@@ -14,7 +14,6 @@ final class AuthManager: ObservableObject {
     @Published var usernameError: String?
     @Published var confirmPasswordError: String?
 
-    private let isLoggedInKey = "auth.isLoggedIn"
     private let authService = AuthService()
 
     static let mockUser = User(
@@ -28,13 +27,12 @@ final class AuthManager: ObservableObject {
     )
 
     init() {
-        let storedLoginState = UserDefaults.standard.bool(forKey: isLoggedInKey)
-        self.isLoggedIn = storedLoginState
-        self.currentUser = storedLoginState ? AuthManager.mockUser : nil
+        let hasToken = TokenStore.accessToken != nil
+        self.isLoggedIn = hasToken
+        self.currentUser = hasToken ? AuthManager.mockUser : nil
     }
     // Login check
     func login(email: String, password: String) async {
-        
         // sync
         emailError = AuthValidator.emailError(email)
         passwordError = AuthValidator.passwordError(password)
@@ -44,10 +42,10 @@ final class AuthManager: ObservableObject {
         // asyn
         do {
             let tokens = try await authService.login(LoginRequest(email: email, password: password))
-            print("access:", tokens.accessToken)
+            TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
             currentUser = AuthManager.mockUser
             isLoggedIn = true
-            UserDefaults.standard.set(true, forKey: isLoggedInKey)
+            
         }catch{
             generalError = error.localizedDescription
         }
@@ -71,10 +69,10 @@ final class AuthManager: ObservableObject {
         do{
             _ = try await authService.signup(SignUpRequest(email: email, displayName: userName, password: password, confirmPassword: confirmPassword))
             let tokens = try await authService.login(LoginRequest(email: email, password: password))
-            print("access:", tokens.accessToken)
+            TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
             currentUser = AuthManager.mockUser
             isLoggedIn = true
-            UserDefaults.standard.set(true, forKey: isLoggedInKey)
+            
         } catch let error as AuthError {
             if case .http(let status, let detail) = error, status == 409 {
                 emailError = detail
@@ -86,13 +84,19 @@ final class AuthManager: ObservableObject {
         }
     }
 
-    func logout() {
+    func logout() async{
+        if let refresh = TokenStore.refreshToken {
+            do {
+                _ = try await authService.logout(LogoutRequest(refreshToken: refresh))
+            } catch {
+                //
+            }
+        }
+        TokenStore.clear()
         currentUser = nil
         isLoggedIn = false
-        emailError = nil
-        passwordError = nil
-        generalError = nil
-        UserDefaults.standard.set(false, forKey: isLoggedInKey)
+        clearErrors()
+        
     }
     
     func clearErrors() {

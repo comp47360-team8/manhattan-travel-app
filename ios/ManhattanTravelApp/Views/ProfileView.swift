@@ -30,7 +30,7 @@ struct ProfileView: View {
             titleVisibility: .visible
         ) {
             Button("Log Out", role: .destructive) {
-                authManager.logout()
+                Task { await authManager.logout() }
             }
             Button("Cancel", role: .cancel) {}
         }

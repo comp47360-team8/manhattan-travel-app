@@ -22,6 +22,7 @@ struct RegisterView: View {
         
             VStack{
                 topBar
+                    .padding(.horizontal, 20)
                 ScrollView{
                     VStack(alignment: .leading, spacing: 16) {
                         header
@@ -29,9 +30,10 @@ struct RegisterView: View {
                         signUpButton
                         footer
                     }
+                    .padding(.horizontal, 20)
                 }
             }
-            .padding(.horizontal, 20)
+            
             .padding(.vertical, 10)
             .background(Color(.systemGroupedBackground))
             .onAppear{

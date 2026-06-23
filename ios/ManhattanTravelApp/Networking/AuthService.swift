@@ -34,6 +34,12 @@ struct AuthService {
         try await post(path: "/api/auth/mobile/login", body: body)
     }
     
+    @discardableResult
+    func logout(_ body: LogoutRequest) async throws -> LogoutResponse {
+        try await post(path: "/api/auth/mobile/logout", body: body)
+    }
+    
+    
     private func post<Body: Encodable, ResponseModel: Decodable>(path: String, body: Body) async throws -> ResponseModel{
         var request = URLRequest(url: baseURL.appendingPathComponent(path))
         request.httpMethod = "POST"
