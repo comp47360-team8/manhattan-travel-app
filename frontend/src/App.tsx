@@ -6,43 +6,40 @@ import CategoryTabs from "./components/CategoryTabs";
 import Authform from "./components/AuthForm";
 import TopNav from "./components/TopNav";
 import MyItinerary from "./components/MyItinerary";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const attractionsArray = [
-  {
-    image: "https://placehold.co/300x180",
-    name: "Central Park",
-    crowdLevel: 50,
-    bestTime: "before 11am",
-    category: "Park",
-  },
-  {
-    image: "https://placehold.co/300x180",
-    name: "Empire state building",
-    crowdLevel: 100,
-    bestTime: "before 11am",
-    category: "Landmark",
-  },
-  {
-    image: "https://placehold.co/300x180",
-    name: "Wall street",
-    crowdLevel: 65,
-    bestTime: "before 11am",
-    category: "Landmark",
-  },
-  {
-    image: "https://placehold.co/300x180",
-    name: "China Town",
-    crowdLevel: 20,
-    bestTime: "before 11am",
-    category: "Landmark",
-  },
-];
+type Poi = {
+  slug: string;
+  name: string;
+  type: string;
+  image_url?: string;
+};
 
 function App() {
+
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [currentPage, setCurrentPage] = useState("explore");
+  const [pois, setPois] = useState<Poi[]>([]);
+
+  useEffect(() => {
+  
+
+  fetch("http://127.0.0.1:8000/api/pois")
+    .then((response) => {
+      
+      return response.json();
+    })
+    .then((data) => {
+      
+      console.log("POIs from backend:", data);
+      setPois(data.results || []);
+    })
+    .catch((error) => {
+      console.error("Failed to fetch POIs:", error);
+      
+    });
+}, []);
 
   function openLogin() {
     setAuthMode("login");
@@ -74,14 +71,14 @@ function App() {
             <CategoryTabs />
 
             <section className="cards">
-              {attractionsArray.map((attraction) => (
+              {pois.map((poi) => (
                 <AttractionCard
-                  key={attraction.name}
-                  image={attraction.image}
-                  name={attraction.name}
-                  crowdLevel={attraction.crowdLevel}
-                  bestTime={attraction.bestTime}
-                  category={attraction.category}
+                  key={poi.slug}
+                  image={poi.image_url || "https://placehold.co/300x180"}
+                  name={poi.name}
+                  crowdLevel={50}
+                  bestTime="Backend POI loaded"
+                  category={poi.type}
                 />
               ))}
             </section>
