@@ -4,110 +4,105 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import CategoryTabs from "./components/CategoryTabs";
 import Authform from "./components/AuthForm";
+import TopNav from "./components/TopNav";
+import MyItinerary from "./components/MyItinerary";
 import { useState } from "react";
 
-//rudimentary data to generate cards 
-const attractionsArray=[
+const attractionsArray = [
   {
-    image:"https://placehold.co/300x180",
-    name:"Central Park",
-    crowdLevel:50,
+    image: "https://placehold.co/300x180",
+    name: "Central Park",
+    crowdLevel: 50,
     bestTime: "before 11am",
-    category: "Park"
+    category: "Park",
   },
-    {
-    image:"https://placehold.co/300x180",
-    name:"Empire state building",
-    crowdLevel:100,
+  {
+    image: "https://placehold.co/300x180",
+    name: "Empire state building",
+    crowdLevel: 100,
     bestTime: "before 11am",
-    category: "Landmark"
+    category: "Landmark",
   },
-    {
-    image:"https://placehold.co/300x180",
-    name:"Wall street",
-    crowdLevel:65,
+  {
+    image: "https://placehold.co/300x180",
+    name: "Wall street",
+    crowdLevel: 65,
     bestTime: "before 11am",
-    category: "Landmark"
+    category: "Landmark",
   },
-    {
-    image:"https://placehold.co/300x180",
-    name:"China Town",
-    crowdLevel:20,
+  {
+    image: "https://placehold.co/300x180",
+    name: "China Town",
+    crowdLevel: 20,
     bestTime: "before 11am",
-    category: "Landmark"
+    category: "Landmark",
   },
-]
+];
 
 function App() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+  const [currentPage, setCurrentPage] = useState("explore");
 
-   const[isLoginOpen,setIsLoginOpen] = useState(false);
-   const [authMode, setAuthMode] = useState("login");
+  function openLogin() {
+    setAuthMode("login");
+    setIsLoginOpen(true);
+  }
 
+  function closeLogin() {
+    setIsLoginOpen(false);
+  }
 
-        function openLogin() {
-          setAuthMode("login");
-          setIsLoginOpen(true);
-          
-        };
+  function openRegister() {
+    setAuthMode("register");
+    setIsLoginOpen(true);
+  }
 
-        function closeLogin() {
-          setIsLoginOpen(false);
-        };
-
-        function openRegister() {
-          setAuthMode("register");
-          setIsLoginOpen(true);
-        };
-        
-        function switchToLogin(){
-          setAuthMode("login");
-        }
-        
-
+  function switchToLogin() {
+    setAuthMode("login");
+  }
 
   return (
-    
     <main className="app">
+      <TopNav onPageChange={setCurrentPage} />
+
       <section className="page-container">
-       
-        
-        {/* The header was extracted and put in the components so it can be reused later  */}
-        <Header onLoginClick={openLogin} onRegisterClick={openRegister} />
-        
-        {/* Searchbar was extracted and is in components again for future reuse  */}
-        <SearchBar />
+        {currentPage === "explore" && (
+          <>
+            <Header onLoginClick={openLogin} onRegisterClick={openRegister} />
+            <SearchBar />
+            <CategoryTabs />
 
-        {/* Category tabs to filter are again in components for later reuse */}
-       <CategoryTabs />
+            <section className="cards">
+              {attractionsArray.map((attraction) => (
+                <AttractionCard
+                  key={attraction.name}
+                  image={attraction.image}
+                  name={attraction.name}
+                  crowdLevel={attraction.crowdLevel}
+                  bestTime={attraction.bestTime}
+                  category={attraction.category}
+                />
+              ))}
+            </section>
+          </>
+        )}
 
-        <section className="cards">
-        
-         {
-          //the .map function basically goes through the array we created up top and for each attraction creates a card on the page
-         attractionsArray.map((attraction) => (
-            <AttractionCard
-            // a key is used in react to give an identifier, for now its the name but presuming the db we use will have an id or something later 
-            key={attraction.name}
-            image={attraction.image}
-            name={attraction.name}
-            crowdLevel={attraction.crowdLevel}
-            bestTime={attraction.bestTime}
-            category={attraction.category}
-             />
-
-            
-
-            ))
-         }
-        </section>
+        {currentPage === "itinerary" && <MyItinerary />}
+        {currentPage === "saved" && <p>Saved Places page coming soon.</p>}
+        {currentPage === "ai" && <p>AI Planner page coming soon.</p>}
       </section>
 
-         {isLoginOpen && (
-              <div className="modal-overlay">
-              <Authform authMode={authMode} onXClick={closeLogin} onRegisterClick={openRegister} onLoginClick={switchToLogin} />
-              </div>
-          )}
-      
+      {isLoginOpen && (
+        <div className="modal-overlay">
+          <Authform
+            authMode={authMode}
+            onXClick={closeLogin}
+            onRegisterClick={openRegister}
+            onLoginClick={switchToLogin}
+          />
+        </div>
+      )}
     </main>
   );
 }

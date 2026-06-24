@@ -72,6 +72,7 @@
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  position: relative;
 }
 
 .image-placeholder {
@@ -82,6 +83,20 @@
   align-items: center;
   justify-content: center;
   color: white;
+}
+
+.save-button{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    border: none;
+    border-radius: 50%;
+
+    width: 32px;
+    height: 32px;
+
+    cursor: pointer;
 }
 
 
@@ -173,6 +188,7 @@
 .forgot-password:hover {
   text-decoration: underline;
 }
+
 /* =========================
    sign-up button
 ========================= */
@@ -184,4 +200,106 @@
 
 .signup-link span:hover {
   text-decoration: underline;
+}
+/* =========================
+   Top Navigation
+========================= */
+
+.top-nav {
+  width: 100%;
+  height: 64px;
+  padding: 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+.top-nav-logo {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.top-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.top-nav-links a {
+  text-decoration: none;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.top-nav-links a:hover {
+  color: #b91c1c;
+}
+
+.top-nav-profile {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+/* =========================
+   My Itinerary
+========================= */
+
+.my-itinerary {
+  margin-top: 32px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.my-itinerary h2 {
+  margin-top: 0;
+}
+
+.my-itinerary input {
+  display: block;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+}
+
+.itinerary-empty {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+}
+.my-itinerary {
+  margin-top: 32px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.my-itinerary input {
+  display: block;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+}
+
+.itinerary-empty {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
 }
