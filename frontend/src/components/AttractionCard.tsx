@@ -1,34 +1,40 @@
-import { useState } from "react";
-
-//props are the data passed from a parent to a child to customize behaviour, allows for reusable assets with customizable info thats different for each
-type AttactionCardProps={
-    image: string;
-    name: string;
-    crowdLevel: number;
-    bestTime: string;
-    category: string;
-
+type AttractionCardProps = {
+  image: string;
+  name: string;
+  crowdLevel: number;
+  bestTime: string;
+  category: string;
+  onClick?: () => void;
 };
 
-
-function AttractionCard({image, name, crowdLevel, bestTime,category}: AttactionCardProps){
-const [saved, setSaved] = useState(false);
-return(
-    
-<article className="attraction-card">
-    <button
+function AttractionCard({
+  image,
+  name,
+  crowdLevel,
+  bestTime,
+  category,
+  onClick,
+}: AttractionCardProps) {
+  return (
+    <article className="attraction-card" onClick={onClick}>
+      <button
         className="save-button"
-        onClick={() => setSaved(!saved)}
-    >
-        {saved ? "♥" : "♡"}
-    </button>
+        onClick={(event) => {
+          event.stopPropagation();
+          alert(`${name} saved`);
+        }}
+      >
+        ♡ Save
+      </button>
 
-    <img src={image} alt={name}/>
-    <h2>{name}</h2>
-    <p>Crowd Level: {crowdLevel}%</p>
-    <p>Best Time: {bestTime}</p>
-    <p>Category: {category}</p>
-</article>
-    );
+      <img src={image} alt={name} />
+
+      <h3>{name}</h3>
+      <p>Crowd Level: {crowdLevel}%</p>
+      <p>{bestTime}</p>
+      <p>Category: {category}</p>
+    </article>
+  );
 }
+
 export default AttractionCard;

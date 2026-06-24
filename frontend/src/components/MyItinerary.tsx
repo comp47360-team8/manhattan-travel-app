@@ -1,15 +1,14 @@
 function MyItinerary() {
   return (
     <section className="my-itinerary">
-      <h2>My Itinerary</h2>
-      <p>Plan your Manhattan trip around quieter times.</p>
+      <h1>My Itinerary</h1>
 
-      <label>Select Date</label>
-      <input type="date" />
+      <label htmlFor="itinerary-date">Select trip date:</label>
+      <input id="itinerary-date" type="date" />
 
-      <div className="itinerary-empty">
-        <p>No places selected yet.</p>
-        <p>Saved places can be added to your itinerary later.</p>
+      <div className="empty-itinerary">
+        <h2>No activities planned yet</h2>
+        <p>Saved POIs will appear here when added to your itinerary.</p>
       </div>
     </section>
   );
