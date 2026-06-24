@@ -109,7 +109,7 @@ class POI(Base):
     )
 
     opening_hours_text: Mapped[str | None] = mapped_column(
-        String(100),
+        Text,
         nullable=True
     )
 
@@ -180,7 +180,7 @@ class POI(Base):
     )
 
     closest_subway: Mapped[str | None] = mapped_column(
-        String(100),
+        Text,
         nullable=True
     )
 
