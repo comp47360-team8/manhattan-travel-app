@@ -216,3 +216,33 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# macOS
+.DS_Store
+
+# Xcode / iOS
+## User-specific Xcode state (per-developer, never share)
+ios/**/xcuserdata/
+ios/**/*.xcuserstate
+ios/**/*.xcscmblueprint
+ios/**/*.xccheckout
+ios/**/*.xcworkspace/xcuserdata/
+
+## Build output
+ios/DerivedData/
+ios/build/
+ios/**/*.moved-aside
+ios/**/*.hmap
+ios/**/*.ipa
+ios/**/*.dSYM.zip
+ios/**/*.dSYM
+
+## Swift Package Manager (keep Package.resolved, ignore local build state)
+ios/**/.swiftpm/
+ios/**/.build/
+
+## CocoaPods (if ever used — keep the Podfile, ignore the installed Pods)
+ios/**/Pods/
+
+## ignore ios doc
+ios/docs/
