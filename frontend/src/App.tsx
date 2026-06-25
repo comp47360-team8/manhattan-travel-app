@@ -12,10 +12,35 @@ type Poi = {
   slug: string;
   name: string;
   type: string;
-  address: string;
-  summary: string;
-  description: string;
-  image_url?: string;
+  address: string | null;
+  summary: string | null;
+  description: string | null;
+  borough: string;
+  neighborhood: string | null;
+  phone: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  hero_image_url: string | null;
+  gallery_image_urls: string[] | null;
+  opening_hours: Record<string, unknown> | null;
+  opening_hours_text: string | null;
+  google_review_star: number | null;
+  google_review_count: number | null;
+  current_busyness: string | null;
+  current_busyness_at: string | null;
+  best_time_start: string | null;
+  best_time_end: string | null;
+  best_time_label: string | null;
+  why_this_time: string | null;
+  accessibility_labels: string[] | null;
+  admission_fee: number | null;
+  admission_text: string | null;
+  recommended_duration_min: number | null;
+  closest_subway: string | null;
+  map_embed_url: string | null;
+  map_external_url: string | null;
+  website_url: string | null;
+  tags: string[] | null;
 };
 
 function App() {
@@ -65,11 +90,14 @@ function App() {
               {pois.map((poi) => (
                 <AttractionCard
                   key={poi.slug}
-                  image={poi.image_url || "https://placehold.co/300x180"}
+                  image={poi.hero_image_url || "https://placehold.co/300x180"}
                   name={poi.name}
                   crowdLevel={0}
-                  bestTime={poi.summary}
-                  category={poi.type}
+                  bestTime={poi.best_time_label || "Best time not available yet"}
+                  neighborhood={poi.neighborhood || "Neighborhood unavailable"}
+                  rating={poi.google_review_star}
+                  reviewCount={poi.google_review_count}
+                  isAccessible={poi.accessibility_labels?.includes("wheelchair") || false}
                   onClick={() => setSelectedPoi(poi)}
                 />
               ))}
@@ -82,7 +110,7 @@ function App() {
             <button onClick={() => setSelectedPoi(null)}>Back to Explore</button>
 
             <img
-              src={selectedPoi.image_url || "https://placehold.co/600x300"}
+              src={selectedPoi.hero_image_url || "https://placehold.co/600x300"}
               alt={selectedPoi.name}
             />
 
