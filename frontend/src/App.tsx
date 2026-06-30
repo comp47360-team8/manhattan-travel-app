@@ -179,25 +179,16 @@ function App() {
                   {featuredPois.map((poi) => (
                     <AttractionCard
                       key={poi.slug}
-                      image={
-                        poi.hero_image_url || "https://placehold.co/300x180"
-                      }
+                      image={poi.hero_image_url || "https://placehold.co/300x180"}
                       name={poi.name}
-                      crowdLevel={
-                        poi.current_busyness || "Crowd forecast unavailable"
-                      }
-                      bestTime={
-                        poi.best_time_label || "Best time not available yet"
-                      }
-                      neighborhood={
-                        poi.neighborhood || "Neighborhood unavailable"
-                      }
+                      crowdLevel={poi.current_busyness || "Crowd forecast unavailable"}
+                      bestTime={poi.best_time_label || "Best time not available yet"}
+                      neighborhood={poi.neighborhood || "Neighborhood unavailable"}
                       rating={poi.google_review_star}
                       reviewCount={poi.google_review_count}
-                      isAccessible={
-                        poi.accessibility_labels?.includes("wheelchair") ||
-                        false
-                      }
+                      isAccessible={poi.accessibility_labels?.includes("wheelchair") || false}
+                      isSaved={savedPoiSlugs.includes(poi.slug)}
+                      onSaveClick={() => toggleSavePoi(poi.slug)}
                       onClick={() => setSelectedPoi(poi)}
                     />
                   ))}
@@ -221,25 +212,16 @@ function App() {
                     {filteredPois.map((poi) => (
                       <AttractionCard
                         key={poi.slug}
-                        image={
-                          poi.hero_image_url || "https://placehold.co/300x180"
-                        }
+                        image={poi.hero_image_url || "https://placehold.co/300x180"}
                         name={poi.name}
-                        crowdLevel={
-                          poi.current_busyness || "Crowd forecast unavailable"
-                        }
-                        bestTime={
-                          poi.best_time_label || "Best time not available yet"
-                        }
-                        neighborhood={
-                          poi.neighborhood || "Neighborhood unavailable"
-                        }
+                        crowdLevel={poi.current_busyness || "Crowd forecast unavailable"}
+                        bestTime={poi.best_time_label || "Best time not available yet"}
+                        neighborhood={poi.neighborhood || "Neighborhood unavailable"}
                         rating={poi.google_review_star}
                         reviewCount={poi.google_review_count}
-                        isAccessible={
-                          poi.accessibility_labels?.includes("wheelchair") ||
-                          false
-                        }
+                        isAccessible={poi.accessibility_labels?.includes("wheelchair") || false}
+                        isSaved={savedPoiSlugs.includes(poi.slug)}
+                        onSaveClick={() => toggleSavePoi(poi.slug)}
                         onClick={() => setSelectedPoi(poi)}
                       />
                     ))}
@@ -397,7 +379,7 @@ function App() {
   </section>
 )}
 
-        {currentPage === "itinerary" && <MyItinerary />}
+        {currentPage === "itinerary" && <MyItinerary pois={pois}/>}
 
         {currentPage === "saved" && (
           <p className="fallback-message">Saved Places page coming soon.</p>

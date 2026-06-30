@@ -33,13 +33,13 @@ function AttractionCard({
   return (
     <article className="attraction-card" onClick={onClick}>
       <button
-        className="save-button"
-        onClick={(event) => {
-          event.stopPropagation();
-          alert(`${name} saved`);
-        }}
-      >
-        ♡
+          className={`save-button ${isSaved ? "saved" : ""}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSaveClick();
+          }}
+        >
+          {isSaved ? "♥" : "♡"}
       </button>
 
       <img src={image} alt={name} />
