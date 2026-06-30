@@ -73,7 +73,7 @@ final class AuthManager: ObservableObject {
             currentUser = AuthManager.mockUser
             isLoggedIn = true
             
-        } catch let error as AuthError {
+        } catch let error as NetworkError {
             if case .http(let status, let detail) = error, status == 409 {
                 emailError = detail
             }else{
