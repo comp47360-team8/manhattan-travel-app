@@ -9,6 +9,19 @@
 /* Begin PBXBuildFile section */
 		141AED122FE0A56D005C60EB /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141AED112FE0A565005C60EB /* RegisterView.swift */; };
 		14221B9B2FE4422E00E22EFC /* LabeledField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14221B9A2FE4422000E22EFC /* LabeledField.swift */; };
+		145FA46F2FED9899008A435E /* POI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA46E2FED9895008A435E /* POI.swift */; };
+		145FA4712FED9A0C008A435E /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4702FED9A05008A435E /* APIConfig.swift */; };
+		145FA4732FED9B44008A435E /* POIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4722FED9B3E008A435E /* POIService.swift */; };
+		145FA4752FEDD165008A435E /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4742FEDD15E008A435E /* NetworkError.swift */; };
+		145FA4772FEDD413008A435E /* ExploreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4762FEDD3F7008A435E /* ExploreViewModel.swift */; };
+		145FA4792FEDD47F008A435E /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4782FEDD470008A435E /* ExploreView.swift */; };
+		145FA47B2FEDD59F008A435E /* PlacesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA47A2FEDD598008A435E /* PlacesCard.swift */; };
+		14AAAA022FEE0000008A435E /* OffpeakTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAAA012FEE0000008A435E /* OffpeakTheme.swift */; };
+		14B082722FF31F01002BCFDA /* POIDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B082712FF31EFE002BCFDA /* POIDetail.swift */; };
+		14B082742FF33F79002BCFDA /* POIDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B082732FF33F77002BCFDA /* POIDetailView.swift */; };
+		14B082762FF34083002BCFDA /* CrowdForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B082752FF34079002BCFDA /* CrowdForecast.swift */; };
+		14B082782FF442CD002BCFDA /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B082772FF442C7002BCFDA /* PreviewData.swift */; };
+		14B0827A2FF46A47002BCFDA /* POIDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B082792FF46A44002BCFDA /* POIDetailViewModel.swift */; };
 		14ED6AD92FE96C2800DCEA7F /* AuthValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14ED6AD82FE96C1C00DCEA7F /* AuthValidator.swift */; };
 		14ED6ADB2FE9CA0500DCEA7F /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14ED6ADA2FE9C9F300DCEA7F /* AuthModels.swift */; };
 		14ED6ADD2FE9CBC800DCEA7F /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14ED6ADC2FE9CBC300DCEA7F /* AuthService.swift */; };
@@ -26,6 +39,19 @@
 /* Begin PBXFileReference section */
 		141AED112FE0A565005C60EB /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		14221B9A2FE4422000E22EFC /* LabeledField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledField.swift; sourceTree = "<group>"; };
+		145FA46E2FED9895008A435E /* POI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POI.swift; sourceTree = "<group>"; };
+		145FA4702FED9A05008A435E /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
+		145FA4722FED9B3E008A435E /* POIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIService.swift; sourceTree = "<group>"; };
+		145FA4742FEDD15E008A435E /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		145FA4762FEDD3F7008A435E /* ExploreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewModel.swift; sourceTree = "<group>"; };
+		145FA4782FEDD470008A435E /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
+		145FA47A2FEDD598008A435E /* PlacesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesCard.swift; sourceTree = "<group>"; };
+		14AAAA012FEE0000008A435E /* OffpeakTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffpeakTheme.swift; sourceTree = "<group>"; };
+		14B082712FF31EFE002BCFDA /* POIDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIDetail.swift; sourceTree = "<group>"; };
+		14B082732FF33F77002BCFDA /* POIDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIDetailView.swift; sourceTree = "<group>"; };
+		14B082752FF34079002BCFDA /* CrowdForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowdForecast.swift; sourceTree = "<group>"; };
+		14B082772FF442C7002BCFDA /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
+		14B082792FF46A44002BCFDA /* POIDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIDetailViewModel.swift; sourceTree = "<group>"; };
 		14ED6AD82FE96C1C00DCEA7F /* AuthValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthValidator.swift; sourceTree = "<group>"; };
 		14ED6ADA2FE9C9F300DCEA7F /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
 		14ED6ADC2FE9CBC300DCEA7F /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -55,6 +81,10 @@
 		14ED6AD72FE96C0800DCEA7F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				14B082752FF34079002BCFDA /* CrowdForecast.swift */,
+				145FA4742FEDD15E008A435E /* NetworkError.swift */,
+				145FA4722FED9B3E008A435E /* POIService.swift */,
+				145FA4702FED9A05008A435E /* APIConfig.swift */,
 				14ED6ADE2FEB251400DCEA7F /* TokenStore.swift */,
 				14ED6AD82FE96C1C00DCEA7F /* AuthValidator.swift */,
 				14ED6ADA2FE9C9F300DCEA7F /* AuthModels.swift */,
@@ -96,7 +126,9 @@
 		AA0000000000000000000005 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				145FA46E2FED9895008A435E /* POI.swift */,
 				AA0000000000000000000023 /* User.swift */,
+				14B082712FF31EFE002BCFDA /* POIDetail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -104,6 +136,8 @@
 		AA0000000000000000000006 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				14B082792FF46A44002BCFDA /* POIDetailViewModel.swift */,
+				145FA4762FEDD3F7008A435E /* ExploreViewModel.swift */,
 				AA0000000000000000000024 /* AuthManager.swift */,
 			);
 			path = Managers;
@@ -112,7 +146,12 @@
 		AA0000000000000000000007 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				14B082772FF442C7002BCFDA /* PreviewData.swift */,
+				14B082732FF33F77002BCFDA /* POIDetailView.swift */,
+				14AAAA012FEE0000008A435E /* OffpeakTheme.swift */,
+				145FA4782FEDD470008A435E /* ExploreView.swift */,
 				14221B9A2FE4422000E22EFC /* LabeledField.swift */,
+				145FA47A2FEDD598008A435E /* PlacesCard.swift */,
 				AA0000000000000000000025 /* LoginView.swift */,
 				141AED112FE0A565005C60EB /* RegisterView.swift */,
 				AA0000000000000000000026 /* ProfileView.swift */,
@@ -190,19 +229,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14B082782FF442CD002BCFDA /* PreviewData.swift in Sources */,
+				145FA4752FEDD165008A435E /* NetworkError.swift in Sources */,
+				14B0827A2FF46A47002BCFDA /* POIDetailViewModel.swift in Sources */,
+				145FA46F2FED9899008A435E /* POI.swift in Sources */,
 				14ED6AD92FE96C2800DCEA7F /* AuthValidator.swift in Sources */,
 				AA0000000000000000000030 /* ManhattanTravelAppApp.swift in Sources */,
+				14B082762FF34083002BCFDA /* CrowdForecast.swift in Sources */,
 				AA0000000000000000000031 /* ContentView.swift in Sources */,
+				145FA4732FED9B44008A435E /* POIService.swift in Sources */,
+				145FA4772FEDD413008A435E /* ExploreViewModel.swift in Sources */,
 				14ED6ADD2FE9CBC800DCEA7F /* AuthService.swift in Sources */,
 				AA0000000000000000000033 /* User.swift in Sources */,
 				14221B9B2FE4422E00E22EFC /* LabeledField.swift in Sources */,
 				AA0000000000000000000034 /* AuthManager.swift in Sources */,
 				AA0000000000000000000035 /* LoginView.swift in Sources */,
 				141AED122FE0A56D005C60EB /* RegisterView.swift in Sources */,
+				14B082742FF33F79002BCFDA /* POIDetailView.swift in Sources */,
+				14B082722FF31F01002BCFDA /* POIDetail.swift in Sources */,
 				14ED6ADF2FEB251A00DCEA7F /* TokenStore.swift in Sources */,
 				14ED6ADB2FE9CA0500DCEA7F /* AuthModels.swift in Sources */,
 				AA0000000000000000000036 /* ProfileView.swift in Sources */,
 				AA0000000000000000000037 /* MainTabView.swift in Sources */,
+				145FA47B2FEDD59F008A435E /* PlacesCard.swift in Sources */,
+				14AAAA022FEE0000008A435E /* OffpeakTheme.swift in Sources */,
+				145FA4792FEDD47F008A435E /* ExploreView.swift in Sources */,
+				145FA4712FED9A0C008A435E /* APIConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

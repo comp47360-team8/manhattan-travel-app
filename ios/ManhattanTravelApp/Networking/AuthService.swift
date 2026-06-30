@@ -7,23 +7,9 @@
 
 import Foundation
 
-enum AuthError: LocalizedError{
-    case http(status: Int, detail: String)
-    case network
-    case decoding
-    
-    var errorDescription: String?{
-        switch self {
-        case .http(_, let detail): return detail
-        case .network: return "Can not reach server. Check your connection"
-        case .decoding: return "Unexpected response from server."
-        }
-    }
-}
-
 
 struct AuthService {
-    private let baseURL = URL(string: "http://127.0.0.1:8000")!
+    private let baseURL = APIConfig.baseURL
     
     
     func signup(_ body: SignUpRequest) async throws -> SignUpResponse {
@@ -54,11 +40,11 @@ struct AuthService {
         do {
             (data, response) = try await URLSession.shared.data(for: request)
         } catch {
-            throw AuthError.network
+            throw NetworkError.network
         }
         
         guard let http = response as? HTTPURLResponse else {
-            throw AuthError.decoding
+            throw NetworkError.decoding
         }
         
         
@@ -68,12 +54,12 @@ struct AuthService {
             do {
                 return try decoder.decode(ResponseModel.self, from: data)
             } catch {
-                throw AuthError.decoding
+                throw NetworkError.decoding
             }
             
         }
         
-        throw AuthError.http(status: http.statusCode, detail: Self.extractDetail(from: data))
+        throw NetworkError.http(status: http.statusCode, detail: Self.extractDetail(from: data))
     }
     
     private static func extractDetail(from data: Data) -> String {
