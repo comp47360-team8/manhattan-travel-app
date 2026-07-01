@@ -1,0 +1,664 @@
+place_id,name,location_id,zone,dist_m,within_250,within_400,is_containing
+ChIJaXQRs6lZwokRY6EFpJnhNNE,Empire State Building,164,Midtown South,0.0,1,1,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,Empire State Building,170,Murray Hill,152.9,1,1,0
+ChIJaXQRs6lZwokRY6EFpJnhNNE,Empire State Building,186,Penn Station/Madison Sq West,227.1,1,1,0
+ChIJaXQRs6lZwokRY6EFpJnhNNE,Empire State Building,100,Garment District,232.3,1,1,0
+ChIJ4zGFAZpYwokRGUGph3Mf37k,Central Park,43,Central Park,0.0,1,1,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,100,Garment District,245.9,1,1,0
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,161,Midtown Center,273.8,0,1,0
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,48,Clinton East,274.3,0,1,0
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,164,Midtown South,368.1,0,1,0
+ChIJI6lzvP5YwokRf36nzqqs4_0,Rockefeller Center,161,Midtown Center,0.0,1,1,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,Rockefeller Center,230,Times Sq/Theatre District,191.9,1,1,0
+ChIJe7vKMf9YwokRIMYfDz7iF9o,Top of the Rock Observation Deck,161,Midtown Center,0.0,1,1,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,Top of the Rock Observation Deck,230,Times Sq/Theatre District,104.7,1,1,0
+ChIJe7vKMf9YwokRIMYfDz7iF9o,Top of the Rock Observation Deck,163,Midtown North,345.1,0,1,0
+ChIJTWE_0BtawokRVJNGH5RS448,One World Observatory,261,World Trade Center,0.0,1,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,One World Observatory,231,TriBeCa/Civic Center,42.6,1,1,0
+ChIJTWE_0BtawokRVJNGH5RS448,One World Observatory,13,Battery Park City,61.7,1,1,0
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,261,World Trade Center,0.0,1,1,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,13,Battery Park City,75.7,1,1,0
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,231,TriBeCa/Civic Center,187.7,1,1,0
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,87,Financial District North,344.5,0,1,0
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,209,Seaport,369.2,0,1,0
+ChIJb8Jg9pZYwokR-qHGtvSkLzs,The Metropolitan Museum of Art,43,Central Park,0.0,1,1,1
+ChIJb8Jg9pZYwokR-qHGtvSkLzs,The Metropolitan Museum of Art,236,Upper East Side North,95.8,1,1,0
+ChIJKxDbe_lYwokRVf__s8CPn-o,Museum of Modern Art,161,Midtown Center,0.0,1,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,Museum of Modern Art,230,Times Sq/Theatre District,124.2,1,1,0
+ChIJKxDbe_lYwokRVf__s8CPn-o,Museum of Modern Art,163,Midtown North,135.3,1,1,0
+ChIJCXoPsPRYwokRsV1MYnKBfaI,American Museum of Natural History,239,Upper West Side South,0.0,1,1,1
+ChIJCXoPsPRYwokRsV1MYnKBfaI,American Museum of Natural History,43,Central Park,129.9,1,1,0
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,162,Midtown East,0.0,1,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,161,Midtown Center,68.5,1,1,0
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,170,Murray Hill,76.2,1,1,0
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,233,UN/Turtle Bay South,309.9,0,1,0
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,164,Midtown South,320.6,0,1,0
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,The High Line,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,The High Line,68,East Chelsea,60.4,1,1,0
+ChIJK3vOQyNawokRXEa9errdJiU,Brooklyn Bridge,45,Chinatown,284.5,0,1,0
+ChIJK3vOQyNawokRXEa9errdJiU,Brooklyn Bridge,209,Seaport,285.5,0,1,0
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,261,World Trade Center,0.0,1,1,1
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,88,Financial District South,9.4,1,1,0
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,12,Battery Park,134.2,1,1,0
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,87,Financial District North,154.5,1,1,0
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,13,Battery Park City,243.1,1,1,0
+ChIJqygAFrRZwokRwF0VrBoXS0E,Vessel,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,Vessel,68,East Chelsea,180.4,1,1,0
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,Edge,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,Edge,68,East Chelsea,76.9,1,1,0
+ChIJd7I1IO5ZwokRbv7YUlgChl4,Summit One Vanderbilt,161,Midtown Center,0.0,1,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,Summit One Vanderbilt,170,Murray Hill,20.4,1,1,0
+ChIJd7I1IO5ZwokRbv7YUlgChl4,Summit One Vanderbilt,162,Midtown East,45.5,1,1,0
+ChIJd7I1IO5ZwokRbv7YUlgChl4,Summit One Vanderbilt,164,Midtown South,198.7,1,1,0
+ChIJUW4vEPxYwokRW6o24DU0YIg,St. Patrick's Cathedral,161,Midtown Center,0.0,1,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,St. Patrick's Cathedral,162,Midtown East,240.5,1,1,0
+ChIJUW4vEPxYwokRW6o24DU0YIg,St. Patrick's Cathedral,230,Times Sq/Theatre District,381.8,0,1,0
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,164,Midtown South,0.0,1,1,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,161,Midtown Center,79.1,1,1,0
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,170,Murray Hill,155.7,1,1,0
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,100,Garment District,155.8,1,1,0
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,230,Times Sq/Theatre District,175.2,1,1,0
+ChIJmZ5emqJYwokRuDz79o0coAQ,Solomon R. Guggenheim Museum,236,Upper East Side North,0.0,1,1,1
+ChIJmZ5emqJYwokRuDz79o0coAQ,Solomon R. Guggenheim Museum,43,Central Park,28.8,1,1,0
+ChIJN3MJ6pRYwokRiXg91flSP8Y,Whitney Museum of American Art,158,Meatpacking/West Village West,0.0,1,1,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,Whitney Museum of American Art,68,East Chelsea,275.5,0,1,0
+ChIJN3MJ6pRYwokRiXg91flSP8Y,Whitney Museum of American Art,246,West Chelsea/Hudson Yards,289.7,0,1,0
+ChIJN3MJ6pRYwokRiXg91flSP8Y,Whitney Museum of American Art,249,West Village,293.5,0,1,0
+ChIJPS8b1vhYwokRldqq2YHmxJI,Radio City Music Hall,161,Midtown Center,0.0,1,1,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,Radio City Music Hall,230,Times Sq/Theatre District,29.1,1,1,0
+ChIJPS8b1vhYwokRldqq2YHmxJI,Radio City Music Hall,163,Midtown North,292.8,0,1,0
+ChIJhRwB-yFawokR5Phil-QQ3zM,Madison Square Garden,186,Penn Station/Madison Sq West,0.0,1,1,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,Madison Square Garden,68,East Chelsea,92.4,1,1,0
+ChIJhRwB-yFawokR5Phil-QQ3zM,Madison Square Garden,100,Garment District,162.7,1,1,0
+ChIJZx8c96NZwokRJklw7SVhKt4,Flatiron Building,234,Union Sq,0.0,1,1,1
+ChIJZx8c96NZwokRJklw7SVhKt4,Flatiron Building,107,Gramercy,293.5,0,1,0
+ChIJZx8c96NZwokRJklw7SVhKt4,Flatiron Building,90,Flatiron,328.7,0,1,0
+ChIJjX494pBZwokRGH620d9eYfo,Washington Square Park,114,Greenwich Village South,0.0,1,1,1
+ChIJjX494pBZwokRGH620d9eYfo,Washington Square Park,113,Greenwich Village North,65.4,1,1,0
+ChIJjX494pBZwokRGH620d9eYfo,Washington Square Park,249,West Village,311.9,0,1,0
+ChIJw2lMFL9ZwokRosAtly52YX4,Chelsea Market,68,East Chelsea,0.0,1,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,Chelsea Market,158,Meatpacking/West Village West,112.8,1,1,0
+ChIJw2lMFL9ZwokRosAtly52YX4,Chelsea Market,246,West Chelsea/Hudson Yards,136.4,1,1,0
+ChIJw2lMFL9ZwokRosAtly52YX4,Chelsea Market,249,West Village,194.4,1,1,0
+ChIJHRH97uxYwokR6CBeDyn1jtg,The Frick Collection,237,Upper East Side South,0.0,1,1,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,The Frick Collection,43,Central Park,48.1,1,1,0
+ChIJ3453OAdZwokRja92OOKCugM,The Morgan Library & Museum,170,Murray Hill,0.0,1,1,1
+ChIJ3453OAdZwokRja92OOKCugM,The Morgan Library & Museum,164,Midtown South,121.1,1,1,0
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,164,Midtown South,0.0,1,1,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,161,Midtown Center,84.9,1,1,0
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,170,Murray Hill,85.0,1,1,0
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,100,Garment District,226.6,1,1,0
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,230,Times Sq/Theatre District,242.4,1,1,0
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,162,Midtown East,338.8,0,1,0
+ChIJraKL-BJawokREpxDmF5GcL4,The Battery,12,Battery Park,0.0,1,1,1
+ChIJraKL-BJawokREpxDmF5GcL4,The Battery,88,Financial District South,82.3,1,1,0
+ChIJraKL-BJawokREpxDmF5GcL4,The Battery,261,World Trade Center,199.0,1,1,0
+ChIJraKL-BJawokREpxDmF5GcL4,The Battery,13,Battery Park City,211.9,1,1,0
+ChIJR_yfQhNawokRti4i3iRuWwY,Staten Island Ferry Whitehall Terminal,88,Financial District South,0.0,1,1,1
+ChIJR_yfQhNawokRti4i3iRuWwY,Staten Island Ferry Whitehall Terminal,12,Battery Park,56.8,1,1,0
+ChIJR_yfQhNawokRti4i3iRuWwY,Staten Island Ferry Whitehall Terminal,261,World Trade Center,385.4,0,1,0
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,South Street Seaport,87,Financial District North,0.0,1,1,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,South Street Seaport,209,Seaport,11.9,1,1,0
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,South Street Seaport,45,Chinatown,394.8,0,1,0
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,261,World Trade Center,0.0,1,1,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,231,TriBeCa/Civic Center,102.5,1,1,0
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,13,Battery Park City,195.2,1,1,0
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,87,Financial District North,252.7,0,1,0
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,209,Seaport,256.6,0,1,0
+ChIJbVfZzhBawokRnmCT-muojBA,Trinity Church,261,World Trade Center,0.0,1,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,Trinity Church,87,Financial District North,14.4,1,1,0
+ChIJbVfZzhBawokRnmCT-muojBA,Trinity Church,88,Financial District South,133.4,1,1,0
+ChIJbVfZzhBawokRnmCT-muojBA,Trinity Church,13,Battery Park City,306.5,0,1,0
+ChIJAaIFAxdawokR8txc3YPbD3A,Federal Hall National Memorial,87,Financial District North,0.0,1,1,1
+ChIJAaIFAxdawokR8txc3YPbD3A,Federal Hall National Memorial,261,World Trade Center,127.9,1,1,0
+ChIJAaIFAxdawokR8txc3YPbD3A,Federal Hall National Memorial,88,Financial District South,148.0,1,1,0
+ChIJAaIFAxdawokR8txc3YPbD3A,Federal Hall National Memorial,209,Seaport,376.2,0,1,0
+ChIJK6bycAH0wokRrSnflfrnkZE,The Met Cloisters,243,Washington Heights North,0.0,1,1,1
+ChIJK6bycAH0wokRrSnflfrnkZE,The Met Cloisters,128,Inwood Hill Park,327.9,0,1,0
+ChIJK6bycAH0wokRrSnflfrnkZE,The Met Cloisters,127,Inwood,328.3,0,1,0
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,Cathedral of St. John the Divine,166,Morningside Heights,0.0,1,1,1
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,Cathedral of St. John the Divine,24,Bloomingdale,165.1,1,1,0
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,Cathedral of St. John the Divine,41,Central Harlem,308.6,0,1,0
+ChIJyQ3Tlj72wokRUCflR_kzeVc,Columbia University,166,Morningside Heights,0.0,1,1,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,Apollo Theater,41,Central Harlem,0.0,1,1,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,Apollo Theater,42,Central Harlem North,66.5,1,1,0
+ChIJRaWCMm32wokRLdyc4zmYzRw,Apollo Theater,166,Morningside Heights,226.5,1,1,0
+ChIJRaWCMm32wokRLdyc4zmYzRw,Apollo Theater,152,Manhattanville,236.3,1,1,0
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,Lincoln Center,142,Lincoln Square East,0.0,1,1,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,Lincoln Center,143,Lincoln Square West,193.7,1,1,0
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,Lincoln Center,43,Central Park,353.7,0,1,0
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,163,Midtown North,0.0,1,1,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,43,Central Park,204.6,1,1,0
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,230,Times Sq/Theatre District,210.6,1,1,0
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,161,Midtown Center,250.5,0,1,0
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,48,Clinton East,303.7,0,1,0
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,142,Lincoln Square East,314.8,0,1,0
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,Macy's Herald Square,100,Garment District,0.0,1,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,Macy's Herald Square,186,Penn Station/Madison Sq West,46.1,1,1,0
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,Macy's Herald Square,164,Midtown South,75.8,1,1,0
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,Macy's Herald Square,170,Murray Hill,387.7,0,1,0
+ChIJi6oUnphZwokRpMog28mvAM0,Union Square,234,Union Sq,0.0,1,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,Union Square,113,Greenwich Village North,88.4,1,1,0
+ChIJi6oUnphZwokRpMog28mvAM0,Union Square,107,Gramercy,113.9,1,1,0
+ChIJi6oUnphZwokRpMog28mvAM0,Union Square,79,East Village,187.4,1,1,0
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,234,Union Sq,0.0,1,1,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,107,Gramercy,228.9,1,1,0
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,164,Midtown South,270.3,0,1,0
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,170,Murray Hill,354.4,0,1,0
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,90,Flatiron,393.1,0,1,0
+ChIJYaVdffBYwokRnTOoCzCq9mE,The Plaza Hotel,163,Midtown North,0.0,1,1,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,The Plaza Hotel,43,Central Park,22.4,1,1,0
+ChIJYaVdffBYwokRnTOoCzCq9mE,The Plaza Hotel,237,Upper East Side South,117.4,1,1,0
+ChIJYaVdffBYwokRnTOoCzCq9mE,The Plaza Hotel,161,Midtown Center,232.9,1,1,0
+ChIJM-qBJWVZwokRZQwIoEESnEc,FAO Schwarz,161,Midtown Center,0.0,1,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,FAO Schwarz,230,Times Sq/Theatre District,141.2,1,1,0
+ChIJaWjW_PFYwokRFD8a2YQu12U,Central Park Zoo,43,Central Park,0.0,1,1,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,Central Park Zoo,237,Upper East Side South,110.0,1,1,0
+ChIJaWjW_PFYwokRFD8a2YQu12U,Central Park Zoo,163,Midtown North,371.8,0,1,0
+ChIJEYYWppJYwokRUTul6ztwlJ0,Bethesda Terrace,43,Central Park,0.0,1,1,1
+ChIJEYYWppJYwokRUTul6ztwlJ0,Bethesda Terrace,237,Upper East Side South,370.3,0,1,0
+ChIJ2aWDJ_hYwokRUKinWgKdI70,Strawberry Fields,43,Central Park,0.0,1,1,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,Strawberry Fields,142,Lincoln Square East,80.3,1,1,0
+ChIJ2aWDJ_hYwokRUKinWgKdI70,Strawberry Fields,239,Upper West Side South,198.3,1,1,0
+ChIJFXzf4e9YwokRtXgpty_i74g,Belvedere Castle,43,Central Park,0.0,1,1,1
+ChIJFXzf4e9YwokRtXgpty_i74g,Belvedere Castle,239,Upper West Side South,335.3,0,1,0
+ChIJeelsevFYwokRqyH7P0aN2C8,Wollman Rink,43,Central Park,0.0,1,1,1
+ChIJeelsevFYwokRqyH7P0aN2C8,Wollman Rink,163,Midtown North,276.8,0,1,0
+ChIJeelsevFYwokRqyH7P0aN2C8,Wollman Rink,237,Upper East Side South,296.5,0,1,0
+ChIJnxlg1U5YwokR8T90UrZiIwI,Intrepid Museum,50,Clinton West,3.4,1,1,0
+ChIJnxlg1U5YwokR8T90UrZiIwI,Intrepid Museum,246,West Chelsea/Hudson Yards,255.2,0,1,0
+ChIJ20bVJYdZwokRhI7esP3mYM0,Tenement Museum,148,Lower East Side,0.0,1,1,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,Tenement Museum,232,Two Bridges/Seward Park,232.7,1,1,0
+ChIJ20bVJYdZwokRhI7esP3mYM0,Tenement Museum,144,Little Italy/NoLiTa,368.8,0,1,0
+ChIJlaRS3IVZwokR2llMD6dCt-U,New Museum,148,Lower East Side,0.0,1,1,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,New Museum,144,Little Italy/NoLiTa,30.5,1,1,0
+ChIJlaRS3IVZwokR2llMD6dCt-U,New Museum,79,East Village,194.4,1,1,0
+ChIJlaRS3IVZwokR2llMD6dCt-U,New Museum,114,Greenwich Village South,201.2,1,1,0
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,90,Flatiron,0.0,1,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,234,Union Sq,177.3,1,1,0
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,249,West Village,232.2,1,1,0
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,113,Greenwich Village North,291.8,0,1,0
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,68,East Chelsea,371.4,0,1,0
+ChIJi4hYtB32wokR1Npx_Tv7phk,Museum of the City of New York,75,East Harlem South,0.0,1,1,1
+ChIJi4hYtB32wokR1Npx_Tv7phk,Museum of the City of New York,43,Central Park,37.4,1,1,0
+ChIJWT0gUBz2wokRNcAxVUphAAs,El Museo del Barrio,75,East Harlem South,0.0,1,1,1
+ChIJWT0gUBz2wokRNcAxVUphAAs,El Museo del Barrio,43,Central Park,40.9,1,1,0
+ChIJYWLHOqJYwokRmkVum_hd7Ss,The Jewish Museum,236,Upper East Side North,0.0,1,1,1
+ChIJYWLHOqJYwokRmkVum_hd7Ss,The Jewish Museum,43,Central Park,21.5,1,1,0
+ChIJYWLHOqJYwokRmkVum_hd7Ss,The Jewish Museum,75,East Harlem South,314.9,0,1,0
+ChIJ01_9-ZdYwokRL2JrA28GJp8,Neue Galerie New York,236,Upper East Side North,0.0,1,1,1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,Neue Galerie New York,43,Central Park,21.1,1,1,0
+ChIJL-CJmTFZwokRsPcqje_bn7w,Little Island,158,Meatpacking/West Village West,47.5,1,1,0
+ChIJL-CJmTFZwokRsPcqje_bn7w,Little Island,246,West Chelsea/Hudson Yards,106.2,1,1,0
+ChIJL-CJmTFZwokRsPcqje_bn7w,Little Island,68,East Chelsea,177.7,1,1,0
+ChIJq6qqr8dZwokRNqYPAJcjKas,Hudson River Park,158,Meatpacking/West Village West,0.0,1,1,1
+ChIJq6qqr8dZwokRNqYPAJcjKas,Hudson River Park,125,Hudson Sq,95.5,1,1,0
+ChIJq6qqr8dZwokRNqYPAJcjKas,Hudson River Park,231,TriBeCa/Civic Center,350.5,0,1,0
+ChIJd6SAvMdZwokRhc75qwSHIUA,Chelsea Piers,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJd6SAvMdZwokRhc75qwSHIUA,Chelsea Piers,68,East Chelsea,277.1,0,1,0
+ChIJTQoVbZRZwokRx0ocj9EU2sA,Stonewall Inn,249,West Village,0.0,1,1,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,Stonewall Inn,113,Greenwich Village North,203.5,1,1,0
+ChIJTQoVbZRZwokRx0ocj9EU2sA,Stonewall Inn,114,Greenwich Village South,203.5,1,1,0
+ChIJTQoVbZRZwokRx0ocj9EU2sA,Stonewall Inn,158,Meatpacking/West Village West,345.2,0,1,0
+ChIJmeJZYoxYwokRCRPVFhoAwVU,The Dakota,142,Lincoln Square East,0.0,1,1,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,The Dakota,43,Central Park,46.2,1,1,0
+ChIJmeJZYoxYwokRCRPVFhoAwVU,The Dakota,239,Upper West Side South,120.1,1,1,0
+ChIJL1DP2C72wokRh3Lfn4T0Z3w,Riverside Park,166,Morningside Heights,0.0,1,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,Saks Fifth Avenue,161,Midtown Center,0.0,1,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,Saks Fifth Avenue,162,Midtown East,293.3,0,1,0
+ChIJcQM7oP5YwokRvrQ8ty1ULps,Saks Fifth Avenue,230,Times Sq/Theatre District,329.0,0,1,0
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,237,Upper East Side South,0.0,1,1,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,162,Midtown East,42.5,1,1,0
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,141,Lenox Hill West,87.5,1,1,0
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,229,Sutton Place/Turtle Bay North,97.4,1,1,0
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,163,Midtown North,227.2,1,1,0
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,161,Midtown Center,368.4,0,1,0
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,163,Midtown North,0.0,1,1,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,161,Midtown Center,61.1,1,1,0
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,237,Upper East Side South,190.6,1,1,0
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,43,Central Park,191.8,1,1,0
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,162,Midtown East,292.0,0,1,0
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,230,Times Sq/Theatre District,397.1,0,1,0
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,163,Midtown North,0.0,1,1,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,161,Midtown Center,40.4,1,1,0
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,237,Upper East Side South,211.2,1,1,0
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,43,Central Park,215.8,1,1,0
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,162,Midtown East,268.8,0,1,0
+ChIJR1pTRTxawokRyzoX5XQ_alI,Pier 17,209,Seaport,0.0,1,1,1
+ChIJR1pTRTxawokRyzoX5XQ_alI,Pier 17,87,Financial District North,89.3,1,1,0
+ChIJR1pTRTxawokRyzoX5XQ_alI,Pier 17,45,Chinatown,325.7,0,1,0
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,234,Union Sq,0.0,1,1,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,90,Flatiron,247.3,1,1,0
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,186,Penn Station/Madison Sq West,326.3,0,1,0
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,164,Midtown South,370.2,0,1,0
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,107,Gramercy,375.1,0,1,0
+ChIJ5wFJxXr2wokRQEmdWil_bEw,Hamilton Grange National Memorial,152,Manhattanville,0.0,1,1,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,Hamilton Grange National Memorial,116,Hamilton Heights,40.8,1,1,0
+ChIJ5wFJxXr2wokRQEmdWil_bEw,Hamilton Grange National Memorial,42,Central Harlem North,100.9,1,1,0
+ChIJqTIQToL2wokRKbmUA423_YY,Morris-Jumel Mansion,244,Washington Heights South,0.0,1,1,1
+ChIJqTIQToL2wokRKbmUA423_YY,Morris-Jumel Mansion,120,Highbridge Park,48.0,1,1,0
+ChIJqTIQToL2wokRKbmUA423_YY,Morris-Jumel Mansion,42,Central Harlem North,114.4,1,1,0
+ChIJTZ18cAH0wokR1HfVR86mzEA,Fort Tryon Park,243,Washington Heights North,0.0,1,1,1
+ChIJpUOPMe7zwokRJUQfPbEU1CI,Inwood Hill Park,128,Inwood Hill Park,0.0,1,1,1
+ChIJpUOPMe7zwokRJUQfPbEU1CI,Inwood Hill Park,127,Inwood,356.5,0,1,0
+ChIJIVEyfY5YwokRXqcWLrl5XVA,New-York Historical Society,239,Upper West Side South,0.0,1,1,1
+ChIJIVEyfY5YwokRXqcWLrl5XVA,New-York Historical Society,43,Central Park,17.8,1,1,0
+ChIJIVEyfY5YwokRXqcWLrl5XVA,New-York Historical Society,142,Lincoln Square East,221.0,1,1,0
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,International Center of Photography,148,Lower East Side,0.0,1,1,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,International Center of Photography,232,Two Bridges/Seward Park,136.0,1,1,0
+ChIJYTeZ_BFawokRQzNFpOk4Bew,The Skyscraper Museum,13,Battery Park City,0.0,1,1,1
+ChIJYTeZ_BFawokRQzNFpOk4Bew,The Skyscraper Museum,261,World Trade Center,111.4,1,1,0
+ChIJYTeZ_BFawokRQzNFpOk4Bew,The Skyscraper Museum,12,Battery Park,137.6,1,1,0
+ChIJYTeZ_BFawokRQzNFpOk4Bew,The Skyscraper Museum,88,Financial District South,320.8,0,1,0
+ChIJAw6IZBFbwokRQfEy-LXgDXw,Fraunces Tavern Museum,88,Financial District South,0.0,1,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,Fraunces Tavern Museum,87,Financial District North,199.2,1,1,0
+ChIJAw6IZBFbwokRQfEy-LXgDXw,Fraunces Tavern Museum,261,World Trade Center,210.0,1,1,0
+ChIJAw6IZBFbwokRQfEy-LXgDXw,Fraunces Tavern Museum,12,Battery Park,252.3,0,1,0
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,163,Midtown North,0.0,1,1,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,142,Lincoln Square East,26.8,1,1,0
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,48,Clinton East,35.4,1,1,0
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,43,Central Park,71.2,1,1,0
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,230,Times Sq/Theatre District,346.4,0,1,0
+ChIJF5e1QvlYwokRcVF6x1CEcQk,Paley Center for Media,161,Midtown Center,0.0,1,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,Paley Center for Media,230,Times Sq/Theatre District,175.8,1,1,0
+ChIJF5e1QvlYwokRcVF6x1CEcQk,Paley Center for Media,163,Midtown North,221.7,1,1,0
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,141,Lenox Hill West,0.0,1,1,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,229,Sutton Place/Turtle Bay North,72.1,1,1,0
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,237,Upper East Side South,193.3,1,1,0
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,162,Midtown East,204.3,1,1,0
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,140,Lenox Hill East,251.7,0,1,0
+ChIJoxqn-kD2wokRLvhOLfAneU8,Grant's Tomb,166,Morningside Heights,0.0,1,1,1
+ChIJh70nPBz2wokR7EWPEdNPP9s,Conservatory Garden Central Park,43,Central Park,0.0,1,1,1
+ChIJh70nPBz2wokR7EWPEdNPP9s,Conservatory Garden Central Park,75,East Harlem South,67.7,1,1,0
+ChIJ_1f3U5JYwokRH1_PRd1eIrI,The Ramble Central Park,43,Central Park,0.0,1,1,1
+ChIJ_1f3U5JYwokRH1_PRd1eIrI,The Ramble Central Park,239,Upper West Side South,370.9,0,1,0
+ChIJezBcrvNYwokRCGwwAfivN4g,Sheep Meadow,43,Central Park,0.0,1,1,1
+ChIJezBcrvNYwokRCGwwAfivN4g,Sheep Meadow,142,Lincoln Square East,321.4,0,1,0
+ChIJx3g2ovJYwokRtkUlbWC4nE8,The Mall Central Park,43,Central Park,0.0,1,1,1
+ChIJx3g2ovJYwokRtkUlbWC4nE8,The Mall Central Park,237,Upper East Side South,330.8,0,1,0
+ChIJIcCApvFYwokR88lT-bgPmCE,Gapstow Bridge,43,Central Park,0.0,1,1,1
+ChIJIcCApvFYwokR88lT-bgPmCE,Gapstow Bridge,237,Upper East Side South,202.2,1,1,0
+ChIJIcCApvFYwokR88lT-bgPmCE,Gapstow Bridge,163,Midtown North,221.7,1,1,0
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,The Pond Central Park,43,Central Park,0.0,1,1,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,The Pond Central Park,163,Midtown North,116.5,1,1,0
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,The Pond Central Park,237,Upper East Side South,155.5,1,1,0
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,The Pond Central Park,161,Midtown Center,372.1,0,1,0
+ChIJMaZfGgpZwokR0gtRaGghT_w,Gramercy Park,107,Gramercy,0.0,1,1,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,Gramercy Park,234,Union Sq,324.2,0,1,0
+ChIJMaZfGgpZwokR0gtRaGghT_w,Gramercy Park,137,Kips Bay,338.1,0,1,0
+ChIJgTDll51ZwokRVjN7KXztwXY,Tompkins Square Park,79,East Village,0.0,1,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,Tompkins Square Park,4,Alphabet City,115.2,1,1,0
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,Washington Square Arch,114,Greenwich Village South,0.0,1,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,Washington Square Arch,113,Greenwich Village North,23.2,1,1,0
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,Washington Square Arch,249,West Village,311.7,0,1,0
+ChIJ8akBcZlZwokRlGROGaTkMnM,Grace Church,113,Greenwich Village North,0.0,1,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,Grace Church,79,East Village,56.8,1,1,0
+ChIJ8akBcZlZwokRlGROGaTkMnM,Grace Church,107,Gramercy,280.1,0,1,0
+ChIJ8akBcZlZwokRlGROGaTkMnM,Grace Church,234,Union Sq,285.9,0,1,0
+ChIJC-exc5RZwokRWb0fbD6ZBTc,Stonewall National Monument,249,West Village,0.0,1,1,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,Stonewall National Monument,114,Greenwich Village South,203.0,1,1,0
+ChIJC-exc5RZwokRWb0fbD6ZBTc,Stonewall National Monument,113,Greenwich Village North,205.2,1,1,0
+ChIJC-exc5RZwokRWb0fbD6ZBTc,Stonewall National Monument,158,Meatpacking/West Village West,333.7,0,1,0
+ChIJy8jTDBtawokRB9wNyxemSw8,Brookfield Place,13,Battery Park City,0.0,1,1,1
+ChIJy8jTDBtawokRB9wNyxemSw8,Brookfield Place,261,World Trade Center,107.3,1,1,0
+ChIJy8jTDBtawokRB9wNyxemSw8,Brookfield Place,231,TriBeCa/Civic Center,162.1,1,1,0
+ChIJywJ318BZwokR4uWXUTbMRtc,Pier 57,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJywJ318BZwokR4uWXUTbMRtc,Pier 57,158,Meatpacking/West Village West,112.6,1,1,0
+ChIJywJ318BZwokR4uWXUTbMRtc,Pier 57,68,East Chelsea,128.4,1,1,0
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,144,Little Italy/NoLiTa,0.0,1,1,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,148,Lower East Side,225.8,1,1,0
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,45,Chinatown,243.0,1,1,0
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,231,TriBeCa/Civic Center,254.8,0,1,0
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,211,SoHo,338.9,0,1,0
+ChIJDcEvbPVZwokRETEfzXATns8,Chinatown Manhattan,45,Chinatown,0.0,1,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,Chinatown Manhattan,148,Lower East Side,50.4,1,1,0
+ChIJDcEvbPVZwokRETEfzXATns8,Chinatown Manhattan,144,Little Italy/NoLiTa,81.9,1,1,0
+ChIJDcEvbPVZwokRETEfzXATns8,Chinatown Manhattan,231,TriBeCa/Civic Center,341.8,0,1,0
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,164,Midtown South,0.0,1,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,186,Penn Station/Madison Sq West,176.1,1,1,0
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,100,Garment District,239.2,1,1,0
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,170,Murray Hill,282.0,0,1,0
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,234,Union Sq,313.3,0,1,0
+ChIJq6pqPhv2wokRPPkifui_-LY,The Africa Center,75,East Harlem South,0.0,1,1,1
+ChIJq6pqPhv2wokRPPkifui_-LY,The Africa Center,43,Central Park,17.1,1,1,0
+ChIJq6pqPhv2wokRPPkifui_-LY,The Africa Center,41,Central Harlem,55.3,1,1,0
+ChIJq6pqPhv2wokRPPkifui_-LY,The Africa Center,74,East Harlem North,207.7,1,1,0
+ChIJy7cGfBlawokR5l2e93hsoEA,One World Trade Center,261,World Trade Center,0.0,1,1,1
+ChIJy7cGfBlawokR5l2e93hsoEA,One World Trade Center,13,Battery Park City,49.6,1,1,0
+ChIJy7cGfBlawokR5l2e93hsoEA,One World Trade Center,231,TriBeCa/Civic Center,76.6,1,1,0
+ChIJ8VOfr1RYwokRhil9_pcMKuc,Madame Tussauds New York,100,Garment District,0.0,1,1,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,Madame Tussauds New York,230,Times Sq/Theatre District,16.3,1,1,0
+ChIJ8VOfr1RYwokRhil9_pcMKuc,Madame Tussauds New York,48,Clinton East,144.4,1,1,0
+ChIJ8VOfr1RYwokRhil9_pcMKuc,Madame Tussauds New York,68,East Chelsea,337.0,0,1,0
+ChIJoQb5SxBawokRtYcvnZAI2lE,Castle Clinton National Monument,12,Battery Park,0.0,1,1,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,Castle Clinton National Monument,13,Battery Park City,97.6,1,1,0
+ChIJoQb5SxBawokRtYcvnZAI2lE,Castle Clinton National Monument,261,World Trade Center,151.3,1,1,0
+ChIJoQb5SxBawokRtYcvnZAI2lE,Castle Clinton National Monument,88,Financial District South,202.2,1,1,0
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,Union Square Park,234,Union Sq,0.0,1,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,Union Square Park,107,Gramercy,70.1,1,1,0
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,Union Square Park,113,Greenwich Village North,106.3,1,1,0
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,Union Square Park,79,East Village,162.8,1,1,0
+ChIJNfIGsapZwokR6wmdPMZEBbU,Circle Line Sightseeing Cruises - Midtown,50,Clinton West,0.0,1,1,1
+ChIJNfIGsapZwokR6wmdPMZEBbU,Circle Line Sightseeing Cruises - Midtown,246,West Chelsea/Hudson Yards,23.8,1,1,0
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,231,TriBeCa/Civic Center,0.0,1,1,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,209,Seaport,59.2,1,1,0
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,45,Chinatown,69.5,1,1,0
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,261,World Trade Center,209.5,1,1,0
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,87,Financial District North,260.3,0,1,0
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,Museum of Illusions - New York,249,West Village,0.0,1,1,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,Museum of Illusions - New York,68,East Chelsea,22.0,1,1,0
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,Museum of Illusions - New York,90,Flatiron,33.2,1,1,0
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,Museum of Illusions - New York,158,Meatpacking/West Village West,204.5,1,1,0
+ChIJv8mWqY9YwokRIzh7-8yBA14,Theodore Roosevelt Park,239,Upper West Side South,0.0,1,1,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,Theodore Roosevelt Park,43,Central Park,210.2,1,1,0
+ChIJZUczMVZYwokR2GRTDrcGv10,Gershwin Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,Gershwin Theatre,48,Clinton East,69.8,1,1,0
+ChIJZUczMVZYwokR2GRTDrcGv10,Gershwin Theatre,163,Midtown North,246.4,1,1,0
+ChIJdTjUE-dZwokRKLMbPjzr1b8,MUSEUM OF ICE CREAM,144,Little Italy/NoLiTa,0.0,1,1,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,MUSEUM OF ICE CREAM,211,SoHo,52.6,1,1,0
+ChIJdTjUE-dZwokRKLMbPjzr1b8,MUSEUM OF ICE CREAM,114,Greenwich Village South,211.9,1,1,0
+ChIJdTjUE-dZwokRKLMbPjzr1b8,MUSEUM OF ICE CREAM,148,Lower East Side,388.1,0,1,0
+ChIJex6ai6pbwokRbh3cz6wKQ0w,Statue City Cruises Battery Park,12,Battery Park,5.7,1,1,0
+ChIJex6ai6pbwokRbh3cz6wKQ0w,Statue City Cruises Battery Park,88,Financial District South,216.8,1,1,0
+ChIJex6ai6pbwokRbh3cz6wKQ0w,Statue City Cruises Battery Park,13,Battery Park City,247.1,1,1,0
+ChIJex6ai6pbwokRbh3cz6wKQ0w,Statue City Cruises Battery Park,261,World Trade Center,317.3,0,1,0
+ChIJhWqFh1RYwokR-DHQDzkMAag,Majestic Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,Majestic Theatre,48,Clinton East,65.8,1,1,0
+ChIJhWqFh1RYwokR-DHQDzkMAag,Majestic Theatre,100,Garment District,179.5,1,1,0
+ChIJDzorOvZYwokRW5XN4_UBY8w,Columbus Circle,142,Lincoln Square East,0.0,1,1,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,Columbus Circle,43,Central Park,44.5,1,1,0
+ChIJDzorOvZYwokRW5XN4_UBY8w,Columbus Circle,163,Midtown North,49.2,1,1,0
+ChIJDzorOvZYwokRW5XN4_UBY8w,Columbus Circle,48,Clinton East,86.0,1,1,0
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,100,Garment District,217.5,1,1,0
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,48,Clinton East,238.3,1,1,0
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,161,Midtown Center,309.8,0,1,0
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,164,Midtown South,378.5,0,1,0
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,Beacon Theatre,239,Upper West Side South,0.0,1,1,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,Beacon Theatre,143,Lincoln Square West,34.1,1,1,0
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,Beacon Theatre,142,Lincoln Square East,68.7,1,1,0
+ChIJnSTPzldYwokRyyefzoK7Xao,Neil Simon Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,Neil Simon Theatre,48,Clinton East,67.8,1,1,0
+ChIJnSTPzldYwokRyyefzoK7Xao,Neil Simon Theatre,163,Midtown North,167.4,1,1,0
+ChIJeWPFRwJZwokRGD60OOo74RU,Chrysler Building,162,Midtown East,0.0,1,1,1
+ChIJeWPFRwJZwokRGD60OOo74RU,Chrysler Building,170,Murray Hill,39.8,1,1,0
+ChIJeWPFRwJZwokRGD60OOo74RU,Chrysler Building,233,UN/Turtle Bay South,123.7,1,1,0
+ChIJeWPFRwJZwokRGD60OOo74RU,Chrysler Building,161,Midtown Center,254.7,0,1,0
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,Hudson River Park Trust,158,Meatpacking/West Village West,0.0,1,1,1
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,Hudson River Park Trust,125,Hudson Sq,105.2,1,1,0
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,234,Union Sq,0.0,1,1,1
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,164,Midtown South,61.6,1,1,0
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,107,Gramercy,272.6,0,1,0
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,170,Murray Hill,279.6,0,1,0
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,186,Penn Station/Madison Sq West,349.4,0,1,0
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,90,Flatiron,362.2,0,1,0
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,Winter Garden Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,Winter Garden Theatre,48,Clinton East,206.8,1,1,0
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,Winter Garden Theatre,163,Midtown North,276.9,0,1,0
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,Winter Garden Theatre,161,Midtown Center,341.1,0,1,0
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,163,Midtown North,0.0,1,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,48,Clinton East,35.6,1,1,0
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,230,Times Sq/Theatre District,69.1,1,1,0
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,142,Lincoln Square East,264.1,0,1,0
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,43,Central Park,346.5,0,1,0
+ChIJ91iSY1ZYwokRFgKuwZvG12s,Eugene O’Neill Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,Eugene O’Neill Theatre,48,Clinton East,95.0,1,1,0
+ChIJZ4XQ0Pr1wokR4y3zFhkY2ko,Randall's Island Park,194,Randalls Island,0.0,1,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,Broadway Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,Broadway Theatre,163,Midtown North,99.0,1,1,0
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,Broadway Theatre,48,Clinton East,173.3,1,1,0
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,Broadway Theatre,161,Midtown Center,375.0,0,1,0
+ChIJlx_J861ZwokRnBboWMNuVno,The FRIENDS™ Experience: The One in New York City,107,Gramercy,0.0,1,1,1
+ChIJlx_J861ZwokRnBboWMNuVno,The FRIENDS™ Experience: The One in New York City,234,Union Sq,130.4,1,1,0
+ChIJlx_J861ZwokRnBboWMNuVno,The FRIENDS™ Experience: The One in New York City,137,Kips Bay,211.6,1,1,0
+ChIJlTWPiFRYwokRF7JuJslWbaw,Al Hirschfeld Theatre,48,Clinton East,0.0,1,1,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,Al Hirschfeld Theatre,230,Times Sq/Theatre District,65.2,1,1,0
+ChIJlTWPiFRYwokRF7JuJslWbaw,Al Hirschfeld Theatre,100,Garment District,230.6,1,1,0
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,ARTECHOUSE NYC,68,East Chelsea,0.0,1,1,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,ARTECHOUSE NYC,246,West Chelsea/Hudson Yards,96.3,1,1,0
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,ARTECHOUSE NYC,158,Meatpacking/West Village West,111.0,1,1,0
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,ARTECHOUSE NYC,249,West Village,227.3,1,1,0
+ChIJm17AB5pYwokRWLJ6lEtXKOA,Central Park Boathouse,43,Central Park,0.0,1,1,1
+ChIJm17AB5pYwokRWLJ6lEtXKOA,Central Park Boathouse,237,Upper East Side South,276.5,0,1,0
+ChIJm17AB5pYwokRWLJ6lEtXKOA,Central Park Boathouse,236,Upper East Side North,347.5,0,1,0
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,125,Hudson Sq,0.0,1,1,1
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,211,SoHo,113.7,1,1,0
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,249,West Village,312.2,0,1,0
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,231,TriBeCa/Civic Center,316.8,0,1,0
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,114,Greenwich Village South,357.7,0,1,0
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,158,Meatpacking/West Village West,364.6,0,1,0
+ChIJEUd4ZVZYwokRV4iyGw46pw0,Ambassador Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,Ambassador Theatre,48,Clinton East,129.0,1,1,0
+ChIJEUd4ZVZYwokRV4iyGw46pw0,Ambassador Theatre,163,Midtown North,373.1,0,1,0
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,Bella Abzug Park,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,Bella Abzug Park,68,East Chelsea,158.8,1,1,0
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,Bella Abzug Park,48,Clinton East,324.4,0,1,0
+ChIJkzFqiVJYwokRqc4h6tVHx_s,Shubert Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,Shubert Theatre,48,Clinton East,152.9,1,1,0
+ChIJkzFqiVJYwokRqc4h6tVHx_s,Shubert Theatre,100,Garment District,176.4,1,1,0
+ChIJkzFqiVJYwokRqc4h6tVHx_s,Shubert Theatre,161,Midtown Center,395.0,0,1,0
+ChIJlTWPiFRYwokRhdOoYdfeZzY,St. James Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,St. James Theatre,48,Clinton East,69.3,1,1,0
+ChIJlTWPiFRYwokRhdOoYdfeZzY,St. James Theatre,100,Garment District,139.7,1,1,0
+ChIJJ6AzfHxZwokRcaYezPBb9_I,John V. Lindsay East River Park,4,Alphabet City,0.0,1,1,1
+ChIJJ6AzfHxZwokRcaYezPBb9_I,John V. Lindsay East River Park,232,Two Bridges/Seward Park,8.3,1,1,0
+ChIJp8ENSlRYwokRIIpmnGxjieo,Lunt-Fontanne Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,Lunt-Fontanne Theatre,48,Clinton East,170.1,1,1,0
+ChIJp8ENSlRYwokRIIpmnGxjieo,Lunt-Fontanne Theatre,100,Garment District,346.7,0,1,0
+ChIJp8ENSlRYwokRIIpmnGxjieo,Lunt-Fontanne Theatre,161,Midtown Center,378.0,0,1,0
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,161,Midtown Center,211.8,1,1,0
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,100,Garment District,235.3,1,1,0
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,164,Midtown South,316.7,0,1,0
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,48,Clinton East,336.4,0,1,0
+ChIJJXfoP65ZwokRPY3oaITdpew,Infosys Theater at Madison Square Garden,186,Penn Station/Madison Sq West,0.0,1,1,1
+ChIJJXfoP65ZwokRPY3oaITdpew,Infosys Theater at Madison Square Garden,68,East Chelsea,103.4,1,1,0
+ChIJJXfoP65ZwokRPY3oaITdpew,Infosys Theater at Madison Square Garden,100,Garment District,160.1,1,1,0
+ChIJiR6aeI1YwokRkCNO-e1lQfs,Bow Bridge,43,Central Park,0.0,1,1,1
+ChIJiR6aeI1YwokRkCNO-e1lQfs,Bow Bridge,142,Lincoln Square East,333.4,0,1,0
+ChIJiR6aeI1YwokRkCNO-e1lQfs,Bow Bridge,239,Upper West Side South,335.9,0,1,0
+ChIJxf7bQyxawokRO-rs19qn3fs,Pier 35,232,Two Bridges/Seward Park,0.0,1,1,1
+ChIJxf7bQyxawokRO-rs19qn3fs,Pier 35,45,Chinatown,287.1,0,1,0
+ChIJD8YUwhFawokRFu9nJOnNJbU,Rockefeller Park,13,Battery Park City,0.0,1,1,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,Rockefeller Park,231,TriBeCa/Civic Center,305.1,0,1,0
+ChIJD8YUwhFawokRFu9nJOnNJbU,Rockefeller Park,261,World Trade Center,381.9,0,1,0
+ChIJ1-edm1hYwokRtqcmk66UT6g,Deutsche Bank Center,142,Lincoln Square East,0.0,1,1,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,Deutsche Bank Center,48,Clinton East,76.7,1,1,0
+ChIJ1-edm1hYwokRtqcmk66UT6g,Deutsche Bank Center,163,Midtown North,123.6,1,1,0
+ChIJ1-edm1hYwokRtqcmk66UT6g,Deutsche Bank Center,43,Central Park,125.8,1,1,0
+ChIJX7H83VZYwokRBMCj_899qJU,New World Stages,48,Clinton East,0.0,1,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,New World Stages,230,Times Sq/Theatre District,141.3,1,1,0
+ChIJX7H83VZYwokRBMCj_899qJU,New World Stages,163,Midtown North,360.3,0,1,0
+ChIJI45ivSf0wokRMw68yH4_DEo,Highbridge Park,120,Highbridge Park,0.0,1,1,1
+ChIJI45ivSf0wokRMw68yH4_DEo,Highbridge Park,243,Washington Heights North,75.4,1,1,0
+ChIJI45ivSf0wokRMw68yH4_DEo,Highbridge Park,127,Inwood,357.8,0,1,0
+ChIJWQHW9KZZwokRKLzyBDe6mIc,National Museum of Mathematics,90,Flatiron,0.0,1,1,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,National Museum of Mathematics,234,Union Sq,17.9,1,1,0
+ChIJk-utwVVYwokRx--LhLcP2cA,Father Duffy Square,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJk-utwVVYwokRx--LhLcP2cA,Father Duffy Square,48,Clinton East,256.5,0,1,0
+ChIJk-utwVVYwokRx--LhLcP2cA,Father Duffy Square,161,Midtown Center,291.5,0,1,0
+ChIJk-utwVVYwokRx--LhLcP2cA,Father Duffy Square,100,Garment District,367.5,0,1,0
+ChIJDSXLz_lYwokRqONmt9wNV9s,New York City Center,163,Midtown North,0.0,1,1,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,New York City Center,230,Times Sq/Theatre District,115.8,1,1,0
+ChIJDSXLz_lYwokRqONmt9wNV9s,New York City Center,161,Midtown Center,145.7,1,1,0
+ChIJDSXLz_lYwokRqONmt9wNV9s,New York City Center,43,Central Park,299.4,0,1,0
+ChIJMeF2rVVYwokRpUruDmEyjig,Marquis Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJMeF2rVVYwokRpUruDmEyjig,Marquis Theatre,48,Clinton East,162.2,1,1,0
+ChIJMeF2rVVYwokRpUruDmEyjig,Marquis Theatre,100,Garment District,300.0,0,1,0
+ChIJMeF2rVVYwokRpUruDmEyjig,Marquis Theatre,161,Midtown Center,385.9,0,1,0
+ChIJsy0KRlRYwokR6G7Y-3euStQ,Richard Rodgers Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,Richard Rodgers Theatre,48,Clinton East,140.1,1,1,0
+ChIJsy0KRlRYwokR6G7Y-3euStQ,Richard Rodgers Theatre,100,Garment District,313.5,0,1,0
+ChIJ62VOeIZYwokRQwpWIK3w4aU,Children's Museum Of Manhattan,239,Upper West Side South,0.0,1,1,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,Children's Museum Of Manhattan,238,Upper West Side North,268.5,0,1,0
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,100,Garment District,70.5,1,1,0
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,48,Clinton East,178.5,1,1,0
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,161,Midtown Center,369.2,0,1,0
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,164,Midtown South,375.8,0,1,0
+ChIJC1UQPABZwokRtfrQRhle8Fo,Arte Museum New York,246,West Chelsea/Hudson Yards,0.0,1,1,1
+ChIJC1UQPABZwokRtfrQRhle8Fo,Arte Museum New York,68,East Chelsea,328.7,0,1,0
+ChIJsT8qSaJYwokR-m20OGJUKCA,"Cooper Hewitt, Smithsonian Design Museum",236,Upper East Side North,0.0,1,1,1
+ChIJsT8qSaJYwokR-m20OGJUKCA,"Cooper Hewitt, Smithsonian Design Museum",43,Central Park,34.0,1,1,0
+ChIJJfoZJVRYwokRRkqiNbYBY3I,Lena Horne Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,Lena Horne Theatre,48,Clinton East,67.7,1,1,0
+ChIJJfoZJVRYwokRRkqiNbYBY3I,Lena Horne Theatre,100,Garment District,380.9,0,1,0
+ChIJv2zhJFVYwokRUvyHqbRD11Y,Stephen Sondheim Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,Stephen Sondheim Theatre,100,Garment District,67.5,1,1,0
+ChIJv2zhJFVYwokRUvyHqbRD11Y,Stephen Sondheim Theatre,161,Midtown Center,113.1,1,1,0
+ChIJv2zhJFVYwokRUvyHqbRD11Y,Stephen Sondheim Theatre,164,Midtown South,131.7,1,1,0
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,Broadhurst Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,Broadhurst Theatre,48,Clinton East,114.5,1,1,0
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,Broadhurst Theatre,100,Garment District,181.3,1,1,0
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,Walter Kerr Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,Walter Kerr Theatre,48,Clinton East,116.4,1,1,0
+ChIJEUd4ZVZYwokRoTM467I0ZR8,August Wilson Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,August Wilson Theatre,48,Clinton East,81.8,1,1,0
+ChIJEUd4ZVZYwokRoTM467I0ZR8,August Wilson Theatre,163,Midtown North,140.0,1,1,0
+ChIJMzK4QlRYwokRQ_vHisHrxsg,Imperial Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,Imperial Theatre,48,Clinton East,84.0,1,1,0
+ChIJMzK4QlRYwokRQ_vHisHrxsg,Imperial Theatre,100,Garment District,269.5,0,1,0
+ChIJ0zHAy2_2wokROHSUG_3UnEw,St. Nicholas Park,152,Manhattanville,0.0,1,1,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,St. Nicholas Park,42,Central Harlem North,71.9,1,1,0
+ChIJd1GHP5j2wokRj6Z5FjdVLvs,Fort Washington Park,243,Washington Heights North,0.0,1,1,1
+ChIJd1GHP5j2wokRj6Z5FjdVLvs,Fort Washington Park,244,Washington Heights South,51.3,1,1,0
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,231,TriBeCa/Civic Center,0.0,1,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,261,World Trade Center,109.3,1,1,0
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,209,Seaport,113.9,1,1,0
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,87,Financial District North,181.5,1,1,0
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,45,Chinatown,213.3,1,1,0
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,161,Midtown Center,193.5,1,1,0
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,100,Garment District,261.6,0,1,0
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,164,Midtown South,325.5,0,1,0
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,48,Clinton East,354.7,0,1,0
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,261,World Trade Center,0.0,1,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,87,Financial District North,83.7,1,1,0
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,209,Seaport,137.2,1,1,0
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,231,TriBeCa/Civic Center,173.8,1,1,0
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,13,Battery Park City,328.0,0,1,0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,100,Garment District,0.0,1,1,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,230,Times Sq/Theatre District,106.7,1,1,0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,48,Clinton East,204.7,1,1,0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,68,East Chelsea,296.3,0,1,0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,164,Midtown South,343.7,0,1,0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,161,Midtown Center,359.2,0,1,0
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,Angelika Film Center & Cafe - New York,114,Greenwich Village South,0.0,1,1,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,Angelika Film Center & Cafe - New York,211,SoHo,29.1,1,1,0
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,Angelika Film Center & Cafe - New York,144,Little Italy/NoLiTa,62.5,1,1,0
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,Angelika Film Center & Cafe - New York,113,Greenwich Village North,367.5,0,1,0
+ChIJEaNa-g1awokRT3ZdL-sMbA0,Robert F. Wagner Jr. Park,13,Battery Park City,0.0,1,1,1
+ChIJEaNa-g1awokRT3ZdL-sMbA0,Robert F. Wagner Jr. Park,12,Battery Park,158.9,1,1,0
+ChIJEaNa-g1awokRT3ZdL-sMbA0,Robert F. Wagner Jr. Park,261,World Trade Center,181.8,1,1,0
+ChIJEaNa-g1awokRT3ZdL-sMbA0,Robert F. Wagner Jr. Park,88,Financial District South,386.9,0,1,0
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,261,World Trade Center,0.0,1,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,231,TriBeCa/Civic Center,31.7,1,1,0
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,209,Seaport,36.3,1,1,0
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,87,Financial District North,50.1,1,1,0
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,45,Chinatown,288.2,0,1,0
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,164,Midtown South,0.0,1,1,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,161,Midtown Center,108.4,1,1,0
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,100,Garment District,110.9,1,1,0
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,230,Times Sq/Theatre District,155.4,1,1,0
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,170,Murray Hill,200.5,1,1,0
+ChIJd7iQrJBYwokROrpPbxeQsUc,The Great Lawn,43,Central Park,0.0,1,1,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,Gerald Schoenfeld Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,Gerald Schoenfeld Theatre,48,Clinton East,109.3,1,1,0
+ChIJiWtLIFZYwokRGiU3LaSBgMc,Gerald Schoenfeld Theatre,100,Garment District,235.6,1,1,0
+ChIJYV33VZpZwokRRxMtftbR_Lg,Astor Place Theatre,113,Greenwich Village North,0.0,1,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,Astor Place Theatre,79,East Village,109.8,1,1,0
+ChIJYV33VZpZwokRRxMtftbR_Lg,Astor Place Theatre,114,Greenwich Village South,178.7,1,1,0
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,162,Midtown East,0.0,1,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,161,Midtown Center,61.1,1,1,0
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,170,Murray Hill,173.7,1,1,0
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,233,UN/Turtle Bay South,318.2,0,1,0
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,164,Midtown South,349.3,0,1,0
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,161,Midtown Center,167.2,1,1,0
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,100,Garment District,263.0,0,1,0
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,164,Midtown South,311.8,0,1,0
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,48,Clinton East,380.9,0,1,0
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,Village East by Angelika,79,East Village,0.0,1,1,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,Village East by Angelika,107,Gramercy,187.2,1,1,0
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,Village East by Angelika,224,Stuy Town/Peter Cooper Village,311.9,0,1,0
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,Village East by Angelika,113,Greenwich Village North,353.6,0,1,0
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,Longacre Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,Longacre Theatre,48,Clinton East,115.5,1,1,0
+ChIJv2zhJFVYwokRaeXVxr3-X0U,Belasco Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,Belasco Theatre,161,Midtown Center,79.8,1,1,0
+ChIJv2zhJFVYwokRaeXVxr3-X0U,Belasco Theatre,100,Garment District,183.9,1,1,0
+ChIJv2zhJFVYwokRaeXVxr3-X0U,Belasco Theatre,164,Midtown South,200.5,1,1,0
+ChIJGaiaEONYwokR68EFhU8zSNc,Greenacre Park,229,Sutton Place/Turtle Bay North,0.0,1,1,1
+ChIJGaiaEONYwokR68EFhU8zSNc,Greenacre Park,162,Midtown East,87.3,1,1,0
+ChIJGaiaEONYwokR68EFhU8zSNc,Greenacre Park,233,UN/Turtle Bay South,180.8,1,1,0
+ChIJGaiaEONYwokR68EFhU8zSNc,Greenacre Park,161,Midtown Center,397.5,0,1,0
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,144,Little Italy/NoLiTa,0.0,1,1,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,114,Greenwich Village South,150.0,1,1,0
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,211,SoHo,202.3,1,1,0
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,148,Lower East Side,215.7,1,1,0
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,79,East Village,245.3,1,1,0
+ChIJrYQRAcdbwokRv5M_GCGiQUY,Alamo Drafthouse Cinema Lower Manhattan,87,Financial District North,0.0,1,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,Alamo Drafthouse Cinema Lower Manhattan,261,World Trade Center,204.2,1,1,0
+ChIJrYQRAcdbwokRv5M_GCGiQUY,Alamo Drafthouse Cinema Lower Manhattan,88,Financial District South,233.6,1,1,0
+ChIJrYQRAcdbwokRv5M_GCGiQUY,Alamo Drafthouse Cinema Lower Manhattan,209,Seaport,279.5,0,1,0
+ChIJW8Q_N5_2wokREfZXoLWHIEA,J. Hood Wright Park,244,Washington Heights South,0.0,1,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,Times Square Church,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,Times Square Church,48,Clinton East,137.3,1,1,0
+ChIJVUGHS1ZYwokRx39CH6zNL5M,Times Square Church,163,Midtown North,222.8,1,1,0
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,Chelsea Park,68,East Chelsea,0.0,1,1,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,Chelsea Park,246,West Chelsea/Hudson Yards,92.0,1,1,0
+ChIJZaQT5aVZwokRffG4eQn-mrA,Bethesda Fountain,43,Central Park,0.0,1,1,1
+ChIJZaQT5aVZwokRffG4eQn-mrA,Bethesda Fountain,237,Upper East Side South,384.1,0,1,0
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,48,Clinton East,0.0,1,1,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,50,Clinton West,217.7,1,1,0
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,246,West Chelsea/Hudson Yards,247.7,1,1,0
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,230,Times Sq/Theatre District,331.0,0,1,0
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,100,Garment District,351.2,0,1,0
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,Circle in the Square Theatre & School,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,Circle in the Square Theatre & School,48,Clinton East,90.7,1,1,0
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,Circle in the Square Theatre & School,163,Midtown North,301.7,0,1,0
+ChIJ-2tIv1VYwokRO4ySA2GC9is,Palace Theatre,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,Palace Theatre,161,Midtown Center,209.9,1,1,0
+ChIJ-2tIv1VYwokRO4ySA2GC9is,Palace Theatre,48,Clinton East,338.0,0,1,0
+ChIJ-2tIv1VYwokRO4ySA2GC9is,Palace Theatre,100,Garment District,390.8,0,1,0
+ChIJ35PIDbVZwokRPCrsISHXdmg,Banksy Museum New York,144,Little Italy/NoLiTa,0.0,1,1,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,Banksy Museum New York,231,TriBeCa/Civic Center,31.0,1,1,0
+ChIJ35PIDbVZwokRPCrsISHXdmg,Banksy Museum New York,211,SoHo,33.2,1,1,0
+ChIJ35PIDbVZwokRPCrsISHXdmg,Banksy Museum New York,45,Chinatown,198.0,1,1,0
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,The Museum Store,161,Midtown Center,0.0,1,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,The Museum Store,230,Times Sq/Theatre District,122.8,1,1,0
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,The Museum Store,163,Midtown North,155.1,1,1,0
+ChIJPwPoU8dZwokRoyVVUj7Nns4,High Line Observation Deck,68,East Chelsea,0.0,1,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,High Line Observation Deck,246,West Chelsea/Hudson Yards,1.5,1,1,0
+ChIJPwPoU8dZwokRoyVVUj7Nns4,High Line Observation Deck,158,Meatpacking/West Village West,227.2,1,1,0
+ChIJPwPoU8dZwokRoyVVUj7Nns4,High Line Observation Deck,249,West Village,371.1,0,1,0
+ChIJOb4SHexYwokRYYbVbQIDVzo,Park Avenue Armory,237,Upper East Side South,0.0,1,1,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,Park Avenue Armory,141,Lenox Hill West,239.2,1,1,0
+ChIJOb4SHexYwokRYYbVbQIDVzo,Park Avenue Armory,43,Central Park,382.2,0,1,0
+ChIJEQ6kk8dYwokRVW7W8Xj-lqw,John Jay Park,140,Lenox Hill East,0.0,1,1,1
+ChIJEQ6kk8dYwokRVW7W8Xj-lqw,John Jay Park,262,Yorkville East,176.6,1,1,0
+ChIJEQ6kk8dYwokRVW7W8Xj-lqw,John Jay Park,202,Roosevelt Island,318.8,0,1,0
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,43,Central Park,0.0,1,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,237,Upper East Side South,32.3,1,1,0
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,163,Midtown North,33.7,1,1,0
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,161,Midtown Center,287.2,0,1,0
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,162,Midtown East,344.8,0,1,0
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,231,TriBeCa/Civic Center,0.0,1,1,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,45,Chinatown,77.0,1,1,0
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,209,Seaport,87.4,1,1,0
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,261,World Trade Center,269.3,0,1,0
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,87,Financial District North,319.4,0,1,0
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,230,Times Sq/Theatre District,0.0,1,1,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,100,Garment District,32.5,1,1,0
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,161,Midtown Center,253.5,0,1,0
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,164,Midtown South,255.6,0,1,0
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,48,Clinton East,294.2,0,1,0
+ChIJseNBN2dYwokRWQY41I7ZzvE,Riverside Park South,143,Lincoln Square West,0.0,1,1,1
+ChIJbfoLm0D2wokRciT8D0epqOM,The Riverside Church,166,Morningside Heights,0.0,1,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,St. Thomas Church,161,Midtown Center,0.0,1,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,St. Thomas Church,163,Midtown North,210.5,1,1,0
+ChIJQxcQwftYwokRKy-FqagoB7g,St. Thomas Church,230,Times Sq/Theatre District,289.1,0,1,0
+ChIJQxcQwftYwokRKy-FqagoB7g,St. Thomas Church,162,Midtown East,332.9,0,1,0
+ChIJCeuma0xZwokR0UtPrHPT3qI,DeWitt Clinton Park,50,Clinton West,0.0,1,1,1
+ChIJCeuma0xZwokR0UtPrHPT3qI,DeWitt Clinton Park,48,Clinton East,361.0,0,1,0

@@ -1,0 +1,199 @@
+place_id,name,nearest_station_complex_id,nearest_station_complex,nearest_dist_m
+ChIJaXQRs6lZwokRY6EFpJnhNNE,Empire State Building,607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",230.5
+ChIJ4zGFAZpYwokRGUGph3Mf37k,Central Park,158,"86 St (C,B)",463.5
+ChIJmQJIxlVYwokRLgeuocVOGVU,Times Square,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",141.3
+ChIJI6lzvP5YwokRf36nzqqs4_0,Rockefeller Center,225,"47-50 Sts-Rockefeller Ctr (B,D,F,M)",223.9
+ChIJe7vKMf9YwokRIMYfDz7iF9o,Top of the Rock Observation Deck,225,"47-50 Sts-Rockefeller Ctr (B,D,F,M)",178.9
+ChIJTWE_0BtawokRVJNGH5RS448,One World Observatory,328,WTC Cortlandt (1),154.4
+ChIJRcvoOxpawokR7R4dQMXMMPQ,9/11 Memorial & Museum,328,WTC Cortlandt (1),100.7
+ChIJb8Jg9pZYwokR-qHGtvSkLzs,The Metropolitan Museum of Art,397,"86 St (4,5,6)",644.5
+ChIJKxDbe_lYwokRVf__s8CPn-o,Museum of Modern Art,276,"5 Av/53 St (E,M)",245.8
+ChIJCXoPsPRYwokRsV1MYnKBfaI,American Museum of Natural History,159,"81 St-Museum of Natural History (C,B)",155.7
+ChIJhRwB-yFawokRi0AhGH87UTc,Grand Central Terminal,610,"Grand Central-42 St (S,4,5,6,7)",108.9
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,The High Line,165,"23 St (C,E)",612.1
+ChIJK3vOQyNawokRXEa9errdJiU,Brooklyn Bridge,628,"Fulton St (A,C,J,Z,2,3,4,5)",956.2
+ChIJURWoF5pYwokRIfXv4To528c,Charging Bull,414,"Bowling Green (4,5)",98.9
+ChIJqygAFrRZwokRwF0VrBoXS0E,Vessel,471,34 St-Hudson Yards (7),231.6
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,Edge,471,34 St-Hudson Yards (7),285.9
+ChIJd7I1IO5ZwokRbv7YUlgChl4,Summit One Vanderbilt,610,"Grand Central-42 St (S,4,5,6,7)",193.3
+ChIJUW4vEPxYwokRW6o24DU0YIg,St. Patrick's Cathedral,276,"5 Av/53 St (E,M)",191.0
+ChIJvbGg56pZwokRp_E3JbivnLQ,Bryant Park,609,"Bryant Pk (B,D,F,M)/5 Av (7)",93.7
+ChIJmZ5emqJYwokRuDz79o0coAQ,Solomon R. Guggenheim Museum,397,"86 St (4,5,6)",481.2
+ChIJN3MJ6pRYwokRiXg91flSP8Y,Whitney Museum of American Art,618,"14 St (A,C,E)/8 Av (L)",616.6
+ChIJPS8b1vhYwokRldqq2YHmxJI,Radio City Music Hall,225,"47-50 Sts-Rockefeller Ctr (B,D,F,M)",185.2
+ChIJhRwB-yFawokR5Phil-QQ3zM,Madison Square Garden,164,"34 St-Penn Station (A,C,E)",198.6
+ChIJZx8c96NZwokRJklw7SVhKt4,Flatiron Building,14,"23 St (R,W)",40.4
+ChIJjX494pBZwokRGH620d9eYfo,Washington Square Park,167,"W 4 St-Wash Sq (A,C,E,B,D,F,M)",311.8
+ChIJw2lMFL9ZwokRosAtly52YX4,Chelsea Market,618,"14 St (A,C,E)/8 Av (L)",412.0
+ChIJHRH97uxYwokR6CBeDyn1jtg,The Frick Collection,399,68 St-Hunter College (6),441.3
+ChIJ3453OAdZwokRja92OOKCugM,The Morgan Library & Museum,403,33 St (6),354.3
+ChIJqaiomQBZwokRTHOaUG7fUTs,New York Public Library Stephen A. Schwarzman Building,609,"Bryant Pk (B,D,F,M)/5 Av (7)",115.1
+ChIJraKL-BJawokREpxDmF5GcL4,The Battery,635,"South Ferry (1)/Whitehall St (R,W)",196.6
+ChIJR_yfQhNawokRti4i3iRuWwY,Staten Island Ferry Whitehall Terminal,635,"South Ferry (1)/Whitehall St (R,W)",215.7
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,South Street Seaport,333,"Wall St (2,3)",535.5
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,Oculus,328,WTC Cortlandt (1),28.9
+ChIJbVfZzhBawokRnmCT-muojBA,Trinity Church,413,"Wall St (4,5)",37.7
+ChIJAaIFAxdawokR8txc3YPbD3A,Federal Hall National Memorial,333,"Wall St (2,3)",113.5
+ChIJK6bycAH0wokRrSnflfrnkZE,The Met Cloisters,144,Dyckman St (A),381.3
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,Cathedral of St. John the Divine,308,Cathedral Pkwy (110 St) (1),419.0
+ChIJyQ3Tlj72wokRUCflR_kzeVc,Columbia University,307,116 St-Columbia University (1),131.0
+ChIJRaWCMm32wokRLdyc4zmYzRw,Apollo Theater,153,"125 St (A,C,B,D)",228.0
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,Lincoln Center,314,66 St-Lincoln Center (1),152.9
+ChIJ2RFUePdYwokRd5R6XF6xFD0,Carnegie Hall,9,"57 St-7 Av (N,Q,R,W)",80.5
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,Macy's Herald Square,607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",94.1
+ChIJi6oUnphZwokRpMog28mvAM0,Union Square,602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",95.5
+ChIJp32RvaZZwokRfH0Zgzl9mXk,Madison Square Park,14,"23 St (R,W)",150.4
+ChIJYaVdffBYwokRnTOoCzCq9mE,The Plaza Hotel,8,"5 Av/59 St (N,R,W)",84.5
+ChIJM-qBJWVZwokRZQwIoEESnEc,FAO Schwarz,225,"47-50 Sts-Rockefeller Ctr (B,D,F,M)",167.5
+ChIJaWjW_PFYwokRFD8a2YQu12U,Central Park Zoo,8,"5 Av/59 St (N,R,W)",341.6
+ChIJEYYWppJYwokRUTul6ztwlJ0,Bethesda Terrace,160,"72 St (C,B)",493.4
+ChIJ2aWDJ_hYwokRUKinWgKdI70,Strawberry Fields,160,"72 St (C,B)",102.8
+ChIJFXzf4e9YwokRtXgpty_i74g,Belvedere Castle,159,"81 St-Museum of Natural History (C,B)",341.7
+ChIJeelsevFYwokRqyH7P0aN2C8,Wollman Rink,8,"5 Av/59 St (N,R,W)",343.1
+ChIJnxlg1U5YwokR8T90UrZiIwI,Intrepid Museum,471,34 St-Hudson Yards (7),1004.7
+ChIJ20bVJYdZwokRhI7esP3mYM0,Tenement Museum,625,"Delancey St (F)/Essex St (J,M,Z)",220.8
+ChIJlaRS3IVZwokR2llMD6dCt-U,New Museum,103,"Bowery (J,Z)",244.4
+ChIJD4QSVbxZwokRaFPDajZtIaI,Rubin Museum of Art,321,18 St (1),127.9
+ChIJi4hYtB32wokR1Npx_Tv7phk,Museum of the City of New York,395,103 St (6),428.2
+ChIJWT0gUBz2wokRNcAxVUphAAs,El Museo del Barrio,395,103 St (6),433.2
+ChIJYWLHOqJYwokRmkVum_hd7Ss,The Jewish Museum,396,96 St (6),530.1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,Neue Galerie New York,397,"86 St (4,5,6)",444.9
+ChIJL-CJmTFZwokRsPcqje_bn7w,Little Island,618,"14 St (A,C,E)/8 Av (L)",733.2
+ChIJq6qqr8dZwokRNqYPAJcjKas,Hudson River Park,324,Houston St (1),580.2
+ChIJd6SAvMdZwokRhc75qwSHIUA,Chelsea Piers,165,"23 St (C,E)",868.8
+ChIJTQoVbZRZwokRx0ocj9EU2sA,Stonewall Inn,323,Christopher St-Sheridan Sq (1),77.9
+ChIJmeJZYoxYwokRCRPVFhoAwVU,The Dakota,160,"72 St (C,B)",134.5
+ChIJL1DP2C72wokRh3Lfn4T0Z3w,Riverside Park,307,116 St-Columbia University (1),338.6
+ChIJcQM7oP5YwokRvrQ8ty1ULps,Saks Fifth Avenue,276,"5 Av/53 St (E,M)",282.8
+ChIJ-RNjg-VYwokRCJTSRaHml6E,Bloomingdale's,613,"Lexington Av (N,R,W)/59 St (4,5,6)",42.8
+ChIJjyX2GqRZwokRT-gdcGoPuSI,Tiffany & Co. Fifth Avenue,8,"5 Av/59 St (N,R,W)",240.4
+ChIJrc9T9fpYwokRdvjYRHT8nI4,Trump Tower,8,"5 Av/59 St (N,R,W)",267.7
+ChIJR1pTRTxawokRyzoX5XQ_alI,Pier 17,333,"Wall St (2,3)",659.0
+ChIJaeKcEaRZwokRcllXm5cM7J0,Eataly NYC Flatiron,14,"23 St (R,W)",103.7
+ChIJ5wFJxXr2wokRQEmdWil_bEw,Hamilton Grange National Memorial,152,"135 St (C,B)",386.6
+ChIJqTIQToL2wokRKbmUA423_YY,Morris-Jumel Mansion,149,163 St-Amsterdam Av (C),206.0
+ChIJTZ18cAH0wokR1HfVR86mzEA,Fort Tryon Park,145,190 St (A),462.3
+ChIJpUOPMe7zwokRJUQfPbEU1CI,Inwood Hill Park,143,Inwood-207 St (A),614.0
+ChIJIVEyfY5YwokRXqcWLrl5XVA,New-York Historical Society,159,"81 St-Museum of Natural History (C,B)",275.2
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,International Center of Photography,625,"Delancey St (F)/Essex St (J,M,Z)",148.3
+ChIJYTeZ_BFawokRQzNFpOk4Bew,The Skyscraper Museum,414,"Bowling Green (4,5)",326.5
+ChIJAw6IZBFbwokRQfEy-LXgDXw,Fraunces Tavern Museum,635,"South Ferry (1)/Whitehall St (R,W)",152.2
+ChIJgVtmM_ZYwokRcJJnebe5KX8,Museum of Arts and Design,614,"59 St-Columbus Circle (A,B,C,D,1)",103.8
+ChIJF5e1QvlYwokRcVF6x1CEcQk,Paley Center for Media,276,"5 Av/53 St (E,M)",201.0
+ChIJfQDvGoxZwokRvzLRRApytgQ,Roosevelt Island Tramway,TRAM1,RI Tramway (Manhattan),6.5
+ChIJoxqn-kD2wokRLvhOLfAneU8,Grant's Tomb,306,125 St (1),463.3
+ChIJh70nPBz2wokR7EWPEdNPP9s,Conservatory Garden Central Park,395,103 St (6),542.2
+ChIJ_1f3U5JYwokRH1_PRd1eIrI,The Ramble Central Park,159,"81 St-Museum of Natural History (C,B)",445.5
+ChIJezBcrvNYwokRCGwwAfivN4g,Sheep Meadow,160,"72 St (C,B)",443.9
+ChIJx3g2ovJYwokRtkUlbWC4nE8,The Mall Central Park,160,"72 St (C,B)",542.8
+ChIJIcCApvFYwokR88lT-bgPmCE,Gapstow Bridge,8,"5 Av/59 St (N,R,W)",238.8
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,The Pond Central Park,8,"5 Av/59 St (N,R,W)",130.1
+ChIJMaZfGgpZwokR0gtRaGghT_w,Gramercy Park,405,23 St (6),387.1
+ChIJgTDll51ZwokRVjN7KXztwXY,Tompkins Square Park,119,1 Av (L),503.2
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,Washington Square Arch,167,"W 4 St-Wash Sq (A,C,E,B,D,F,M)",312.6
+ChIJ8akBcZlZwokRlGROGaTkMnM,Grace Church,407,Astor Pl (6),214.2
+ChIJC-exc5RZwokRWb0fbD6ZBTc,Stonewall National Monument,323,Christopher St-Sheridan Sq (1),51.1
+ChIJy8jTDBtawokRB9wNyxemSw8,Brookfield Place,328,WTC Cortlandt (1),279.2
+ChIJywJ318BZwokR4uWXUTbMRtc,Pier 57,618,"14 St (A,C,E)/8 Av (L)",677.2
+ChIJ730FRYhZwokRhLS7n5Ybz54,Little Italy,623,"Canal St (J,N,Q,R,W,Z,6)",234.8
+ChIJDcEvbPVZwokRETEfzXATns8,Chinatown Manhattan,231,"Grand St (B,D)",393.3
+ChIJ_f1FDqlZwokRqCItRNuQIKs,Koreatown Manhattan,607,"34 St-Herald Sq (B,D,F,M,N,Q,R,W)",233.2
+ChIJq6pqPhv2wokRPPkifui_-LY,The Africa Center,441,"Central Park North (110 St) (2,3)",362.6
+ChIJy7cGfBlawokR5l2e93hsoEA,One World Trade Center,328,WTC Cortlandt (1),142.4
+ChIJ8VOfr1RYwokRhil9_pcMKuc,Madame Tussauds New York,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",150.7
+ChIJoQb5SxBawokRtYcvnZAI2lE,Castle Clinton National Monument,414,"Bowling Green (4,5)",276.8
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,Union Square Park,602,"14 St-Union Sq (L,N,Q,R,W,4,5,6)",48.4
+ChIJNfIGsapZwokR6wmdPMZEBbU,Circle Line Sightseeing Cruises - Midtown,471,34 St-Hudson Yards (7),776.4
+ChIJBxw9mhhawokRJzY2jnlYsZM,City Hall Park,20,"City Hall (R,W)",104.3
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,Museum of Illusions - New York,618,"14 St (A,C,E)/8 Av (L)",161.9
+ChIJv8mWqY9YwokRIzh7-8yBA14,Theodore Roosevelt Park,159,"81 St-Museum of Natural History (C,B)",211.1
+ChIJZUczMVZYwokR2GRTDrcGv10,Gershwin Theatre,162,"50 St (C,E)",86.1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,MUSEUM OF ICE CREAM,17,"Prince St (R,W)",79.6
+ChIJex6ai6pbwokRbh3cz6wKQ0w,Statue City Cruises Battery Park,635,"South Ferry (1)/Whitehall St (R,W)",318.0
+ChIJhWqFh1RYwokR-DHQDzkMAag,Majestic Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",156.3
+ChIJDzorOvZYwokRW5XN4_UBY8w,Columbus Circle,614,"59 St-Columbus Circle (A,B,C,D,1)",27.4
+ChIJB4cC_1RYwokRu6mRBD_lqO8,Minskoff Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",101.7
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,Beacon Theatre,313,"72 St (1,2,3)",234.3
+ChIJnSTPzldYwokRyyefzoK7Xao,Neil Simon Theatre,162,"50 St (C,E)",146.0
+ChIJeWPFRwJZwokRGD60OOo74RU,Chrysler Building,610,"Grand Central-42 St (S,4,5,6,7)",114.5
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,Hudson River Park Trust,324,Houston St (1),562.5
+ChIJR026QqZZwokRgLuHSIZNIKM,Museum of Sex,13,"28 St (R,W)",203.0
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,Winter Garden Theatre,316,50 St (1),10.7
+ChIJTZoUA1hYwokRKneaNqQpIf8,SPYSCAPE & SPYGAMES,9,"57 St-7 Av (N,Q,R,W)",247.1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,Eugene O’Neill Theatre,162,"50 St (C,E)",149.5
+ChIJZ4XQ0Pr1wokR4y3zFhkY2ko,Randall's Island Park,393,116 St (6),1579.0
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,Broadway Theatre,277,"7 Av (E,B,D)",127.1
+ChIJlx_J861ZwokRnBboWMNuVno,The FRIENDS™ Experience: The One in New York City,405,23 St (6),131.1
+ChIJlTWPiFRYwokRF7JuJslWbaw,Al Hirschfeld Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",293.8
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,ARTECHOUSE NYC,618,"14 St (A,C,E)/8 Av (L)",452.1
+ChIJm17AB5pYwokRWLJ6lEtXKOA,Central Park Boathouse,160,"72 St (C,B)",645.4
+ChIJmamBZtVZwokR6phs86DKbP0,Color Factory NYC,168,"Spring St (C,E)",143.5
+ChIJEUd4ZVZYwokRV4iyGw46pw0,Ambassador Theatre,316,50 St (1),114.5
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,Bella Abzug Park,471,34 St-Hudson Yards (7),117.6
+ChIJkzFqiVJYwokRqc4h6tVHx_s,Shubert Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",80.8
+ChIJlTWPiFRYwokRhdOoYdfeZzY,St. James Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",142.1
+ChIJJ6AzfHxZwokRcaYezPBb9_I,John V. Lindsay East River Park,625,"Delancey St (F)/Essex St (J,M,Z)",1104.6
+ChIJp8ENSlRYwokRIIpmnGxjieo,Lunt-Fontanne Theatre,10,"49 St (N,R,W)",176.7
+ChIJc5zurnxZwokR8vn4ERqrSfc,RiseNY,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",170.6
+ChIJJXfoP65ZwokRPY3oaITdpew,Infosys Theater at Madison Square Garden,318,"34 St-Penn Station (1,2,3)",189.9
+ChIJiR6aeI1YwokRkCNO-e1lQfs,Bow Bridge,160,"72 St (C,B)",390.4
+ChIJxf7bQyxawokRO-rs19qn3fs,Pier 35,234,East Broadway (F),496.6
+ChIJD8YUwhFawokRFu9nJOnNJbU,Rockefeller Park,328,WTC Cortlandt (1),624.8
+ChIJ1-edm1hYwokRtqcmk66UT6g,Deutsche Bank Center,614,"59 St-Columbus Circle (A,B,C,D,1)",120.1
+ChIJX7H83VZYwokRBMCj_899qJU,New World Stages,162,"50 St (C,E)",145.1
+ChIJI45ivSf0wokRMw68yH4_DEo,Highbridge Park,300,191 St (1),348.3
+ChIJWQHW9KZZwokRKLzyBDe6mIc,National Museum of Mathematics,321,18 St (1),272.1
+ChIJk-utwVVYwokRx--LhLcP2cA,Father Duffy Square,10,"49 St (N,R,W)",124.0
+ChIJDSXLz_lYwokRqONmt9wNV9s,New York City Center,9,"57 St-7 Av (N,Q,R,W)",130.2
+ChIJMeF2rVVYwokRpUruDmEyjig,Marquis Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",187.0
+ChIJsy0KRlRYwokR6G7Y-3euStQ,Richard Rodgers Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",206.5
+ChIJ62VOeIZYwokRQwpWIK3w4aU,Children's Museum Of Manhattan,312,79 St (1),309.6
+ChIJezRjt1RYwokR6q0tL1pVfHU,Lyric Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",58.2
+ChIJC1UQPABZwokRtfrQRhle8Fo,Arte Museum New York,165,"23 St (C,E)",929.5
+ChIJsT8qSaJYwokR-m20OGJUKCA,"Cooper Hewitt, Smithsonian Design Museum",397,"86 St (4,5,6)",578.4
+ChIJJfoZJVRYwokRRkqiNbYBY3I,Lena Horne Theatre,10,"49 St (N,R,W)",232.5
+ChIJv2zhJFVYwokRUvyHqbRD11Y,Stephen Sondheim Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",230.3
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,Broadhurst Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",114.0
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,Walter Kerr Theatre,10,"49 St (N,R,W)",157.9
+ChIJEUd4ZVZYwokRoTM467I0ZR8,August Wilson Theatre,162,"50 St (C,E)",176.7
+ChIJMzK4QlRYwokRQ_vHisHrxsg,Imperial Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",196.4
+ChIJ0zHAy2_2wokROHSUG_3UnEw,St. Nicholas Park,152,"135 St (C,B)",103.8
+ChIJd1GHP5j2wokRj6Z5FjdVLvs,Fort Washington Park,147,175 St (A),589.6
+ChIJUSBl7RhawokR1uWCCvWriXQ,The Woolworth Building,20,"City Hall (R,W)",149.8
+ChIJtehhClVYwokRjEHM1kjDj2M,Lyceum Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",202.1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,Mercer Labs,328,WTC Cortlandt (1),202.0
+ChIJE_d8UqtZwokRMvi5sxjBjSE,Nederlander Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",226.4
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,Angelika Film Center & Cafe - New York,17,"Prince St (R,W)",181.0
+ChIJEaNa-g1awokRT3ZdL-sMbA0,Robert F. Wagner Jr. Park,414,"Bowling Green (4,5)",399.0
+ChIJ-wHkrBlawokRjCiym7MbolM,St. Paul's Chapel,628,"Fulton St (A,C,J,Z,2,3,4,5)",234.7
+ChIJBQrKATBZwokR5PiaVeIM8u4,Bryant Park Winter Village,609,"Bryant Pk (B,D,F,M)/5 Av (7)",134.6
+ChIJd7iQrJBYwokROrpPbxeQsUc,The Great Lawn,159,"81 St-Museum of Natural History (C,B)",483.0
+ChIJiWtLIFZYwokRGiU3LaSBgMc,Gerald Schoenfeld Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",154.3
+ChIJYV33VZpZwokRRxMtftbR_Lg,Astor Place Theatre,16,"8 St-NYU (R,W)",117.1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,MetLife Building,610,"Grand Central-42 St (S,4,5,6,7)",193.6
+ChIJw7GUS-5ZwokRmhit4hpZT74,Museum of Broadway,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",222.3
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,Village East by Angelika,118,3 Av (L),210.8
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,Longacre Theatre,10,"49 St (N,R,W)",158.8
+ChIJv2zhJFVYwokRaeXVxr3-X0U,Belasco Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",265.2
+ChIJGaiaEONYwokR68EFhU8zSNc,Greenacre Park,612,"Lexington Av-53 St (E,M)/51 St (6)",145.3
+ChIJDRoxaY9ZwokR-cBKepLVl20,The Basilica of St. Patrick's Old Cathedral,17,"Prince St (R,W)",205.4
+ChIJrYQRAcdbwokRv5M_GCGiQUY,Alamo Drafthouse Cinema Lower Manhattan,333,"Wall St (2,3)",106.5
+ChIJW8Q_N5_2wokREfZXoLWHIEA,J. Hood Wright Park,147,175 St (A),188.5
+ChIJVUGHS1ZYwokRx39CH6zNL5M,Times Square Church,316,50 St (1),82.9
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,Chelsea Park,165,"23 St (C,E)",532.7
+ChIJZaQT5aVZwokRffG4eQn-mrA,Bethesda Fountain,160,"72 St (C,B)",486.4
+ChIJTeuJWlJYwokR4HpCvsWtDck,Westside Theatre,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",540.2
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,Circle in the Square Theatre & School,162,"50 St (C,E)",90.8
+ChIJ-2tIv1VYwokRO4ySA2GC9is,Palace Theatre,10,"49 St (N,R,W)",118.6
+ChIJ35PIDbVZwokRPCrsISHXdmg,Banksy Museum New York,623,"Canal St (J,N,Q,R,W,Z,6)",111.4
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,The Museum Store,276,"5 Av/53 St (E,M)",246.3
+ChIJPwPoU8dZwokRoyVVUj7Nns4,High Line Observation Deck,618,"14 St (A,C,E)/8 Av (L)",553.6
+ChIJOb4SHexYwokRYYbVbQIDVzo,Park Avenue Armory,399,68 St-Hunter College (6),175.7
+ChIJEQ6kk8dYwokRVW7W8Xj-lqw,John Jay Park,477,72 St (Q),750.7
+ChIJ36kJb_BYwokROPefLSa2Knk,Grand Army Plaza,8,"5 Av/59 St (N,R,W)",21.6
+ChIJs--MqP1YwokRBwAhjXWIHn8,New York City Hall,20,"City Hall (R,W)",99.4
+ChIJAQAAQFJYwokRbu7IENYYkDM,One Times Square,611,"Times Sq-42 St (N,Q,R,W,S,1,2,3,7)/42 St (A,C,E)",121.1
+ChIJseNBN2dYwokRWQY41I7ZzvE,Riverside Park South,313,"72 St (1,2,3)",651.5
+ChIJbfoLm0D2wokRciT8D0epqOM,The Riverside Church,307,116 St-Columbia University (1),473.0
+ChIJQxcQwftYwokRKy-FqagoB7g,St. Thomas Church,276,"5 Av/53 St (E,M)",84.5
+ChIJCeuma0xZwokR0UtPrHPT3qI,DeWitt Clinton Park,162,"50 St (C,E)",931.7
