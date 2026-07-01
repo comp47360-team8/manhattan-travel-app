@@ -20,8 +20,3 @@ which is the **source of truth**. The `ml/` folder holds synced copies the team 
 - `ml/data/processed/` — model-ready tables (`modeling_table.parquet`,
   `model_dataset.parquet`).
 - `ml/db/` — PostgreSQL DDL + generated seed for the `poi` layer.
-
-**Sync rule:** these files are regenerated in Offpeak. **Whenever `data/interim`,
-`data/processed`, or `db/` change in Offpeak, open a PR here to update `ml/`.** The
-backend's own schema stays Alembic-managed (`backend/alembic/`); reconcile `backend/db/`
-against `ml/db/` when the POI schema or seed changes rather than assuming they match.
