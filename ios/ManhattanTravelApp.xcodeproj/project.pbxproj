@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		141AED122FE0A56D005C60EB /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141AED112FE0A565005C60EB /* RegisterView.swift */; };
 		14221B9B2FE4422E00E22EFC /* LabeledField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14221B9A2FE4422000E22EFC /* LabeledField.swift */; };
+		143BDD3C2FF5AD7200C2E0A5 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143BDD3B2FF5AD6900C2E0A5 /* CachedImage.swift */; };
 		145FA46F2FED9899008A435E /* POI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA46E2FED9895008A435E /* POI.swift */; };
 		145FA4712FED9A0C008A435E /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4702FED9A05008A435E /* APIConfig.swift */; };
 		145FA4732FED9B44008A435E /* POIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FA4722FED9B3E008A435E /* POIService.swift */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		141AED112FE0A565005C60EB /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		14221B9A2FE4422000E22EFC /* LabeledField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledField.swift; sourceTree = "<group>"; };
+		143BDD3B2FF5AD6900C2E0A5 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
 		145FA46E2FED9895008A435E /* POI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POI.swift; sourceTree = "<group>"; };
 		145FA4702FED9A05008A435E /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
 		145FA4722FED9B3E008A435E /* POIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIService.swift; sourceTree = "<group>"; };
@@ -78,19 +80,117 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		14ED6AD72FE96C0800DCEA7F /* Networking */ = {
+		143BDD3D2FF6828500C2E0A5 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				14B082752FF34079002BCFDA /* CrowdForecast.swift */,
-				145FA4742FEDD15E008A435E /* NetworkError.swift */,
-				145FA4722FED9B3E008A435E /* POIService.swift */,
+				AA0000000000000000000020 /* ManhattanTravelAppApp.swift */,
+				AA0000000000000000000021 /* ContentView.swift */,
+				AA0000000000000000000027 /* MainTabView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		143BDD3E2FF6829D00C2E0A5 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				143BDD4B2FF685AA00C2E0A5 /* Storage */,
+				143BDD3F2FF682AE00C2E0A5 /* Networking */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		143BDD3F2FF682AE00C2E0A5 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
 				145FA4702FED9A05008A435E /* APIConfig.swift */,
-				14ED6ADE2FEB251400DCEA7F /* TokenStore.swift */,
-				14ED6AD82FE96C1C00DCEA7F /* AuthValidator.swift */,
-				14ED6ADA2FE9C9F300DCEA7F /* AuthModels.swift */,
-				14ED6ADC2FE9CBC300DCEA7F /* AuthService.swift */,
+				145FA4742FEDD15E008A435E /* NetworkError.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		143BDD402FF682D400C2E0A5 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				14AAAA012FEE0000008A435E /* OffpeakTheme.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		143BDD412FF6833F00C2E0A5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				145FA4722FED9B3E008A435E /* POIService.swift */,
+				14ED6ADC2FE9CBC300DCEA7F /* AuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		143BDD422FF6835E00C2E0A5 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				143BDD472FF683F600C2E0A5 /* Auth */,
+				143BDD462FF683E600C2E0A5 /* POICard */,
+				143BDD452FF683C100C2E0A5 /* POIDetails */,
+				143BDD432FF6836800C2E0A5 /* Explore */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		143BDD432FF6836800C2E0A5 /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				145FA4782FEDD470008A435E /* ExploreView.swift */,
+				145FA4762FEDD3F7008A435E /* ExploreViewModel.swift */,
+			);
+			path = Explore;
+			sourceTree = "<group>";
+		};
+		143BDD452FF683C100C2E0A5 /* POIDetails */ = {
+			isa = PBXGroup;
+			children = (
+				14B082792FF46A44002BCFDA /* POIDetailViewModel.swift */,
+				14B082732FF33F77002BCFDA /* POIDetailView.swift */,
+			);
+			path = POIDetails;
+			sourceTree = "<group>";
+		};
+		143BDD462FF683E600C2E0A5 /* POICard */ = {
+			isa = PBXGroup;
+			children = (
+				145FA47A2FEDD598008A435E /* PlacesCard.swift */,
+				143BDD3B2FF5AD6900C2E0A5 /* CachedImage.swift */,
+			);
+			path = POICard;
+			sourceTree = "<group>";
+		};
+		143BDD472FF683F600C2E0A5 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				14221B9A2FE4422000E22EFC /* LabeledField.swift */,
+				AA0000000000000000000024 /* AuthManager.swift */,
+				AA0000000000000000000025 /* LoginView.swift */,
+				141AED112FE0A565005C60EB /* RegisterView.swift */,
+				AA0000000000000000000026 /* ProfileView.swift */,
+				14ED6AD82FE96C1C00DCEA7F /* AuthValidator.swift */,
+				14ED6ADA2FE9C9F300DCEA7F /* AuthModels.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		143BDD4A2FF6855300C2E0A5 /* PreviewContent */ = {
+			isa = PBXGroup;
+			children = (
+				14B082772FF442C7002BCFDA /* PreviewData.swift */,
+			);
+			path = PreviewContent;
+			sourceTree = "<group>";
+		};
+		143BDD4B2FF685AA00C2E0A5 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				14ED6ADE2FEB251400DCEA7F /* TokenStore.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		AA0000000000000000000002 = {
@@ -112,13 +212,14 @@
 		AA0000000000000000000004 /* ManhattanTravelApp */ = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000000020 /* ManhattanTravelAppApp.swift */,
-				AA0000000000000000000021 /* ContentView.swift */,
+				143BDD4A2FF6855300C2E0A5 /* PreviewContent */,
+				143BDD422FF6835E00C2E0A5 /* Features */,
+				143BDD412FF6833F00C2E0A5 /* Services */,
+				143BDD3D2FF6828500C2E0A5 /* App */,
 				AA0000000000000000000005 /* Models */,
-				AA0000000000000000000006 /* Managers */,
-				AA0000000000000000000007 /* Views */,
 				AA0000000000000000000022 /* Assets.xcassets */,
-				14ED6AD72FE96C0800DCEA7F /* Networking */,
+				143BDD3E2FF6829D00C2E0A5 /* Core */,
+				143BDD402FF682D400C2E0A5 /* DesignSystem */,
 			);
 			path = ManhattanTravelApp;
 			sourceTree = "<group>";
@@ -129,35 +230,9 @@
 				145FA46E2FED9895008A435E /* POI.swift */,
 				AA0000000000000000000023 /* User.swift */,
 				14B082712FF31EFE002BCFDA /* POIDetail.swift */,
+				14B082752FF34079002BCFDA /* CrowdForecast.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		AA0000000000000000000006 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				14B082792FF46A44002BCFDA /* POIDetailViewModel.swift */,
-				145FA4762FEDD3F7008A435E /* ExploreViewModel.swift */,
-				AA0000000000000000000024 /* AuthManager.swift */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
-		AA0000000000000000000007 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				14B082772FF442C7002BCFDA /* PreviewData.swift */,
-				14B082732FF33F77002BCFDA /* POIDetailView.swift */,
-				14AAAA012FEE0000008A435E /* OffpeakTheme.swift */,
-				145FA4782FEDD470008A435E /* ExploreView.swift */,
-				14221B9A2FE4422000E22EFC /* LabeledField.swift */,
-				145FA47A2FEDD598008A435E /* PlacesCard.swift */,
-				AA0000000000000000000025 /* LoginView.swift */,
-				141AED112FE0A565005C60EB /* RegisterView.swift */,
-				AA0000000000000000000026 /* ProfileView.swift */,
-				AA0000000000000000000027 /* MainTabView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +327,7 @@
 				AA0000000000000000000036 /* ProfileView.swift in Sources */,
 				AA0000000000000000000037 /* MainTabView.swift in Sources */,
 				145FA47B2FEDD59F008A435E /* PlacesCard.swift in Sources */,
+				143BDD3C2FF5AD7200C2E0A5 /* CachedImage.swift in Sources */,
 				14AAAA022FEE0000008A435E /* OffpeakTheme.swift in Sources */,
 				145FA4792FEDD47F008A435E /* ExploreView.swift in Sources */,
 				145FA4712FED9A0C008A435E /* APIConfig.swift in Sources */,

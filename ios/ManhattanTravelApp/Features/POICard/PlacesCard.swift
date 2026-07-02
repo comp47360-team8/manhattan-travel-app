@@ -59,7 +59,7 @@ enum Access {
 
 struct PlaceCard: View {
     let poi: POI
-    
+
     var isSaved: Bool = false
     var onToggleSave: () -> Void = {}
     
@@ -67,7 +67,6 @@ struct PlaceCard: View {
         VStack(alignment: .leading, spacing:  0) {
             hero
             body_
-            
         }
         .background {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
@@ -170,18 +169,17 @@ struct PlaceCard: View {
     @ViewBuilder
     private var hero: some View {
         if let url = poi.heroURL {
-            AsyncImage(url: url){ phase in
-                switch phase {
-                case .success(let image): photoHeader(image)
-                case .failure: titleHeader
-                case .empty: titleHeader
-                @unknown default: titleHeader
-                }
+            CachedImage(url: url){ image in
+                photoHeader(image)
+            } placeholder: {
+                titleHeader
             }
         }else{
             titleHeader
         }
     }
+        
+    
     
     private func photoHeader(_ image: Image) -> some View {
         Color.clear

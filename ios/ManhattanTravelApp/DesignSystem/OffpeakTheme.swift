@@ -27,7 +27,7 @@ enum OffpeakTheme {
     static let searchField = Color.white.opacity(0.55)
     static let cardBorder  = Color.white.opacity(0.6)
 
-    /// White → sky vertical wash layered over the background.
+    // layered over the background.
     static let backgroundGradient = LinearGradient(
         colors: [
             Color(hex: 0xD6E3D1),
