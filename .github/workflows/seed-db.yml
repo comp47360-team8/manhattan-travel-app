@@ -1,0 +1,18 @@
+name: Seed database
+
+# Manual, on-demand: (re)apply backend/db/*.sql against DATABASE_URL.
+# Useful the first time a new environment's DB is provisioned, or after the
+# POI seed changes (see root README's Data/ML sync rule).
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Seed POI table
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: psql "$DATABASE_URL" -f backend/db/03_dml_seed_poi_table.sql
