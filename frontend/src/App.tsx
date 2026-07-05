@@ -68,7 +68,7 @@ function App() {
 
   // Fetch POIs from the FastAPI backend when the app first loads.
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/pois")
+    fetch("/api/pois")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load POIs");
