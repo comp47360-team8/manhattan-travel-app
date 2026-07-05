@@ -1,12 +1,14 @@
 name: Deploy
 
-# Runs after CI succeeds on main, so a broken build/lint never reaches
-# migrations or the hosting platforms.
+# Runs after CI succeeds on production, so a broken build/lint never
+# reaches migrations or the hosting platforms. `main` is the team's
+# integration branch; pushing to `production` is a deliberate release
+# step (see git-workflow.md).
 on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
-    branches: [main]
+    branches: [production]
 
 jobs:
   migrate-and-deploy:
