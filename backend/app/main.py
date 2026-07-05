@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
 from app.routers import health, auth, pois, saved_pois
 
 # instantiate app
 app = FastAPI()
 
-# connect React frontend origin to FastAPI backend origin via CORS
+# connect React frontend origin(s) to FastAPI backend origin via CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=settings.allowed_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
