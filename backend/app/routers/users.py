@@ -5,7 +5,7 @@ from app.services.poi_service import get_saved_pois
 from app.dependencies.auth import authorise_access
 from app.schemas.poi import POIDetailedResponse
 from app.repositories.itinerary_repository import get_saved_itineraries, get_saved_itinerary
-from app.schemas.itinerary import ItineraryResponse, SaveItineraryResponse
+from app.schemas.itinerary import ItineraryResponse, ItinerarySavedResponse
 from app.core.exceptions import ItineraryNotFound
 
 router = APIRouter(prefix="/api/users/me", tags=["users"])
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/users/me", tags=["users"])
 def display_saved_pois(db: Session = Depends(get_db), user=Depends(authorise_access)):
     return get_saved_pois(db, user)
 
-@router.get("/saved-itineraries", response_model=list[SaveItineraryResponse])
+@router.get("/saved-itineraries", response_model=list[ItinerarySavedResponse])
 def display_saved_itineraries(db: Session = Depends(get_db), user=Depends(authorise_access)):
     return get_saved_itineraries(db, user)
 

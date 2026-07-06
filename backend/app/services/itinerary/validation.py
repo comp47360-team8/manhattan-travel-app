@@ -32,7 +32,7 @@ def find_availabile_slots(poi: POI, days: list):
         for day in matrix:
             for slot in matrix[day]:
                 matrix[day][slot] = True
-        flags = ["No official opening hours, outdoor activity usually available 24/7"]
+        flags = ["No official opening hours."]
 
     # unknown opening hours
     if poi.availability_mode == "UNKNOWN":
