@@ -1,5 +1,6 @@
 alembic==1.18.4
 fastapi==0.136.3
+geoalchemy2==0.20.0
 fastapi_users==15.0.5
 psycopg2-binary==2.9.12
 pwdlib==0.3.0
