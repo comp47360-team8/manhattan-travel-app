@@ -8,3 +8,9 @@ class AuthenticationError(Exception):
 class POINotFoundError(Exception):
     pass
 
+class MaximumPOIsExceeded(Exception):
+    pass
+
+class ItineraryNotFound(Exception):
+    pass
+
