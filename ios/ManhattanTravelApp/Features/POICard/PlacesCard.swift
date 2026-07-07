@@ -209,17 +209,22 @@ struct PlaceCard: View {
                     .offset(x: 40)
             }
             .clipped()
-            .overlay(alignment: .topLeading) {
-                if let access = poi.access { accessPill(access).padding(18) }
+            .overlay(alignment: .topTrailing){
+                bookmarkButton.padding(12)
             }
-            .overlay(alignment: .topTrailing) {
-                bookmarkButton.padding(18)
+            .overlay(alignment: .topLeading){
+                if let access = poi.access {
+                       accessPill(access).padding(18)
+                   }
+                    
             }
     }
     
     
     private var bookmarkButton: some View {
-        Button { /* onToggleSave() */ } label: {
+        Button {
+            onToggleSave()
+        } label: {
             Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(OffpeakTheme.navy)

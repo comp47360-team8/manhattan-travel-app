@@ -16,6 +16,7 @@ enum OffpeakTheme {
     static let sage  = Color(hex: 0xA2B7A5)   // calm / quiet indicator
     static let amber = Color(hex: 0xF5B301)   // ratings / moderate
     static let coral = Color(hex: 0xD4544A)   // busy / crowded
+    static let accent = Color(hex: 0x734B37)
 
     // MARK: Text shades
     static let textSecondary = Color(hex: 0x5B6578)
