@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct POIDetailView: View {
+
     let slug: String
+    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var savedStore: SavedPOIStore
     @StateObject private var vm = POIDetailViewModel()
+    
     @State private var day: ForecastDay = .today
     @Environment(\.dismiss) private var dismiss
+    
+    var isSaved: Bool
     
     var body: some View {
         ScrollView {
@@ -32,10 +38,16 @@ struct POIDetailView: View {
         .background(OffpeakTheme.backGround)
         .ignoresSafeArea(edges: .top)
         .overlay(alignment: .topLeading)  { circleButton("chevron.left") { dismiss() }.padding(.leading, 16).padding(.top, 8) }
-        .overlay(alignment: .topTrailing) { circleButton("bookmark") {}.padding(.trailing, 16).padding(.top, 8) }
+        .overlay(alignment: .topTrailing) {
+            circleButton( isSaved ? "bookmark.fill" : "bookmark") {
+            handleToggleSave(slug)
+        }.padding(.trailing, 16).padding(.top, 8) }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
-        .task { await vm.load(slug: slug) }
+        .task {
+            await vm.load(slug: slug)
+            if authManager.isLoggedIn { await savedStore.load()}
+        }
     }
 
     // MARK: Sections
@@ -258,6 +270,14 @@ struct POIDetailView: View {
                 .background(.ultraThinMaterial, in: Circle())
         }
     }
+    
+    private func handleToggleSave(_ slug: String) {
+           guard authManager.isLoggedIn else {
+               authManager.requireLogin()
+               return
+           }
+           Task { await savedStore.toggle(slug: slug) }
+       }
     
     private func heroPlaceholder(_ poi: POIDetail) -> some View {
         OffpeakTheme.navy.opacity(0.06)
