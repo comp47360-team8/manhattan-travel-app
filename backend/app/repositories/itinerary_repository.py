@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from app.models.poi_model import POI, POIBusynessForecast
+from app.models.poi_model import POIBusynessForecast
 from app.models.itinerary_model import SavedItineraries
 from app.schemas.itinerary import ItineraryResponse
 from app.core.exceptions import ItineraryNotFound
@@ -25,7 +25,7 @@ def get_crowd_level(id, day, slot, db: Session):
     result = db.execute(statement).one_or_none()
 
     if result is None:
-        return None
+        return "Unavailable"
     
     elif result.avg_busyness_pct < 30:
         return "Quiet"
@@ -59,6 +59,15 @@ def get_busyness_for_day(id, day: int, db: Session):
          ]
 
 def save_itinerary_for_user(itinerary_to_save: ItineraryResponse, db: Session, user: uuid.UUID):
+    statement = select(SavedItineraries).where(
+        SavedItineraries.id == itinerary_to_save.model_dump()["itinerary_id"],
+        SavedItineraries.user_id == user
+        )
+    existing_save = db.execute(statement).scalar_one_or_none()
+
+    if existing_save:
+        return
+    
     db_entry = SavedItineraries(
         id=itinerary_to_save.model_dump()["itinerary_id"],
         user_id=user,
@@ -68,8 +77,6 @@ def save_itinerary_for_user(itinerary_to_save: ItineraryResponse, db: Session, u
     db.add(db_entry)
     db.commit()
     db.refresh(db_entry)
-
-    return db_entry.id
 
 def get_saved_itineraries(db: Session, user: uuid.UUID):
     statement = select(
@@ -91,7 +98,7 @@ def get_saved_itineraries(db: Session, user: uuid.UUID):
     ]
 
 def get_saved_itinerary(itinerary_id, db: Session, user: uuid.UUID):
-    statement = select(SavedItineraries.itinerary). where(
+    statement = select(SavedItineraries.itinerary).where(
         SavedItineraries.id == itinerary_id,
         SavedItineraries.user_id == user
     )

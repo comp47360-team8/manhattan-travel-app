@@ -34,14 +34,18 @@ class ItineraryResponse(BaseModel):
     trip_dates: str
     stops: list[StopResponse]
 
-class SaveItineraryResponse(BaseModel):
+class ItinerarySaveResponse(BaseModel):
+    message: str
+
+class ItineraryUnsaveResponse(BaseModel):
+    message: str
+
+class ItinerarySavedResponse(BaseModel):
     itinerary_id: str
     trip_name: str
     trip_dates: str
     number_of_places: int
     hero_image_url: str
-
-class UnsaveItineraryResponse(BaseModel):
-    message: str
+    
 
 

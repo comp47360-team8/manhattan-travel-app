@@ -64,7 +64,6 @@ def get_saved_poi(slug: str, db: Session, user: int):
         SavedPOI.poi_id == poi.id)
     
     saved_poi = db.execute(statement).scalar_one_or_none()
-
     return saved_poi
 
 
