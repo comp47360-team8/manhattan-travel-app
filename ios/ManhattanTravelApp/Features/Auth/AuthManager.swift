@@ -6,6 +6,7 @@ import Foundation
 /// backend-backed implementation once the auth API is available.
 @MainActor
 final class AuthManager: ObservableObject {
+    @Published var isPresentingLogin: Bool = false
     @Published var isLoggedIn: Bool
     @Published var currentUser: User?
     @Published var emailError: String?
@@ -25,12 +26,24 @@ final class AuthManager: ObservableObject {
         placesCount: 27,
         offPeakPercentage: 94
     )
-
+    
     init() {
-        let hasToken = TokenStore.accessToken != nil
-        self.isLoggedIn = hasToken
-        self.currentUser = hasToken ? AuthManager.mockUser : nil
+        let hasSession = TokenStore.refreshToken != nil
+        self.isLoggedIn = hasSession
+        self.currentUser = hasSession ? AuthManager.mockUser : nil
+
+        NotificationCenter.default.addObserver(forName: .authSessionExpired, object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor in self?.handleSessionExpired() }
+        }
     }
+
+    func handleSessionExpired() {
+        currentUser = nil
+        isLoggedIn = false
+        isPresentingLogin = true
+    }
+
+
     // Login check
     func login(email: String, password: String) async {
         // sync
@@ -45,6 +58,7 @@ final class AuthManager: ObservableObject {
             TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
             currentUser = AuthManager.mockUser
             isLoggedIn = true
+            isPresentingLogin = false
             
         }catch{
             generalError = error.localizedDescription
@@ -72,6 +86,7 @@ final class AuthManager: ObservableObject {
             TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
             currentUser = AuthManager.mockUser
             isLoggedIn = true
+            isPresentingLogin = false
             
         } catch let error as NetworkError {
             if case .http(let status, let detail) = error, status == 409 {
@@ -105,6 +120,11 @@ final class AuthManager: ObservableObject {
         passwordError = nil
         confirmPasswordError = nil
         generalError = nil
+    }
+    
+    func requireLogin() {
+        print("🔖 requireLogin called, setting isPresentingLogin = true")
+        isPresentingLogin = true
     }
 
 }

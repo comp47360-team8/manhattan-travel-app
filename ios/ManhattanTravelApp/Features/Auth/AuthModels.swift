@@ -44,3 +44,10 @@ struct LogoutRequest: Encodable {
 struct LogoutResponse: Decodable {
     let message: String
 }
+
+// refresh 
+struct RefreshRequest: Encodable {
+    let refreshToken: String
+}
+
+typealias RefreshResponse = LoginResponse
