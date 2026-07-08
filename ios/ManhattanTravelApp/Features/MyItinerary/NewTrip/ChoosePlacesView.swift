@@ -193,7 +193,7 @@ struct ChoosePlacesView: View {
             sectionHeader(title)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                       spacing: 10) {
-                ForEach(pois) { poi in cardCell(poi, fillWidth: true) }
+                ForEach(pois) { poi in cardCell(poi, fillWidth: false)}
             }
             .padding(.horizontal, 20)
         }

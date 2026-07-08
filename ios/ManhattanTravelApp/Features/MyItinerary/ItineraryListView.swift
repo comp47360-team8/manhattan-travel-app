@@ -150,4 +150,6 @@ struct ItineraryListView: View {
     }
 }
 
-#Preview { ItineraryListView().environmentObject(SavedPOIStore()) }
+#Preview { ItineraryListView()
+        .environmentObject(SavedPOIStore())
+        .environmentObject(AuthManager())}
