@@ -16,8 +16,9 @@ function Authform({onXClick,onRegisterClick,onLoginClick, authMode}: AuthFormPro
 
 
     async function handleLogin() {
-    const response = await fetch("http://localhost:8000/auth/login", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,8 +39,9 @@ function Authform({onXClick,onRegisterClick,onLoginClick, authMode}: AuthFormPro
     }
 
     async function handleRegister() {
-    const response = await fetch("http://localhost:8000/auth/signup", {
+    const response = await fetch("/api/auth/signup", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

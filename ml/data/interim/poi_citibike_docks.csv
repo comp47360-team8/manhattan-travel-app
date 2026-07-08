@@ -1,0 +1,1479 @@
+place_id,station_id,station_name,dist_m,within_250,within_400
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6322.01,E 33 St & 5 Ave,107.8,1,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6441.02,Broadway & W 37 St,397.9,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6280.13,E 33 St & Park Ave,365.2,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6441.11,Broadway & W 36 St,354.9,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6398.06,W 37 St & 5 Ave,288.5,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6398.08,E 35 St & Madison Ave,261.9,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6364.1,6 Ave & W 34 St,241.2,1,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6289.06,Broadway & W 29 St,348.4,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6248.08,5 Ave & E 30 St,278.2,0,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6364.07,6 Ave & W 33 St,245.9,1,1
+ChIJaXQRs6lZwokRY6EFpJnhNNE,6441.01,Broadway & W 36 St,328.1,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6517.08,W 42 St & 6 Ave,349.8,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6593.14,W 43 St & 6 Ave,360.8,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6667.12,W 47 St & 6 Ave,302.7,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6593.15,6 Ave & W 45 St,270.4,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6560.01,Broadway & W 41 St,327.6,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6676.02,W 45 St & 8 Ave,296.0,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6667.04,W 47 St & 6 Ave,256.4,0,1
+ChIJmQJIxlVYwokRLgeuocVOGVU,6708.04,Broadway & W 48 St,251.4,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6771.13,W 54 St & 6 Ave,367.8,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6700.01,W 52 St & 5 Ave,226.4,1,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6551.16,E 46 St & Madison Ave,383.0,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6667.12,W 47 St & 6 Ave,284.1,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6740.01,W 52 St & 6 Ave,303.7,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6626.01,E 48 St & 5 Ave,174.1,1,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6659.09,Madison Ave & E 51 St,298.7,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6593.15,6 Ave & W 45 St,388.2,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6700.14,W 51 St & Rockefeller Plaza,120.5,1,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6626.11,W 48 St &  Rockefeller Plaza,119.9,1,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6740.1,W 51 St & 6 Ave,259.2,0,1
+ChIJI6lzvP5YwokRf36nzqqs4_0,6667.04,W 47 St & 6 Ave,328.7,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6771.13,W 54 St & 6 Ave,334.0,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6700.01,W 52 St & 5 Ave,254.3,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6667.12,W 47 St & 6 Ave,252.5,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6740.01,W 52 St & 6 Ave,222.9,1,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6626.01,E 48 St & 5 Ave,260.1,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6659.09,Madison Ave & E 51 St,369.2,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6779.07,W 51 St & 7 Ave,370.2,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6593.15,6 Ave & W 45 St,380.5,0,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6700.14,W 51 St & Rockefeller Plaza,117.1,1,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6626.11,W 48 St &  Rockefeller Plaza,176.0,1,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6740.1,W 51 St & 6 Ave,168.8,1,1
+ChIJe7vKMf9YwokRIMYfDz7iF9o,6667.04,W 47 St & 6 Ave,285.0,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5175.08,Fulton St & Broadway,381.0,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5329.08,Murray St & West St,232.9,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,5297.02,Vesey Pl & River Terrace,387.1,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5216.07,Vesey St & Greenwich St,179.6,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,5256.06,Vesey St & West St,158.3,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,5288.12,Murray St & Greenwich St,262.9,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5216.04,Barclay St & Church St,250.6,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5216.06,Vesey St & Church St,243.9,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,5184.08,West St & Liberty St,223.8,1,1
+ChIJTWE_0BtawokRVJNGH5RS448,5288.08,Park Pl & Church St,323.9,0,1
+ChIJTWE_0BtawokRVJNGH5RS448,5288.09,Warren St & W Broadway,393.3,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5073.07,Greenwich St & Rector St,390.9,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5175.08,Fulton St & Broadway,332.7,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5114.08,South End Ave & Albany St,324.5,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5105.01,Liberty St & Broadway,372.1,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5329.08,Murray St & West St,390.9,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5216.07,Vesey St & Greenwich St,214.9,1,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5256.06,Vesey St & West St,291.4,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5073.08,Greenwich St & Rector St,359.0,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5216.04,Barclay St & Church St,303.0,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5216.06,Vesey St & Church St,251.7,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5145.02,Albany St & Greenwich St,257.0,0,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5184.08,West St & Liberty St,128.2,1,1
+ChIJRcvoOxpawokR7R4dQMXMMPQ,5288.08,Park Pl & Church St,388.7,0,1
+ChIJb8Jg9pZYwokR-qHGtvSkLzs,7161.08,5 Ave & E 78 St,357.1,0,1
+ChIJb8Jg9pZYwokR-qHGtvSkLzs,7188.13,Madison Ave & E 82 St,259.2,0,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6771.13,W 54 St & 6 Ave,57.7,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6700.01,W 52 St & 5 Ave,193.3,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6740.01,W 52 St & 6 Ave,185.5,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6659.09,Madison Ave & E 51 St,375.7,0,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6659.03,E 53 St & Madison Ave,358.5,0,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6700.14,W 51 St & Rockefeller Plaza,193.0,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6809.07,W 56 St & 6 Ave,222.0,1,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6740.1,W 51 St & 6 Ave,250.9,0,1
+ChIJKxDbe_lYwokRVf__s8CPn-o,6809.09,W 55 St & 6 Ave,206.9,1,1
+ChIJCXoPsPRYwokRsV1MYnKBfaI,7304.08,W 82 St & Central Park West,271.5,0,1
+ChIJCXoPsPRYwokRsV1MYnKBfaI,7253.04,Central Park West & W 76 St,262.8,0,1
+ChIJCXoPsPRYwokRsV1MYnKBfaI,7281.09,W 76 St & Columbus Ave,305.2,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6474.11,E 40 St & 5 Ave,378.1,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6432.08,Park Ave & E 41 St,138.5,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6389.09,E 39 St & Lexington Ave,357.6,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6551.16,E 46 St & Madison Ave,299.6,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6584.12,E 47 St & Park Ave,325.8,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6464.09,E 44 St & Lexington Ave,188.1,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6464.08,E 45 St & 3 Ave,371.1,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6432.1,E 41 St & Madison Ave (SE corner),215.9,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6432.11,E 40 St & Park Ave,236.6,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6551.02,W 44 St & 5 Ave,353.8,0,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6432.09,Park Ave & E 42 St,101.9,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6551.11,E 43 St & Madison Ave,173.3,1,1
+ChIJhRwB-yFawokRi0AhGH87UTc,6432.15,Park Ave & E 40 St,207.6,1,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6425.04,11 Ave & W 27 St,380.4,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6306.01,W 20 St & 10 Ave,258.4,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6266.06,9 Ave & W 22 St,363.8,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6306.06,W 22 St & 10 Ave,121.1,1,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6233.04,Pier 61 at Chelsea Piers,315.8,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6339.06,W 25 St & 9 Ave,353.6,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6382.05,W 26 St & 10 Ave,245.3,1,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6306.07,W 20 St & 11 Ave,287.6,0,1
+ChIJ5bQPhMdZwokRkTwKhVxhP1g,6459.04,10 Ave & W 28 St,389.8,0,1
+ChIJK3vOQyNawokRXEa9errdJiU,5096.12,Peck Slip & South St,389.5,0,1
+ChIJURWoF5pYwokRIfXv4To528c,4962.01,Broadway & Battery Pl,105.6,1,1
+ChIJURWoF5pYwokRIfXv4To528c,5001.08,Little West St & 1 Pl,280.7,0,1
+ChIJURWoF5pYwokRIfXv4To528c,4962.02,Whitehall St & Bridge St,213.9,1,1
+ChIJURWoF5pYwokRIfXv4To528c,5073.07,Greenwich St & Rector St,277.2,0,1
+ChIJURWoF5pYwokRIfXv4To528c,4993.02,Pearl St & Hanover Square,365.8,0,1
+ChIJURWoF5pYwokRIfXv4To528c,5033.01,Broadway & Morris St,45.6,1,1
+ChIJURWoF5pYwokRIfXv4To528c,4962.09,Pearl St & Whitehall St,271.2,0,1
+ChIJURWoF5pYwokRIfXv4To528c,5073.08,Greenwich St & Rector St,308.7,0,1
+ChIJURWoF5pYwokRIfXv4To528c,4962.08,Broad St & Bridge St,260.8,0,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6535.04,W 34 St & Hudson Blvd E,200.0,1,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6425.04,11 Ave & W 27 St,372.6,0,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6459.07,W 30 St & 10 Ave,124.9,1,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6535.05,10 Ave & W 34 St,275.0,0,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6492.04,W 33 St & 10 Ave,234.0,1,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6459.04,10 Ave & W 28 St,351.0,0,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6578.01,W 34 St & 11 Ave,237.3,1,1
+ChIJqygAFrRZwokRwF0VrBoXS0E,6611.07,Hudson Blvd W & W 36 St,387.8,0,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6535.04,W 34 St & Hudson Blvd E,200.9,1,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6459.07,W 30 St & 10 Ave,134.2,1,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6492.08,9 Ave & W 33 St,372.8,0,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6535.05,10 Ave & W 34 St,222.0,1,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6492.04,W 33 St & 10 Ave,147.6,1,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6459.04,10 Ave & W 28 St,309.4,0,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6569.08,W 35 St & Dyer Ave,339.9,0,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6578.01,W 34 St & 11 Ave,297.1,0,1
+ChIJ3aqq5Q1ZwokRb9hLO7Gyxgw,6611.07,Hudson Blvd W & W 36 St,391.5,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6474.11,E 40 St & 5 Ave,257.4,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6432.08,Park Ave & E 41 St,149.4,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6389.09,E 39 St & Lexington Ave,383.8,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6551.16,E 46 St & Madison Ave,306.2,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6464.09,E 44 St & Lexington Ave,314.5,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6432.1,E 41 St & Madison Ave (SE corner),111.3,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6432.11,E 40 St & Park Ave,227.0,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6551.02,W 44 St & 5 Ave,275.1,0,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6432.09,Park Ave & E 42 St,132.0,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6551.11,E 43 St & Madison Ave,88.2,1,1
+ChIJd7I1IO5ZwokRbv7YUlgChl4,6432.15,Park Ave & E 40 St,184.9,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6771.13,W 54 St & 6 Ave,372.3,0,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6700.01,W 52 St & 5 Ave,147.8,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6551.16,E 46 St & Madison Ave,377.0,0,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6626.01,E 48 St & 5 Ave,218.4,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6659.09,Madison Ave & E 51 St,89.7,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6659.1,E 50 St & Park Ave,217.8,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6659.03,E 53 St & Madison Ave,220.0,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6700.14,W 51 St & Rockefeller Plaza,204.6,1,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6626.11,W 48 St &  Rockefeller Plaza,277.3,0,1
+ChIJUW4vEPxYwokRW6o24DU0YIg,6659.01,E 51 St & Lexington Ave,383.1,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6474.11,E 40 St & 5 Ave,198.1,1,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6517.08,W 42 St & 6 Ave,204.3,1,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6593.14,W 43 St & 6 Ave,193.9,1,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6398.06,W 37 St & 5 Ave,352.9,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6593.15,6 Ave & W 45 St,380.6,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6432.1,E 41 St & Madison Ave (SE corner),324.8,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6560.01,Broadway & W 41 St,353.5,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6551.02,W 44 St & 5 Ave,287.3,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6560.15,Broadway & W 38 St,375.6,0,1
+ChIJvbGg56pZwokRp_E3JbivnLQ,6551.11,E 43 St & Madison Ave,335.9,0,1
+ChIJmZ5emqJYwokRuDz79o0coAQ,7344.05,E 91 St & Park Ave,312.2,0,1
+ChIJmZ5emqJYwokRuDz79o0coAQ,7293.1,E 88 St & Park Ave,307.8,0,1
+ChIJmZ5emqJYwokRuDz79o0coAQ,7323.09,5 Ave & E 87 St,105.5,1,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,5997.1,W 12 St & Hudson St,358.4,0,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,6115.09,W 15 St & 10 Ave,371.0,0,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,6072.16,Gansevoort St & Hudson St,308.8,0,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,6039.06,Washington St & Gansevoort St,69.2,1,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,6115.06,Hudson St & W 13 St,306.8,0,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,5964.01,Bank St & Washington St,377.8,0,1
+ChIJN3MJ6pRYwokRiXg91flSP8Y,6157.04,10 Ave & W 14 St,270.2,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6771.13,W 54 St & 6 Ave,311.8,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6700.01,W 52 St & 5 Ave,294.2,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6667.12,W 47 St & 6 Ave,262.4,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6779.04,Broadway & W 51 St,383.9,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6740.01,W 52 St & 6 Ave,151.1,1,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6626.01,E 48 St & 5 Ave,343.9,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6779.07,W 51 St & 7 Ave,287.8,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6700.14,W 51 St & Rockefeller Plaza,159.0,1,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6626.11,W 48 St &  Rockefeller Plaza,252.0,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6740.1,W 51 St & 6 Ave,84.7,1,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6809.09,W 55 St & 6 Ave,380.2,0,1
+ChIJPS8b1vhYwokRldqq2YHmxJI,6667.04,W 47 St & 6 Ave,278.9,0,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6492.08,9 Ave & W 33 St,362.2,0,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6373.07,W 30 St & 8 Ave,174.6,1,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6297.07,8 Ave & W 27 St,390.0,0,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6331.01,W 31 St & 7 Ave,215.6,1,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6450.05,8 Ave & W 31 St,105.4,1,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6450.12,8 Ave & W 33 St,122.6,1,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6526.01,W 35 St & 8 Ave,256.7,0,1
+ChIJhRwB-yFawokR5Phil-QQ3zM,6483.06,W 36 St & 7 Ave,376.0,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6215.04,W 25 St & 6 Ave,353.9,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6140.05,W 21 St & 6 Ave,383.0,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6131.1,E 24 St & Park Ave S,309.9,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,5980.11,Broadway & E 19 St,309.6,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6098.02,W 20 St & 5 Ave,186.2,1,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6173.08,Broadway & W 25 St,205.7,1,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6098.12,Broadway & E 19 St,267.2,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6131.12,Madison Ave & E 26 St,309.6,0,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6098.1,Broadway & E 21 St,130.7,1,1
+ChIJZx8c96NZwokRJklw7SVhKt4,6055.08,E 20 St & Park Ave,360.1,0,1
+ChIJjX494pBZwokRGH620d9eYfo,5872.1,E 9 St & 5 Ave,244.5,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5721.01,Sullivan St & Washington Sq,152.5,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5755.09,Washington Square E,142.5,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5721.07,Thompson St & Bleecker St,340.1,0,1
+ChIJjX494pBZwokRGH620d9eYfo,5755.01,Washington Pl & Broadway,344.6,0,1
+ChIJjX494pBZwokRGH620d9eYfo,5838.09,Washington Pl & 6 Ave,289.5,0,1
+ChIJjX494pBZwokRGH620d9eYfo,5755.15,Washington Pl & Greene St,197.8,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5755.14,University Pl & E 8 St,213.7,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5872.08,E 10 St & 5 Ave,329.7,0,1
+ChIJjX494pBZwokRGH620d9eYfo,5721.14,LaGuardia Pl & W 3 St,201.3,1,1
+ChIJjX494pBZwokRGH620d9eYfo,5797.01,MacDougal St & Washington Sq,183.3,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6233.05,W 16 St & The High Line,116.0,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6115.09,W 15 St & 10 Ave,117.3,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6072.16,Gansevoort St & Hudson St,349.7,0,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6306.01,W 20 St & 10 Ave,370.7,0,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6039.06,Washington St & Gansevoort St,384.4,0,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6190.08,9 Ave & W 18 St,224.3,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6148.02,W 17 St & 8 Ave,398.3,0,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6115.06,Hudson St & W 13 St,274.9,0,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6157.04,10 Ave & W 14 St,189.9,1,1
+ChIJw2lMFL9ZwokRosAtly52YX4,6190.03,W 18 St & 9 Ave,240.9,1,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,6932.14,E 67 St & Park Ave,385.5,0,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,7036.07,E 70 St & Madison Ave,89.4,1,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,6932.15,E 68 St & Madison Ave,216.5,1,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,7100.07,5 Ave & E 72 St,198.9,1,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,6998.08,E 72 St & Park Ave,277.4,0,1
+ChIJHRH97uxYwokR6CBeDyn1jtg,6969.08,E 66 St & Madison Ave,353.7,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6322.01,E 33 St & 5 Ave,343.2,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6474.11,E 40 St & 5 Ave,316.0,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6432.08,Park Ave & E 41 St,393.5,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6389.09,E 39 St & Lexington Ave,347.1,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6280.13,E 33 St & Park Ave,306.8,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6398.06,W 37 St & 5 Ave,211.3,1,1
+ChIJ3453OAdZwokRja92OOKCugM,6398.08,E 35 St & Madison Ave,128.1,1,1
+ChIJ3453OAdZwokRja92OOKCugM,6280.12,E 32 St & Park Ave,393.5,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6432.1,E 41 St & Madison Ave (SE corner),347.2,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6313.1,Lexington Ave & E 36 St,285.6,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6432.11,E 40 St & Park Ave,309.6,0,1
+ChIJ3453OAdZwokRja92OOKCugM,6432.15,Park Ave & E 40 St,321.7,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6474.11,E 40 St & 5 Ave,135.1,1,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6517.08,W 42 St & 6 Ave,273.4,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6593.14,W 43 St & 6 Ave,245.0,1,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6398.06,W 37 St & 5 Ave,326.0,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6432.1,E 41 St & Madison Ave (SE corner),254.0,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6551.02,W 44 St & 5 Ave,269.3,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6551.11,E 43 St & Madison Ave,279.9,0,1
+ChIJqaiomQBZwokRTHOaUG7fUTs,6432.15,Park Ave & E 40 St,389.9,0,1
+ChIJraKL-BJawokREpxDmF5GcL4,4962.01,Broadway & Battery Pl,239.6,1,1
+ChIJraKL-BJawokREpxDmF5GcL4,5001.08,Little West St & 1 Pl,329.4,0,1
+ChIJraKL-BJawokREpxDmF5GcL4,4962.02,Whitehall St & Bridge St,200.8,1,1
+ChIJraKL-BJawokREpxDmF5GcL4,4846.01,South St & Whitehall St,317.6,0,1
+ChIJraKL-BJawokREpxDmF5GcL4,5033.01,Broadway & Morris St,380.7,0,1
+ChIJraKL-BJawokREpxDmF5GcL4,4962.09,Pearl St & Whitehall St,185.5,1,1
+ChIJraKL-BJawokREpxDmF5GcL4,4962.08,Broad St & Bridge St,320.6,0,1
+ChIJraKL-BJawokREpxDmF5GcL4,4889.06,Bus Slip & State St,165.1,1,1
+ChIJraKL-BJawokREpxDmF5GcL4,4920.13,South St & Broad St,393.6,0,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4962.01,Broadway & Battery Pl,396.9,0,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4962.02,Whitehall St & Bridge St,286.6,0,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4846.01,South St & Whitehall St,65.7,1,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4962.09,Pearl St & Whitehall St,229.0,1,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4962.08,Broad St & Bridge St,309.6,0,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4889.06,Bus Slip & State St,115.6,1,1
+ChIJR_yfQhNawokRti4i3iRuWwY,4920.13,South St & Broad St,206.0,1,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,5065.1,Maiden Ln & Pearl St,399.6,0,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,4953.08,Front St & Pine St,276.2,0,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,5024.1,Water St & Fletcher St,238.5,1,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,5096.12,Peck Slip & South St,249.7,1,1
+EhtTb3V0aCBTdCwgTmV3IFlvcmssIE5ZLCBVU0EiLiosChQKEgkleibqOlrCiRFTLFC5S1-9YhIUChIJ8_BTUSNawokRZOkHlZpubSI,5065.14,Cliff St & Fulton St,339.4,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5175.08,Fulton St & Broadway,218.5,1,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5105.01,Liberty St & Broadway,328.0,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5329.08,Murray St & West St,362.4,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5216.07,Vesey St & Greenwich St,102.4,1,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5256.06,Vesey St & West St,332.3,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5288.12,Murray St & Greenwich St,342.9,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5216.04,Barclay St & Church St,185.6,1,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5216.06,Vesey St & Church St,125.0,1,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5145.02,Albany St & Greenwich St,305.7,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5184.08,West St & Liberty St,255.8,0,1
+ChIJ4f4VwT5bwokRwQ6hjfC-eTM,5288.08,Park Pl & Church St,271.0,0,1
+ChIJbVfZzhBawokRnmCT-muojBA,4962.01,Broadway & Battery Pl,393.8,0,1
+ChIJbVfZzhBawokRnmCT-muojBA,5073.07,Greenwich St & Rector St,150.4,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,5105.01,Liberty St & Broadway,172.6,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,5033.01,Broadway & Morris St,247.8,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,5065.04,John St & William St,393.5,0,1
+ChIJbVfZzhBawokRnmCT-muojBA,5073.08,Greenwich St & Rector St,152.3,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,5065.1,Maiden Ln & Pearl St,388.0,0,1
+ChIJbVfZzhBawokRnmCT-muojBA,5065.12,William St & Pine St,258.4,0,1
+ChIJbVfZzhBawokRnmCT-muojBA,5145.02,Albany St & Greenwich St,196.0,1,1
+ChIJbVfZzhBawokRnmCT-muojBA,5105.09,Liberty St & Nassau St,219.4,1,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5073.07,Greenwich St & Rector St,292.0,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5105.01,Liberty St & Broadway,185.2,1,1
+ChIJAaIFAxdawokR8txc3YPbD3A,4993.02,Pearl St & Hanover Square,308.7,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5033.01,Broadway & Morris St,300.9,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5137.11,Fulton St & William St,393.7,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5065.04,John St & William St,286.1,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5073.08,Greenwich St & Rector St,296.4,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,4993.15,Water St & Gouverneur Ln,352.0,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5065.1,Maiden Ln & Pearl St,246.5,1,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5065.12,William St & Pine St,115.2,1,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5145.02,Albany St & Greenwich St,329.7,0,1
+ChIJAaIFAxdawokR8txc3YPbD3A,5105.09,Liberty St & Nassau St,150.6,1,1
+ChIJK6bycAH0wokRrSnflfrnkZE,8616.06,Riverside Dr & Broadway,325.8,0,1
+ChIJK6bycAH0wokRrSnflfrnkZE,8547.04,Broadway & Ellwood St,354.7,0,1
+ChIJK6bycAH0wokRrSnflfrnkZE,8636.04,Dyckman St & Henshaw St,341.4,0,1
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,7713.01,W 113 St & Broadway,350.0,0,1
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,7646.04,W 110 St & Amsterdam Ave,156.0,1,1
+ChIJa0R7Vjz2wokR_wv0XhIOo8Q,7692.11,W 116 St & Amsterdam Ave,339.5,0,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7745.07,W 120 St & Claremont Ave,385.9,0,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7713.11,W 116 St & Broadway,148.3,1,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7713.01,W 113 St & Broadway,263.6,0,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7727.08,Amsterdam Ave & W 119 St,279.4,0,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7692.11,W 116 St & Amsterdam Ave,179.2,1,1
+ChIJyQ3Tlj72wokRUCflR_kzeVc,7727.07,Amsterdam Ave & W 119 St,276.4,0,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,7738.04,Adam Clayton Powell Blvd & W 126 St,205.2,1,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,7704.04,Adam Clayton Powell Blvd & W 123 St,241.7,1,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,7723.01,St Nicholas Ave & Manhattan Ave,254.7,0,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,7795.09,Frederick Douglass Blvd & W 129 St,301.6,0,1
+ChIJRaWCMm32wokRLdyc4zmYzRw,7756.1,St Nicholas Ave & W 126 St,222.5,1,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,7052.01,W 63 St & Broadway,117.7,1,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,6986.07,Columbus Ave & W 59 St,363.9,0,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,7023.09,Amsterdam Ave & W 60 St,329.2,0,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,7116.04,W 67 St & Broadway,282.3,0,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,7014.12,Broadway & W 61 St,299.4,0,1
+ChIJN6W-X_VYwokRTqwcBnTw1Uk,7149.05,Amsterdam Ave & W 66 St,265.5,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6847.05,7 Ave & W 55 St,142.0,1,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6884.03,W 56 St & 8 Ave,285.9,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6912.01,7 Ave & Central Park South,193.4,1,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6847.02,Broadway & W 56 St,169.1,1,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6876.04,Central Park S & 6 Ave,314.0,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6779.05,Broadway & W 53 St,298.4,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6948.1,Broadway & W 58 St,252.0,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6809.07,W 56 St & 6 Ave,297.0,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6884.06,8 Ave & W 55 St,334.4,0,1
+ChIJ2RFUePdYwokRd5R6XF6xFD0,6809.09,W 55 St & 6 Ave,249.2,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6441.02,Broadway & W 37 St,152.4,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6441.11,Broadway & W 36 St,95.8,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6364.1,6 Ave & W 34 St,95.8,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6331.01,W 31 St & 7 Ave,315.1,0,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6483.06,W 36 St & 7 Ave,213.0,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6560.15,Broadway & W 38 St,288.2,0,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6441.06,W 37 St & Broadway,205.0,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6364.07,6 Ave & W 33 St,164.1,1,1
+ChIJ3xjWra5ZwokRrwJ0KZ4yKNs,6441.01,Broadway & W 36 St,77.0,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,5788.15,4 Ave & E 12 St,366.9,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5863.07,E 15 St & 3 Ave,394.7,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5829.12,E 11 St & Broadway,363.3,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5947.06,E 15 St & 5 Ave,176.8,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,6022.04,E 16 St & 5 Ave,190.5,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,5980.11,Broadway & E 19 St,283.3,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5905.14,University Pl & E 14 St,144.0,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,5905.12,Broadway & E 14 St,149.3,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,5980.07,E 17 St & Broadway,156.1,1,1
+ChIJi6oUnphZwokRpMog28mvAM0,6098.12,Broadway & E 19 St,327.4,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5938.11,E 16 St & Irving Pl,267.7,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5947.04,W 13 St & 5 Ave,275.8,0,1
+ChIJi6oUnphZwokRpMog28mvAM0,5980.1,E 17 St & Broadway,150.1,1,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6131.13,E 27 St & Park Ave S,283.5,0,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6215.04,W 25 St & 6 Ave,350.3,0,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6131.1,E 24 St & Park Ave S,215.6,1,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6098.02,W 20 St & 5 Ave,375.2,0,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6173.08,Broadway & W 25 St,125.0,1,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6089.07,Lexington Ave & E 24 St,393.3,0,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6131.12,Madison Ave & E 26 St,121.2,1,1
+ChIJp32RvaZZwokRfH0Zgzl9mXk,6098.1,Broadway & E 21 St,289.2,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6771.13,W 54 St & 6 Ave,393.7,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6839.04,E 58 St & Madison Ave,259.1,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6839.1,Grand Army Plaza & Central Park S,57.7,1,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6801.01,E 59 St & Madison Ave,299.7,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6904.06,5 Ave & E 63 St,305.2,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6876.04,Central Park S & 6 Ave,221.4,1,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6801.16,E 61 St & Madison Ave,332.7,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6809.07,W 56 St & 6 Ave,279.7,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6839.15,Central Park S & Grand Army Plaza,72.3,1,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6809.09,W 55 St & 6 Ave,381.4,0,1
+ChIJYaVdffBYwokRnTOoCzCq9mE,6732.01,E 56 St & Madison Ave,368.9,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6771.13,W 54 St & 6 Ave,387.9,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6700.01,W 52 St & 5 Ave,273.3,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6667.12,W 47 St & 6 Ave,230.1,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6740.01,W 52 St & 6 Ave,288.4,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6626.01,E 48 St & 5 Ave,200.3,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6659.09,Madison Ave & E 51 St,355.3,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6593.15,6 Ave & W 45 St,342.2,0,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6700.14,W 51 St & Rockefeller Plaza,150.1,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6626.11,W 48 St &  Rockefeller Plaza,110.3,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6740.1,W 51 St & 6 Ave,229.7,1,1
+ChIJM-qBJWVZwokRZQwIoEESnEc,6667.04,W 47 St & 6 Ave,273.0,0,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,6839.1,Grand Army Plaza & Central Park S,395.6,0,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,6904.06,5 Ave & E 63 St,154.0,1,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,6801.16,E 61 St & Madison Ave,355.4,0,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,6839.15,Central Park S & Grand Army Plaza,372.0,0,1
+ChIJaWjW_PFYwokRFD8a2YQu12U,6969.08,E 66 St & Madison Ave,299.8,0,1
+ChIJEYYWppJYwokRUTul6ztwlJ0,7100.07,5 Ave & E 72 St,368.2,0,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,7253.04,Central Park West & W 76 St,377.9,0,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,7230.1,W 74 St & Columbus Ave,369.7,0,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,7175.05,Columbus Ave & W 72 St,349.5,0,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,7079.06,Central Park West & W 68 St,341.7,0,1
+ChIJ2aWDJ_hYwokRUKinWgKdI70,7141.07,Central Park West & W 72 St,84.2,1,1
+ChIJFXzf4e9YwokRtXgpty_i74g,7253.04,Central Park West & W 76 St,397.4,0,1
+ChIJeelsevFYwokRqyH7P0aN2C8,6839.1,Grand Army Plaza & Central Park S,381.4,0,1
+ChIJeelsevFYwokRqyH7P0aN2C8,6904.06,5 Ave & E 63 St,293.8,0,1
+ChIJeelsevFYwokRqyH7P0aN2C8,6876.04,Central Park S & 6 Ave,261.0,0,1
+ChIJeelsevFYwokRqyH7P0aN2C8,6839.15,Central Park S & Grand Army Plaza,368.2,0,1
+ChIJnxlg1U5YwokR8T90UrZiIwI,6795.01,W 46 St & 11 Ave,386.1,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5414.07,Delancey St & Eldridge St,133.0,1,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5445.07,Stanton St & Norfolk St,386.4,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5414.06,Allen St & Rivington St,153.5,1,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5484.09,Allen St & Stanton St,369.2,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5342.1,Allen St & Hester St,343.0,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5382.07,Forsyth St & Grand St,282.8,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5374.01,Norfolk St & Broome St,248.2,1,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5343.1,Allen St & Hester St,343.0,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5453.01,Rivington St & Chrystie St,297.3,0,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5453.05,Forsyth St & Broome St,217.5,1,1
+ChIJ20bVJYdZwokRhI7esP3mYM0,5343.11,Orchard St & Grand St,174.0,1,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5414.07,Delancey St & Eldridge St,349.4,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5414.06,Allen St & Rivington St,342.0,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5561.06,Lafayette St & Jersey St,339.6,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5484.09,Allen St & Stanton St,320.1,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5492.05,Cleveland Pl & Spring St,368.2,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5593.02,E 2 St & 2 Ave,351.8,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5636.13,E 1 St & Bowery,287.8,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5561.04,Mott St & Prince St,186.2,1,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5453.01,Rivington St & Chrystie St,159.8,1,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5453.05,Forsyth St & Broome St,378.4,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5593.01,E 1 St & 1 Ave,374.9,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5453.06,Kenmare St & Elizabeth St,262.0,0,1
+ChIJlaRS3IVZwokR2llMD6dCt-U,5523.02,Stanton St & Chrystie St,119.4,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6140.05,W 21 St & 6 Ave,333.7,0,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6030.04,W 13 St & 7 Ave,323.9,0,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6064.08,W 18 St & 6 Ave,235.9,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6030.06,W 15 St & 7 Ave,179.3,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6182.02,W 20 St & 7 Ave,270.0,0,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6107.08,W 17 St & 7 Ave,120.0,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,5989.02,W 15 St & 6 Ave,226.4,1,1
+ChIJD4QSVbxZwokRaFPDajZtIaI,6072.11,8 Ave & W 16 St,384.2,0,1
+ChIJi4hYtB32wokR1Npx_Tv7phk,7511.19,5 Ave & E 103 St,56.3,1,1
+ChIJi4hYtB32wokR1Npx_Tv7phk,7443.01,Madison Ave & E 99 St,337.4,0,1
+ChIJi4hYtB32wokR1Npx_Tv7phk,7488.24,E 102 St & Park Ave,260.1,0,1
+ChIJi4hYtB32wokR1Npx_Tv7phk,7528.31,E 106 St & Madison Ave,231.9,1,1
+ChIJWT0gUBz2wokRNcAxVUphAAs,7511.19,5 Ave & E 103 St,132.9,1,1
+ChIJWT0gUBz2wokRNcAxVUphAAs,7488.24,E 102 St & Park Ave,306.7,0,1
+ChIJWT0gUBz2wokRNcAxVUphAAs,7528.31,E 106 St & Madison Ave,168.4,1,1
+ChIJYWLHOqJYwokRmkVum_hd7Ss,7344.05,E 91 St & Park Ave,265.6,0,1
+ChIJYWLHOqJYwokRmkVum_hd7Ss,7323.09,5 Ave & E 87 St,396.6,0,1
+ChIJYWLHOqJYwokRmkVum_hd7Ss,7344.01,E 94 St & Madison Ave,220.3,1,1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,7243.04,E 84 St & Park Ave,366.2,0,1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,7188.13,Madison Ave & E 82 St,349.7,0,1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,7293.1,E 88 St & Park Ave,368.1,0,1
+ChIJ01_9-ZdYwokRL2JrA28GJp8,7323.09,5 Ave & E 87 St,123.7,1,1
+ChIJL-CJmTFZwokRsPcqje_bn7w,6233.05,W 16 St & The High Line,329.3,0,1
+ChIJL-CJmTFZwokRsPcqje_bn7w,6115.09,W 15 St & 10 Ave,252.3,0,1
+ChIJL-CJmTFZwokRsPcqje_bn7w,6039.06,Washington St & Gansevoort St,350.0,0,1
+ChIJL-CJmTFZwokRsPcqje_bn7w,6157.04,10 Ave & W 14 St,167.1,1,1
+ChIJq6qqr8dZwokRNqYPAJcjKas,5696.03,Pier 40 - Hudson River Park,144.8,1,1
+ChIJq6qqr8dZwokRNqYPAJcjKas,5730.08,Greenwich St & W Houston St,304.5,0,1
+ChIJq6qqr8dZwokRNqYPAJcjKas,5772.05,Morton St & Washington St,386.7,0,1
+ChIJd6SAvMdZwokRhc75qwSHIUA,6306.01,W 20 St & 10 Ave,314.8,0,1
+ChIJd6SAvMdZwokRhc75qwSHIUA,6306.06,W 22 St & 10 Ave,311.8,0,1
+ChIJd6SAvMdZwokRhc75qwSHIUA,6233.04,Pier 61 at Chelsea Piers,51.4,1,1
+ChIJd6SAvMdZwokRhc75qwSHIUA,6306.07,W 20 St & 11 Ave,74.6,1,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5805.07,7 Ave S & Bleecker St,225.7,1,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5838.09,Washington Pl & 6 Ave,238.6,1,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5914.03,W 11 St & 6 Ave,387.7,0,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5763.03,Carmine St & 6 Ave,383.2,0,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5914.08,Greenwich Ave & Charles St,223.2,1,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5955.12,Perry St & Greenwich Ave,253.8,0,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5922.07,Perry St & Bleecker St,281.4,0,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5797.01,MacDougal St & Washington Sq,352.9,0,1
+ChIJTQoVbZRZwokRx0ocj9EU2sA,5880.02,W 4 St & 7 Ave S,68.4,1,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,7253.04,Central Park West & W 76 St,316.5,0,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,7230.1,W 74 St & Columbus Ave,229.5,1,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,7175.05,Columbus Ave & W 72 St,239.2,1,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,7141.07,Central Park West & W 72 St,110.7,1,1
+ChIJmeJZYoxYwokRCRPVFhoAwVU,7281.09,W 76 St & Columbus Ave,389.1,0,1
+ChIJL1DP2C72wokRh3Lfn4T0Z3w,7745.07,W 120 St & Claremont Ave,363.6,0,1
+ChIJL1DP2C72wokRh3Lfn4T0Z3w,7713.11,W 116 St & Broadway,309.9,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6700.01,W 52 St & 5 Ave,208.8,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6551.16,E 46 St & Madison Ave,306.6,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6667.12,W 47 St & 6 Ave,395.9,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6584.12,E 47 St & Park Ave,387.9,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6626.01,E 48 St & 5 Ave,120.1,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6659.09,Madison Ave & E 51 St,187.2,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6659.1,E 50 St & Park Ave,269.7,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6659.03,E 53 St & Madison Ave,323.6,0,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6700.14,W 51 St & Rockefeller Plaza,192.1,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6626.11,W 48 St &  Rockefeller Plaza,176.5,1,1
+ChIJcQM7oP5YwokRvrQ8ty1ULps,6740.1,W 51 St & 6 Ave,386.9,0,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6762.04,3 Ave & E 62 St,192.0,1,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6830.02,E 63 St & 3 Ave,291.3,0,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6762.02,E 58 St & 3 Ave,145.7,1,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6801.01,E 59 St & Madison Ave,351.9,0,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6801.16,E 61 St & Madison Ave,381.9,0,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6830.04,3 Ave & E 62 St,192.1,1,1
+ChIJ-RNjg-VYwokRCJTSRaHml6E,6691.11,E 56 St & 3 Ave,326.4,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6771.13,W 54 St & 6 Ave,295.0,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6700.01,W 52 St & 5 Ave,376.5,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6839.04,E 58 St & Madison Ave,157.6,1,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6839.1,Grand Army Plaza & Central Park S,190.2,1,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6801.01,E 59 St & Madison Ave,254.3,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6801.16,E 61 St & Madison Ave,375.7,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6659.03,E 53 St & Madison Ave,331.7,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6809.07,W 56 St & 6 Ave,289.9,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6839.15,Central Park S & Grand Army Plaza,210.3,1,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6809.09,W 55 St & 6 Ave,384.6,0,1
+ChIJjyX2GqRZwokRT-gdcGoPuSI,6732.01,E 56 St & Madison Ave,165.1,1,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6771.13,W 54 St & 6 Ave,297.1,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6700.01,W 52 St & 5 Ave,359.2,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6839.04,E 58 St & Madison Ave,157.7,1,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6839.1,Grand Army Plaza & Central Park S,219.0,1,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6801.01,E 59 St & Madison Ave,257.1,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6801.16,E 61 St & Madison Ave,386.7,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6659.03,E 53 St & Madison Ave,302.8,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6809.07,W 56 St & 6 Ave,308.7,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6839.15,Central Park S & Grand Army Plaza,238.0,1,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6809.09,W 55 St & 6 Ave,399.8,0,1
+ChIJrc9T9fpYwokRdvjYRHT8nI4,6732.01,E 56 St & Madison Ave,136.7,1,1
+ChIJR1pTRTxawokRyzoX5XQ_alI,4953.08,Front St & Pine St,395.0,0,1
+ChIJR1pTRTxawokRyzoX5XQ_alI,5024.1,Water St & Fletcher St,361.2,0,1
+ChIJR1pTRTxawokRyzoX5XQ_alI,5096.12,Peck Slip & South St,218.7,1,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6215.04,W 25 St & 6 Ave,241.4,1,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6140.05,W 21 St & 6 Ave,344.7,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6131.1,E 24 St & Park Ave S,362.8,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6215.07,W 27 St & 6 Ave,360.3,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6098.02,W 20 St & 5 Ave,269.7,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6173.08,Broadway & W 25 St,118.8,1,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6098.12,Broadway & E 19 St,376.7,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6131.12,Madison Ave & E 26 St,292.8,0,1
+ChIJaeKcEaRZwokRcllXm5cM7J0,6098.1,Broadway & E 21 St,243.5,1,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7959.18,Hamilton Pl & W 140 St,374.0,0,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7937.15,St Nicholas Terrace & Convent Ave,48.2,1,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7976.08,Edgecombe Ave & W 145 St,374.7,0,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7915.11,Edgecombe Ave & W 141 St,196.7,1,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7898.03,St Nicholas Ave & W 137 St,321.4,0,1
+ChIJ5wFJxXr2wokRQEmdWil_bEw,7876.07,Frederick Douglass Blvd & W 139 St,337.6,0,1
+ChIJqTIQToL2wokRKbmUA423_YY,8119.05,W 159 St & Edgecombe Ave,142.9,1,1
+ChIJqTIQToL2wokRKbmUA423_YY,8138.07,W 160 St & St Nicholas Ave,108.7,1,1
+ChIJqTIQToL2wokRKbmUA423_YY,8153.1,W 163 St & Edgecombe Ave,174.7,1,1
+ChIJqTIQToL2wokRKbmUA423_YY,8085.09,St Nicholas Ave & W 157 St,314.7,0,1
+ChIJqTIQToL2wokRKbmUA423_YY,8172.07,Amsterdam Ave & W 162 St,217.4,1,1
+ChIJTZ18cAH0wokR1HfVR86mzEA,8547.04,Broadway & Ellwood St,144.2,1,1
+ChIJTZ18cAH0wokR1HfVR86mzEA,8583.02,Sherman Ave & Thayer St,367.4,0,1
+ChIJTZ18cAH0wokR1HfVR86mzEA,8528.05,Nagle Ave & Ellwood St,359.9,0,1
+ChIJIVEyfY5YwokRXqcWLrl5XVA,7253.04,Central Park West & W 76 St,44.5,1,1
+ChIJIVEyfY5YwokRXqcWLrl5XVA,7230.1,W 74 St & Columbus Ave,318.7,0,1
+ChIJIVEyfY5YwokRXqcWLrl5XVA,7281.09,W 76 St & Columbus Ave,299.2,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5414.07,Delancey St & Eldridge St,233.0,1,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5445.07,Stanton St & Norfolk St,371.4,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5414.06,Allen St & Rivington St,229.0,1,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5303.06,Clinton St & Grand St,344.1,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5342.1,Allen St & Hester St,333.9,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5382.07,Forsyth St & Grand St,339.7,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5374.01,Norfolk St & Broome St,147.7,1,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5343.1,Allen St & Hester St,333.9,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5453.01,Rivington St & Chrystie St,394.7,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5453.05,Forsyth St & Broome St,304.7,0,1
+ChIJ5YRc6oVZwokRcRC4WKbR6_s,5343.11,Orchard St & Grand St,162.5,1,1
+ChIJYTeZ_BFawokRQzNFpOk4Bew,4962.01,Broadway & Battery Pl,369.3,0,1
+ChIJYTeZ_BFawokRQzNFpOk4Bew,5001.08,Little West St & 1 Pl,82.1,1,1
+ChIJYTeZ_BFawokRQzNFpOk4Bew,5114.06,West Thames St,294.7,0,1
+ChIJYTeZ_BFawokRQzNFpOk4Bew,5033.01,Broadway & Morris St,382.6,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4962.01,Broadway & Battery Pl,238.6,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4993.13,Old Slip & South St,289.1,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4962.02,Whitehall St & Bridge St,161.4,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4846.01,South St & Whitehall St,258.2,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4993.02,Pearl St & Hanover Square,225.4,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,5033.01,Broadway & Morris St,325.7,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4953.04,South St & Gouverneur Ln,387.7,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4962.09,Pearl St & Whitehall St,161.2,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4962.08,Broad St & Bridge St,42.3,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4889.06,Bus Slip & State St,278.2,0,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4920.13,South St & Broad St,171.8,1,1
+ChIJAw6IZBFbwokRQfEy-LXgDXw,4993.15,Water St & Gouverneur Ln,310.3,0,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6847.05,7 Ave & W 55 St,370.5,0,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6986.07,Columbus Ave & W 59 St,312.6,0,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6884.03,W 56 St & 8 Ave,186.5,1,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6912.01,7 Ave & Central Park South,252.4,0,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6847.02,Broadway & W 56 St,234.6,1,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6948.1,Broadway & W 58 St,51.5,1,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,7014.12,Broadway & W 61 St,295.2,0,1
+ChIJgVtmM_ZYwokRcJJnebe5KX8,6884.06,8 Ave & W 55 St,254.8,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6771.13,W 54 St & 6 Ave,147.1,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6700.01,W 52 St & 5 Ave,115.1,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6740.01,W 52 St & 6 Ave,208.7,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6626.01,E 48 St & 5 Ave,371.4,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6659.09,Madison Ave & E 51 St,296.8,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6659.03,E 53 St & Madison Ave,312.5,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6700.14,W 51 St & Rockefeller Plaza,103.2,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6626.11,W 48 St &  Rockefeller Plaza,343.5,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6809.07,W 56 St & 6 Ave,317.3,0,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6740.1,W 51 St & 6 Ave,241.3,1,1
+ChIJF5e1QvlYwokRcVF6x1CEcQk,6809.09,W 55 St & 6 Ave,301.0,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6762.04,3 Ave & E 62 St,225.4,1,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6830.02,E 63 St & 3 Ave,299.7,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6762.02,E 58 St & 3 Ave,261.7,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6682.03,E 58 St & 1 Ave (NE Corner),307.1,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6723.1,E 58 St & 1 Ave (NW Corner),271.1,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6753.08,1 Ave & E 62 St,271.8,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6830.04,3 Ave & E 62 St,225.8,1,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6691.11,E 56 St & 3 Ave,360.2,0,1
+ChIJfQDvGoxZwokRvzLRRApytgQ,6650.07,E 55 St & 2 Ave,399.8,0,1
+ChIJoxqn-kD2wokRLvhOLfAneU8,7745.07,W 120 St & Claremont Ave,274.4,0,1
+ChIJoxqn-kD2wokRLvhOLfAneU8,7823.03,Broadway & Moylan Pl,355.2,0,1
+ChIJoxqn-kD2wokRLvhOLfAneU8,7783.18,Broadway & W 122 St,213.9,1,1
+ChIJh70nPBz2wokR7EWPEdNPP9s,7511.19,5 Ave & E 103 St,159.9,1,1
+ChIJh70nPBz2wokR7EWPEdNPP9s,7488.24,E 102 St & Park Ave,399.4,0,1
+ChIJh70nPBz2wokR7EWPEdNPP9s,7528.31,E 106 St & Madison Ave,254.9,0,1
+ChIJ_1f3U5JYwokRH1_PRd1eIrI,7253.04,Central Park West & W 76 St,360.5,0,1
+ChIJezBcrvNYwokRCGwwAfivN4g,7079.06,Central Park West & W 68 St,309.5,0,1
+ChIJIcCApvFYwokR88lT-bgPmCE,6839.1,Grand Army Plaza & Central Park S,281.9,0,1
+ChIJIcCApvFYwokR88lT-bgPmCE,6904.06,5 Ave & E 63 St,202.9,1,1
+ChIJIcCApvFYwokR88lT-bgPmCE,6876.04,Central Park S & 6 Ave,241.6,1,1
+ChIJIcCApvFYwokR88lT-bgPmCE,6801.16,E 61 St & Madison Ave,377.1,0,1
+ChIJIcCApvFYwokR88lT-bgPmCE,6839.15,Central Park S & Grand Army Plaza,265.8,0,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6839.04,E 58 St & Madison Ave,354.6,0,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6839.1,Grand Army Plaza & Central Park S,167.7,1,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6801.01,E 59 St & Madison Ave,357.5,0,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6904.06,5 Ave & E 63 St,209.7,1,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6876.04,Central Park S & 6 Ave,203.2,1,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6801.16,E 61 St & Madison Ave,325.0,0,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6809.07,W 56 St & 6 Ave,392.1,0,1
+ChIJAxWOxp9ZwokRRBVw2iHi1iA,6839.15,Central Park S & Grand Army Plaza,154.1,1,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5863.07,E 15 St & 3 Ave,350.4,0,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,6013.12,Gramercy Park N & Gramercy Park E,140.3,1,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5938.01,E 19 St & 3 Ave,63.3,1,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5971.09,E 22 St & 2 Ave,277.0,0,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5971.08,E 20 St & 2 Ave,227.4,1,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5896.01,E 17 St & 2 Ave,281.4,0,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,6089.07,Lexington Ave & E 24 St,388.3,0,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,6055.08,E 20 St & Park Ave,305.9,0,1
+ChIJMaZfGgpZwokR0gtRaGghT_w,5938.11,E 16 St & Irving Pl,334.2,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5584.05,E 7 St & Ave B,149.9,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5626.15,1 Ave & E 6 St,369.6,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5584.04,E 6 St & Ave B,210.5,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5616.01,E 9 St & Ave C,370.8,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5545.01,E 7 St & Ave C,346.3,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5626.13,St Marks Pl & 1 Ave,359.2,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5703.13,Ave A & E 11 St,235.5,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5515.08,E 4 St & Ave B,350.6,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5779.09,E 13 St & Ave A,371.9,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5659.05,E 10 St & Ave A,113.0,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5626.06,E 5 St & Ave A,279.6,0,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5659.11,E 11 St & Ave B,223.9,1,1
+ChIJgTDll51ZwokRVjN7KXztwXY,5626.07,E 7 St & Ave A,171.4,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5872.1,E 9 St & 5 Ave,202.2,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5721.01,Sullivan St & Washington Sq,185.2,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5755.09,Washington Square E,140.9,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5721.07,Thompson St & Bleecker St,382.1,0,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5755.01,Washington Pl & Broadway,353.0,0,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5838.09,Washington Pl & 6 Ave,290.4,0,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5755.15,Washington Pl & Greene St,208.6,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5755.14,University Pl & E 8 St,186.1,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5872.08,E 10 St & 5 Ave,287.7,0,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5721.14,LaGuardia Pl & W 3 St,243.1,1,1
+ChIJXa-d3ZBZwokRGcUkpZc_uC4,5797.01,MacDougal St & Washington Sq,167.4,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5788.15,4 Ave & E 12 St,100.2,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5829.12,E 11 St & Broadway,91.5,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5788.13,Lafayette St & E 8 St,196.9,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5788.12,E 12 St & 3 Ave,171.1,1,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5755.14,University Pl & E 8 St,342.4,0,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5905.14,University Pl & E 14 St,331.0,0,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5905.12,Broadway & E 14 St,286.2,0,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5712.03,Cooper Square & Astor Pl,273.8,0,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5872.08,E 10 St & 5 Ave,384.1,0,1
+ChIJ8akBcZlZwokRlGROGaTkMnM,5788.16,E 11 St & 3 Ave,217.8,1,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5805.07,7 Ave S & Bleecker St,193.8,1,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5838.09,Washington Pl & 6 Ave,229.6,1,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5763.03,Carmine St & 6 Ave,355.3,0,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5914.08,Greenwich Ave & Charles St,253.9,0,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5955.12,Perry St & Greenwich Ave,285.8,0,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5922.07,Perry St & Bleecker St,288.2,0,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5797.01,MacDougal St & Washington Sq,353.4,0,1
+ChIJC-exc5RZwokRWb0fbD6ZBTc,5880.02,W 4 St & 7 Ave S,69.7,1,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5114.08,South End Ave & Albany St,332.2,0,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5329.08,Murray St & West St,343.5,0,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5297.02,Vesey Pl & River Terrace,305.4,0,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5216.07,Vesey St & Greenwich St,348.7,0,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5256.06,Vesey St & West St,158.4,1,1
+ChIJy8jTDBtawokRB9wNyxemSw8,5184.08,West St & Liberty St,152.8,1,1
+ChIJywJ318BZwokR4uWXUTbMRtc,6233.05,W 16 St & The High Line,185.1,1,1
+ChIJywJ318BZwokR4uWXUTbMRtc,6115.09,W 15 St & 10 Ave,149.5,1,1
+ChIJywJ318BZwokR4uWXUTbMRtc,6233.04,Pier 61 at Chelsea Piers,389.3,0,1
+ChIJywJ318BZwokR4uWXUTbMRtc,6157.04,10 Ave & W 14 St,170.8,1,1
+ChIJywJ318BZwokR4uWXUTbMRtc,6306.07,W 20 St & 11 Ave,384.2,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5382.06,Grand St & Elizabeth St,120.6,1,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5351.07,Walker St & Baxter St,269.9,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5492.05,Cleveland Pl & Spring St,329.5,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5382.07,Forsyth St & Grand St,381.5,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5422.09,Lafayette St & Grand St,176.7,1,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5453.05,Forsyth St & Broome St,393.7,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5453.06,Kenmare St & Elizabeth St,257.0,0,1
+ChIJ730FRYhZwokRhLS7n5Ybz54,5422.04,Howard St & Lafayette St,202.8,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,5238.05,St James Pl & Oliver St,322.2,0,1
+ChIJDcEvbPVZwokRETEfzXATns8,5382.06,Grand St & Elizabeth St,353.2,0,1
+ChIJDcEvbPVZwokRETEfzXATns8,5351.03,Bayard St & Baxter St,230.6,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,5351.07,Walker St & Baxter St,282.8,0,1
+ChIJDcEvbPVZwokRETEfzXATns8,5382.07,Forsyth St & Grand St,397.7,0,1
+ChIJDcEvbPVZwokRETEfzXATns8,5311.08,Division St & Bowery,175.4,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,5270.09,Market St & Henry St,365.0,0,1
+ChIJDcEvbPVZwokRETEfzXATns8,5270.08,Division St & Bowery,175.1,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,5270.07,Forsyth St & Canal St,236.7,1,1
+ChIJDcEvbPVZwokRETEfzXATns8,5270.05,Pike St & E Broadway,392.4,0,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6322.01,E 33 St & 5 Ave,167.6,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6441.11,Broadway & W 36 St,394.0,0,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6398.08,E 35 St & Madison Ave,374.6,0,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6364.1,6 Ave & W 34 St,232.8,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6289.06,Broadway & W 29 St,221.1,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6248.08,5 Ave & E 30 St,201.4,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6364.07,6 Ave & W 33 St,195.0,1,1
+ChIJ_f1FDqlZwokRqCItRNuQIKs,6441.01,Broadway & W 36 St,365.8,0,1
+ChIJq6pqPhv2wokRPPkifui_-LY,7587.16,W 111 St & 5 Ave,126.8,1,1
+ChIJq6pqPhv2wokRPPkifui_-LY,7602.05,Lenox Ave & W 111 St,363.4,0,1
+ChIJq6pqPhv2wokRPPkifui_-LY,7528.31,E 106 St & Madison Ave,332.0,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5175.08,Fulton St & Broadway,380.3,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5329.08,Murray St & West St,265.8,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5297.02,Vesey Pl & River Terrace,395.2,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5216.07,Vesey St & Greenwich St,190.8,1,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5256.06,Vesey St & West St,171.5,1,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5288.12,Murray St & Greenwich St,296.6,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5216.04,Barclay St & Church St,268.4,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5216.06,Vesey St & Church St,251.9,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5145.02,Albany St & Greenwich St,386.7,0,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5184.08,West St & Liberty St,190.2,1,1
+ChIJy7cGfBlawokR5l2e93hsoEA,5288.08,Park Pl & Church St,345.7,0,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6517.08,W 42 St & 6 Ave,366.7,0,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6526.05,8 Ave & W 38 St,352.3,0,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6560.14,W 40 St & 7 Ave,185.3,1,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6602.05,W 42 St & 8 Ave,250.3,0,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6560.01,Broadway & W 41 St,213.1,1,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6560.15,Broadway & W 38 St,399.2,0,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6602.03,W 41 St & 8 Ave,138.1,1,1
+ChIJ8VOfr1RYwokRhil9_pcMKuc,6676.02,W 45 St & 8 Ave,313.6,0,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,4962.01,Broadway & Battery Pl,299.5,0,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,5001.08,Little West St & 1 Pl,250.5,0,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,4962.02,Whitehall St & Bridge St,306.2,0,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,4962.09,Pearl St & Whitehall St,307.3,0,1
+ChIJoQb5SxBawokRtYcvnZAI2lE,4889.06,Bus Slip & State St,295.3,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5788.15,4 Ave & E 12 St,354.9,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5863.07,E 15 St & 3 Ave,351.1,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5829.12,E 11 St & Broadway,367.4,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5947.06,E 15 St & 5 Ave,221.7,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,6022.04,E 16 St & 5 Ave,224.4,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5980.11,Broadway & E 19 St,277.0,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5905.14,University Pl & E 14 St,173.1,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5905.12,Broadway & E 14 St,143.3,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5980.07,E 17 St & Broadway,141.1,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,6098.12,Broadway & E 19 St,320.2,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,6055.08,E 20 St & Park Ave,371.8,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5938.11,E 16 St & Irving Pl,220.6,1,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5947.04,W 13 St & 5 Ave,322.0,0,1
+ChIJuwazLZ9ZwokRoDhp6p5_XCo,5980.1,E 17 St & Broadway,135.5,1,1
+ChIJNfIGsapZwokR6wmdPMZEBbU,6765.01,12 Ave & W 40 St,245.1,1,1
+ChIJNfIGsapZwokR6wmdPMZEBbU,6756.05,W 44 St & 11 Ave,392.9,0,1
+ChIJNfIGsapZwokR6wmdPMZEBbU,6726.01,11 Ave & W 41 St,362.0,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5175.08,Fulton St & Broadway,288.9,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5137.1,Spruce St & Nassau St,134.8,1,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5137.11,Fulton St & William St,312.8,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5216.07,Vesey St & Greenwich St,389.2,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5247.1,Reade St & Broadway,244.2,1,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5216.04,Barclay St & Church St,315.6,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5207.01,Centre St & Chambers St,164.8,1,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5216.06,Vesey St & Church St,334.1,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5137.12,Gold St & Frankfort St,315.0,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5288.08,Park Pl & Church St,260.6,0,1
+ChIJBxw9mhhawokRJzY2jnlYsZM,5288.09,Warren St & W Broadway,338.4,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,5997.1,W 12 St & Hudson St,329.6,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6072.16,Gansevoort St & Hudson St,196.9,1,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6030.04,W 13 St & 7 Ave,324.9,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6072.06,Greenwich Ave & 8 Ave,77.9,1,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6190.08,9 Ave & W 18 St,393.0,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6148.02,W 17 St & 8 Ave,260.8,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6030.06,W 15 St & 7 Ave,304.6,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6115.06,Hudson St & W 13 St,203.6,1,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6107.08,W 17 St & 7 Ave,381.8,0,1
+ChIJ6XBmhaZZwokRlmXoc8vxrsE,6072.11,8 Ave & W 16 St,176.2,1,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7304.08,W 82 St & Central Park West,242.3,1,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7253.04,Central Park West & W 76 St,393.7,0,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7382.04,W 84 St & Columbus Ave,302.7,0,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7360.1,Amsterdam Ave & W 82 St,369.3,0,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7281.09,W 76 St & Columbus Ave,363.4,0,1
+ChIJv8mWqY9YwokRIzh7-8yBA14,7311.02,Amsterdam Ave & W 79 St,375.9,0,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6847.05,7 Ave & W 55 St,379.6,0,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6747.06,W 49 St & 8 Ave,247.2,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6779.04,Broadway & W 51 St,138.4,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6847.02,Broadway & W 56 St,396.5,0,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6747.07,8 Ave & W 49 St,162.3,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6779.07,W 51 St & 7 Ave,225.2,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6779.05,Broadway & W 53 St,216.8,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6816.07,8 Ave & W 52 St,130.0,1,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6854.05,W 50 St & 9 Ave,373.6,0,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6884.06,8 Ave & W 55 St,351.5,0,1
+ChIJZUczMVZYwokR2GRTDrcGv10,6708.04,Broadway & W 48 St,263.6,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5561.06,Lafayette St & Jersey St,191.9,1,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5679.08,Bleecker St & Crosby St,350.0,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5492.05,Cleveland Pl & Spring St,170.8,1,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5644.05,W Broadway & W Houston St,392.5,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5532.01,Mercer St & Spring St,162.8,1,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5569.06,W Broadway & Spring St,375.2,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5422.09,Lafayette St & Grand St,385.7,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5561.04,Mott St & Prince St,238.0,1,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5679.05,Mercer St & Bleecker St,390.9,0,1
+ChIJdTjUE-dZwokRKLMbPjzr1b8,5602.06,Greene St & Prince St,221.8,1,1
+ChIJex6ai6pbwokRbh3cz6wKQ0w,4962.01,Broadway & Battery Pl,386.8,0,1
+ChIJex6ai6pbwokRbh3cz6wKQ0w,4962.02,Whitehall St & Bridge St,340.5,0,1
+ChIJex6ai6pbwokRbh3cz6wKQ0w,4846.01,South St & Whitehall St,361.5,0,1
+ChIJex6ai6pbwokRbh3cz6wKQ0w,4962.09,Pearl St & Whitehall St,312.1,0,1
+ChIJex6ai6pbwokRbh3cz6wKQ0w,4889.06,Bus Slip & State St,217.7,1,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6560.14,W 40 St & 7 Ave,393.9,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6602.05,W 42 St & 8 Ave,260.0,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6786.02,W 47 St & 9 Ave,390.4,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6747.07,8 Ave & W 49 St,394.4,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6717.06,9 Ave & W 45 St,336.3,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6560.01,Broadway & W 41 St,380.1,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6602.03,W 41 St & 8 Ave,272.2,0,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6676.02,W 45 St & 8 Ave,112.4,1,1
+ChIJhWqFh1RYwokR-DHQDzkMAag,6708.04,Broadway & W 48 St,337.6,0,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6986.07,Columbus Ave & W 59 St,268.6,0,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6884.03,W 56 St & 8 Ave,257.9,0,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6912.01,7 Ave & Central Park South,280.8,0,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6847.02,Broadway & W 56 St,312.9,0,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6948.1,Broadway & W 58 St,126.4,1,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,7014.12,Broadway & W 61 St,217.0,1,1
+ChIJDzorOvZYwokRW5XN4_UBY8w,6884.06,8 Ave & W 55 St,321.8,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6517.08,W 42 St & 6 Ave,356.2,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6593.14,W 43 St & 6 Ave,381.9,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6560.14,W 40 St & 7 Ave,385.5,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6667.12,W 47 St & 6 Ave,348.1,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6593.15,6 Ave & W 45 St,309.2,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6560.01,Broadway & W 41 St,311.1,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6602.03,W 41 St & 8 Ave,372.2,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6676.02,W 45 St & 8 Ave,262.1,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6667.04,W 47 St & 6 Ave,302.0,0,1
+ChIJB4cC_1RYwokRu6mRBD_lqO8,6708.04,Broadway & W 48 St,272.2,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7230.1,W 74 St & Columbus Ave,365.0,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7207.08,W 70 St & Amsterdam Ave,363.4,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7311.07,W 78 St & Broadway,327.8,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7281.09,W 76 St & Columbus Ave,322.3,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7260.09,Amsterdam Ave & W 73 St,88.5,1,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7311.02,Amsterdam Ave & W 79 St,344.5,0,1
+ChIJEdN5k4lYwokRuNPGGOZUwOQ,7288.04,Riverside Dr & W 72 St,381.5,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6847.05,7 Ave & W 55 St,318.3,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6747.06,W 49 St & 8 Ave,299.1,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6779.04,Broadway & W 51 St,140.1,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6920.03,W 54 St & 9 Ave,357.7,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6884.03,W 56 St & 8 Ave,331.0,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6847.02,Broadway & W 56 St,320.0,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6747.07,8 Ave & W 49 St,235.2,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6920.05,W 54 St & 9 Ave,397.6,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6779.07,W 51 St & 7 Ave,236.4,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6779.05,Broadway & W 53 St,159.1,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6816.07,8 Ave & W 52 St,78.8,1,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6854.05,W 50 St & 9 Ave,393.7,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6884.06,8 Ave & W 55 St,274.5,0,1
+ChIJnSTPzldYwokRyyefzoK7Xao,6708.04,Broadway & W 48 St,334.8,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6432.08,Park Ave & E 41 St,202.9,1,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6422.08,E 43 St & 2 Ave,393.2,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6389.09,E 39 St & Lexington Ave,280.0,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6584.12,E 47 St & Park Ave,389.6,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6464.09,E 44 St & Lexington Ave,121.4,1,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6464.08,E 45 St & 3 Ave,248.1,1,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6432.1,E 41 St & Madison Ave (SE corner),351.4,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6432.11,E 40 St & Park Ave,256.6,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6432.09,Park Ave & E 42 St,187.8,1,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6551.11,E 43 St & Madison Ave,361.9,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6422.09,E 44 St & 2 Ave,350.0,0,1
+ChIJeWPFRwJZwokRGD60OOo74RU,6432.15,Park Ave & E 40 St,259.4,0,1
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,5696.03,Pier 40 - Hudson River Park,192.1,1,1
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,5730.08,Greenwich St & W Houston St,282.3,0,1
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,5772.05,Morton St & Washington St,324.3,0,1
+ChIJ5aLwb5dZwokR4EzyKJoh3mQ,5847.08,Washington St & Barrow St,383.2,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6131.13,E 27 St & Park Ave S,256.6,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6215.04,W 25 St & 6 Ave,353.6,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6131.1,E 24 St & Park Ave S,356.3,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6215.07,W 27 St & 6 Ave,315.0,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6173.08,Broadway & W 25 St,207.8,1,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6206.08,E 30 St & Park Ave S,358.4,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6131.12,Madison Ave & E 26 St,156.2,1,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6289.06,Broadway & W 29 St,265.3,0,1
+ChIJR026QqZZwokRgLuHSIZNIKM,6248.08,5 Ave & E 30 St,232.0,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6847.05,7 Ave & W 55 St,354.7,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6747.06,W 49 St & 8 Ave,355.6,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6779.04,Broadway & W 51 St,71.1,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6740.01,W 52 St & 6 Ave,331.6,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6747.07,8 Ave & W 49 St,238.0,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6779.07,W 51 St & 7 Ave,98.2,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6779.05,Broadway & W 53 St,211.4,1,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6816.07,8 Ave & W 52 St,252.8,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6740.1,W 51 St & 6 Ave,301.9,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6667.04,W 47 St & 6 Ave,381.6,0,1
+ChIJz0V3b1RYwokRB0ugvJ-VuOI,6708.04,Broadway & W 48 St,195.8,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6847.05,7 Ave & W 55 St,244.0,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6779.04,Broadway & W 51 St,321.8,0,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6920.03,W 54 St & 9 Ave,295.2,0,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6884.03,W 56 St & 8 Ave,92.3,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6847.02,Broadway & W 56 St,134.3,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6920.05,W 54 St & 9 Ave,338.6,0,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6779.07,W 51 St & 7 Ave,398.5,0,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6779.05,Broadway & W 53 St,205.7,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6816.07,8 Ave & W 52 St,214.7,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6948.1,Broadway & W 58 St,249.7,1,1
+ChIJTZoUA1hYwokRKneaNqQpIf8,6884.06,8 Ave & W 55 St,53.6,1,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6747.06,W 49 St & 8 Ave,226.1,1,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6779.04,Broadway & W 51 St,232.2,1,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6786.02,W 47 St & 9 Ave,374.1,0,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6747.07,8 Ave & W 49 St,99.0,1,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6779.07,W 51 St & 7 Ave,267.7,0,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6779.05,Broadway & W 53 St,358.8,0,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6816.07,8 Ave & W 52 St,289.3,0,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6676.02,W 45 St & 8 Ave,321.2,0,1
+ChIJ91iSY1ZYwokRFgKuwZvG12s,6708.04,Broadway & W 48 St,125.4,1,1
+ChIJZ4XQ0Pr1wokR4y3zFhkY2ko,7514.06,Icahn Stadium Plaza,46.7,1,1
+ChIJZ4XQ0Pr1wokR4y3zFhkY2ko,7575.01,Randall's Island - Field 10,242.6,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6847.05,7 Ave & W 55 St,199.8,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6779.04,Broadway & W 51 St,111.1,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6884.03,W 56 St & 8 Ave,300.3,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6740.01,W 52 St & 6 Ave,346.5,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6847.02,Broadway & W 56 St,242.4,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6747.07,8 Ave & W 49 St,341.3,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6779.07,W 51 St & 7 Ave,181.5,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6779.05,Broadway & W 53 St,37.1,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6816.07,8 Ave & W 52 St,184.6,1,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6884.06,8 Ave & W 55 St,267.8,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6740.1,W 51 St & 6 Ave,364.2,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6809.09,W 55 St & 6 Ave,388.9,0,1
+ChIJEUd4ZVZYwokR9mtgzHTtv1s,6708.04,Broadway & W 48 St,375.3,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6131.13,E 27 St & Park Ave S,374.2,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6089.11,E 26 St & 3 Ave,332.5,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6131.1,E 24 St & Park Ave S,187.8,1,1
+ChIJlx_J861ZwokRnBboWMNuVno,6013.12,Gramercy Park N & Gramercy Park E,161.9,1,1
+ChIJlx_J861ZwokRnBboWMNuVno,5938.01,E 19 St & 3 Ave,353.1,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6089.07,Lexington Ave & E 24 St,131.2,1,1
+ChIJlx_J861ZwokRnBboWMNuVno,6131.12,Madison Ave & E 26 St,387.3,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6098.1,Broadway & E 21 St,376.2,0,1
+ChIJlx_J861ZwokRnBboWMNuVno,6055.08,E 20 St & Park Ave,234.7,1,1
+ChIJlx_J861ZwokRnBboWMNuVno,6089.08,Lexington Ave & E 26 St,277.7,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6747.06,W 49 St & 8 Ave,352.8,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6602.05,W 42 St & 8 Ave,240.7,1,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6786.02,W 47 St & 9 Ave,262.8,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6747.07,8 Ave & W 49 St,352.3,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6644.07,W 42 St & Dyer Ave,388.5,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6717.06,9 Ave & W 45 St,201.6,1,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6602.03,W 41 St & 8 Ave,325.0,0,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6676.02,W 45 St & 8 Ave,51.0,1,1
+ChIJlTWPiFRYwokRF7JuJslWbaw,6708.04,Broadway & W 48 St,378.9,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6233.05,W 16 St & The High Line,85.9,1,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6115.09,W 15 St & 10 Ave,78.0,1,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6072.16,Gansevoort St & Hudson St,376.4,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6306.01,W 20 St & 10 Ave,363.6,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6039.06,Washington St & Gansevoort St,387.1,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6190.08,9 Ave & W 18 St,253.0,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6115.06,Hudson St & W 13 St,303.1,0,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6157.04,10 Ave & W 14 St,162.3,1,1
+ChIJQ6yZIaFZwokRl0jsn5VBk_M,6190.03,W 18 St & 9 Ave,265.1,0,1
+ChIJm17AB5pYwokRWLJ6lEtXKOA,7161.08,5 Ave & E 78 St,397.0,0,1
+ChIJm17AB5pYwokRWLJ6lEtXKOA,7100.07,5 Ave & E 72 St,311.1,0,1
+ChIJmamBZtVZwokR6phs86DKbP0,5653.12,Spring St & Hudson St,195.6,1,1
+ChIJmamBZtVZwokR6phs86DKbP0,5569.07,W Broadway & Watts St,337.8,0,1
+ChIJmamBZtVZwokR6phs86DKbP0,5500.07,6 Ave & Canal St,371.9,0,1
+ChIJmamBZtVZwokR6phs86DKbP0,5610.09,6 Ave & Broome St,170.4,1,1
+ChIJmamBZtVZwokR6phs86DKbP0,5569.06,W Broadway & Spring St,323.0,0,1
+ChIJmamBZtVZwokR6phs86DKbP0,5687.11,King St & Varick St,236.2,1,1
+ChIJmamBZtVZwokR6phs86DKbP0,5687.04,MacDougal St & Prince St,248.0,1,1
+ChIJmamBZtVZwokR6phs86DKbP0,5539.08,Varick St & Watts St,244.6,1,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6747.06,W 49 St & 8 Ave,259.7,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6779.04,Broadway & W 51 St,182.5,1,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6747.07,8 Ave & W 49 St,132.2,1,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6779.07,W 51 St & 7 Ave,216.6,1,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6779.05,Broadway & W 53 St,313.1,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6816.07,8 Ave & W 52 St,268.7,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6676.02,W 45 St & 8 Ave,370.2,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6740.1,W 51 St & 6 Ave,399.0,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6667.04,W 47 St & 6 Ave,386.2,0,1
+ChIJEUd4ZVZYwokRV4iyGw46pw0,6708.04,Broadway & W 48 St,125.2,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6535.04,W 34 St & Hudson Blvd E,45.2,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6459.07,W 30 St & 10 Ave,353.5,0,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6535.05,10 Ave & W 34 St,149.9,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6492.04,W 33 St & 10 Ave,224.2,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6611.02,W 37 St & 10 Ave,252.6,0,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6569.08,W 35 St & Dyer Ave,284.6,0,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6578.01,W 34 St & 11 Ave,136.2,1,1
+ChIJY7fnXbNZwokRKgpXxu-dZKQ,6611.07,Hudson Blvd W & W 36 St,151.0,1,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6560.14,W 40 St & 7 Ave,358.1,0,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6602.05,W 42 St & 8 Ave,322.1,0,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6560.01,Broadway & W 41 St,317.8,0,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6602.03,W 41 St & 8 Ave,294.2,0,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6676.02,W 45 St & 8 Ave,189.8,1,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6667.04,W 47 St & 6 Ave,394.3,0,1
+ChIJkzFqiVJYwokRqc4h6tVHx_s,6708.04,Broadway & W 48 St,315.4,0,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6560.14,W 40 St & 7 Ave,357.4,0,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6602.05,W 42 St & 8 Ave,234.4,1,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6717.06,9 Ave & W 45 St,347.8,0,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6560.01,Broadway & W 41 St,352.0,0,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6602.03,W 41 St & 8 Ave,233.6,1,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6676.02,W 45 St & 8 Ave,142.8,1,1
+ChIJlTWPiFRYwokRhdOoYdfeZzY,6708.04,Broadway & W 48 St,372.9,0,1
+ChIJJ6AzfHxZwokRcaYezPBb9_I,5436.09,Ave D & E 3 St,366.6,0,1
+ChIJJ6AzfHxZwokRcaYezPBb9_I,5326.06,Stanton St & Mangin St,201.9,1,1
+ChIJJ6AzfHxZwokRcaYezPBb9_I,5436.11,E Houston St & Columbia St,377.6,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6747.06,W 49 St & 8 Ave,373.1,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6667.12,W 47 St & 6 Ave,363.5,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6747.07,8 Ave & W 49 St,280.4,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6779.07,W 51 St & 7 Ave,399.9,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6593.15,6 Ave & W 45 St,382.1,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6676.02,W 45 St & 8 Ave,215.7,1,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6667.04,W 47 St & 6 Ave,307.6,0,1
+ChIJp8ENSlRYwokRIIpmnGxjieo,6708.04,Broadway & W 48 St,144.9,1,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6517.08,W 42 St & 6 Ave,302.3,0,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6593.14,W 43 St & 6 Ave,301.5,0,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6667.12,W 47 St & 6 Ave,259.7,0,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6593.15,6 Ave & W 45 St,209.8,1,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6560.01,Broadway & W 41 St,308.3,0,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6676.02,W 45 St & 8 Ave,358.2,0,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6667.04,W 47 St & 6 Ave,220.5,1,1
+ChIJc5zurnxZwokR8vn4ERqrSfc,6708.04,Broadway & W 48 St,284.3,0,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6492.08,9 Ave & W 33 St,372.5,0,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6373.07,W 30 St & 8 Ave,182.2,1,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6297.07,8 Ave & W 27 St,395.5,0,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6331.01,W 31 St & 7 Ave,205.7,1,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6450.05,8 Ave & W 31 St,116.4,1,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6450.12,8 Ave & W 33 St,129.0,1,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6526.01,W 35 St & 8 Ave,257.6,0,1
+ChIJJXfoP65ZwokRPY3oaITdpew,6483.06,W 36 St & 7 Ave,368.1,0,1
+ChIJiR6aeI1YwokRkCNO-e1lQfs,7253.04,Central Park West & W 76 St,393.9,0,1
+ChIJiR6aeI1YwokRkCNO-e1lQfs,7141.07,Central Park West & W 72 St,372.8,0,1
+ChIJxf7bQyxawokRO-rs19qn3fs,5190.07,Madison St & Clinton St,364.3,0,1
+ChIJxf7bQyxawokRO-rs19qn3fs,5190.09,Clinton St & Cherry St,265.9,0,1
+ChIJxf7bQyxawokRO-rs19qn3fs,5159.04,Pike St & Monroe St,390.0,0,1
+ChIJxf7bQyxawokRO-rs19qn3fs,5159.07,South St & Pike St,274.4,0,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,5368.03,River Ter & Warren St,166.6,1,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,5329.08,Murray St & West St,387.3,0,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,5297.02,Vesey Pl & River Terrace,103.4,1,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,5256.06,Vesey St & West St,313.2,0,1
+ChIJD8YUwhFawokRFu9nJOnNJbU,5329.03,West St & Chambers St,331.1,0,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,7052.01,W 63 St & Broadway,351.0,0,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6986.07,Columbus Ave & W 59 St,155.1,1,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6884.03,W 56 St & 8 Ave,283.3,0,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6912.01,7 Ave & Central Park South,394.7,0,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6847.02,Broadway & W 56 St,374.6,0,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6948.1,Broadway & W 58 St,211.1,1,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,7014.12,Broadway & W 61 St,195.8,1,1
+ChIJ1-edm1hYwokRtqcmk66UT6g,6884.06,8 Ave & W 55 St,329.7,0,1
+ChIJX7H83VZYwokRBMCj_899qJU,6747.06,W 49 St & 8 Ave,61.7,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,6779.04,Broadway & W 51 St,365.4,0,1
+ChIJX7H83VZYwokRBMCj_899qJU,6920.03,W 54 St & 9 Ave,345.1,0,1
+ChIJX7H83VZYwokRBMCj_899qJU,6786.02,W 47 St & 9 Ave,248.0,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,6747.07,8 Ave & W 49 St,151.9,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,6920.05,W 54 St & 9 Ave,361.3,0,1
+ChIJX7H83VZYwokRBMCj_899qJU,6816.07,8 Ave & W 52 St,232.5,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,6854.05,W 50 St & 9 Ave,157.2,1,1
+ChIJX7H83VZYwokRBMCj_899qJU,6676.02,W 45 St & 8 Ave,398.0,0,1
+ChIJX7H83VZYwokRBMCj_899qJU,6708.04,Broadway & W 48 St,373.7,0,1
+ChIJI45ivSf0wokRMw68yH4_DEo,8491.07,Audubon Ave & Fort George Ave,396.4,0,1
+ChIJI45ivSf0wokRMw68yH4_DEo,8469.05,Audubon Ave & W 192 St,262.1,0,1
+ChIJI45ivSf0wokRMw68yH4_DEo,8394.15,Amsterdam Ave & W 186 St,390.9,0,1
+ChIJI45ivSf0wokRMw68yH4_DEo,8453.14,W 190 St & St Nicholas Ave,336.6,0,1
+ChIJI45ivSf0wokRMw68yH4_DEo,8432.11,Amsterdam Ave & W 189 St,134.5,1,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,6140.05,W 21 St & 6 Ave,128.5,1,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,6064.08,W 18 St & 6 Ave,105.1,1,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,6182.02,W 20 St & 7 Ave,290.6,0,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,6098.02,W 20 St & 5 Ave,323.5,0,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,6107.08,W 17 St & 7 Ave,324.1,0,1
+ChIJWQHW9KZZwokRKLzyBDe6mIc,5989.02,W 15 St & 6 Ave,325.3,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6667.12,W 47 St & 6 Ave,275.1,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6779.04,Broadway & W 51 St,390.7,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6747.07,8 Ave & W 49 St,327.1,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6779.07,W 51 St & 7 Ave,361.4,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6593.15,6 Ave & W 45 St,304.7,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6676.02,W 45 St & 8 Ave,302.7,0,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6667.04,W 47 St & 6 Ave,219.0,1,1
+ChIJk-utwVVYwokRx--LhLcP2cA,6708.04,Broadway & W 48 St,130.7,1,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6771.13,W 54 St & 6 Ave,296.2,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6847.05,7 Ave & W 55 St,130.7,1,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6779.04,Broadway & W 51 St,378.2,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6884.03,W 56 St & 8 Ave,383.4,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6912.01,7 Ave & Central Park South,312.5,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6740.01,W 52 St & 6 Ave,292.5,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6847.02,Broadway & W 56 St,255.6,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6876.04,Central Park S & 6 Ave,340.3,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6779.07,W 51 St & 7 Ave,364.7,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6779.05,Broadway & W 53 St,278.7,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6948.1,Broadway & W 58 St,384.6,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6809.07,W 56 St & 6 Ave,195.9,1,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6740.1,W 51 St & 6 Ave,374.5,0,1
+ChIJDSXLz_lYwokRqONmt9wNV9s,6809.09,W 55 St & 6 Ave,119.3,1,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6747.06,W 49 St & 8 Ave,396.7,0,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6667.12,W 47 St & 6 Ave,382.1,0,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6747.07,8 Ave & W 49 St,314.2,0,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6593.15,6 Ave & W 45 St,382.9,0,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6676.02,W 45 St & 8 Ave,191.2,1,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6667.04,W 47 St & 6 Ave,327.9,0,1
+ChIJMeF2rVVYwokRpUruDmEyjig,6708.04,Broadway & W 48 St,192.2,1,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6747.06,W 49 St & 8 Ave,371.3,0,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6667.12,W 47 St & 6 Ave,399.9,0,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6747.07,8 Ave & W 49 St,291.4,0,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6676.02,W 45 St & 8 Ave,174.6,1,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6667.04,W 47 St & 6 Ave,344.9,0,1
+ChIJsy0KRlRYwokR6G7Y-3euStQ,6708.04,Broadway & W 48 St,185.5,1,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7382.04,W 84 St & Columbus Ave,387.1,0,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7388.1,Riverside Dr & W 82 St,367.7,0,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7360.1,Amsterdam Ave & W 82 St,86.9,1,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7409.04,W 84 St & Amsterdam Ave,146.5,1,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7458.03,W 87 St & Amsterdam Ave,354.1,0,1
+ChIJ62VOeIZYwokRQwpWIK3w4aU,7311.02,Amsterdam Ave & W 79 St,346.4,0,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6517.08,W 42 St & 6 Ave,342.4,0,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6560.14,W 40 St & 7 Ave,249.2,1,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6602.05,W 42 St & 8 Ave,297.2,0,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6560.01,Broadway & W 41 St,223.3,1,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6602.03,W 41 St & 8 Ave,220.3,1,1
+ChIJezRjt1RYwokR6q0tL1pVfHU,6676.02,W 45 St & 8 Ave,269.0,0,1
+ChIJC1UQPABZwokRtfrQRhle8Fo,6306.01,W 20 St & 10 Ave,364.1,0,1
+ChIJC1UQPABZwokRtfrQRhle8Fo,6306.06,W 22 St & 10 Ave,373.3,0,1
+ChIJC1UQPABZwokRtfrQRhle8Fo,6233.04,Pier 61 at Chelsea Piers,74.6,1,1
+ChIJC1UQPABZwokRtfrQRhle8Fo,6306.07,W 20 St & 11 Ave,114.4,1,1
+ChIJsT8qSaJYwokR-m20OGJUKCA,7344.05,E 91 St & Park Ave,236.3,1,1
+ChIJsT8qSaJYwokR-m20OGJUKCA,7293.1,E 88 St & Park Ave,369.0,0,1
+ChIJsT8qSaJYwokR-m20OGJUKCA,7323.09,5 Ave & E 87 St,285.6,0,1
+ChIJsT8qSaJYwokR-m20OGJUKCA,7344.01,E 94 St & Madison Ave,303.4,0,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6747.06,W 49 St & 8 Ave,272.5,0,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6779.04,Broadway & W 51 St,396.5,0,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6786.02,W 47 St & 9 Ave,320.5,0,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6747.07,8 Ave & W 49 St,199.6,1,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6717.06,9 Ave & W 45 St,367.9,0,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6676.02,W 45 St & 8 Ave,159.9,1,1
+ChIJJfoZJVRYwokRRkqiNbYBY3I,6708.04,Broadway & W 48 St,173.2,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6517.08,W 42 St & 6 Ave,109.4,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6593.14,W 43 St & 6 Ave,160.1,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6560.14,W 40 St & 7 Ave,297.9,0,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6667.12,W 47 St & 6 Ave,355.1,0,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6593.15,6 Ave & W 45 St,225.9,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6560.01,Broadway & W 41 St,163.3,1,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6560.15,Broadway & W 38 St,382.3,0,1
+ChIJv2zhJFVYwokRUvyHqbRD11Y,6667.04,W 47 St & 6 Ave,343.9,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6560.14,W 40 St & 7 Ave,375.1,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6602.05,W 42 St & 8 Ave,295.5,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6717.06,9 Ave & W 45 St,384.1,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6560.01,Broadway & W 41 St,346.6,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6602.03,W 41 St & 8 Ave,284.8,0,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6676.02,W 45 St & 8 Ave,152.7,1,1
+ChIJ58DNYVRYwokRUvOU0Ih8tfQ,6708.04,Broadway & W 48 St,319.1,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6747.06,W 49 St & 8 Ave,253.8,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6779.04,Broadway & W 51 St,260.7,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6786.02,W 47 St & 9 Ave,381.5,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6747.07,8 Ave & W 49 St,132.7,1,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6779.07,W 51 St & 7 Ave,282.0,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6779.05,Broadway & W 53 St,393.0,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6816.07,8 Ave & W 52 St,334.5,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6676.02,W 45 St & 8 Ave,293.7,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6667.04,W 47 St & 6 Ave,368.6,0,1
+ChIJ-fxpf1ZYwokRsi-arkxnJJk,6708.04,Broadway & W 48 St,90.7,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6847.05,7 Ave & W 55 St,288.6,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6747.06,W 49 St & 8 Ave,329.0,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6779.04,Broadway & W 51 St,137.6,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6920.03,W 54 St & 9 Ave,358.9,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6884.03,W 56 St & 8 Ave,306.4,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6847.02,Broadway & W 56 St,290.0,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6747.07,8 Ave & W 49 St,265.5,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6779.07,W 51 St & 7 Ave,232.7,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6779.05,Broadway & W 53 St,131.5,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6816.07,8 Ave & W 52 St,88.3,1,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6884.06,8 Ave & W 55 St,253.2,0,1
+ChIJEUd4ZVZYwokRoTM467I0ZR8,6708.04,Broadway & W 48 St,354.9,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6747.06,W 49 St & 8 Ave,367.4,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6602.05,W 42 St & 8 Ave,342.5,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6786.02,W 47 St & 9 Ave,362.2,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6747.07,8 Ave & W 49 St,310.5,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6717.06,9 Ave & W 45 St,352.9,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6602.03,W 41 St & 8 Ave,363.9,0,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6676.02,W 45 St & 8 Ave,108.0,1,1
+ChIJMzK4QlRYwokRQ_vHisHrxsg,6708.04,Broadway & W 48 St,249.2,1,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,7920.05,Amsterdam Ave & W 136 St,361.8,0,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,7898.03,St Nicholas Ave & W 137 St,149.7,1,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,7860.08,Convent Ave & W 135 St,206.0,1,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,7837.3,St Nicholas Ave & W 134 St,144.3,1,1
+ChIJ0zHAy2_2wokROHSUG_3UnEw,7876.07,Frederick Douglass Blvd & W 139 St,375.9,0,1
+ChIJd1GHP5j2wokRj6Z5FjdVLvs,8381.04,W 181 St & Riverside Dr,303.4,0,1
+ChIJd1GHP5j2wokRj6Z5FjdVLvs,8421.03,W 181 St & Riverside Dr,319.2,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5175.08,Fulton St & Broadway,177.4,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5137.1,Spruce St & Nassau St,261.6,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5137.11,Fulton St & William St,349.4,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5216.07,Vesey St & Greenwich St,234.3,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5288.12,Murray St & Greenwich St,361.9,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5247.1,Reade St & Broadway,325.6,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5216.04,Barclay St & Church St,164.7,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5207.01,Centre St & Chambers St,317.6,0,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5216.06,Vesey St & Church St,180.0,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5288.08,Park Pl & Church St,131.9,1,1
+ChIJUSBl7RhawokR1uWCCvWriXQ,5288.09,Warren St & W Broadway,264.5,0,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6517.08,W 42 St & 6 Ave,314.6,0,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6593.14,W 43 St & 6 Ave,301.1,0,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6667.12,W 47 St & 6 Ave,228.6,1,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6593.15,6 Ave & W 45 St,189.4,1,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6560.01,Broadway & W 41 St,334.3,0,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6676.02,W 45 St & 8 Ave,376.5,0,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6667.04,W 47 St & 6 Ave,188.5,1,1
+ChIJtehhClVYwokRjEHM1kjDj2M,6708.04,Broadway & W 48 St,270.9,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5073.07,Greenwich St & Rector St,366.6,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5175.08,Fulton St & Broadway,116.8,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5105.01,Liberty St & Broadway,158.7,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5137.11,Fulton St & William St,354.5,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5216.07,Vesey St & Greenwich St,234.4,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5065.04,John St & William St,351.4,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5073.08,Greenwich St & Rector St,340.0,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5216.04,Barclay St & Church St,272.7,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5065.12,William St & Pine St,394.4,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5216.06,Vesey St & Church St,194.0,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5145.02,Albany St & Greenwich St,261.0,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5184.08,West St & Liberty St,374.2,0,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5105.09,Liberty St & Nassau St,234.6,1,1
+ChIJVYkiLoVbwokRhEtqFyw_XIo,5288.08,Park Pl & Church St,335.2,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6517.08,W 42 St & 6 Ave,321.0,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6526.05,8 Ave & W 38 St,309.9,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6560.14,W 40 St & 7 Ave,76.6,1,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6602.05,W 42 St & 8 Ave,323.7,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6560.01,Broadway & W 41 St,149.0,1,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6483.06,W 36 St & 7 Ave,387.3,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6560.15,Broadway & W 38 St,291.8,0,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6602.03,W 41 St & 8 Ave,178.1,1,1
+ChIJE_d8UqtZwokRMvi5sxjBjSE,6441.06,W 37 St & Broadway,362.3,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5721.07,Thompson St & Bleecker St,349.2,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5561.06,Lafayette St & Jersey St,196.8,1,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5679.08,Bleecker St & Crosby St,176.4,1,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5644.05,W Broadway & W Houston St,283.2,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5532.01,Mercer St & Spring St,320.5,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5569.06,W Broadway & Spring St,393.1,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5561.04,Mott St & Prince St,363.1,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5636.11,Great Jones St,331.5,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5679.05,Mercer St & Bleecker St,136.7,1,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5721.14,LaGuardia Pl & W 3 St,371.3,0,1
+ChIJQ1RTt49ZwokRgYgqG6DdK2w,5602.06,Greene St & Prince St,200.3,1,1
+ChIJEaNa-g1awokRT3ZdL-sMbA0,5001.08,Little West St & 1 Pl,173.2,1,1
+ChIJEaNa-g1awokRT3ZdL-sMbA0,5114.06,West Thames St,366.5,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5175.08,Fulton St & Broadway,36.7,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5105.01,Liberty St & Broadway,273.7,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5137.1,Spruce St & Nassau St,308.8,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5137.11,Fulton St & William St,293.4,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5216.07,Vesey St & Greenwich St,212.8,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5065.04,John St & William St,343.4,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5216.04,Barclay St & Church St,196.0,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5216.06,Vesey St & Church St,147.1,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5105.09,Liberty St & Nassau St,304.9,0,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5288.08,Park Pl & Church St,224.4,1,1
+ChIJ-wHkrBlawokRjCiym7MbolM,5288.09,Warren St & W Broadway,379.4,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6441.02,Broadway & W 37 St,386.9,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6474.11,E 40 St & 5 Ave,229.5,1,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6517.08,W 42 St & 6 Ave,177.4,1,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6593.14,W 43 St & 6 Ave,200.0,1,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6398.06,W 37 St & 5 Ave,347.5,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6593.15,6 Ave & W 45 St,391.8,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6432.1,E 41 St & Madison Ave (SE corner),369.9,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6560.01,Broadway & W 41 St,310.9,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6551.02,W 44 St & 5 Ave,334.4,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6560.15,Broadway & W 38 St,322.5,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6441.06,W 37 St & Broadway,373.1,0,1
+ChIJBQrKATBZwokR5PiaVeIM8u4,6551.11,E 43 St & Madison Ave,389.1,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6602.05,W 42 St & 8 Ave,330.5,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6786.02,W 47 St & 9 Ave,399.0,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6747.07,8 Ave & W 49 St,350.4,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6717.06,9 Ave & W 45 St,375.7,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6560.01,Broadway & W 41 St,391.6,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6602.03,W 41 St & 8 Ave,335.6,0,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6676.02,W 45 St & 8 Ave,131.9,1,1
+ChIJiWtLIFZYwokRGiU3LaSBgMc,6708.04,Broadway & W 48 St,269.4,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5755.09,Washington Square E,323.2,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5755.01,Washington Pl & Broadway,157.8,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5829.12,E 11 St & Broadway,370.2,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5755.15,Washington Pl & Greene St,279.3,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5788.13,Lafayette St & E 8 St,140.0,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5755.14,University Pl & E 8 St,326.7,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5712.12,E 5 St & Cooper Sq,208.6,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5712.03,Cooper Square & Astor Pl,124.7,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5636.11,Great Jones St,248.7,1,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5669.12,E 6 St & 2 Ave,386.6,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5593.04,E 4 St & 2 Ave,395.5,0,1
+ChIJYV33VZpZwokRRxMtftbR_Lg,5788.16,E 11 St & 3 Ave,381.0,0,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6432.08,Park Ave & E 41 St,236.5,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6551.16,E 46 St & Madison Ave,220.5,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6584.12,E 47 St & Park Ave,230.5,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6464.09,E 44 St & Lexington Ave,177.0,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6464.08,E 45 St & 3 Ave,347.5,0,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6432.1,E 41 St & Madison Ave (SE corner),292.7,0,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6432.11,E 40 St & Park Ave,334.5,0,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6551.02,W 44 St & 5 Ave,330.1,0,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6432.09,Park Ave & E 42 St,199.8,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6551.11,E 43 St & Madison Ave,186.6,1,1
+ChIJhZJ3Yq5ZwokRop0t2AA2eWk,6432.15,Park Ave & E 40 St,305.0,0,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6517.08,W 42 St & 6 Ave,303.5,0,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6593.14,W 43 St & 6 Ave,281.5,0,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6667.12,W 47 St & 6 Ave,208.4,1,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6593.15,6 Ave & W 45 St,163.2,1,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6560.01,Broadway & W 41 St,336.9,0,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6667.04,W 47 St & 6 Ave,172.3,1,1
+ChIJw7GUS-5ZwokRmhit4hpZT74,6708.04,Broadway & W 48 St,285.1,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5820.08,E 13 St & 2 Ave,100.4,1,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5788.15,4 Ave & E 12 St,378.5,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5863.07,E 15 St & 3 Ave,369.2,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5746.02,E 10 St & 2 Ave,142.5,1,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5788.12,E 12 St & 3 Ave,267.3,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5626.13,St Marks Pl & 1 Ave,355.0,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5669.1,St Marks Pl & 2 Ave,292.7,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5779.1,E 14 St & 1 Ave,286.0,0,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5746.14,E 11 St & 1 Ave,227.3,1,1
+ChIJy_q2gZ5ZwokRrG27bv1NgtU,5788.16,E 11 St & 3 Ave,195.1,1,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6747.06,W 49 St & 8 Ave,263.8,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6779.04,Broadway & W 51 St,295.0,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6786.02,W 47 St & 9 Ave,372.7,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6747.07,8 Ave & W 49 St,151.7,1,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6779.07,W 51 St & 7 Ave,311.2,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6816.07,8 Ave & W 52 St,367.7,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6676.02,W 45 St & 8 Ave,262.2,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6667.04,W 47 St & 6 Ave,361.5,0,1
+ChIJ91iSY1ZYwokRkmZbrRhJVr8,6708.04,Broadway & W 48 St,90.5,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6517.08,W 42 St & 6 Ave,199.1,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6593.14,W 43 St & 6 Ave,163.4,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6667.12,W 47 St & 6 Ave,234.1,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6593.15,6 Ave & W 45 St,111.3,1,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6560.01,Broadway & W 41 St,281.9,0,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6551.02,W 44 St & 5 Ave,363.9,0,1
+ChIJv2zhJFVYwokRaeXVxr3-X0U,6667.04,W 47 St & 6 Ave,225.6,1,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6541.03,E 48 St & 3 Ave,284.6,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6617.02,E 53 St & 3 Ave,154.7,1,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6498.1,E 47 St & 2 Ave,346.0,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6532.06,E 51 St & 1 Ave,338.9,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6575.03,E 51 St & 2 Ave,174.0,1,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6691.11,E 56 St & 3 Ave,373.3,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6659.01,E 51 St & Lexington Ave,256.0,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6650.07,E 55 St & 2 Ave,334.8,0,1
+ChIJGaiaEONYwokR68EFhU8zSNc,6617.09,E 53 St & Lexington Ave,256.0,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5561.06,Lafayette St & Jersey St,103.2,1,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5679.08,Bleecker St & Crosby St,280.4,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5492.05,Cleveland Pl & Spring St,229.9,1,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5532.01,Mercer St & Spring St,342.2,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5636.13,E 1 St & Bowery,309.4,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5561.04,Mott St & Prince St,74.6,1,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5453.06,Kenmare St & Elizabeth St,348.4,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5679.05,Mercer St & Bleecker St,392.8,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5523.02,Stanton St & Chrystie St,366.1,0,1
+ChIJDRoxaY9ZwokR-cBKepLVl20,5602.06,Greene St & Prince St,364.8,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5073.07,Greenwich St & Rector St,398.4,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5175.08,Fulton St & Broadway,371.2,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5105.01,Liberty St & Broadway,196.6,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,4993.02,Pearl St & Hanover Square,339.9,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5137.11,Fulton St & William St,282.0,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5065.04,John St & William St,167.5,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5073.08,Greenwich St & Rector St,396.8,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,4993.15,Water St & Gouverneur Ln,347.3,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5065.1,Maiden Ln & Pearl St,150.4,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5065.12,William St & Pine St,64.4,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,4953.08,Front St & Pine St,356.0,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5024.1,Water St & Fletcher St,312.5,0,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5105.09,Liberty St & Nassau St,101.7,1,1
+ChIJrYQRAcdbwokRv5M_GCGiQUY,5065.14,Cliff St & Fulton St,335.9,0,1
+ChIJW8Q_N5_2wokREfZXoLWHIEA,8299.03,Wadsworth Ave & W 175 St,325.3,0,1
+ChIJW8Q_N5_2wokREfZXoLWHIEA,8358.1,Cabrini Blvd & W 177 St,213.2,1,1
+ChIJW8Q_N5_2wokREfZXoLWHIEA,8320.01,Fort Washington Ave & W 173 St,152.9,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6847.05,7 Ave & W 55 St,325.6,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6747.06,W 49 St & 8 Ave,316.2,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6779.04,Broadway & W 51 St,67.2,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6740.01,W 52 St & 6 Ave,383.7,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6847.02,Broadway & W 56 St,365.2,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6747.07,8 Ave & W 49 St,219.0,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6779.07,W 51 St & 7 Ave,157.8,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6779.05,Broadway & W 53 St,165.4,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6816.07,8 Ave & W 52 St,165.4,1,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6884.06,8 Ave & W 55 St,351.2,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6740.1,W 51 St & 6 Ave,370.2,0,1
+ChIJVUGHS1ZYwokRx39CH6zNL5M,6708.04,Broadway & W 48 St,259.0,0,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6425.04,11 Ave & W 27 St,370.6,0,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6459.07,W 30 St & 10 Ave,308.8,0,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6416.06,W 29 St & 9 Ave,236.1,1,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6339.06,W 25 St & 9 Ave,253.0,0,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6382.05,W 26 St & 10 Ave,152.6,1,1
+ChIJQ1pGK7dZwokRfVM1hZ1QmU4,6459.04,10 Ave & W 28 St,82.8,1,1
+ChIJZaQT5aVZwokRffG4eQn-mrA,7100.07,5 Ave & E 72 St,377.8,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6824.07,W 47 St & 10 Ave,346.2,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6644.04,W 39 St & 9 Ave,363.8,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6602.05,W 42 St & 8 Ave,261.6,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6786.02,W 47 St & 9 Ave,298.6,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6644.07,W 42 St & Dyer Ave,126.5,1,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6717.06,9 Ave & W 45 St,126.5,1,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6756.01,W 43 St & 10 Ave,183.2,1,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6676.02,W 45 St & 8 Ave,334.1,0,1
+ChIJTeuJWlJYwokR4HpCvsWtDck,6644.08,9 Ave & W 39 St,379.5,0,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6747.06,W 49 St & 8 Ave,238.4,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6779.04,Broadway & W 51 St,147.0,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6747.07,8 Ave & W 49 St,129.2,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6779.07,W 51 St & 7 Ave,215.1,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6779.05,Broadway & W 53 St,255.8,0,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6816.07,8 Ave & W 52 St,187.7,1,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6854.05,W 50 St & 9 Ave,388.2,0,1
+ChIJZ3oXOVZYwokRNnAXaDRKAzg,6708.04,Broadway & W 48 St,205.7,1,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6667.12,W 47 St & 6 Ave,191.3,1,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6779.04,Broadway & W 51 St,388.1,0,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6747.07,8 Ave & W 49 St,383.3,0,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6779.07,W 51 St & 7 Ave,338.9,0,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6593.15,6 Ave & W 45 St,241.0,1,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6676.02,W 45 St & 8 Ave,386.9,0,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6740.1,W 51 St & 6 Ave,366.3,0,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6667.04,W 47 St & 6 Ave,134.9,1,1
+ChIJ-2tIv1VYwokRO4ySA2GC9is,6708.04,Broadway & W 48 St,164.5,1,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5391.06,Lispenard St & Broadway,91.3,1,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5351.07,Walker St & Baxter St,271.6,0,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5422.09,Lafayette St & Grand St,238.8,1,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5500.02,Grand St & Greene St,266.1,0,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5422.04,Howard St & Lafayette St,144.2,1,1
+ChIJ35PIDbVZwokRPCrsISHXdmg,5430.1,6 Ave & Walker St,325.6,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6771.13,W 54 St & 6 Ave,98.9,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6700.01,W 52 St & 5 Ave,176.7,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6740.01,W 52 St & 6 Ave,165.7,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6659.09,Madison Ave & E 51 St,360.1,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6779.07,W 51 St & 7 Ave,399.6,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6659.03,E 53 St & Madison Ave,359.8,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6700.14,W 51 St & Rockefeller Plaza,154.4,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6626.11,W 48 St &  Rockefeller Plaza,390.7,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6809.07,W 56 St & 6 Ave,260.6,0,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6740.1,W 51 St & 6 Ave,220.5,1,1
+ChIJ2RF8f_lYwokR3nUp-y-qLk8,6809.09,W 55 St & 6 Ave,235.5,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6233.05,W 16 St & The High Line,64.9,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6115.09,W 15 St & 10 Ave,140.0,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6306.01,W 20 St & 10 Ave,244.3,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6190.08,9 Ave & W 18 St,284.0,0,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6306.06,W 22 St & 10 Ave,387.5,0,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6233.04,Pier 61 at Chelsea Piers,345.6,0,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6157.04,10 Ave & W 14 St,248.0,1,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6190.03,W 18 St & 9 Ave,273.9,0,1
+ChIJPwPoU8dZwokRoyVVUj7Nns4,6306.07,W 20 St & 11 Ave,321.4,0,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6932.14,E 67 St & Park Ave,61.3,1,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6830.02,E 63 St & 3 Ave,381.6,0,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,7036.07,E 70 St & Madison Ave,374.4,0,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6960.12,3 Ave & E 71 St,393.2,0,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6932.15,E 68 St & Madison Ave,238.4,1,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6896.16,E 68 St & 3 Ave,285.7,0,1
+ChIJOb4SHexYwokRYYbVbQIDVzo,6969.08,E 66 St & Madison Ave,250.5,0,1
+ChIJEQ6kk8dYwokRVW7W8Xj-lqw,7020.02,E 77 St & 1 Ave,392.2,0,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6839.04,E 58 St & Madison Ave,205.6,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6839.1,Grand Army Plaza & Central Park S,58.4,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6801.01,E 59 St & Madison Ave,217.7,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6904.06,5 Ave & E 63 St,230.9,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6876.04,Central Park S & 6 Ave,301.2,0,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6801.16,E 61 St & Madison Ave,233.0,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6809.07,W 56 St & 6 Ave,372.4,0,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6839.15,Central Park S & Grand Army Plaza,31.8,1,1
+ChIJ36kJb_BYwokROPefLSa2Knk,6732.01,E 56 St & Madison Ave,350.0,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5175.08,Fulton St & Broadway,348.3,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5137.1,Spruce St & Nassau St,152.8,1,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5137.11,Fulton St & William St,357.7,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5247.1,Reade St & Broadway,193.2,1,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5216.04,Barclay St & Church St,354.7,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5207.01,Centre St & Chambers St,117.3,1,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5216.06,Vesey St & Church St,382.5,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5279.03,Centre St & Worth St,390.3,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5137.12,Gold St & Frankfort St,311.2,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5288.08,Park Pl & Church St,289.6,0,1
+ChIJs--MqP1YwokRBwAhjXWIHn8,5288.09,Warren St & W Broadway,340.2,0,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6517.08,W 42 St & 6 Ave,221.3,1,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6593.14,W 43 St & 6 Ave,303.5,0,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6560.14,W 40 St & 7 Ave,204.8,1,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6593.15,6 Ave & W 45 St,340.8,0,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6560.01,Broadway & W 41 St,119.0,1,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6560.15,Broadway & W 38 St,365.6,0,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6602.03,W 41 St & 8 Ave,293.2,0,1
+ChIJAQAAQFJYwokRbu7IENYYkDM,6676.02,W 45 St & 8 Ave,383.8,0,1
+ChIJseNBN2dYwokRWQY41I7ZzvE,7183.03,Riverside Blvd & W 67 St,62.2,1,1
+ChIJseNBN2dYwokRWQY41I7ZzvE,7123.04,W 64 St & Thelonious Monk Circle,234.2,1,1
+ChIJbfoLm0D2wokRciT8D0epqOM,7745.07,W 120 St & Claremont Ave,109.3,1,1
+ChIJbfoLm0D2wokRciT8D0epqOM,7783.18,Broadway & W 122 St,154.2,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6771.13,W 54 St & 6 Ave,169.2,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6700.01,W 52 St & 5 Ave,102.7,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6740.01,W 52 St & 6 Ave,336.8,0,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6659.09,Madison Ave & E 51 St,242.6,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6659.03,E 53 St & Madison Ave,194.6,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6700.14,W 51 St & Rockefeller Plaza,217.0,1,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6809.07,W 56 St & 6 Ave,317.5,0,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6740.1,W 51 St & 6 Ave,380.9,0,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6809.09,W 55 St & 6 Ave,346.7,0,1
+ChIJQxcQwftYwokRKy-FqagoB7g,6732.01,E 56 St & Madison Ave,290.9,0,1
+ChIJCeuma0xZwokR0UtPrHPT3qI,6955.05,W 54 St & 11 Ave,143.2,1,1
+ChIJCeuma0xZwokR0UtPrHPT3qI,6926.01,W 52 St & 11 Ave,89.3,1,1
+ChIJCeuma0xZwokR0UtPrHPT3qI,6890.01,W 53 St & 10 Ave,339.0,0,1

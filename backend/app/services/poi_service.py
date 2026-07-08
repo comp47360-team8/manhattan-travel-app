@@ -8,12 +8,21 @@ def get_all_pois(db: Session):
     statement = select(POI)
     result = db.execute(statement)
     return result.scalars().all()
-    
 
 def get_poi_by_slug(slug: str, db: Session):
     statement = select(POI).where(POI.slug == slug.lower().strip())
     result = db.execute(statement)
     return result.scalar_one_or_none()
+
+def get_pois_by_slug(slugs: list[str], db: Session):
+    normalized_slugs = [slug.lower().strip() for slug in slugs]
+    
+    statement = select(POI).where(POI.slug.in_(normalized_slugs))
+    result = db.execute(statement).scalars().all()
+
+    poi_map = {poi.slug: poi for poi in result}
+
+    return [poi_map[slug] for slug in normalized_slugs if slug in poi_map]
 
 
 def save_poi_for_user(slug: str, db: Session, user: int):
@@ -55,7 +64,6 @@ def get_saved_poi(slug: str, db: Session, user: int):
         SavedPOI.poi_id == poi.id)
     
     saved_poi = db.execute(statement).scalar_one_or_none()
-
     return saved_poi
 
 

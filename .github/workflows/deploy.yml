@@ -1,0 +1,54 @@
+name: Deploy
+
+# Runs after CI succeeds on production, so a broken build/lint never
+# reaches migrations or the hosting platforms. `main` is the team's
+# integration branch; pushing to `production` is a deliberate release
+# step (see git-workflow.md).
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [production]
+
+jobs:
+  migrate-and-deploy:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run database migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pip install -r requirements.txt
+          alembic upgrade head
+
+      - name: Trigger Render backend deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Deploy frontend to Vercel
+        working-directory: frontend
+        # Git integration is intentionally disconnected (no per-dev Vercel access
+        # required, no Vercel checks blocking PRs to main). This token-based deploy
+        # is the only deploy path, so it must carry the org/project IDs itself
+        # since there is no committed frontend/.vercel link to resolve them.
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx vercel build --prod --token="$VERCEL_TOKEN"
+          npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
