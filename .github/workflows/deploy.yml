@@ -40,8 +40,14 @@ jobs:
 
       - name: Deploy frontend to Vercel
         working-directory: frontend
+        # Git integration is intentionally disconnected (no per-dev Vercel access
+        # required, no Vercel checks blocking PRs to main). This token-based deploy
+        # is the only deploy path, so it must carry the org/project IDs itself
+        # since there is no committed frontend/.vercel link to resolve them.
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
           npx vercel build --prod --token="$VERCEL_TOKEN"
