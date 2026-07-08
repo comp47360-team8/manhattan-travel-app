@@ -8,7 +8,7 @@ import Foundation
 
 #if DEBUG
 func mockUpData() -> [POI] {
-    let mockUpJson = #"""
+    let mockUpJson = """
     [
     {
         "slug": "times-square",
@@ -56,7 +56,7 @@ func mockUpData() -> [POI] {
         ]
     }
     ]
-    """#
+    """
     
     let data = Data(mockUpJson.utf8)
     let decoder = JSONDecoder()
@@ -70,5 +70,16 @@ func mockUpData() -> [POI] {
                 return []
             }
 }
+
+func d(_ s: String) -> Date {
+    let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"
+    return f.date(from: s) ?? .now
+}
+
+let itineraryMock =  Itinerary(id: "1", name: "Long Weekend in NYC",
+                               startDate: d("2026-06-12"), endDate: d("2026-06-14"),
+                               placeCount: 9,
+                               coverImageUrl: "https://lh3.googleusercontent.com/place-photos/AJRVUZPF2V81imOkg032LX5oxjfXLw4k0jnYkXI05TOtJPXDydZNHg1NLArwBoRYODizKEZWd1CH0KUK9jx-LxI9hCOl4jjqG30uSahlxJoCgl0S712GcDNAeAJl_xAH9B47gysmAOz_aWG5dfyVZQ=s4800-w612")
+
 
 #endif

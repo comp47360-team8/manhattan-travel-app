@@ -59,7 +59,7 @@ enum Access {
 
 struct PlaceCard: View {
     let poi: POI
-    
+
     var isSaved: Bool = false
     var onToggleSave: () -> Void = {}
     
@@ -67,7 +67,6 @@ struct PlaceCard: View {
         VStack(alignment: .leading, spacing:  0) {
             hero
             body_
-            
         }
         .background {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
@@ -170,18 +169,17 @@ struct PlaceCard: View {
     @ViewBuilder
     private var hero: some View {
         if let url = poi.heroURL {
-            AsyncImage(url: url){ phase in
-                switch phase {
-                case .success(let image): photoHeader(image)
-                case .failure: titleHeader
-                case .empty: titleHeader
-                @unknown default: titleHeader
-                }
+            CachedImage(url: url){ image in
+                photoHeader(image)
+            } placeholder: {
+                titleHeader
             }
         }else{
             titleHeader
         }
     }
+        
+    
     
     private func photoHeader(_ image: Image) -> some View {
         Color.clear
@@ -211,17 +209,22 @@ struct PlaceCard: View {
                     .offset(x: 40)
             }
             .clipped()
-            .overlay(alignment: .topLeading) {
-                if let access = poi.access { accessPill(access).padding(18) }
+            .overlay(alignment: .topTrailing){
+                bookmarkButton.padding(12)
             }
-            .overlay(alignment: .topTrailing) {
-                bookmarkButton.padding(18)
+            .overlay(alignment: .topLeading){
+                if let access = poi.access {
+                       accessPill(access).padding(18)
+                   }
+                    
             }
     }
     
     
     private var bookmarkButton: some View {
-        Button { /* onToggleSave() */ } label: {
+        Button {
+            onToggleSave()
+        } label: {
             Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(OffpeakTheme.navy)

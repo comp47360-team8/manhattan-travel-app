@@ -13,12 +13,12 @@ struct MainTabView: View {
                     Label("AI", systemImage: "sparkles")
                 }
 
-            PlaceholderTab(title: "Trip", systemImage: "calendar")
+            ItineraryListView()
                 .tabItem {
                     Label("Trip", systemImage: "calendar")
                 }
 
-            PlaceholderTab(title: "Save", systemImage: "bookmark")
+            SavedView()
                 .tabItem {
                     Label("Save", systemImage: "bookmark")
                 }
@@ -50,4 +50,5 @@ private struct PlaceholderTab: View {
 #Preview {
     MainTabView()
         .environmentObject(AuthManager())
+        .environmentObject(SavedPOIStore())
 }

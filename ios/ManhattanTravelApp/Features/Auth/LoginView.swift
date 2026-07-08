@@ -18,10 +18,10 @@ struct LoginView: View {
         }
         .padding(.vertical, 20)
         .padding(.horizontal, 10)
-        .background(Color(.systemGroupedBackground).opacity(0.8)) // the background?
+        .background(Color(.systemGroupedBackground).opacity(0.5)) // the background?
         .presentationDetents([.medium])
         .presentationDragIndicator(.hidden)
-        .interactiveDismissDisabled()
+        //.interactiveDismissDisabled()
         .onAppear{
             authManager.clearErrors()
         }
@@ -44,7 +44,7 @@ struct LoginView: View {
             }
             Spacer()
             Button{
-              // To be provided
+                authManager.isPresentingLogin = false
             } label: {
                 Image(systemName: "xmark")
                     .font(.system(size: 12, weight: .bold))

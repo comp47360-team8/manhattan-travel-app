@@ -9,6 +9,8 @@ import SwiftUI
 
 
 struct ExploreView: View {
+    @EnvironmentObject var authManager: AuthManager
+    @EnvironmentObject var savedStore : SavedPOIStore
     @StateObject private var viewModel = ExploreViewModel()
     @State private var searchText = ""
     @State private var selectedCategory: POICategory = .all
@@ -54,10 +56,15 @@ struct ExploreView: View {
             .background(OffpeakTheme.backGround)
             .safeAreaInset(edge: .top, spacing: 0) { topBar }
             .navigationDestination(for: String.self) { slug in
-                POIDetailView(slug: slug)
+                POIDetailView(
+                    slug: slug,
+                    isSaved: savedStore.isSaved(slug: slug)
+                    
+                )
             }
             .task {
                 await viewModel.loadPOIs()
+                if authManager.isLoggedIn { await savedStore.load() }
             }
         }
     }
@@ -150,7 +157,10 @@ struct ExploreView: View {
             LazyVStack(spacing: 16) {
                 ForEach(results) { poi in
                     NavigationLink(value: poi.slug) {
-                                PlaceCard(poi: poi)
+                                PlaceCard(poi: poi,
+                                          isSaved: savedStore.isSaved(slug: poi.slug),
+                                          onToggleSave: { handleToggleSave(slug: poi.slug) }
+                                )
                             }
                             .buttonStyle(.plain)
                 }
@@ -258,6 +268,15 @@ struct ExploreView: View {
         }
         .buttonStyle(.plain)
     }
+    
+    private func handleToggleSave(slug: String){
+        print("🔖 handleToggleSave called, slug:", slug, "isLoggedIn:", authManager.isLoggedIn)
+        guard authManager.isLoggedIn else {
+            authManager.requireLogin()
+            return
+        }
+        Task { await savedStore.toggle(slug: slug) }
+    }
         
     
     
@@ -265,4 +284,6 @@ struct ExploreView: View {
 
 #Preview {
     ExploreView()
+            .environmentObject(AuthManager())
+            .environmentObject(SavedPOIStore())
 }
