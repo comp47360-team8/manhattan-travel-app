@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, time, datetime
 from app.database import Base
-from sqlalchemy import ForeignKey, func, DateTime, String, BigInteger, Integer, Date, Time, Boolean, Text
+from sqlalchemy import ForeignKey, func, DateTime, String, BigInteger, Integer, Date, Time, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.schemas.itinerary import BusynessResponse
@@ -40,6 +40,17 @@ class SavedItinerary(Base):
     end_date: Mapped[date] = mapped_column(
         Date,
         nullable=False
+    )
+
+    accessibility_requirements: Mapped[list] = mapped_column(
+        JSONB,
+        nullable=False,
+        server_default="[]"
+    )
+
+    warning: Mapped[list[str] | None] = mapped_column(
+        JSONB,
+        nullable=True,
     )
 
     user = relationship(
@@ -117,11 +128,6 @@ class ItineraryStop(Base):
 
     busyness_for_day: Mapped[list[BusynessResponse]] = mapped_column(
         JSONB
-    )
-
-    user_added: Mapped[bool] = mapped_column(
-        Boolean,
-        default=False
     )
 
     hero_image_url: Mapped[str] = mapped_column(
