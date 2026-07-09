@@ -18,3 +18,9 @@ class ItineraryNotFound(Exception):
 class POINotOpenDuringTrip(Exception):
     pass
 
+class StopNotFound(Exception):
+    pass
+
+class RepeatingPOI(Exception):
+    pass
+
