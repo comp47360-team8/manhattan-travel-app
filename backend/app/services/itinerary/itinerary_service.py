@@ -1,4 +1,3 @@
-import uuid
 from datetime import date, timedelta, time
 from app.services.itinerary.assignment.utils import convert_to_days
 from app.services.itinerary.accessibility import filter_accessibility
@@ -20,8 +19,8 @@ def create_itinerary(request: ItineraryRequest, db):
     
     pois = get_pois_by_slug(request.pois, db)
 
-    if request.accessibilty != []:
-        pois = filter_accessibility(pois, request.accessibilty)
+    if request.accessibility != []:
+        pois = filter_accessibility(pois, request.accessibility)
 
     validated_pois = validate_pois(pois, full_trip_days)
 
@@ -31,24 +30,20 @@ def create_itinerary(request: ItineraryRequest, db):
 
     redordered_itinerary = reorder_pois(pois, validated_pois, pois_assigned_slots)
 
-    final_itinerary = transform_itinerary(request.trip_name, request.trip_dates, redordered_itinerary, warning, db)
+    final_itinerary = transform_itinerary(request.trip_name, request.trip_dates, request.accessibility, redordered_itinerary, warning, db)
 
     return final_itinerary
 
-def transform_itinerary(trip_name: str, dates:list[date], itinerary: dict, warning: str|None, db):
+def transform_itinerary(trip_name: str, dates:list[date], accessibility: list[str], itinerary: dict, warning: str|None, db):
     day_number = 1
     current_date = dates[0]
-    if len(dates) == 1:
-        start_date = dates[0]
-    else:
-        start_date = dates[0]
-        end_date = dates[1]
 
     final_itinerary = {
         "trip_name": trip_name,
         "start_date": dates[0],
         "end_date": dates[-1],
         "warning": warning,
+        "accessibility": accessibility,
         "stops": []
         }
     i = 1
@@ -67,7 +62,7 @@ def transform_itinerary(trip_name: str, dates:list[date], itinerary: dict, warni
                         slot_end = time(18,0)
                     else:
                         slot_start = time(18,0)
-                        slot_end = time(23,59)
+                        slot_end = time(22,0)
 
                     poi_card = {
                         "poi_id": poi_object.id,
@@ -84,7 +79,7 @@ def transform_itinerary(trip_name: str, dates:list[date], itinerary: dict, warni
                         "hero_image_url": poi_object.hero_image_url,
                         "borough": poi_object.borough,
                         "neighborhood": poi_object.neighborhood,
-                        "suggested_duration": f"{poi_object.recommended_duration_min} minutes",
+                        "suggested_duration": poi_object.recommended_duration_min,
                         "accessibility": poi_object.accessibility_labels or [],
                         "flags": poi.flags,
                         "busyness_for_day": day_busyness
