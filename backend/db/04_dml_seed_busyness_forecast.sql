@@ -2,7 +2,6 @@
 -- Run AFTER 02_ddl_create_busyness_forecast_table.sql
 
 BEGIN;
-DELETE FROM poi WHERE id = 3;
 
 INSERT INTO poi_busyness_forecast
   (poi_id, day_of_week, hour_of_day, busyness_pct, level, source)

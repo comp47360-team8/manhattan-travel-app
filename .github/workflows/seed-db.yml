@@ -16,3 +16,13 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: psql "$DATABASE_URL" -f backend/db/03_dml_seed_poi_table.sql
+
+      - name: Seed POI busyness forecast table
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: psql "$DATABASE_URL" -f backend/db/04_dml_seed_busyness_forecast.sql
+
+      - name: Seed POI availability mode
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: psql "$DATABASE_URL" -f backend/db/05_insert_poi_availability_mode.sql
