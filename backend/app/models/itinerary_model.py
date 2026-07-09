@@ -53,6 +53,12 @@ class SavedItinerary(Base):
         nullable=True,
     )
 
+    saved_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), 
+        server_default=func.now(), 
+        nullable=False
+    )
+
     user = relationship(
         "User",
         back_populates="itineraries"
