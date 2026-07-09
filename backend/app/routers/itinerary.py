@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from app.schemas.itinerary import ItineraryRequest
 from app.services.itinerary.itinerary_service import create_itinerary
 from app.database import get_db
-from app.core.exceptions import MaximumPOIsExceeded
+from app.core.exceptions import MaximumPOIsExceeded, POINotOpenDuringTrip
 from app.dependencies.auth import authorise_access
 from app.schemas.itinerary import ItineraryResponse, ItinerarySaveResponse, ItineraryUnsaveResponse
-from app.repositories.itinerary_repository import save_itinerary_for_user, unsave_itinerary_for_user
+from app.repositories.itinerary_repository import save_itinerary_for_user, unsave_itinerary_for_user, serialize_itinerary
 
 router = APIRouter(prefix="/api/itinerary", tags=["itinerary"])
 
@@ -21,13 +21,17 @@ def generate_itinerary(request: ItineraryRequest, db: Session = Depends(get_db))
             detail="Too many POIs for your date range. Maximum 5 POIs per day."
         )
     
-@router.post("", response_model=ItinerarySaveResponse)
+    except POINotOpenDuringTrip as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    
+@router.post("")
 def save_itinerary(request: ItineraryResponse, db: Session = Depends(get_db), user = Depends(authorise_access)):
     try:
-        save_itinerary_for_user(request, db, user)
-        return ItinerarySaveResponse(
-            message="Itinerary saved."
-        )
+        itinerary = save_itinerary_for_user(request, db, user)
+        return serialize_itinerary(itinerary)
     except Exception as e:
         raise e
     

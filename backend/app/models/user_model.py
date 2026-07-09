@@ -31,7 +31,7 @@ class User(Base):
         )
 
     itineraries =  relationship(
-        "SavedItineraries",
+        "SavedItinerary",
         back_populates="user",
         cascade="all, delete-orphan"
     )

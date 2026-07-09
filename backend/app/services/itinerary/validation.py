@@ -12,16 +12,27 @@ def validate_pois(pois: list[POI], dates: list):
 def build_poi_profile(poi: POI, dates: list):
     availability, flags = find_availabile_slots(poi, dates)
 
-    locked_day = None
+    opening_days = []
 
+    days_not_open = []
+    for day, slots in availability.items():
+        openings = []
+        for slot, is_open in slots.items():
+            openings.append(is_open)
+        if all(is_open == False for is_open in openings):
+            days_not_open.append(day)
+
+    for day in dates:
+        if day not in days_not_open:
+            opening_days.append(day)
+        
     return POIProfile(
         id=poi.id,
         slug=poi.slug,
         availability=availability,
         mode=poi.availability_mode,
-        locked_day=locked_day,
+        opening_days=opening_days,
         flags=flags,
-        last_of_day=False
     )
 
 def find_availabile_slots(poi: POI, days: list):

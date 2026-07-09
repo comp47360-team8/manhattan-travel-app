@@ -14,3 +14,7 @@ class MaximumPOIsExceeded(Exception):
 class ItineraryNotFound(Exception):
     pass
 
+
+class POINotOpenDuringTrip(Exception):
+    pass
+

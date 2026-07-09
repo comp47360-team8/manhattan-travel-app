@@ -2,9 +2,10 @@ import uuid
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from app.models.poi_model import POIBusynessForecast
-from app.models.itinerary_model import SavedItineraries
+from app.models.itinerary_model import SavedItinerary, ItineraryStop
 from app.schemas.itinerary import ItineraryResponse
 from app.core.exceptions import ItineraryNotFound
+from app.services.poi_service import get_pois_by_slug
 
 def get_crowd_level(id, day, slot, db: Session):
     statement = select(
@@ -58,32 +59,12 @@ def get_busyness_for_day(id, day: int, db: Session):
          for row in result
          ]
 
-def save_itinerary_for_user(itinerary_to_save: ItineraryResponse, db: Session, user: uuid.UUID):
-    statement = select(SavedItineraries).where(
-        SavedItineraries.id == itinerary_to_save.model_dump()["itinerary_id"],
-        SavedItineraries.user_id == user
-        )
-    existing_save = db.execute(statement).scalar_one_or_none()
-
-    if existing_save:
-        return
-    
-    db_entry = SavedItineraries(
-        id=itinerary_to_save.model_dump()["itinerary_id"],
-        user_id=user,
-        itinerary=itinerary_to_save.model_dump(),
-        name=itinerary_to_save.model_dump()["trip_name"]
-    )
-    db.add(db_entry)
-    db.commit()
-    db.refresh(db_entry)
-
 def get_saved_itineraries(db: Session, user: uuid.UUID):
     statement = select(
-        SavedItineraries.id,
-        SavedItineraries.name,
-        SavedItineraries.itinerary
-        ).where(SavedItineraries.user_id == user)
+        SavedItinerary.id,
+        SavedItinerary.name,
+        SavedItinerary.itinerary
+        ).where(SavedItinerary.user_id == user)
     
     result =  db.execute(statement).all()
     
@@ -98,9 +79,9 @@ def get_saved_itineraries(db: Session, user: uuid.UUID):
     ]
 
 def get_saved_itinerary(itinerary_id, db: Session, user: uuid.UUID):
-    statement = select(SavedItineraries.itinerary).where(
-        SavedItineraries.id == itinerary_id,
-        SavedItineraries.user_id == user
+    statement = select(SavedItinerary.itinerary).where(
+        SavedItinerary.id == itinerary_id,
+        SavedItinerary.user_id == user
     )
     result = db.execute(statement).scalar_one_or_none()
 
@@ -109,9 +90,9 @@ def get_saved_itinerary(itinerary_id, db: Session, user: uuid.UUID):
     return db.execute(statement).scalar_one_or_none()
         
 def unsave_itinerary_for_user(itinerary_id, db: Session, user: uuid.UUID):
-    statement = select(SavedItineraries).where(
-        SavedItineraries.id == itinerary_id,
-        SavedItineraries.user_id == user
+    statement = select(SavedItinerary).where(
+        SavedItinerary.id == itinerary_id,
+        SavedItinerary.user_id == user
         )
 
     db_entry = db.execute(statement).scalar_one_or_none()
@@ -121,6 +102,70 @@ def unsave_itinerary_for_user(itinerary_id, db: Session, user: uuid.UUID):
 
     db.delete(db_entry)
     db.commit()
+
+def save_itinerary_for_user(itinerary: ItineraryResponse, db: Session, user: uuid.UUID):
+    itinerary_entry = SavedItinerary(
+        user_id=user,
+        name=itinerary.trip_name,
+        start_date=itinerary.start_date,
+        end_date=itinerary.end_date
+    )
+
+    db.add(itinerary_entry)
+    db.flush()
+
+    for stop in itinerary.stops:
+        db.add(
+            ItineraryStop(
+                itinerary_id=itinerary_entry.id,
+                poi_id= stop.poi_id,
+                day_number=stop.day_number,
+                visit_date=stop.visit_date,
+                slot=stop.slot,
+                slot_start=stop.slot_start,
+                slot_end=stop.slot_end,
+                position=stop.position,
+                crowd_level=stop.crowd_level,
+                flags=stop.flags,
+                busyness_for_day=[item.model_dump() for item in stop.busyness_for_day],
+                hero_image_url=stop.hero_image_url,
+        ))
+
+    db.commit()
+    db.refresh(itinerary_entry)
+
+    return itinerary_entry
+
+def serialize_itinerary(itinerary: SavedItinerary):
+    return {
+        "itinerary_id": itinerary.id,
+        "trip_name" : itinerary.name,
+        "start_date" : itinerary.start_date,
+        "end_date": itinerary.end_date,
+        "stops": [
+            {
+                "stop_id": str(stop.id),
+                "poi_id": stop.poi_id,
+                "poi_name": stop.poi_name,
+                "slug": stop.slug,
+                "day_number": stop.day_number,
+                "visit_date": stop.visit_date,
+                "slot": stop.slot,
+                "slot_start": stop.slot_start,
+                "slot_end": stop.slot_end,
+                "position": stop.position,
+                "poi_type": stop.type,
+                "crowd_level": stop.rowd_level,
+                "hero_image_url": stop.hero_image_url,
+                "borough": stop.borough,
+                "neighborhood": stop.neighborhood,
+                "suggested_duration": stop.suggested_duration,
+                "accessibility": stop.accessibility_labels,
+                "flags": stop.flags,
+                "busyness_for_day": stop.busyness_for_day
+            } for stop in itinerary.stops
+        ]
+    }
 
 
 
