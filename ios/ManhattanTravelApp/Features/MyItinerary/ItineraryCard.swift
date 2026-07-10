@@ -54,6 +54,8 @@ struct ItineraryCard: View {
         }
 }
 
+#if DEBUG
 #Preview {
     ItineraryCard(itinerary: itineraryMock)
 }
+#endif
