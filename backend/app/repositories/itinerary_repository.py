@@ -237,6 +237,7 @@ def update_saved_itinerary(new_itinerary, itinerary_id, db: Session, user: uuid.
                 hero_image_url=new_stop["hero_image_url"],
             ))
         
+    itinerary.warning = new_itinerary["warning"]
     db.commit()
 
     return serialize_itinerary(itinerary)
