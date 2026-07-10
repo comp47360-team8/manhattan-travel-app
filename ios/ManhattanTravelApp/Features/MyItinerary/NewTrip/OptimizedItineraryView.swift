@@ -11,6 +11,7 @@ import SwiftUI
 struct OptimizedItineraryView: View {
     let itinerary: OptimizedItinerary
     var onBack: () -> Void = {}
+    var onEdit: (() -> Void)? = nil          // nil = hide the Edit button (e.g. saved-detail)
 
     @State private var selectedDay = 0
 
@@ -49,18 +50,18 @@ struct OptimizedItineraryView: View {
                     .font(.system(size: 12)).foregroundColor(OffpeakTheme.textSecondary)
             }
             Spacer()
-            Button {
-                // TODO: edit flow
-            } label: {
-                HStack(spacing: 5) {
-                    Image(systemName: "pencil")
-                    Text("Edit")
+            if let onEdit {
+                Button { onEdit() } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "pencil")
+                        Text("Edit")
+                    }
+                    .font(.system(size: 13, weight: .semibold)).foregroundColor(OffpeakTheme.ink)
+                    .padding(.horizontal, 14).frame(height: 34)
+                    .background(Color.white.opacity(0.7), in: Capsule())
                 }
-                .font(.system(size: 13, weight: .semibold)).foregroundColor(OffpeakTheme.ink)
-                .padding(.horizontal, 14).frame(height: 34)
-                .background(Color.white.opacity(0.7), in: Capsule())
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
         .padding(.horizontal, 20).padding(.vertical, 10)
     }

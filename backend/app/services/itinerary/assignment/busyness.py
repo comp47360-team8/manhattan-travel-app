@@ -14,7 +14,7 @@ def build_busyness_matrix(pois: list[POIProfile], trip_days: list, db: Session):
 
     for row in percentages:
         busyness_matrix[row.slug][row.day][row.slot] = row.avg_busyness_pct
-
+                    
     return busyness_matrix
 
 def find_best_slot(poi: POIProfile, day: int, matrix: dict[str, dict]):
@@ -44,48 +44,44 @@ def find_best_slot(poi: POIProfile, day: int, matrix: dict[str, dict]):
         "score": lowest_score,
     }
 
-def calculate_busyness_cost(poi:POIProfile, slot: dict, matrix: dict):
+def calculate_busyness_cost(poi: POIProfile, slot: dict, matrix: dict):
     candidates = [dest for dest in slot["pois"]]
     candidates.append(poi)
 
     cost_list = []
     costs = []
 
-    for profile in candidates:
-        day = matrix[profile.slug][slot["day"]]
+    for candidate in candidates:
+        current_day = matrix[candidate.slug][slot["day"]]
 
-        slots = list(day.keys())
+        slots = [s.name for s in TIME_SLOTS]
 
         current_slot_index = slots.index(slot["time_slot"])
         current_slot = slots[current_slot_index]
 
-        wrap = False
-        if current_slot_index == 2:
-            wrap = True
-        next_slot = slots[(current_slot_index + 1) % len(slots)]
+        next_slot = slots[current_slot_index + 1]
+        
+        if not candidate.availability[slot["day"]][next_slot]:
+            continue
 
-        current_score = day[current_slot]
-        if wrap:
-            trip_days = sorted(matrix[profile.slug].keys())
-            last_day = False
-            for d in trip_days:
-                if d + 1 not in trip_days:
-                    last_day = True
-                if last_day:
-                    return
-            day = matrix[profile.slug][(slot["day"] + 1) % 7]
-        next_score = day[next_slot]
+        current_score = current_day[current_slot]
+        next_score = current_day[next_slot]
+
+        if not next_score:
+            continue
 
         cost = next_score - current_score
         costs.append(cost)
         busyness_cost = {
-            "poi": profile, 
+            "poi": candidate, 
             "cost": next_score - current_score
             }
         cost_list.append(busyness_cost)
 
+    if not cost_list:
+        return
+
     for item in cost_list:
         sign = "positive" if item["cost"] >= 0 else "negative"
         item["normalized_cost"] = normalize_cost(item["cost"], costs, sign)
-
     return cost_list

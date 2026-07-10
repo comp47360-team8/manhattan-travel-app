@@ -35,7 +35,7 @@ struct RegisterView: View {
             }
             
             .padding(.vertical, 10)
-            .background(Color(.systemGroupedBackground))
+            .background(OffpeakTheme.backGround)
             .onAppear{
                 authManager.clearErrors()
             }
@@ -72,7 +72,7 @@ struct RegisterView: View {
                 .foregroundColor(.secondary)
             Text("Plan smarter, \nexplore calmer.")
                 .font(.system(size: 32, weight: .bold))
-                .foregroundColor(Color(red: 0.1, green: 0.18, blue: 0.32))
+                .foregroundColor(OffpeakTheme.inkTitle)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 8)
@@ -148,14 +148,22 @@ struct RegisterView: View {
                     confirmPassword: confirmPassword)
             }
         } label:{
-            Text("Sign up & Log in")
-                .font(.headline)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color(red: 0.1, green: 0.18, blue: 0.32))
-                .cornerRadius(14)
+            Group {
+                if authManager.isRegistering {
+                    ProgressView()
+                        .tint(.white)
+                } else {
+                    Text("Sign up & Log in")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(OffpeakTheme.brand)
+            .cornerRadius(14)
         }
+        .disabled(authManager.isRegistering)
         .padding(.top, 8)
     }
         
@@ -169,7 +177,7 @@ struct RegisterView: View {
                 dismiss()
             }
             .bold()
-            .foregroundColor(Color(red: 0.78, green: 0.25, blue: 0.18))
+            .foregroundColor(OffpeakTheme.brand)
         }
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .center)
@@ -178,8 +186,12 @@ struct RegisterView: View {
 
     
 }
-#Preview {
+#Preview("Register") {
     RegisterView()
         .environmentObject(AuthManager())
-    
+}
+
+#Preview("Register loading") {
+    RegisterView()
+        .environmentObject(AuthManager.previewing(registering: true))
 }

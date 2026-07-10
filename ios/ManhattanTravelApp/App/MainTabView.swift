@@ -15,7 +15,7 @@ struct MainTabView: View {
 
             ItineraryListView()
                 .tabItem {
-                    Label("Trip", systemImage: "calendar")
+                    Label("OFFPEAK", systemImage: "calendar")
                 }
 
             SavedView()

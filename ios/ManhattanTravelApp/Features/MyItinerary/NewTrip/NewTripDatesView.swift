@@ -11,6 +11,8 @@ struct NewTripDatesView: View {
     @StateObject private var vm = NewTripViewModel()
     @Environment(\.dismiss) private var dismiss
     @State private var goToPlaces = false
+    var onClose: () -> Void = {}
+
 
     var body: some View {
         NavigationStack {
@@ -37,7 +39,7 @@ struct NewTripDatesView: View {
             .background(OffpeakTheme.backGround)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(isPresented: $goToPlaces) {
-                ChoosePlacesView(vm: vm)
+                ChoosePlacesView(vm: vm, onClose: onClose)
             }
         }
     }
@@ -92,7 +94,10 @@ struct NewTripDatesView: View {
             HStack(spacing: 8) { Text("Continue"); Image(systemName: "arrow.right") }
                 .font(.system(size: 17, weight: .semibold)).foregroundColor(.white)
                 .frame(maxWidth: .infinity).frame(height: 54)
-                .background(OffpeakTheme.accent.opacity(vm.canContinue ? 1 : 0.4), in: Capsule())
+                .background(vm.canContinue ? OffpeakTheme.accent : Color(hex: 0x9E948A).opacity(0.9), in: Capsule())
+            
+            
+            
         }
         .disabled(!vm.canContinue)
         .padding(.horizontal, 20).padding(.bottom, 8)

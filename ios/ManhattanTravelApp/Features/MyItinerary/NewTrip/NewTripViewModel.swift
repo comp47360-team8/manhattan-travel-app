@@ -21,6 +21,20 @@ final class NewTripViewModel: ObservableObject {
     @Published var result: OptimizedItinerary?   // set when generation finishes
     private let poiService = POIService() // reuse poi service
 
+    // generate a new itinerary
+    @Published var generated: APIItinerary?
+    @Published var errorMessage: String?
+    @Published var isSaving: Bool = false
+    
+    private var tripDateStrings: [String] {
+        [startDate, endDate].compactMap { $0 }.map(Self.apiDate.string)  // → [start, end]
+    }
+    
+    private let itineraryService = ItineraryService()
+    
+    
+    
+
 
     var durationDays: Int? {
         guard let s = startDate, let e = endDate else { return nil }
@@ -60,18 +74,41 @@ final class NewTripViewModel: ObservableObject {
     // step 3
     /// Runs the (mock) optimisation, advancing `optimizeDay` so the loading
     /// screen can show progress, then publishes `result`.
-    /// TODO: swap the mock builder for the backend optimise call.
     func generate() async {
-        guard let start = startDate else { return }
-        let dayCount = durationDays ?? 1
-        result = nil
-        for day in 1...dayCount {
-            optimizeDay = day
-            try? await Task.sleep(nanoseconds: 700_000_000)
+        guard let start = startDate, !selectedPOIs.isEmpty else { return }
+ 
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        
+        let request = GenerateItineraryRequest(
+            tripName: trimmed.isEmpty ? "My Trip" : trimmed,
+            tripDates: tripDateStrings,
+            pois: selectedPOIs.map(\.slug),
+            accessibilty: []
+ 
+        )
+        
+        do {
+            let dto = try await itineraryService.generate(request)
+            try await itineraryService.save(dto)
+            result = OptimizedItinerary.from(dto, startDate: start) // for UI view
+        } catch is CancellationError {
+        } catch {
+            errorMessage = error.localizedDescription
         }
-        let tripName = name.trimmingCharacters(in: .whitespaces)
-        result = OptimizedItinerary.build(name: tripName.isEmpty ? "My Trip" : tripName,
-                                          startDate: start, dayCount: dayCount,
-                                          pois: selectedPOIs)
+        
     }
+    
+
+    
+    
+    private static let apiDate: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd"
+        return f
+    }()
+
+    
+
+    
 }

@@ -32,10 +32,12 @@ def find_combined_costs(busyness, geographic, pois: list[POIProfile]):
         combined_costs[dest["poi"].slug] = combined_cost
 
     min_key = min(combined_costs, key=combined_costs.get)
-    combined_costs["winner"] = poi_lookup[min_key]
+    combined_costs["to_move"] = poi_lookup[min_key]
 
     return combined_costs
 
 def replace(remove: POIProfile, add: POIProfile, slot: dict):
     slot["pois"].remove(remove)
-    slot["pois"].append(add)
+    if add.availability[slot["day"]][slot["time_slot"]]:
+        slot["pois"].append(add)
+

@@ -5,6 +5,7 @@
 //  Created by Sean on 02/07/2026.
 //
 import Foundation
+import SwiftUI
 
 @MainActor
 final class SavedPOIStore: ObservableObject {
@@ -36,32 +37,30 @@ final class SavedPOIStore: ObservableObject {
     
     func toggle(slug: String) async {
         let wasSaved = savedSlugs.contains(slug)
-        print("🔖 toggle start, slug:", slug, "wasSaved:", wasSaved)
-        if wasSaved {
-            savedSlugs.remove(slug)
-        } else {
-            savedSlugs.insert(slug)
-        }
-        print("🔖 optimistic savedSlugs now:", savedSlugs)
+        let previousPOIs = savedPOIs          // snapshot for rollback
 
-        
-        do{
+        // Optimistic update — reflect the change in the UI immediately.
+        withAnimation(.easeInOut(duration: 0.25)) {
+            if wasSaved {
+                savedSlugs.remove(slug)
+                savedPOIs.removeAll { $0.slug == slug }
+            } else {
+                savedSlugs.insert(slug)
+            }
+        }
+
+        do {
             if wasSaved {
                 try await service.unsave(slug: slug)
             } else {
                 try await service.save(slug: slug)
             }
-            print("🔖 network call succeeded")
             await load(force: true)
         } catch {
-            print("🔖 network call FAILED:", error)
-            if wasSaved {
-                savedSlugs.insert(slug)
-            } else {
-                savedSlugs.remove(slug)
-            }
+            // Roll back to the pre-toggle state.
+            savedPOIs = previousPOIs
+            savedSlugs = Set(previousPOIs.map(\.slug))
         }
-        
     }
     
     func reset(){

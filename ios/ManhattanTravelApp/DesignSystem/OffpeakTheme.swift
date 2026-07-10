@@ -17,6 +17,8 @@ enum OffpeakTheme {
     static let amber = Color(hex: 0xF5B301)   // ratings / moderate
     static let coral = Color(hex: 0xD4544A)   // busy / crowded
     static let accent = Color(hex: 0x734B37)
+    static let brand = Color(hex: 0x8A4B39)   // terracotta — primary buttons & links
+    static let inkTitle = Color(hex: 0x2A2622)  // near-black headings
 
     // MARK: Text shades
     static let textSecondary = Color(hex: 0x5B6578)
