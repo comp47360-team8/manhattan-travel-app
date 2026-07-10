@@ -147,6 +147,10 @@ activemq-data/
 # SageMath parsed files
 *.sage.py
 
+# Vercel CLI writes this at the repo root, since deploy.yml runs `vercel pull`
+# from here (the project's Root Directory setting selects frontend/).
+.vercel
+
 # Environments
 .env
 .envrc
