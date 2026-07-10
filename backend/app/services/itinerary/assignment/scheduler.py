@@ -128,6 +128,10 @@ def overflow(poi: POIProfile, matrix: dict, slot: dict, week: int, itinerary: di
     current_slot = find_slot(slot, week, itinerary)
 
     busyness = calculate_busyness_cost(current_poi, current_slot, matrix)
+    if not busyness:
+        assign(slot, poi, week, itinerary)
+        return
+    
     geographic = calculate_geographic_cost(current_poi, current_slot, db)
 
     combined_costs = find_combined_costs(busyness, geographic, pois)
