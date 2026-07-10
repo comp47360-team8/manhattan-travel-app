@@ -22,12 +22,16 @@ struct ItineraryListView: View {
                     }
                     .safeAreaInset(edge: .top, spacing: 0) { header }
                     .refreshable { await vm.load(force: true) }
-                    .navigationDestination(for: String.self) { id in Text("Itinerary detail: \(id)")   // TODO: ItineraryDetailView(id: id)
+                    .navigationDestination(for: String.self) { id in
+                        ItineraryDetailView(id: id)
                     }
                     .task { if authManager.isLoggedIn {await vm.load()} }
-                    .fullScreenCover(isPresented: $showNewTrip) {
-                        NewTripDatesView().environmentObject(savedStore)
-                    }
+                    .fullScreenCover(isPresented: $showNewTrip, onDismiss: {
+                        Task { await vm.load(force: true) }
+                    }) {
+                        NewTripDatesView(onClose: { showNewTrip = false })
+                        .environmentObject(savedStore)
+                                        }
                 }else{
                     loginPrompt
                 }
@@ -119,34 +123,11 @@ struct ItineraryListView: View {
     
     // MARK: Logged-out fallback
     private var loginPrompt: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            Image(systemName: "calendar.circle")
-                .font(.system(size: 56))
-                .foregroundColor(OffpeakTheme.navy.opacity(0.4))
-            Text("Log in to see/plan your next trip")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(OffpeakTheme.ink)
-            Text("Sign in to save Manhattan spots and pick them back up anytime.")
-                .font(.system(size: 14))
-                .foregroundColor(OffpeakTheme.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            Button {
-                authManager.requireLogin()
-            } label: {
-                Text("Log In")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 28)
-                    .frame(height: 44)
-                    .background(OffpeakTheme.navy, in: Capsule())
-            }
-            Spacer()
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
+        LoggedOutPrompt(
+            icon: "calendar.badge.checkmark",
+            title: "Your trips live here",
+            message: "Log in to see your saved itineraries and let Offpeak route you around the crowds."
+        )
     }
 }
 
