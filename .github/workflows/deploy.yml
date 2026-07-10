@@ -25,6 +25,11 @@ jobs:
         working-directory: backend
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # alembic/env.py imports app.core.config, which instantiates Settings() at
+          # import time and so validates every field. Migrations never sign a token,
+          # but the import fails without this. Locally it comes from the gitignored
+          # backend/.env, which no CI checkout has.
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
         run: |
           pip install -r requirements.txt
           alembic upgrade head
@@ -34,12 +39,20 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Matches the Vercel project's nodeVersion (24.x). `vercel build` runs here,
+          # not on Vercel, so this Node is what actually builds production. Also clears
+          # vite@8's engine floor (^20.19.0 || >=22.12.0).
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
       - name: Deploy frontend to Vercel
-        working-directory: frontend
+        # Runs from the repo root on purpose. The Vercel project sets Root Directory
+        # to "frontend" and the CLI resolves it against the working directory, so
+        # running this from frontend/ resolves frontend/frontend. That does not error:
+        # the build falls back to @vercel/static, emits no static/ output, and still
+        # exits 0 -- publishing an empty site. Keep this at the root.
+        #
         # Git integration is intentionally disconnected (no per-dev Vercel access
         # required, no Vercel checks blocking PRs to main). This token-based deploy
         # is the only deploy path, so it must carry the org/project IDs itself
