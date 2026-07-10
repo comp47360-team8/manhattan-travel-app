@@ -1,7 +1,8 @@
-from datetime import date, timedelta, time
+from sqlalchemy.orm import Session
+from datetime import timedelta, time
 from app.services.itinerary.assignment.utils import convert_to_days
 from app.services.itinerary.accessibility import filter_accessibility
-from app.services.itinerary.validation import validate_pois
+from app.services.itinerary.poi_profile import get_poi_profiles
 from app.services.itinerary.assignment.scheduler import assign_days, assign_slots
 from app.schemas.itinerary import ItineraryRequest
 from app.services.poi_service import get_pois_by_slug
@@ -9,41 +10,53 @@ from app.services.poi_service import get_poi_by_slug
 from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day
 from app.services.itinerary.ordering import reorder_pois
 from app.core.constants import MAX_POIS_PER_DAY
-from app.core.exceptions import MaximumPOIsExceeded
+from app.core.exceptions import MaximumPOIsExceeded, POINotFoundError, RepeatingPOI
 
 def create_itinerary(request: ItineraryRequest, db):
+    pois, full_trip_days = validate_request(request, db)
+
+    poi_profiles = get_poi_profiles(pois, full_trip_days)
+
+    pois_assigned_days = assign_days(pois, poi_profiles, full_trip_days)
+  
+    pois_assigned_slots, warning = assign_slots(poi_profiles, pois_assigned_days, full_trip_days, db)
+
+    reordered_itinerary = reorder_pois(pois, poi_profiles, pois_assigned_slots)
+
+    final_itinerary = transform_itinerary(request, reordered_itinerary, warning, db)
+
+    return final_itinerary
+
+def validate_request(request: ItineraryRequest, db: Session):
     full_trip_days = convert_to_days(request.trip_dates)
 
     if len(full_trip_days) * MAX_POIS_PER_DAY < len(request.pois):
         raise MaximumPOIsExceeded
     
     pois = get_pois_by_slug(request.pois, db)
-
+    for poi in request.pois:
+        if poi not in [p.slug for p in pois]:
+            raise POINotFoundError(f"'{poi}' does not exist. Please enter a valid POI.")
+        
+    slugs = [p.slug for p in pois]
+    if len(slugs) != len(set(slugs)):
+        raise RepeatingPOI
+        
     if request.accessibility != []:
         pois = filter_accessibility(pois, request.accessibility)
 
-    validated_pois = validate_pois(pois, full_trip_days)
+    return pois, full_trip_days
 
-    pois_assigned_days = assign_days(pois, validated_pois, full_trip_days)
-  
-    pois_assigned_slots, warning = assign_slots(validated_pois, pois_assigned_days, full_trip_days, db)
-
-    redordered_itinerary = reorder_pois(pois, validated_pois, pois_assigned_slots)
-
-    final_itinerary = transform_itinerary(request.trip_name, request.trip_dates, request.accessibility, redordered_itinerary, warning, db)
-
-    return final_itinerary
-
-def transform_itinerary(trip_name: str, dates:list[date], accessibility: list[str], itinerary: dict, warning: str|None, db):
+def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str | None, db: Session):
     day_number = 1
-    current_date = dates[0]
+    current_date = request.trip_dates[0]
 
     final_itinerary = {
-        "trip_name": trip_name,
-        "start_date": dates[0],
-        "end_date": dates[-1],
+        "trip_name": request.trip_name,
+        "start_date": request.trip_dates[0],
+        "end_date": request.trip_dates[-1],
         "warning": warning,
-        "accessibility": accessibility,
+        "accessibility": request.accessibility,
         "stops": []
         }
     i = 1
