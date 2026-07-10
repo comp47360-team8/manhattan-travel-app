@@ -179,34 +179,11 @@ struct SavedView: View {
 
     // MARK: Logged-out fallback
     private var loginPrompt: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            Image(systemName: "bookmark.circle")
-                .font(.system(size: 56))
-                .foregroundColor(OffpeakTheme.navy.opacity(0.4))
-            Text("Log in to see your saved places")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(OffpeakTheme.ink)
-            Text("Sign in to save Manhattan spots and pick them back up anytime.")
-                .font(.system(size: 14))
-                .foregroundColor(OffpeakTheme.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            Button {
-                authManager.requireLogin()
-            } label: {
-                Text("Log In")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 28)
-                    .frame(height: 44)
-                    .background(OffpeakTheme.navy, in: Capsule())
-            }
-            Spacer()
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
+        LoggedOutPrompt(
+            icon: "bookmark",
+            title: "Save your favorite places",
+            message: "Log in to bookmark attractions and organize them into lists for every trip."
+        )
     }
 }
 

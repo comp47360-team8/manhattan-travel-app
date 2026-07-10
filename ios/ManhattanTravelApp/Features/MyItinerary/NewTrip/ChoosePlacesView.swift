@@ -11,54 +11,41 @@ struct ChoosePlacesView: View {
     @ObservedObject var vm: NewTripViewModel
     @EnvironmentObject private var savedStore: SavedPOIStore
     @Environment(\.dismiss) private var dismiss
+    var onClose: () -> Void = {}
 
     @State private var search = ""
     @State private var accessibleOnly = false
     @State private var goToOptimize = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            topBar
+        ZStack {
+            OffpeakTheme.backGround
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Where do you want to go?")
-                        .font(.system(size: 26, weight: .bold)).foregroundColor(OffpeakTheme.ink)
-                        .padding(.horizontal, 20)
-
-                    searchBar.padding(.horizontal, 20)
-                    filterRow.padding(.horizontal, 20)
-
-                    Text("Select up to **\(vm.placeLimit) preferred places.** Offpeak AI will automatically distribute them evenly across your trip days.")
-                        .font(.system(size: 13)).foregroundColor(OffpeakTheme.textSecondary)
-                        .padding(.horizontal, 20)
-
-                    if !selectedPlaces.isEmpty {
-                        section("SELECTED", selectedPlaces)
-                    }
-                    if !savedPlaces.isEmpty {
-                        section("SAVED", savedPlaces)
-                    }
-                    if vm.isLoadingPlaces {
-                        ProgressView()
-                            .tint(OffpeakTheme.navy)
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 40)
-                    } else if !popularPlaces.isEmpty {
-                        gridSection("POPULAR", popularPlaces)
-                    } else if noResults {
-                        emptyState
-                    }
+            VStack(alignment: .leading, spacing: 20) {
+                if !savedPlaces.isEmpty {
+                    section("SAVED", savedPlaces)
                 }
-                .padding(.vertical, 8)
-                .padding(.bottom, 20)
+                if vm.isLoadingPlaces {
+                    ProgressView()
+                        .tint(OffpeakTheme.navy)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 40)
+                } else if !popularPlaces.isEmpty {
+                    gridSection("POPULAR", popularPlaces)
+                } else if noResults {
+                    emptyState
+                }
             }
-            generateBar
+            .padding(.top, 8)
+            .padding(.bottom, 20)
         }
-        .background(OffpeakTheme.backGround)
+            .safeAreaInset(edge: .top, spacing: 0) { pinnedHeader }
+            .safeAreaInset(edge: .bottom, spacing: 0) { generateBar }
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .navigationDestination(isPresented: $goToOptimize) {
-            OptimizingView(vm: vm)
+            OptimizingView(vm: vm, onClose: onClose)
         }
         .task {
             await vm.loadPlaces()
@@ -71,7 +58,7 @@ struct ChoosePlacesView: View {
     /// Slugs already surfaced in the SELECTED row, so other rows don't repeat them.
     private var selectedSlugs: Set<String> { Set(vm.selectedPOIs.map(\.slug)) }
 
-    private var selectedPlaces: [POI] { filtered(vm.selectedPOIs) }
+    private var selectedPlaces: [POI] { vm.selectedPOIs }
 
     private var savedPlaces: [POI] {
         filtered(savedStore.savedPOIs).filter { !selectedSlugs.contains($0.slug) }
@@ -110,6 +97,48 @@ struct ChoosePlacesView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 40)
+    }
+
+    /// Everything from the title down through the "Select up to…" hint stays
+    /// pinned; SAVED / POPULAR scroll underneath its frosted, bottom-fading edge.
+    private var pinnedHeader: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            topBar
+            Text("Where do you want to go?")
+                .font(.system(size: 26, weight: .bold)).foregroundColor(OffpeakTheme.ink)
+                .padding(.horizontal, 20)
+            searchBar.padding(.horizontal, 20)
+            filterRow.padding(.horizontal, 20)
+            Text("Select up to **\(vm.placeLimit) preferred places.** Offpeak AI will automatically distribute them evenly across your trip days.")
+                .font(.system(size: 13)).foregroundColor(OffpeakTheme.textSecondary)
+                .padding(.horizontal, 20)
+            if !selectedPlaces.isEmpty {
+                section("SELECTED", selectedPlaces)
+                    .padding(.bottom, 8)
+            }
+                
+            
+        }
+        .padding(.bottom, 14)
+        .background
+        {
+            ZStack {
+                Rectangle().fill(.thinMaterial)
+                OffpeakTheme.backgroundGradient
+                    .opacity(0.55)
+            }
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .black, location: 0.0),
+                        .init(color: .black.opacity(0.9), location: 0.8),
+                        .init(color: .black.opacity(0.8), location: 0.9),
+                        .init(color: .black.opacity(0.0), location: 1.0)
+                    ],
+                    startPoint: .top, endPoint: .bottom)
+            )
+            .ignoresSafeArea(edges: .top)
+        }
     }
 
     private var topBar: some View {
@@ -177,6 +206,7 @@ struct ChoosePlacesView: View {
     /// Horizontal, single-row scroller — used for the smaller SELECTED / SAVED sets.
     private func section(_ title: String, _ pois: [POI]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
+            
             sectionHeader(title)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
@@ -185,6 +215,7 @@ struct ChoosePlacesView: View {
                 .padding(.horizontal, 20)
             }
         }
+        
     }
 
     /// Vertical 3-column grid — shows every card, growing downward (no hidden overflow).
@@ -200,14 +231,26 @@ struct ChoosePlacesView: View {
     }
 
     private var generateBar: some View {
-        Button { vm.result = nil; goToOptimize = true } label: {
+        Button { vm.result = nil; vm.errorMessage = nil; goToOptimize = true } label: {
             HStack(spacing: 8) { Text("Generate"); Image(systemName: "arrow.right") }
                 .font(.system(size: 17, weight: .semibold)).foregroundColor(.white)
                 .frame(maxWidth: .infinity).frame(height: 54)
-                .background(OffpeakTheme.accent.opacity(vm.canGenerate ? 1 : 0.4), in: Capsule())
+                .background(vm.canGenerate ? OffpeakTheme.accent : Color(hex: 0x9E948A).opacity(0.9), in: Capsule())
         }
         .disabled(!vm.canGenerate)
-        .padding(.horizontal, 20).padding(.bottom, 8)
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
+        .padding(.bottom, 8)
+        .background {
+            Rectangle()
+                .fill(.regularMaterial)
+                .mask(
+                    LinearGradient(
+                        colors: [.black.opacity(0), .black.opacity(0.6), .black, .black],
+                        startPoint: .top, endPoint: .bottom)
+                )
+                .ignoresSafeArea(edges: .bottom)
+        }
     }
 }
 

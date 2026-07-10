@@ -19,7 +19,8 @@ struct LabeledField<Content: View>: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(title.uppercased())
                     .font(.caption.bold())
-                    .foregroundStyle(.primary)
+                    .tracking(1)
+                    .foregroundStyle(.secondary)
                 content()
                     .padding()
                     .background(Color(.systemBackground))

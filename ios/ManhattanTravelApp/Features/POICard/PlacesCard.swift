@@ -238,7 +238,7 @@ struct PlaceCard: View {
 }
 
 
-    
+#if DEBUG
 #Preview {
     let pois = mockUpData()
     
@@ -251,3 +251,4 @@ struct PlaceCard: View {
         Text("Failed to load mock POI")
     }
 }
+#endif

@@ -15,7 +15,7 @@ struct SelectablePOICard: View {
     var fillWidth: Bool = false
 
     var body: some View {
-        CachedImage(url: poi.heroURL) { $0.resizable().scaledToFill() }
+        CachedImage(url: poi.heroURL) {$0.resizable().scaledToFill() }
         placeholder: {
             Image(systemName: poi.categoryIcon)
                 .font(.system(size: 100, weight: .light))
@@ -25,8 +25,14 @@ struct SelectablePOICard: View {
         .frame(width: fillWidth ? nil : 110, height: 130)
         .frame(maxWidth: fillWidth ? .infinity : nil)
         .clipped()
+        .background(
+            LinearGradient(
+                colors: [Color(hex: 0xEDE6DB),
+                         Color(hex: 0xCFC5B7)],
+                startPoint: .top, endPoint: .bottom).opacity(0.9)
+        )
         .overlay(
-            LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+            LinearGradient(colors: [.clear, .black.opacity(0.75)], startPoint: .center, endPoint: .bottom)
         )
         .overlay(alignment: .topTrailing) {
             if let access = poi.access {
@@ -46,7 +52,7 @@ struct SelectablePOICard: View {
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(isSelected ? OffpeakTheme.accent : .clear, lineWidth: 3)   // 选中棕框
+                .strokeBorder(isSelected ? OffpeakTheme.accent : .clear, lineWidth: 3)
         )
     }
     
@@ -67,12 +73,15 @@ struct SelectablePOICard: View {
 
 #if DEBUG
 #Preview {
-    let poi = mockUpData().first!
-    return HStack(spacing: 12) {
-        SelectablePOICard(poi: poi, isSelected: false)
-        SelectablePOICard(poi: poi, isSelected: true)
+    if let poi = mockUpData().first {
+        HStack(spacing: 12) {
+            SelectablePOICard(poi: poi, isSelected: false)
+            SelectablePOICard(poi: poi, isSelected: true)
+        }
+        .padding()
+        .background(OffpeakTheme.backGround)
+    } else {
+        Text("No mock POI data")
     }
-    .padding()
-    .background(OffpeakTheme.backGround)
 }
 #endif
