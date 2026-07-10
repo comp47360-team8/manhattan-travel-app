@@ -1,13 +1,9 @@
+from sqlalchemy.orm import Session
 from app.models.poi_model import POI
 from app.domains.scheduling import POIProfile
 from app.core.constants import TIME_SLOTS
-from app.core.exceptions import RepeatingPOI
 
-def validate_pois(pois: list[POI], dates: list):
-    for poi in pois:
-        if pois.count(poi) > 1:
-            raise RepeatingPOI
-
+def get_poi_profiles(pois: list[POI], dates: list):
     poi_profiles = []
     for poi in pois:
         profile = build_poi_profile(poi, dates)
