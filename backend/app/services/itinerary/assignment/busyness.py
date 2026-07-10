@@ -61,7 +61,7 @@ def calculate_busyness_cost(poi: POIProfile, slot: dict, matrix: dict):
 
         next_slot = slots[current_slot_index + 1]
         
-        if not candidate.availability[slot["day"]][next_slot]: # prevent candidate from consideration if next slot is closed
+        if not candidate.availability[slot["day"]][next_slot]:
             continue
 
         current_score = current_day[current_slot]
@@ -78,8 +78,10 @@ def calculate_busyness_cost(poi: POIProfile, slot: dict, matrix: dict):
             }
         cost_list.append(busyness_cost)
 
+    if not cost_list:
+        return
+
     for item in cost_list:
         sign = "positive" if item["cost"] >= 0 else "negative"
         item["normalized_cost"] = normalize_cost(item["cost"], costs, sign)
-
     return cost_list
