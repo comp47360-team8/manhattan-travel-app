@@ -1,32 +1,44 @@
+const categories = [
+  { id: "all", label: "All" },
+  { id: "landmark", label: "Landmarks" },
+  { id: "museum", label: "Museums" },
+  { id: "park", label: "Parks" },
+  { id: "gallery", label: "Galleries" },
+  { id: "market", label: "Markets" },
+  { id: "viewpoint", label: "Viewpoints" },
+  { id: "neighborhood", label: "Neighborhoods" },
+  { id: "other", label: "Other" },
+];
+
 type CategoryTabsProps = {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
 };
 
-const categories = [
-  { label: "All", value: "all" },
-  { label: "Landmarks", value: "landmark" },
-  { label: "Museums", value: "museum" },
-  { label: "Parks", value: "park" },
-  { label: "Galleries", value: "gallery" },
-  { label: "Markets", value: "market" },
-  { label: "Viewpoints", value: "viewpoint" },
-  { label: "Neighborhoods", value: "neighborhood" },
-];
-
-function CategoryTabs({ selectedCategory, onCategoryChange }: CategoryTabsProps) {
+function CategoryTabs({
+  selectedCategory,
+  onCategoryChange,
+}: CategoryTabsProps) {
   return (
-    <div className="tabs">
-      {categories.map((category) => (
-        <button
-          key={category.value}
-          className={selectedCategory === category.value ? "active" : ""}
-          onClick={() => onCategoryChange(category.value)}
-        >
-          {category.label}
-        </button>
-      ))}
-    </div>
+    <section className="category-section" aria-label="Attraction categories">
+      <div className="category-tabs" role="list">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            type="button"
+            className={
+              selectedCategory === category.id
+                ? "category-tab active"
+                : "category-tab"
+            }
+            onClick={() => onCategoryChange(category.id)}
+            aria-pressed={selectedCategory === category.id}
+          >
+            {category.label}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
