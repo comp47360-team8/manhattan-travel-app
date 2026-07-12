@@ -10,33 +10,23 @@ type ProfileProps = {
 const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
 
 /*
-  Loads locally stored profile preferences.
-
-  The backend does not currently provide a profile-preferences endpoint,
-  so this keeps the setting working in the browser until that endpoint exists.
+  I keep the accessibility preference on this device because the backend
+  does not currently expose a profile-preferences endpoint.
 */
 function loadPreferences(): ProfilePreferences {
-  const fallbackPreferences: ProfilePreferences = {
-    stepFreeRoutes: false,
-  };
+  const fallback: ProfilePreferences = { stepFreeRoutes: false };
 
   try {
-    const storedPreferences = localStorage.getItem(PROFILE_PREFERENCES_KEY);
+    const stored = localStorage.getItem(PROFILE_PREFERENCES_KEY);
 
-    if (!storedPreferences) {
-      return fallbackPreferences;
+    if (!stored) {
+      return fallback;
     }
 
-    const parsedPreferences = JSON.parse(
-      storedPreferences
-    ) as Partial<ProfilePreferences>;
-
-    return {
-      stepFreeRoutes: parsedPreferences.stepFreeRoutes === true,
-    };
-  } catch (error) {
-    console.error("Could not load profile preferences:", error);
-    return fallbackPreferences;
+    const parsed = JSON.parse(stored) as Partial<ProfilePreferences>;
+    return { stepFreeRoutes: parsed.stepFreeRoutes === true };
+  } catch {
+    return fallback;
   }
 }
 
@@ -45,37 +35,34 @@ function Profile({ user, onLogout }: ProfileProps) {
     useState<ProfilePreferences>(loadPreferences);
 
   function toggleStepFreeRoutes() {
-    const updatedPreferences: ProfilePreferences = {
+    const updated = {
       ...preferences,
       stepFreeRoutes: !preferences.stepFreeRoutes,
     };
 
-    setPreferences(updatedPreferences);
-
-    localStorage.setItem(
-      PROFILE_PREFERENCES_KEY,
-      JSON.stringify(updatedPreferences)
-    );
+    setPreferences(updated);
+    localStorage.setItem(PROFILE_PREFERENCES_KEY, JSON.stringify(updated));
   }
 
   return (
     <main className="profile-page">
       <section className="profile-container">
-        <div className="profile-heading">
+        <header className="profile-heading">
           <p className="section-eyebrow">Your account</p>
           <h1>Profile</h1>
           <p>
-            Manage your account details and travel preferences for future
-            itineraries.
+            Review your account details and choose the accessibility settings
+            used while planning future Manhattan trips.
           </p>
-        </div>
+        </header>
 
-        <section className="profile-identity-card">
+        <section className="profile-identity-card" aria-label="Profile summary">
           <div className="profile-avatar" aria-hidden="true">
             {user.displayName.charAt(0).toUpperCase()}
           </div>
 
-          <div>
+          <div className="profile-identity-copy">
+            <span className="profile-status">Signed in</span>
             <h2>{user.displayName}</h2>
             <p>{user.email}</p>
           </div>
@@ -96,8 +83,8 @@ function Profile({ user, onLogout }: ProfileProps) {
               <div>
                 <h3>I need step-free routes</h3>
                 <p>
-                  When enabled, itinerary planning will prioritise accessible
-                  attractions and step-free options.
+                  Prioritise accessible attractions and step-free options when
+                  creating an itinerary.
                 </p>
               </div>
             </div>
@@ -119,8 +106,8 @@ function Profile({ user, onLogout }: ProfileProps) {
           </div>
 
           <p className="profile-preference-note">
-            This preference is currently saved on this device and can be
-            connected to the backend profile system later.
+            This preference is saved on this device until a backend profile
+            preference endpoint is available.
           </p>
         </section>
 
@@ -132,13 +119,13 @@ function Profile({ user, onLogout }: ProfileProps) {
 
           <div className="profile-account-card">
             <div>
-              <span>Email address</span>
-              <strong>{user.email}</strong>
+              <span>Display name</span>
+              <strong>{user.displayName}</strong>
             </div>
 
             <div>
-              <span>Display name</span>
-              <strong>{user.displayName}</strong>
+              <span>Email address</span>
+              <strong>{user.email}</strong>
             </div>
           </div>
         </section>
@@ -147,7 +134,7 @@ function Profile({ user, onLogout }: ProfileProps) {
           <div>
             <h2>Sign out</h2>
             <p>
-              You will need to log in again to view saved places and
+              You will need to log in again to access saved places and saved
               itineraries.
             </p>
           </div>

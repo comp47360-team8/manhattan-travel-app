@@ -286,6 +286,48 @@ function App() {
   });
 
   /*
+    Category totals follow the current search and accessibility filter.
+    This lets each tab show how many matching places it contains.
+  */
+  const categoryCounts = pois.reduce<Record<string, number>>(
+    (counts, poi) => {
+      const matchesSearch =
+        normalisedSearchTerm === "" ||
+        poi.name.toLowerCase().includes(normalisedSearchTerm) ||
+        poi.type.toLowerCase().includes(normalisedSearchTerm) ||
+        poi.borough.toLowerCase().includes(normalisedSearchTerm) ||
+        (poi.neighborhood ?? "")
+          .toLowerCase()
+          .includes(normalisedSearchTerm);
+
+      const matchesAccessibility =
+        !accessibleOnly || isWheelchairAccessible(poi);
+
+      if (!matchesSearch || !matchesAccessibility) {
+        return counts;
+      }
+
+      const type = poi.type.toLowerCase();
+      counts.all = (counts.all ?? 0) + 1;
+      counts[type] = (counts[type] ?? 0) + 1;
+
+      return counts;
+    },
+    { all: 0 }
+  );
+
+  const filtersActive =
+    normalisedSearchTerm !== "" ||
+    selectedCategory !== "all" ||
+    accessibleOnly;
+
+  function clearExploreFilters() {
+    setSearchTerm("");
+    setSelectedCategory("all");
+    setAccessibleOnly(false);
+  }
+
+  /*
     Recommended attractions are chosen from POIs containing genuine
     best-time data from the backend.
   */
@@ -469,6 +511,7 @@ function App() {
         reviewCount={poi.google_review_count}
         isAccessible={isWheelchairAccessible(poi)}
         isSaved={savedPoiSlugs.includes(poi.slug)}
+        isSaving={savingPoiSlug === poi.slug}
         onSaveClick={() => toggleSavePoi(poi.slug)}
         onClick={() => {
           setSelectedPoi(poi);
@@ -540,31 +583,43 @@ function App() {
               </header>
 
               <SearchBar
+                value={searchTerm}
                 onSearchChange={setSearchTerm}
               />
 
-              <CategoryTabs
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-              />
+              <section className="explore-filter-shell" aria-label="Explore filters">
+                <CategoryTabs
+                  selectedCategory={selectedCategory}
+                  categoryCounts={categoryCounts}
+                  onCategoryChange={setSelectedCategory}
+                />
 
-              <div className="explore-accessibility-filter">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={accessibleOnly}
-                    onChange={(event) =>
-                      setAccessibleOnly(
-                        event.target.checked
-                      )
-                    }
-                  />
+                <div className="explore-filter-footer">
+                  <div className="explore-accessibility-filter">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={accessibleOnly}
+                        onChange={(event) =>
+                          setAccessibleOnly(event.target.checked)
+                        }
+                      />
 
-                  <span>
-                    Show accessible attractions only
-                  </span>
-                </label>
-              </div>
+                      <span>Show accessible attractions only</span>
+                    </label>
+                  </div>
+
+                  {filtersActive && (
+                    <button
+                      type="button"
+                      className="clear-filters-button"
+                      onClick={clearExploreFilters}
+                    >
+                      Clear all filters
+                    </button>
+                  )}
+                </div>
+              </section>
 
               {isLoadingPois && (
                 <p className="loading-message">
@@ -592,6 +647,7 @@ function App() {
 
               {!isLoadingPois &&
                 !poiError &&
+                !filtersActive &&
                 featuredPois.length > 0 && (
                   <section className="featured-section">
                     <div className="section-heading-row">

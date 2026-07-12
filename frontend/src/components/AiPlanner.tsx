@@ -1,105 +1,86 @@
 import { useState } from "react";
 
-/*
-  The backend AI Planner endpoint has not been added yet.
+const PROMPT_SUGGESTIONS = [
+  "Plan a low-crowd day with museums and architecture.",
+  "Plan an accessible weekend with parks and viewpoints.",
+  "Plan a relaxed local day with markets and neighbourhood walks.",
+];
 
-  This component provides the complete frontend structure now, while keeping
-  the future API connection in one small function.
+/*
+  The AI backend is not available yet, so I keep this page honest and show a
+  complete frontend state without pretending that a plan was generated.
 */
 function AIPlanner() {
   const [prompt, setPrompt] = useState("");
-  const [plannerMessage, setPlannerMessage] = useState("");
+  const [message, setMessage] = useState("");
 
-  /*
-    Future backend integration point.
-
-    When Hansel adds the Gemini endpoint, this function can be replaced with:
-
-    const result = await apiFetch<AIPlannerResponse>(
-      "/api/ai-planner",
-      {
-        method: "POST",
-        body: JSON.stringify({ prompt }),
-      }
-    );
-
-    Until that endpoint exists, this page does not pretend to generate AI data.
-  */
   function submitPlannerRequest() {
-    setPlannerMessage("");
-
     if (prompt.trim() === "") {
-      setPlannerMessage(
-        "Describe the kind of Manhattan trip you would like to plan."
-      );
+      setMessage("Describe the kind of Manhattan trip you would like to plan.");
       return;
     }
 
-    setPlannerMessage(
-      "The AI Planner interface is ready. Backend Gemini integration is still pending."
+    setMessage(
+      "AI itinerary generation is currently in development. Your request has not been sent because the Gemini backend endpoint is not available yet."
     );
   }
 
   return (
-    <section className="ai-planner-page">
-      <div className="ai-planner-hero">
-        <p className="section-eyebrow">AI Planner</p>
+    <main className="ai-planner-page">
+      <section className="ai-planner-hero">
+        <div>
+          <p className="section-eyebrow">AI Planner</p>
+          <h1>Plan around what matters to you</h1>
+          <p>
+            Describe your ideal Manhattan trip, including interests, pace,
+            dates and accessibility needs.
+          </p>
+        </div>
 
-        <h1>Describe your ideal Manhattan trip</h1>
-
-        <p>
-          Tell us what you enjoy, how long you have, and any accessibility
-          requirements. The AI Planner will turn your request into a suggested
-          itinerary once the Gemini backend endpoint is available.
-        </p>
-      </div>
+        <div className="ai-planner-badge" role="status">
+          <span aria-hidden="true" />
+          Backend integration in development
+        </div>
+      </section>
 
       <section className="ai-planner-card">
-        <label htmlFor="ai-planner-prompt">
-          What would you like to do?
+        <div className="ai-planner-card-heading">
+          <div>
+            <p className="section-eyebrow">Trip request</p>
+            <h2>What would you like to experience?</h2>
+          </div>
+          <span>{prompt.length}/600</span>
+        </div>
+
+        <label htmlFor="ai-planner-prompt" className="sr-only">
+          Describe your ideal Manhattan trip
         </label>
 
         <textarea
           id="ai-planner-prompt"
           rows={8}
-          placeholder="Example: Plan a quiet two-day Manhattan trip focused on museums, parks, accessible attractions, and affordable food."
+          maxLength={600}
+          placeholder="Example: Plan a quiet two-day trip focused on museums, parks, accessible attractions and affordable food."
           value={prompt}
-          onChange={(event) => setPrompt(event.target.value)}
+          onChange={(event) => {
+            setPrompt(event.target.value);
+            setMessage("");
+          }}
         />
 
-        <div className="ai-planner-suggestions">
-          <button
-            type="button"
-            onClick={() =>
-              setPrompt(
-                "Plan a one-day Manhattan trip with museums, architecture, and low crowd levels."
-              )
-            }
-          >
-            Museums and architecture
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              setPrompt(
-                "Plan an accessible Manhattan weekend with parks, viewpoints, and wheelchair-friendly attractions."
-              )
-            }
-          >
-            Accessible weekend
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              setPrompt(
-                "Plan a relaxed Manhattan day with neighbourhood walks, food markets, and quieter visiting times."
-              )
-            }
-          >
-            Relaxed local day
-          </button>
+        <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
+          {PROMPT_SUGGESTIONS.map((suggestion) => (
+            <button
+              key={suggestion}
+              type="button"
+              onClick={() => {
+                setPrompt(suggestion);
+                setMessage("");
+              }}
+            >
+              {suggestion}
+            </button>
+          ))}
         </div>
 
         <button
@@ -110,21 +91,21 @@ function AIPlanner() {
           Generate with AI
         </button>
 
-        {plannerMessage && (
-          <p className="fallback-message">{plannerMessage}</p>
-        )}
+        {message && <p className="ai-planner-message">{message}</p>}
       </section>
 
       <section className="ai-planner-status">
-        <h2>Integration status</h2>
-
-        <p>
-          The web interface is complete and ready to connect. The remaining
-          dependency is the backend Gemini endpoint and its request/response
-          schema.
-        </p>
+        <div className="ai-planner-status-icon" aria-hidden="true">✦</div>
+        <div>
+          <h2>What is ready</h2>
+          <p>
+            The complete web interface, prompt validation and responsive design
+            are ready. The remaining dependency is the backend Gemini endpoint
+            and its confirmed request and response schema.
+          </p>
+        </div>
       </section>
-    </section>
+    </main>
   );
 }
 

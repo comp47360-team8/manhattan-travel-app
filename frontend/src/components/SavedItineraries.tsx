@@ -17,6 +17,19 @@ type SavedItinerariesProps = {
 
 type SavedView = "places" | "itineraries";
 
+type ConfirmationAction =
+  | {
+      kind: "delete-itinerary";
+      itineraryId: string;
+      itemName: string;
+    }
+  | {
+      kind: "remove-stop";
+      stopId: string;
+      itemName: string;
+    }
+  | null;
+
 function formatDate(dateValue: string): string {
   const date = new Date(`${dateValue}T00:00:00`);
 
@@ -107,6 +120,13 @@ function SavedItineraries({
     useState("");
   const [successMessage, setSuccessMessage] =
     useState("");
+
+  /*
+    I use an in-app confirmation dialog so destructive actions match
+    the rest of the design instead of using the browser's plain alert box.
+  */
+  const [confirmationAction, setConfirmationAction] =
+    useState<ConfirmationAction>(null);
 
   const filteredSavedPlaces = savedPlaces.filter(
     (poi) => {
@@ -337,14 +357,7 @@ function SavedItineraries({
   async function deleteItinerary(
     itineraryId: string
   ) {
-    const shouldDelete = window.confirm(
-      "Delete this saved itinerary? This cannot be undone."
-    );
-
-    if (!shouldDelete) {
-      return;
-    }
-
+    setConfirmationAction(null);
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -453,14 +466,7 @@ function SavedItineraries({
       return;
     }
 
-    const shouldRemove = window.confirm(
-      "Remove this attraction from the itinerary?"
-    );
-
-    if (!shouldRemove) {
-      return;
-    }
-
+    setConfirmationAction(null);
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -845,9 +851,11 @@ function SavedItineraries({
                                 type="button"
                                 className="danger-button"
                                 onClick={() =>
-                                  deleteItinerary(
-                                    itinerary.itinerary_id
-                                  )
+                                  setConfirmationAction({
+                                    kind: "delete-itinerary",
+                                    itineraryId: itinerary.itinerary_id,
+                                    itemName: itinerary.trip_name,
+                                  })
                                 }
                                 disabled={
                                   deletingId ===
@@ -974,9 +982,11 @@ function SavedItineraries({
                             type="button"
                             className="remove-stop-button"
                             onClick={() =>
-                              removeStopFromSavedItinerary(
-                                stop.stop_id
-                              )
+                              setConfirmationAction({
+                                kind: "remove-stop",
+                                stopId: stop.stop_id,
+                                itemName: stop.poi_name,
+                              })
                             }
                             disabled={
                               removingStopId ===
@@ -1111,6 +1121,71 @@ function SavedItineraries({
               </section>
             )}
         </section>
+      )}
+
+      {confirmationAction && (
+        <div
+          className="saved-confirmation-overlay"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setConfirmationAction(null);
+            }
+          }}
+        >
+          <section
+            className="saved-confirmation-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="saved-confirmation-title"
+            aria-describedby="saved-confirmation-description"
+          >
+            <div className="saved-confirmation-icon" aria-hidden="true">
+              !
+            </div>
+
+            <p className="section-eyebrow">Confirm action</p>
+
+            <h2 id="saved-confirmation-title">
+              {confirmationAction.kind === "delete-itinerary"
+                ? "Delete this itinerary?"
+                : "Remove this attraction?"}
+            </h2>
+
+            <p id="saved-confirmation-description">
+              {confirmationAction.kind === "delete-itinerary"
+                ? `“${confirmationAction.itemName}” will be permanently removed from your saved itineraries.`
+                : `“${confirmationAction.itemName}” will be removed from this itinerary and the schedule will be recalculated.`}
+            </p>
+
+            <div className="saved-confirmation-actions">
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setConfirmationAction(null)}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="danger-button"
+                onClick={() => {
+                  if (confirmationAction.kind === "delete-itinerary") {
+                    void deleteItinerary(confirmationAction.itineraryId);
+                    return;
+                  }
+
+                  void removeStopFromSavedItinerary(confirmationAction.stopId);
+                }}
+              >
+                {confirmationAction.kind === "delete-itinerary"
+                  ? "Delete itinerary"
+                  : "Remove attraction"}
+              </button>
+            </div>
+          </section>
+        </div>
       )}
     </section>
   );
