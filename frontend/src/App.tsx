@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import "./App.css";
 
@@ -207,6 +207,23 @@ function App() {
     };
   }, []);
 
+
+  /*
+  I keep the local logout function stable because it is used by an effect
+  and several authentication actions throughout the application.
+*/
+const handleLocalLogout = useCallback(() => {
+  localStorage.removeItem(USER_STORAGE_KEY);
+  setUser(null);
+  setSavedPoiSlugs([]);
+  setSelectedPoi(null);
+
+  setCurrentPage((page) =>
+    page === "profile" || page === "saved"
+      ? "explore"
+      : page
+  );
+}, []);
   /*
     Load saved attractions only when the frontend considers the user logged in.
 
@@ -252,7 +269,7 @@ function App() {
     return () => {
       isCancelled = true;
     };
-  }, [user]);
+  }, [user, handleLocalLogout]);
 
   /*
     Search by name, neighbourhood, borough, or POI type.
@@ -359,19 +376,6 @@ function App() {
     setSavePoiMessage("");
   }
 
-  function handleLocalLogout() {
-    localStorage.removeItem(USER_STORAGE_KEY);
-    setUser(null);
-    setSavedPoiSlugs([]);
-    setSelectedPoi(null);
-
-    if (
-      currentPage === "profile" ||
-      currentPage === "saved"
-    ) {
-      setCurrentPage("explore");
-    }
-  }
 
   async function handleLogout() {
     try {

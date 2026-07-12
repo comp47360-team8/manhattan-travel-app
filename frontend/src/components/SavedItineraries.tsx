@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { apiFetch } from "../api";
 
@@ -181,22 +181,27 @@ function SavedItineraries({
     })
     .slice(0, 6);
 
-  function handleAuthenticationFailure(
-    error: unknown
-  ): boolean {
-    if (!isAuthenticationError(error)) {
-      return false;
-    }
+  /*
+    I keep this callback stable so the Saved page can reuse it without
+    causing the opening data-loading effect to run on every render.
+  */
+  const handleAuthenticationFailure = useCallback(
+    (error: unknown): boolean => {
+      if (!isAuthenticationError(error)) {
+        return false;
+      }
 
-    setErrorMessage(
-      "You need to log in to view your saved items."
-    );
+      setErrorMessage(
+        "You need to log in to view your saved items."
+      );
 
-    onLoginRequired?.();
-    return true;
-  }
+      onLoginRequired?.();
+      return true;
+    },
+    [onLoginRequired]
+  );
 
-  async function loadSavedPlaces() {
+  const loadSavedPlaces = useCallback(async () => {
     try {
       setIsLoadingPlaces(true);
 
@@ -221,9 +226,9 @@ function SavedItineraries({
     } finally {
       setIsLoadingPlaces(false);
     }
-  }
+  }, [handleAuthenticationFailure]);
 
-  async function loadSavedItineraries() {
+  const loadSavedItineraries = useCallback(async () => {
     try {
       setIsLoadingItineraries(true);
 
@@ -251,17 +256,25 @@ function SavedItineraries({
     } finally {
       setIsLoadingItineraries(false);
     }
-  }
+  }, [handleAuthenticationFailure]);
 
   /*
-    Load both Saved-page collections when the page opens.
+    I defer the first Saved-page requests until after the opening effect.
+    This avoids synchronous state updates inside the effect and gives React
+    a cleanup point if the page closes before the timer runs.
   */
   useEffect(() => {
-    void Promise.all([
-      loadSavedPlaces(),
-      loadSavedItineraries(),
-    ]);
-  }, []);
+    const loadingTimer = window.setTimeout(() => {
+      void Promise.all([
+        loadSavedPlaces(),
+        loadSavedItineraries(),
+      ]);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(loadingTimer);
+    };
+  }, [loadSavedPlaces, loadSavedItineraries]);
 
   async function refreshSavedContent() {
     setErrorMessage("");
