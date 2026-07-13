@@ -1,142 +1,193 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import { apiFetch } from "../api";
+
+import type {
+  ItineraryGenerateRequest,
+  ItineraryResponse,
+  Poi,
+  SavedItinerary,
+} from "../types";
 
 /*
-  This type is a smaller version of the POI object from App.tsx.
+  App.tsx already fetches all POIs and passes them into this component.
 
-  We only include the fields My Itinerary actually needs.
-  If the itinerary page later needs extra backend fields, add them here too.
-*/
-type Poi = {
-  slug: string;
-  name: string;
-  type: string;
-  neighborhood: string | null;
-  hero_image_url: string | null;
-  google_review_star: number | null;
-  google_review_count: number | null;
-  best_time_label: string | null;
-  why_this_time: string | null;
-};
-
-/*
-  App.tsx owns the full POI list because it fetches POIs from the backend.
-  MyItinerary receives those POIs as props so we do not fetch the same data twice.
+  onLoginRequired is optional for now so the project still builds before
+  we update App.tsx. Later, App.tsx will pass the function that opens the
+  existing login modal.
 */
 type MyItineraryProps = {
   pois: Poi[];
+  onLoginRequired?: () => void;
 };
 
-function MyItinerary({ pois }: MyItineraryProps) {
-  /*
-    Search/date/planner state.
+/*
+  The current itinerary service cannot schedule a POI when opening hours are
+  missing. I keep those places in Explore, but exclude them from this planner
+  until the backend handles null opening-hour data safely.
+*/
+function canUseInItinerary(poi: Poi): boolean {
+  return (
+    poi.opening_hours !== null &&
+    Object.keys(poi.opening_hours).length > 0
+  );
+}
 
-    These values only matter inside My Itinerary, so they live here rather than in App.tsx.
+function MyItinerary({ pois, onLoginRequired }: MyItineraryProps) {
+  /*
+    Basic form state.
+
+    The backend needs:
+    - a trip name
+    - a start date
+    - an end date
+    - selected POI slugs
+    - accessibility requirements
   */
+  const [tripName, setTripName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [accessibilityNeed, setAccessibilityNeed] = useState("");
+
+  /*
+    The planner stays locked until valid dates have been confirmed.
+  */
   const [datesConfirmed, setDatesConfirmed] = useState(false);
   const [dateError, setDateError] = useState("");
 
   /*
-    The selected places are stored as slugs, not full POI objects.
+    Selected attractions are stored using their slugs.
 
-    Why?
-    - Slugs are small.
-    - Slugs are stable.
-    - We can always recover the full POI object from the main pois array.
+    This matches the backend request because the itinerary endpoint expects
+    a list of POI slug names rather than full POI objects.
   */
   const [selectedPoiSlugs, setSelectedPoiSlugs] = useState<string[]>([]);
 
   /*
-    Generation state.
+    Saved POIs are loaded from the logged-in user's account.
 
-    isGenerating controls the loading button text.
-    generatedItinerary stores the current frontend draft itinerary.
-    itineraryError is shown if the user tries to generate without selected places.
+    This replaces the old placeholder in the Saved Places section.
   */
+  const [savedPois, setSavedPois] = useState<Poi[]>([]);
+  const [isLoadingSavedPois, setIsLoadingSavedPois] = useState(false);
+  const [savedPoisMessage, setSavedPoisMessage] = useState("");
+
+  /*
+    Generation and saving state.
+
+    generatedItinerary stores the exact JSON returned by the backend.
+    We keep that exact object because the API documentation says the whole
+    generated response must be sent back when saving.
+  */
+  const [generatedItinerary, setGeneratedItinerary] =
+    useState<ItineraryResponse | null>(null);
+
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
   const [itineraryError, setItineraryError] = useState("");
-  const [generatedItinerary, setGeneratedItinerary] = useState<Poi[]>([]);
+  const [successMessage, setSuccessMessage] = useState("");
 
   /*
-    Inline itinerary editor state.
+    Load the user's saved POIs when this component first appears.
 
-    This stores the chosen time for each generated itinerary item.
-    Example:
-    {
-      "central-park": "09:00",
-      "moma": "11:00"
+    The endpoint is protected, so a logged-out user may receive a 401.
+    That is not treated as a page-breaking error because the rest of the
+    planner is still available without logging in.
+  */
+  useEffect(() => {
+    async function loadSavedPois() {
+      try {
+        setIsLoadingSavedPois(true);
+        setSavedPoisMessage("");
+
+        const data = await apiFetch<Poi[]>("/api/users/me/saved-pois");
+
+        setSavedPois(data);
+      } catch (error) {
+        /*
+          A logged-out user is allowed to use itinerary generation, so we only
+          show a small message inside the Saved Places panel.
+        */
+        if (error instanceof Error) {
+          const message = error.message.toLowerCase();
+
+          if (
+            message.includes("not authenticated") ||
+            message.includes("authentication")
+          ) {
+            setSavedPoisMessage("Log in to view your saved places.");
+          } else {
+            setSavedPoisMessage("Saved places could not be loaded.");
+          }
+        }
+      } finally {
+        setIsLoadingSavedPois(false);
+      }
     }
-  */
-  const [itineraryTimesBySlug, setItineraryTimesBySlug] = useState<
-    Record<string, string>
-  >({});
+
+    loadSavedPois();
+  }, []);
 
   /*
-    BACKEND HOOKUP LATER:
-    This is local frontend search over the POIs already fetched in App.tsx.
+    Search locally through the POIs already loaded by App.tsx.
 
-    If backend later provides a real search endpoint, this section can be replaced with:
-    - searchTerm state stays
-    - filteredPois/searchResults come from GET /api/pois/search?q=...
+    We do not need another backend request because App.tsx already owns the
+    complete POI list.
   */
-  const filteredPois = pois.filter((poi) =>
-    poi.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const normalisedSearchTerm = searchTerm.trim().toLowerCase();
+
+  const filteredPois = pois.filter((poi) => {
+    if (!canUseInItinerary(poi)) {
+      return false;
+    }
+
+    return (
+      normalisedSearchTerm === "" ||
+      poi.name.toLowerCase().includes(normalisedSearchTerm) ||
+      poi.type.toLowerCase().includes(normalisedSearchTerm) ||
+      poi.borough.toLowerCase().includes(normalisedSearchTerm) ||
+      (poi.neighborhood ?? "")
+        .toLowerCase()
+        .includes(normalisedSearchTerm)
+    );
+  });
 
   /*
-    Keep search results small because itinerary is for selecting places,
-    not browsing the full database. Explore already handles full browsing.
+    Limit results so the planner does not show a huge list while typing.
   */
   const searchResults = filteredPois.slice(0, 5);
 
   /*
-    Converts selected slugs back into full POI objects.
+    Convert selected slugs back into POI objects for displaying names and
+    details in the Your Selections panel.
   */
   const selectedPois = pois.filter((poi) =>
     selectedPoiSlugs.includes(poi.slug)
   );
 
   /*
-    BACKEND HOOKUP LATER:
-    Popular POIs are currently derived from Google review count.
-
-    If backend/ML later provides:
-    - /api/pois/popular
-    - /api/recommendations/popular
-    - personalised recommendations
-
-    then replace this local sort with the backend-ranked list.
+    Until there is a separate recommendations endpoint, popular POIs are
+    calculated using their Google review counts.
   */
-  const popularPois = [...pois]
-    .sort((a, b) => (b.google_review_count || 0) - (a.google_review_count || 0))
+  const popularPois = pois
+    .filter(canUseInItinerary)
+    .sort(
+      (firstPoi, secondPoi) =>
+        (secondPoi.google_review_count || 0) -
+        (firstPoi.google_review_count || 0)
+    )
     .slice(0, 4);
 
   /*
-    These are the dropdown options for the inline time editor.
-    Later, the real algorithm can return actual scheduled times.
-  */
-  const timeOptions = [
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-  ];
-
-  /*
-    Confirms the date range.
-
-    The page should not unlock the planner until both dates are valid.
+    Confirm that both dates are present and in the correct order.
   */
   function confirmDates() {
+    setDateError("");
+    setItineraryError("");
+    setSuccessMessage("");
+
     if (startDate === "" || endDate === "") {
       setDateError(
         "Date selection not completed. Please pick a start and end date."
@@ -152,106 +203,211 @@ function MyItinerary({ pois }: MyItineraryProps) {
     }
 
     setDatesConfirmed(true);
-    setDateError("");
   }
 
   /*
-    Adds a POI to the itinerary selection.
-
-    The duplicate check prevents the same POI being added repeatedly.
+    Add a POI only if it is not already selected.
   */
   function addPoiToItinerary(slug: string) {
     if (selectedPoiSlugs.includes(slug)) {
       return;
     }
 
-    setSelectedPoiSlugs([...selectedPoiSlugs, slug]);
-  }
+    const poi = pois.find((item) => item.slug === slug);
 
-  /*
-    Removes a POI everywhere it appears:
-    - selected list
-    - generated timeline
-    - custom time dropdown state
-  */
-  function removePoiFromItinerary(slug: string) {
-    setSelectedPoiSlugs(
-      selectedPoiSlugs.filter((selectedSlug) => selectedSlug !== slug)
-    );
-
-    setGeneratedItinerary(
-      generatedItinerary.filter((poi) => poi.slug !== slug)
-    );
-
-    setItineraryTimesBySlug((currentTimes) => {
-      const updatedTimes = { ...currentTimes };
-      delete updatedTimes[slug];
-      return updatedTimes;
-    });
-  }
-
-  /*
-    Updates the dropdown time for one generated itinerary item.
-  */
-  function changeItineraryTime(slug: string, newTime: string) {
-    setItineraryTimesBySlug({
-      ...itineraryTimesBySlug,
-      [slug]: newTime,
-    });
-  }
-
-  /*
-    Generates a frontend draft itinerary.
-
-    BACKEND HOOKUP LATER:
-    Replace the setTimeout with a real request to the itinerary-generation API.
-
-    Expected future request shape:
-    POST /api/itineraries/generate
-    {
-      start_date: startDate,
-      end_date: endDate,
-      poi_slugs: selectedPoiSlugs
-    }
-
-    Expected future response:
-    {
-      itinerary: [
-        {
-          slug: "central-park",
-          scheduled_time: "09:00",
-          why_this_time: "...",
-          ...
-        }
-      ]
-    }
-
-    Then you would set:
-    setGeneratedItinerary(data.itinerary)
-    setItineraryTimesBySlug(timesFromBackend)
-  */
-  function generateItinerary() {
-    setItineraryError("");
-
-    if (selectedPois.length === 0) {
-      setItineraryError("Add at least one place before generating your itinerary.");
+    if (!poi) {
+      setItineraryError("That attraction could not be found.");
       return;
     }
 
-    setIsGenerating(true);
+    if (!canUseInItinerary(poi)) {
+      setItineraryError(
+        `${poi.name} cannot currently be scheduled because its opening hours are unavailable.`
+      );
+      return;
+    }
 
-    setTimeout(() => {
-      setGeneratedItinerary(selectedPois);
+    setSelectedPoiSlugs((currentSlugs) => [...currentSlugs, slug]);
 
-      const initialTimes: Record<string, string> = {};
+    /*
+      A previously generated itinerary is no longer accurate after changing
+      the selection, so it is cleared.
+    */
+    setGeneratedItinerary(null);
+    setItineraryError("");
+    setSuccessMessage("");
+  }
 
-      selectedPois.forEach((poi, index) => {
-        initialTimes[poi.slug] = timeOptions[index] || "09:00";
-      });
+  /*
+    Remove a POI from the current selection.
 
-      setItineraryTimesBySlug(initialTimes);
+    This is before saving, so it only updates local frontend state.
+    Editing a saved itinerary will later use the new stop endpoints.
+  */
+  function removePoiFromItinerary(slug: string) {
+    setSelectedPoiSlugs((currentSlugs) =>
+      currentSlugs.filter((selectedSlug) => selectedSlug !== slug)
+    );
+
+    setGeneratedItinerary(null);
+    setItineraryError("");
+    setSuccessMessage("");
+  }
+
+  /*
+    The backend expects accessibility requirements as a list.
+
+    Examples:
+    []
+    ["wheelchair"]
+    ["wheelchair-limited"]
+  */
+  function buildAccessibilityList(): string[] {
+    if (accessibilityNeed === "") {
+      return [];
+    }
+
+    return [accessibilityNeed];
+  }
+
+  /*
+    Call the real itinerary generation endpoint.
+
+    This replaces the old setTimeout and frontend-generated draft.
+  */
+  async function generateItinerary() {
+    setItineraryError("");
+    setSuccessMessage("");
+
+    if (tripName.trim() === "") {
+      setItineraryError("Please enter a name for your itinerary.");
+      return;
+    }
+
+    if (!datesConfirmed) {
+      setItineraryError("Confirm your travel dates before generating.");
+      return;
+    }
+
+    if (selectedPoiSlugs.length === 0) {
+      setItineraryError(
+        "Add at least one place before generating your itinerary."
+      );
+      return;
+    }
+
+    const unsupportedPoi = selectedPois.find(
+      (poi) => !canUseInItinerary(poi)
+    );
+
+    if (unsupportedPoi) {
+      setItineraryError(
+        `${unsupportedPoi.name} cannot be scheduled because its opening hours are unavailable.`
+      );
+      return;
+    }
+
+    /*
+      This shape matches the current FastAPI ItineraryRequest model.
+
+      Important:
+      "accessibilty" is misspelled in the backend model, so the frontend must
+      use the same spelling until the backend changes.
+    */
+    const requestBody: ItineraryGenerateRequest = {
+      trip_name: tripName.trim(),
+      trip_dates: [startDate, endDate],
+      pois: selectedPoiSlugs,
+      accessibility: buildAccessibilityList(),
+    };
+
+    try {
+      setIsGenerating(true);
+
+      const result = await apiFetch<ItineraryResponse>(
+        "/api/itinerary/generate",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      setGeneratedItinerary(result);
+      setSuccessMessage("Your itinerary was generated successfully.");
+    } catch (error) {
+      console.error("Itinerary generation failed:", error);
+
+      if (error instanceof Error && error.message.includes("500")) {
+        setItineraryError(
+          "The itinerary service could not schedule one of the selected places. Try a different selection while the backend opening-hours issue is being fixed."
+        );
+      } else if (error instanceof Error) {
+        setItineraryError(error.message);
+      } else {
+        setItineraryError("The itinerary could not be generated.");
+      }
+    } finally {
       setIsGenerating(false);
-    }, 1000);
+    }
+  }
+
+  /*
+    Save the exact generated itinerary object.
+
+    The backend requires authentication for this endpoint. If the request
+    fails because the user is logged out, App.tsx will later use
+    onLoginRequired to open the existing login popup.
+  */
+  async function saveItinerary() {
+    setItineraryError("");
+    setSuccessMessage("");
+
+    if (generatedItinerary === null) {
+      setItineraryError("Generate an itinerary before saving it.");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+
+      /*
+  Saving now returns the full saved itinerary, including:
+  - itinerary_id
+  - stop_id values
+  - the regenerated saved stops
+*/
+const savedResult = await apiFetch<SavedItinerary>("/api/itinerary", {
+  method: "POST",
+  body: JSON.stringify(generatedItinerary),
+});
+
+setSuccessMessage(
+  `Itinerary "${savedResult.trip_name}" was saved successfully.`
+);
+    } catch (error) {
+      console.error("Saving itinerary failed:", error);
+
+      if (error instanceof Error) {
+        const message = error.message.toLowerCase();
+
+        if (
+          message.includes("not authenticated") ||
+          message.includes("authentication failed") ||
+          message.includes("unauthorised") ||
+          message.includes("unauthorized")
+        ) {
+          setItineraryError("Please log in before saving your itinerary.");
+          onLoginRequired?.();
+          return;
+        }
+
+        setItineraryError(error.message);
+      } else {
+        setItineraryError("The itinerary could not be saved.");
+      }
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -261,12 +417,27 @@ function MyItinerary({ pois }: MyItineraryProps) {
       <h1>Build your Manhattan itinerary</h1>
 
       <p>
-        Choose your dates, select attractions, and generate a draft itinerary
-        around quieter visiting windows.
+        Choose your dates, select attractions, and generate an itinerary around
+        quieter visiting windows.
       </p>
 
       <section className="itinerary-date-panel">
         <div className="itinerary-date-grid">
+          <label htmlFor="trip-name">
+            Itinerary name
+            <input
+              id="trip-name"
+              type="text"
+              placeholder="e.g. Manhattan weekend"
+              value={tripName}
+              onChange={(event) => {
+                setTripName(event.target.value);
+                setGeneratedItinerary(null);
+                setSuccessMessage("");
+              }}
+            />
+          </label>
+
           <label htmlFor="start-date">
             Start date
             <input
@@ -277,11 +448,11 @@ function MyItinerary({ pois }: MyItineraryProps) {
                 setStartDate(event.target.value);
 
                 /*
-                  If dates change after confirmation, reset the planner state.
-                  The user should confirm the new dates before generating again.
+                  Dates must be confirmed again whenever either date changes.
                 */
                 setDatesConfirmed(false);
-                setGeneratedItinerary([]);
+                setGeneratedItinerary(null);
+                setSuccessMessage("");
               }}
             />
           </label>
@@ -295,12 +466,34 @@ function MyItinerary({ pois }: MyItineraryProps) {
               onChange={(event) => {
                 setEndDate(event.target.value);
                 setDatesConfirmed(false);
-                setGeneratedItinerary([]);
+                setGeneratedItinerary(null);
+                setSuccessMessage("");
               }}
             />
           </label>
 
-          <button onClick={confirmDates}>Confirm Dates</button>
+          <label htmlFor="accessibility-need">
+            Accessibility
+            <select
+              id="accessibility-need"
+              value={accessibilityNeed}
+              onChange={(event) => {
+                setAccessibilityNeed(event.target.value);
+                setGeneratedItinerary(null);
+                setSuccessMessage("");
+              }}
+            >
+              <option value="">No specific requirement</option>
+              <option value="wheelchair">Wheelchair accessible</option>
+              <option value="wheelchair-limited">
+                Limited wheelchair access
+              </option>
+            </select>
+          </label>
+
+          <button type="button" onClick={confirmDates}>
+            Confirm Dates
+          </button>
         </div>
 
         {dateError && <p className="error-message">{dateError}</p>}
@@ -318,7 +511,7 @@ function MyItinerary({ pois }: MyItineraryProps) {
 
           <p>
             Once your trip dates are confirmed, you can search attractions,
-            choose saved or popular places, and generate your draft itinerary.
+            choose saved or popular places, and generate your itinerary.
           </p>
         </section>
       )}
@@ -331,7 +524,7 @@ function MyItinerary({ pois }: MyItineraryProps) {
 
               <p>Find specific places you want to include in your trip.</p>
 
-              <SearchBar onSearchChange={setSearchTerm} />
+              <SearchBar onSearchChange={setSearchTerm} variant="compact" />
 
               {searchTerm && (
                 <div className="itinerary-search-results">
@@ -340,15 +533,23 @@ function MyItinerary({ pois }: MyItineraryProps) {
                   {searchResults.length === 0 ? (
                     <p className="fallback-message">No attractions found.</p>
                   ) : (
-                    searchResults.map((poi) => (
-                      <div key={poi.slug} className="itinerary-poi-row">
-                        <span>{poi.name}</span>
+                    searchResults.map((poi) => {
+                      const isSelected = selectedPoiSlugs.includes(poi.slug);
 
-                        <button onClick={() => addPoiToItinerary(poi.slug)}>
-                          Add
-                        </button>
-                      </div>
-                    ))
+                      return (
+                        <div key={poi.slug} className="itinerary-poi-row">
+                          <span>{poi.name}</span>
+
+                          <button
+                            type="button"
+                            onClick={() => addPoiToItinerary(poi.slug)}
+                            disabled={isSelected}
+                          >
+                            {isSelected ? "Added" : "Add"}
+                          </button>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               )}
@@ -361,15 +562,18 @@ function MyItinerary({ pois }: MyItineraryProps) {
 
               {selectedPois.length === 0 ? (
                 <p className="fallback-message">
-                  No places selected yet. Use search or popular picks to add
-                  attractions.
+                  No places selected yet. Use search, saved places, or popular
+                  picks to add attractions.
                 </p>
               ) : (
                 selectedPois.map((poi) => (
                   <div key={poi.slug} className="itinerary-poi-row">
                     <span>{poi.name}</span>
 
-                    <button onClick={() => removePoiFromItinerary(poi.slug)}>
+                    <button
+                      type="button"
+                      onClick={() => removePoiFromItinerary(poi.slug)}
+                    >
                       Remove
                     </button>
                   </div>
@@ -380,21 +584,42 @@ function MyItinerary({ pois }: MyItineraryProps) {
             <section className="saved-pois-section">
               <h2>Saved Places</h2>
 
-              <p>
-                Saved POIs will appear here once backend saved-place persistence
-                is connected.
-              </p>
+              <p>Add attractions that you previously saved from Explore.</p>
 
-              {/*
-                BACKEND HOOKUP LATER:
-                Replace this fallback with GET /api/saved-pois.
+              {isLoadingSavedPois && (
+                <p className="loading-message">Loading saved places...</p>
+              )}
 
-                Then render saved POIs with:
-                savedPois.map(...)
-              */}
-              <p className="fallback-message">
-                No saved places available in this session yet.
-              </p>
+              {!isLoadingSavedPois && savedPoisMessage && (
+                <p className="fallback-message">{savedPoisMessage}</p>
+              )}
+
+              {!isLoadingSavedPois &&
+                savedPoisMessage === "" &&
+                savedPois.length === 0 && (
+                  <p className="fallback-message">
+                    You have not saved any places yet.
+                  </p>
+                )}
+
+              {!isLoadingSavedPois &&
+                savedPois.filter(canUseInItinerary).map((poi) => {
+                  const isSelected = selectedPoiSlugs.includes(poi.slug);
+
+                  return (
+                    <div key={poi.slug} className="itinerary-poi-row">
+                      <span>{poi.name}</span>
+
+                      <button
+                        type="button"
+                        onClick={() => addPoiToItinerary(poi.slug)}
+                        disabled={isSelected}
+                      >
+                        {isSelected ? "Added" : "Add"}
+                      </button>
+                    </div>
+                  );
+                })}
             </section>
 
             <section className="popular-pois-section">
@@ -402,15 +627,23 @@ function MyItinerary({ pois }: MyItineraryProps) {
 
               <p>Highly reviewed attractions you may want to include.</p>
 
-              {popularPois.map((poi) => (
-                <div key={poi.slug} className="itinerary-poi-row">
-                  <span>{poi.name}</span>
+              {popularPois.map((poi) => {
+                const isSelected = selectedPoiSlugs.includes(poi.slug);
 
-                  <button onClick={() => addPoiToItinerary(poi.slug)}>
-                    Add
-                  </button>
-                </div>
-              ))}
+                return (
+                  <div key={poi.slug} className="itinerary-poi-row">
+                    <span>{poi.name}</span>
+
+                    <button
+                      type="button"
+                      onClick={() => addPoiToItinerary(poi.slug)}
+                      disabled={isSelected}
+                    >
+                      {isSelected ? "Added" : "Add"}
+                    </button>
+                  </div>
+                );
+              })}
             </section>
           </section>
 
@@ -418,98 +651,137 @@ function MyItinerary({ pois }: MyItineraryProps) {
             <div>
               <p className="section-eyebrow">Generate</p>
 
-              <h2>Ready to optimise your day?</h2>
+              <h2>Ready to optimise your trip?</h2>
 
               <p>
-                This creates a frontend draft from your selected POIs. Later
-                this will call the backend itinerary algorithm.
+                The backend scheduler will organise your selected attractions
+                using dates, availability, geography, and crowd predictions.
               </p>
             </div>
 
             <button
               className="generate-itinerary-button"
+              type="button"
               onClick={generateItinerary}
               disabled={selectedPois.length === 0 || isGenerating}
             >
               {isGenerating ? "Generating..." : "Generate Itinerary"}
             </button>
-
-            {itineraryError && (
-              <p className="error-message">{itineraryError}</p>
-            )}
           </section>
 
-          {generatedItinerary.length > 0 && (
+          {itineraryError && (
+            <p className="error-message">{itineraryError}</p>
+          )}
+
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
+
+          {generatedItinerary !== null && (
             <section className="generated-itinerary-section">
               <div className="itinerary-section-header">
-                <p className="section-eyebrow">Optimised Plan</p>
+                <div>
+                  <p className="section-eyebrow">Optimised Plan</p>
 
-                <h2>Your Manhattan Itinerary</h2>
+                  <h2>{generatedItinerary.trip_name}</h2>
 
-                <p>
-                  {startDate} to {endDate}
-                </p>
+                  <p>
+  {generatedItinerary.start_date} to {generatedItinerary.end_date}
+</p>
+                </div>
+
+                <button
+                  type="button"
+                  className="save-itinerary-button"
+                  onClick={saveItinerary}
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save Itinerary"}
+                </button>
               </div>
 
-              <div className="itinerary-timeline">
-                {generatedItinerary.map((poi, index) => {
-                  const currentTime =
-                    itineraryTimesBySlug[poi.slug] ||
-                    timeOptions[index] ||
-                    "09:00";
-
-                  return (
-                    <div key={poi.slug} className="itinerary-timeline-row">
-                      <div className="timeline-time">{currentTime}</div>
+              {generatedItinerary.stops.length === 0 ? (
+                <p className="fallback-message">
+                  The itinerary was generated, but it contains no scheduled
+                  stops.
+                </p>
+              ) : (
+                <div className="itinerary-timeline">
+                  {generatedItinerary.stops.map((stop, index) => (
+                    <div
+                      key={`${stop.slug}-${stop.day_number}-${index}`}
+                      className="itinerary-timeline-row"
+                    >
+                      <div className="timeline-time">
+  {stop.slot_start.slice(0, 5)}–{stop.slot_end.slice(0, 5)}
+</div>
 
                       <div className="timeline-card">
                         <p className="card-location">
-                          {poi.neighborhood || "Manhattan"}
+                          Day {stop.day_number} · {stop.visit_date}
                         </p>
 
-                        <h3>{poi.name}</h3>
+                        <h3>{stop.poi_name}</h3>
 
                         <p className="best-time">
-                          🕘{" "}
-                          {poi.best_time_label || "Recommended time pending."}
+                          🕘 {stop.slot} · {stop.crowd_level}
                         </p>
 
                         <p className="why-this-time">
-                          {poi.why_this_time ||
-                            "Why-this-time explanation will appear when recommendation data is available."}
+                          {stop.neighborhood}, {stop.borough}
                         </p>
 
-                        <div className="timeline-actions">
-                          <label className="time-pill">
-                            Time
-                            <select
-                              value={currentTime}
-                              onChange={(event) =>
-                                changeItineraryTime(
-                                  poi.slug,
-                                  event.target.value
-                                )
-                              }
-                            >
-                              {timeOptions.map((time) => (
-                                <option key={time} value={time}>
-                                  {time}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
+                        <p>
+                          Suggested visit: {stop.suggested_duration} minutes
+                        </p>
 
-                          <button
-                            onClick={() => removePoiFromItinerary(poi.slug)}
+                        {stop.accessibility.length > 0 && (
+                          <div className="stop-accessibility-list">
+                            {stop.accessibility.map((item) => (
+                              <span key={String(item)}>
+                                ♿ {String(item)}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {stop.flags.length > 0 && (
+                          <div className="stop-flags">
+                            {stop.flags.map((flag) => (
+                              <span key={flag}>{flag}</span>
+                            ))}
+                          </div>
+                        )}
+
+                        {stop.busyness_for_day.length > 0 && (
+                          <div
+                            className="mini-busyness-chart"
+                            aria-label={`Hourly busyness forecast for ${stop.poi_name}`}
                           >
-                            Remove
-                          </button>
-                        </div>
+                            {stop.busyness_for_day.slice(0, 24).map((hour) => (
+                              <div
+                                key={hour.hour_of_day}
+                                className="mini-busyness-column"
+                                title={`${hour.hour_of_day}:00 — ${hour.busyness}% busy`}
+                              >
+                                <div
+                                  className="mini-busyness-bar"
+                                  style={{
+                                    height: `${Math.max(
+                                      6,
+                                      Math.min(hour.busyness, 100)
+                                    )}%`,
+                                  }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              )}
             </section>
           )}
         </>
