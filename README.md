@@ -96,16 +96,6 @@ The busyness estimation model and its training data live in a separate project (
 
 **Data sources:** a POI registry (Google Places, MapPLUTO, OpenStreetMap, NYC POI/LION) is combined with demand and context signals — Citi Bike, yellow/green taxi, FHVHV (Uber/Lyft), MTA subway/turnstile/bus ridership, DOT pedestrian counts, traffic volume counts, weather, holidays, and events — each pulled via a reproducible script against a public API (NYC Open Data, TLC, MTA, Open-Meteo).
 
-**Data quality:** checks covered missing values (~34% of POIs lack a Google busyness label), ambiguous zero-values (closed vs. genuinely empty), double-counted MTA riders across fare types, invalid IDs/coordinates, out-of-range timestamps, and timezone consistency.
-
-**Key finding:** transport demand tracks *outdoor* busyness well (rank correlation 0.80) but is a weaker proxy for *indoor* venues (0.46), since indoor spots run on their own hours. Transport demand is therefore used as a validation signal and as a fallback for POIs without a Google label, rather than as the primary target.
-
-**Modelling approach:** features include masked closed-hours, cyclical (sin/cos) encodings of hour and day, log-transformed and z-scored demand signals; candidate models range from a category-mean baseline through Ridge/Lasso to Random Forest and Gradient Boosting, evaluated with POI-grouped train/val/test splits (70/15/15) and 5-fold GroupKFold cross-validation against a target of MAE ≤ 15 and Spearman correlation ≥ 0.7.
-
-**Why not just use Google Maps:** Offpeak sequences an entire day across multiple stops rather than showing one place at a time, estimates busyness for the ~34% of POIs Google has no data for, and precomputes a full 7×24 "typical week" so a trip can be planned in advance rather than decided on the spot.
-
-**Next steps:** growing the labelled POI set (currently 131) toward 300–500, refining hand-tagged categories, tuning the transport-radius buffer, and adding features to close the indoor-prediction gap.
-
 ---
 
 ## Getting Started
