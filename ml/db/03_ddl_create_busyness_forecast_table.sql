@@ -1,8 +1,6 @@
 -- =============================================================
 -- OFFPEAK — Busyness forecast schema (PostgreSQL)
--- 02_ddl_create_busyness_forecast_table.sql : table for ML-predicted busyness
--- Run AFTER 01_ddl_create_poi_table.sql (depends on poi table + busyness_level enum).
--- Run: psql -d offpeak -f db/02_ddl_create_busyness_forecast_table.sql
+-- 03_ddl_create_busyness_forecast_table.sql : table for ML-predicted busyness
 -- =============================================================
 
 BEGIN;

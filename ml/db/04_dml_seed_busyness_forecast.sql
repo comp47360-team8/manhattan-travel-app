@@ -1,5 +1,5 @@
 -- 04_dml_seed_busyness_forecast.sql
--- Run AFTER `alembic upgrade head` (which creates poi_busyness_forecast) + 03_dml_seed_poi_table.sql
+-- Run AFTER 03_ddl_create_busyness_forecast_table.sql
 -- Hybrid seed, open hours only, idempotent (ON CONFLICT):
 --   12,895 rows for labelled POIs  -> source=google_popular_times
 --   8,999 rows for unlabelled POIs -> source=model (gbm_v1)
@@ -21909,14 +21909,5 @@ ON CONFLICT (poi_id, day_of_week, hour_of_day) DO UPDATE SET
   source        = EXCLUDED.source,
   model_version = EXCLUDED.model_version,
   computed_at   = now();
-
-UPDATE poi_busyness_forecast
-SET time_slot = CASE
-    WHEN hour_of_day >= 6 AND hour_of_day < 12 THEN 'morning'
-    WHEN hour_of_day >= 12 AND hour_of_day < 18 THEN 'afternoon'
-    WHEN hour_of_day >= 18 AND hour_of_day <= 24 THEN 'evening'
-    ELSE NULL
-END
-WHERE time_slot IS NULL;
 
 COMMIT;
