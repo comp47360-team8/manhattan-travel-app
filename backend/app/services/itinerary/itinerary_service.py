@@ -7,7 +7,8 @@ from app.services.itinerary.assignment.scheduler import assign_days, assign_slot
 from app.schemas.itinerary import ItineraryRequest
 from app.services.poi_service import get_pois_by_slug
 from app.services.poi_service import get_poi_by_slug
-from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day
+from app.repositories.itinerary_repository import get_crowd_level
+from app.repositories.poi_repository import get_busyness_for_day
 from app.services.itinerary.ordering import reorder_pois
 from app.core.constants import MAX_POIS_PER_DAY
 from app.core.exceptions import MaximumPOIsExceeded, POINotFoundError, RepeatingPOI
