@@ -1,8 +1,7 @@
 from pydantic import BaseModel
-from datetime import datetime, time
+from datetime import time
 
 class POIDetailedResponse(BaseModel):
-    
     slug: str
 
     name: str
@@ -65,6 +64,17 @@ class POIDetailedResponse(BaseModel):
 
     model_config = {"from_attributes": True}
 
+class HourlyBusynessResponse(BaseModel):
+    hour_of_day: int
+    busyness: float
+
+class POIBusynessResponse(BaseModel):
+    today: list[HourlyBusynessResponse]
+    tomorrow: list[HourlyBusynessResponse]
+    weekend: list[HourlyBusynessResponse]
+
+class BusynessResponse(BaseModel):
+    crowd_forecast: dict[str, POIBusynessResponse]
 
 class POISaveResponse(BaseModel):
     message: str
