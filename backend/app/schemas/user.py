@@ -9,6 +9,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
     confirm_password: str
+    accessibility: bool
 
     @field_validator("password")
     @classmethod
