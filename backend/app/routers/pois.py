@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/pois", tags=["pois"])
 def get_pois(db: Session = Depends(get_db)):
     return get_all_pois(db)
 
-@router.get("/busyness", response_model=BusynessResponse)
+@router.get("/crowd-forecast", response_model=BusynessResponse)
 def display_hourly_busyness(db: Session = Depends(get_db)):
     pois = get_all_pois(db)
     return BusynessResponse(
