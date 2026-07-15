@@ -153,6 +153,12 @@ class POI(Base):
         "POIBusynessForecast", back_populates="poi_forecast", cascade="all, delete"
     )
 
+    excluded_by_trips = relationship(
+        "Trip",
+        secondary="trip_excluded_pois",
+        back_populates="excluded_pois"
+    )
+
 
 class SavedPOI(Base):
     __tablename__ = "saved_pois"
