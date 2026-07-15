@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { apiFetch } from "../api";
+import { groupStopsByDay } from "../itinerary";
+import BusynessChart from "./BusynessChart";
 
 import type {
   AddStopRequest,
@@ -12,6 +14,7 @@ import type {
 
 type SavedItinerariesProps = {
   onLoginRequired?: () => void;
+  onSavedPlaceRemoved?: (slug: string) => void;
   pois: Poi[];
 };
 
@@ -62,6 +65,7 @@ function isAuthenticationError(error: unknown): boolean {
 
 function SavedItineraries({
   onLoginRequired,
+  onSavedPlaceRemoved,
   pois,
 }: SavedItinerariesProps) {
   /*
@@ -306,6 +310,8 @@ function SavedItineraries({
           (poi) => poi.slug !== slug
         )
       );
+
+      onSavedPlaceRemoved?.(slug);
 
       setSuccessMessage(
         response.message ||
@@ -929,45 +935,55 @@ function SavedItineraries({
                   </button>
                 </div>
 
-                <div className="itinerary-timeline">
-                  {selectedItinerary.stops.map(
-                    (stop, index) => (
-                      <div
-                        className="itinerary-timeline-row"
-                        key={`${stop.stop_id}-${index}`}
-                      >
-                        <div className="timeline-time">
-                          {stop.slot_start.slice(
-                            0,
-                            5
-                          )}
-                          –
-                          {stop.slot_end.slice(
-                            0,
-                            5
-                          )}
+                <div className="itinerary-days">
+                  {groupStopsByDay(selectedItinerary.stops).map((day) => (
+                    <section
+                      className="itinerary-day-group"
+                      key={`${day.dayNumber}-${day.visitDate}`}
+                    >
+                      <header className="itinerary-day-heading">
+                        <div>
+                          <p className="section-eyebrow">Day {day.dayNumber}</p>
+                          <h3>{formatDate(day.visitDate)}</h3>
                         </div>
 
-                        <article className="timeline-card">
-                          <p className="card-location">
-                            Day {stop.day_number} ·{" "}
-                            {formatDate(
-                              stop.visit_date
-                            )}
-                          </p>
+                        <span>
+                          {day.stops.length} {day.stops.length === 1 ? "place" : "places"}
+                        </span>
+                      </header>
+
+                      <div className="itinerary-timeline">
+                        {day.stops.map((stop, stopIndex) => (
+                          <div
+                            className="itinerary-timeline-row"
+                            key={stop.stop_id}
+                          >
+                            <div className="timeline-time">
+                              Stop {stopIndex + 1}
+                            </div>
+
+                            <article className="timeline-card">
+                              <p className="card-location">
+                                {stop.neighborhood}, {stop.borough}
+                              </p>
 
                           <h3>
                             {stop.poi_name}
                           </h3>
 
-                          <p className="best-time">
-                            {stop.slot} ·{" "}
-                            {stop.crowd_level}
-                          </p>
+                              <p className="recommended-window">
+                                <strong>Recommended {stop.slot} window</strong>
+                                <span>
+                                  {stop.slot_start.slice(0, 5)}–{stop.slot_end.slice(0, 5)} · {stop.crowd_level}
+                                </span>
+                              </p>
 
                           <p className="why-this-time">
-                            {stop.neighborhood},{" "}
-                            {stop.borough}
+                            <strong>Why this time:</strong>{" "}
+                            {pois.find(
+                              (poi) => poi.slug === stop.slug
+                            )?.why_this_time?.trim() ||
+                              "Detailed recommendation data is not available for this stop."}
                           </p>
 
                           <p className="why-this-time">
@@ -1012,42 +1028,22 @@ function SavedItineraries({
                               : "Remove from itinerary"}
                           </button>
 
-                          {stop.busyness_for_day
-                            .length > 0 && (
-                            <div
-                              className="mini-busyness-chart"
-                              aria-label={`Hourly busyness forecast for ${stop.poi_name}`}
-                            >
-                              {stop.busyness_for_day
-                                .slice(0, 24)
-                                .map((hour) => (
-                                  <div
-                                    className="mini-busyness-column"
-                                    key={
-                                      hour.hour_of_day
-                                    }
-                                    title={`${hour.hour_of_day}:00 — ${hour.busyness}% busy`}
-                                  >
-                                    <div
-                                      className="mini-busyness-bar"
-                                      style={{
-                                        height: `${Math.max(
-                                          6,
-                                          Math.min(
-                                            hour.busyness,
-                                            100
-                                          )
-                                        )}%`,
-                                      }}
-                                    />
-                                  </div>
-                                ))}
-                            </div>
-                          )}
-                        </article>
+                              {stop.busyness_for_day.length > 0 ? (
+                                <BusynessChart
+                                  hours={stop.busyness_for_day}
+                                  poiName={stop.poi_name}
+                                />
+                              ) : (
+                                <p className="fallback-message">
+                                  Hourly crowd forecast is not available for this stop.
+                                </p>
+                              )}
+                            </article>
+                          </div>
+                        ))}
                       </div>
-                    )
-                  )}
+                    </section>
+                  ))}
                 </div>
 
                 <section className="saved-itinerary-editor">

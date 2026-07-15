@@ -118,8 +118,8 @@ function AuthForm({
       return false;
     }
 
-    if (password.length < 8) {
-      showError("Your password must contain at least 8 characters.");
+    if (password.length < 6) {
+      showError("Your password must contain at least 6 characters.");
       return false;
     }
 
@@ -295,7 +295,7 @@ function AuthForm({
           <input
             type="password"
             placeholder={
-              isLogin ? "Enter your password" : "At least 8 characters"
+              isLogin ? "Enter your password" : "At least 6 characters"
             }
             value={password}
             onChange={(event) => setPassword(event.target.value)}

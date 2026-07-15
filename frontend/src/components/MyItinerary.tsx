@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import BusynessChart from "./BusynessChart";
 import { apiFetch } from "../api";
+import { groupStopsByDay } from "../itinerary";
 
 import type {
   ItineraryGenerateRequest,
@@ -31,6 +33,20 @@ function canUseInItinerary(poi: Poi): boolean {
     poi.opening_hours !== null &&
     Object.keys(poi.opening_hours).length > 0
   );
+}
+
+function formatItineraryDate(dateValue: string): string {
+  const date = new Date(`${dateValue}T00:00:00`);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateValue;
+  }
+
+  return new Intl.DateTimeFormat("en-IE", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(date);
 }
 
 function MyItinerary({ pois, onLoginRequired }: MyItineraryProps) {
@@ -323,6 +339,7 @@ function MyItinerary({ pois, onLoginRequired }: MyItineraryProps) {
 
     try {
       setIsGenerating(true);
+      setGeneratedItinerary(null);
 
       const result = await apiFetch<ItineraryResponse>(
         "/api/itinerary/generate",
@@ -332,6 +349,13 @@ function MyItinerary({ pois, onLoginRequired }: MyItineraryProps) {
         }
       );
 
+      if (!Array.isArray(result.stops) || result.stops.length === 0) {
+        setItineraryError(
+          "No suitable schedule could be created for those places and dates. Try changing your selection or travel dates."
+        );
+        return;
+      }
+
       setGeneratedItinerary(result);
       setSuccessMessage("Your itinerary was generated successfully.");
     } catch (error) {
@@ -339,7 +363,7 @@ function MyItinerary({ pois, onLoginRequired }: MyItineraryProps) {
 
       if (error instanceof Error && error.message.includes("500")) {
         setItineraryError(
-          "The itinerary service could not schedule one of the selected places. Try a different selection while the backend opening-hours issue is being fixed."
+          "The itinerary service could not create a schedule for that selection. Try different places or dates."
         );
       } else if (error instanceof Error) {
         setItineraryError(error.message);
@@ -699,86 +723,105 @@ setSuccessMessage(
                   {isSaving ? "Saving..." : "Save Itinerary"}
                 </button>
               </div>
-
+              {/* I show scheduling warnings returned by the backend without hiding valid stops. */}
+{generatedItinerary.warning?.trim() && (
+  <p className="fallback-message" role="status">
+    <strong>Scheduling note:</strong>{" "}
+    {generatedItinerary.warning}
+  </p>
+)}
               {generatedItinerary.stops.length === 0 ? (
                 <p className="fallback-message">
                   The itinerary was generated, but it contains no scheduled
                   stops.
                 </p>
               ) : (
-                <div className="itinerary-timeline">
-                  {generatedItinerary.stops.map((stop, index) => (
-                    <div
-                      key={`${stop.slug}-${stop.day_number}-${index}`}
-                      className="itinerary-timeline-row"
+                <div className="itinerary-days">
+                  {groupStopsByDay(generatedItinerary.stops).map((day) => (
+                    <section
+                      className="itinerary-day-group"
+                      key={`${day.dayNumber}-${day.visitDate}`}
                     >
-                      <div className="timeline-time">
-  {stop.slot_start.slice(0, 5)}–{stop.slot_end.slice(0, 5)}
-</div>
+                      <header className="itinerary-day-heading">
+                        <div>
+                          <p className="section-eyebrow">Day {day.dayNumber}</p>
+                          <h3>{formatItineraryDate(day.visitDate)}</h3>
+                        </div>
 
-                      <div className="timeline-card">
-                        <p className="card-location">
-                          Day {stop.day_number} · {stop.visit_date}
-                        </p>
+                        <span>
+                          {day.stops.length} {day.stops.length === 1 ? "place" : "places"}
+                        </span>
+                      </header>
 
-                        <h3>{stop.poi_name}</h3>
-
-                        <p className="best-time">
-                          🕘 {stop.slot} · {stop.crowd_level}
-                        </p>
-
-                        <p className="why-this-time">
-                          {stop.neighborhood}, {stop.borough}
-                        </p>
-
-                        <p>
-                          Suggested visit: {stop.suggested_duration} minutes
-                        </p>
-
-                        {stop.accessibility.length > 0 && (
-                          <div className="stop-accessibility-list">
-                            {stop.accessibility.map((item) => (
-                              <span key={String(item)}>
-                                ♿ {String(item)}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {stop.flags.length > 0 && (
-                          <div className="stop-flags">
-                            {stop.flags.map((flag) => (
-                              <span key={flag}>{flag}</span>
-                            ))}
-                          </div>
-                        )}
-
-                        {stop.busyness_for_day.length > 0 && (
+                      <div className="itinerary-timeline">
+                        {day.stops.map((stop, stopIndex) => (
                           <div
-                            className="mini-busyness-chart"
-                            aria-label={`Hourly busyness forecast for ${stop.poi_name}`}
+                            key={`${stop.slug}-${stop.position}`}
+                            className="itinerary-timeline-row"
                           >
-                            {stop.busyness_for_day.slice(0, 24).map((hour) => (
-                              <div
-                                key={hour.hour_of_day}
-                                className="mini-busyness-column"
-                                title={`${hour.hour_of_day}:00 — ${hour.busyness}% busy`}
-                              >
-                                <div
-                                  className="mini-busyness-bar"
-                                  style={{
-                                    height: `${Math.max(
-                                      6,
-                                      Math.min(hour.busyness, 100)
-                                    )}%`,
-                                  }}
+                            <div className="timeline-time">
+                              Stop {stopIndex + 1}
+                            </div>
+
+                            <div className="timeline-card">
+                              <p className="card-location">
+                                {stop.neighborhood}, {stop.borough}
+                              </p>
+
+                              <h3>{stop.poi_name}</h3>
+
+                              <p className="recommended-window">
+                                <strong>Recommended {stop.slot} window</strong>
+                                <span>
+                                  {stop.slot_start.slice(0, 5)}–{stop.slot_end.slice(0, 5)} · {stop.crowd_level}
+                                </span>
+                              </p>
+
+                              <p className="why-this-time">
+                                <strong>Why this time:</strong>{" "}
+                                {pois.find(
+                                  (poi) => poi.slug === stop.slug
+                                )?.why_this_time?.trim() ||
+                                  "Detailed recommendation data is not available for this stop."}
+                              </p>
+
+                              <p>
+                                Suggested visit: {stop.suggested_duration} minutes
+                              </p>
+
+                              {stop.accessibility.length > 0 && (
+                                <div className="stop-accessibility-list">
+                                  {stop.accessibility.map((item) => (
+                                    <span key={String(item)}>
+                                      ♿ {String(item)}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+
+                              {stop.flags.length > 0 && (
+                                <div className="stop-flags">
+                                  {stop.flags.map((flag) => (
+                                    <span key={flag}>{flag}</span>
+                                  ))}
+                                </div>
+                              )}
+
+                              {stop.busyness_for_day.length > 0 ? (
+                                <BusynessChart
+                                  hours={stop.busyness_for_day}
+                                  poiName={stop.poi_name}
                                 />
-                              </div>
-                            ))}
+                              ) : (
+                                <p className="fallback-message">
+                                  Hourly crowd forecast is not available for this stop.
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        )}
+                        ))}
                       </div>
-                    </div>
+                    </section>
                   ))}
                 </div>
               )}

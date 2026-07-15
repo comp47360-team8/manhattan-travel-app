@@ -224,6 +224,17 @@ const handleLocalLogout = useCallback(() => {
       : page
   );
 }, []);
+
+  /*
+    I update the shared saved-place state when a place is removed from the
+    Saved page so the Explore heart changes immediately without a refresh.
+  */
+  const handleSavedPlaceRemoved = useCallback((slug: string) => {
+    setSavedPoiSlugs((currentSavedSlugs) =>
+      currentSavedSlugs.filter((savedSlug) => savedSlug !== slug)
+    );
+  }, []);
+
   /*
     Load saved attractions only when the frontend considers the user logged in.
 
@@ -600,16 +611,27 @@ const handleLocalLogout = useCallback(() => {
 
                 <div className="explore-filter-footer">
                   <div className="explore-accessibility-filter">
-                    <label>
+                    <label className="accessibility-filter-control">
                       <input
                         type="checkbox"
+                        className="accessibility-filter-input"
                         checked={accessibleOnly}
                         onChange={(event) =>
                           setAccessibleOnly(event.target.checked)
                         }
                       />
 
-                      <span>Show accessible attractions only</span>
+                      <span
+                        className="accessibility-filter-switch"
+                        aria-hidden="true"
+                      />
+
+                      <span className="accessibility-filter-copy">
+                        <strong>Accessible places only</strong>
+                        <small>
+                          Show attractions with wheelchair or step-free information.
+                        </small>
+                      </span>
                     </label>
                   </div>
 
@@ -970,6 +992,7 @@ const handleLocalLogout = useCallback(() => {
           <SavedItineraries
             pois={pois}
             onLoginRequired={openLogin}
+            onSavedPlaceRemoved={handleSavedPlaceRemoved}
           />
         )}
 
