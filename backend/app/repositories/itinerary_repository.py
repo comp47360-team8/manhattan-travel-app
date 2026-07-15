@@ -60,6 +60,27 @@ def get_busyness_for_day(id, day: int, db: Session):
          for row in result
          ]
 
+def get_busyness_for_trip(poi_ids, trip_days: list[int], db: Session):
+    statement = select(
+        POIBusynessForecast.poi_id,
+        func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct"),
+    ).where(
+        POIBusynessForecast.poi_id.in_(poi_ids),
+        POIBusynessForecast.day_of_week.in_(trip_days)
+    ).group_by(
+        POIBusynessForecast.poi_id
+    ).order_by(
+        func.avg(POIBusynessForecast.busyness_pct)
+        )
+    results = db.execute(statement).all()
+    return [
+    {
+        "poi_id": row.poi_id,
+        "avg_busyness_pct": row.avg_busyness_pct
+    }
+    for row in results
+]
+
 def save_itinerary_for_user(itinerary: ItineraryResponse, db: Session, user: uuid.UUID):
     itinerary_entry = SavedItinerary(
         user_id=user,
