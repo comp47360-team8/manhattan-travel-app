@@ -37,10 +37,6 @@ class POIDetailedResponse(BaseModel):
 
     google_review_count: int | None
 
-    current_busyness: str | None # May relocate later
-
-    current_busyness_at: datetime | None # May relocate later
-
     best_time_start: time | None
 
     best_time_end: time | None
