@@ -3,7 +3,7 @@ from app.domains.scheduling import POIProfile
 from app.core.constants import TIME_SLOTS
 from app.core.exceptions import RepeatingPOI
 
-def validate_pois(pois: list[POI], dates: list):
+def validate_pois(pois: list[POI], dates: list) -> list[POIProfile]:
     for poi in pois:
         if pois.count(poi) > 1:
             raise RepeatingPOI
