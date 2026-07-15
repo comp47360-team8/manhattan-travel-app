@@ -94,14 +94,6 @@ class POI(Base):
 
     google_review_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
-    current_busyness: Mapped[BusynessLevel | None] = mapped_column(
-        Enum(BusynessLevel, name="busyness_level"), nullable=True
-    )
-
-    current_busyness_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
-
     best_time_start: Mapped[time | None] = mapped_column(Time, nullable=True)
 
     best_time_end: Mapped[time | None] = mapped_column(Time, nullable=True)
