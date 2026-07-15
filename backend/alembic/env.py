@@ -10,7 +10,7 @@ from app.database import Base
 from app.models.user_model import User, UserSession
 from app.models.poi_model import POI, SavedPOI, POIBusynessForecast
 from app.models.itinerary_model import SavedItinerary, ItineraryStop
-from app.models.ai_model import Conversation, Message
+from app.models.ai_model import Conversation, Message, Trip, TripExcludedPOI
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
