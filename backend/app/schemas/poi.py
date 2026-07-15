@@ -73,9 +73,6 @@ class POIBusynessResponse(BaseModel):
     tomorrow: list[HourlyBusynessResponse]
     weekend: list[HourlyBusynessResponse]
 
-class BusynessResponse(BaseModel):
-    crowd_forecast: dict[str, POIBusynessResponse]
-
 class POISaveResponse(BaseModel):
     message: str
 

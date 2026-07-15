@@ -58,34 +58,28 @@ def get_busyness_for_day(id, day: int, db: Session):
          for row in result
         ]
 
-def get_hourly_busyness(today, tomorrow, poi_ids, db: Session):
+def get_hourly_busyness(days, poi_id, db: Session):
     statement = select(
         POIBusynessForecast
     ).where(
-        POIBusynessForecast.poi_id.in_(poi_ids),
-        POIBusynessForecast.day_of_week.in_(
-            [today, tomorrow]
-        )
+        POIBusynessForecast.poi_id == poi_id,
+        POIBusynessForecast.day_of_week.in_(days)
     ).order_by(
-        POIBusynessForecast.poi_id,
         POIBusynessForecast.hour_of_day
     )
 
     return db.execute(statement).scalars().all()
 
-def get_weekend_hourly_busyness(poi_ids, db: Session):
+def get_weekend_hourly_busyness(poi_id, db: Session):
     statement = select(
-        POIBusynessForecast.poi_id,
         POIBusynessForecast.hour_of_day,
         func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct")
     ).where(
-        POIBusynessForecast.poi_id.in_(poi_ids),
+        POIBusynessForecast.poi_id == poi_id,
         POIBusynessForecast.day_of_week.in_([5, 6])
     ).group_by(
-        POIBusynessForecast.poi_id,
         POIBusynessForecast.hour_of_day
     ).order_by(
-        POIBusynessForecast.poi_id,
         POIBusynessForecast.hour_of_day
     )
 
