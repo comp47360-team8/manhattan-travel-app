@@ -133,7 +133,7 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
     for poi in open_during_trip_filter:
         if poi_slug_map[poi.slug].type not in trip.excluded_types:
             types_excluded.append(poi)
-    print(f"conv id is {conv_id}")
+    
     excluded_poi_ids = get_excluded_pois(conv_id, db)
     excluded_poi_slugs = {get_poi_by_id(poi_id, db).slug for poi_id in excluded_poi_ids}
     
@@ -148,24 +148,52 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
     target_count = poi_per_day * len(trip_days)
     max_per_type = math.ceil(target_count * 0.3)
 
+    preferred_types = set(trip.preferences)
+
+    if preferred_types:
+        total_preferred_type = math.ceil(target_count * 0.6)
+        max_per_preferred_type = math.ceil(total_preferred_type / len(preferred_types))
+
     busyness_per_poi = get_busyness_for_trip(poi_ids, trip_days, db)
 
     candidates = []
     type_count = defaultdict(int)
 
+    if preferred_types:
+        available_preferred_pois = [
+            poi_id_map[poi["poi_id"]] for poi in busyness_per_poi 
+            if poi_id_map[poi["poi_id"]].type in preferred_types
+            ]
+    
+        preferred_target = min(total_preferred_type, len(available_preferred_pois))
+
+        for poi in available_preferred_pois:
+            if len(candidates) >= preferred_target:
+                break
+
+            if type_count[poi.type] >= max_per_preferred_type:
+                continue
+        
+            candidates.append(poi.slug)
+            type_count[poi.type] += 1
+    
     for poi in busyness_per_poi:
         if len(candidates) >= target_count:
             break
 
-        poi_type = poi_id_map[poi["poi_id"]].type
+        poi_obj = poi_id_map[poi["poi_id"]]
+        poi_type = poi_obj.type
+
+        if poi_obj.slug in candidates:
+            continue
+
         if type_count[poi_type] >= max_per_type:
             continue
 
-        candidates.append(poi_id_map[poi["poi_id"]].slug)
+        candidates.append(poi_obj.slug)
         type_count[poi_type] += 1
 
     return candidates
-
                     
 
 

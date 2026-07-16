@@ -6,11 +6,11 @@ from app.dependencies.auth import authorise_access
 from app.database import get_db
 from app.repositories.ai_repository import (
     start_conversation, save_message, load_chat_history, get_conversation_by_id, update_summary,
-    load_chat_summary
+    load_chat_summary, get_last_message
     )
 from app.services.ai_service import generate_chat_response, extract_trip_parameters
 from app.core.constants import USER, ASSISTANT
-from app.repositories.poi_repository import get_all_pois
+from app.services.poi_service import get_all_pois
 from app.services.itinerary.itinerary_service import auto_generate_itinerary
 from app.services.trip_service import fuzzy_search, get_trip_details
 from app.repositories.trip_repository import update_trip
@@ -30,7 +30,9 @@ def chat(conversation_id, request: ChatRequest, db: Session = Depends(get_db), u
     try:
         save_message(request.prompt, USER, conversation_id, db, user)
 
-        extracted = extract_trip_parameters(request.prompt)
+        last_message = get_last_message(conversation_id, db, user)
+    
+        extracted = extract_trip_parameters(request.prompt, last_message)
 
         pois = get_all_pois(db)
         excluded_pois = fuzzy_search(extracted.excluded_pois, pois)
@@ -41,18 +43,12 @@ def chat(conversation_id, request: ChatRequest, db: Session = Depends(get_db), u
         history = load_chat_history(conversation_id, db, user)
         summary = load_chat_summary(conversation_id, db, user)
 
-        chat_response = generate_chat_response(history, summary, conversation_id, trip_details, db, user)
+        chat_response = generate_chat_response(history, summary, trip_details, conversation_id, db, user)
         
-        save_message(chat_response["message"], ASSISTANT, conversation_id, db, user)
+        save_message(chat_response.message, ASSISTANT, conversation_id, db, user)
         
-        print(f"length of history is: {len(history)}")
         if len(history) >= 10:
             update_summary(conversation_id, history, db, user)
-
-        print(f"extraction response is: {extracted}")
-        print(f"slugs to exclude are: {excluded_pois}")
-        print(f"history: {history}")
-        print(f"summary: {summary}")
 
         return chat_response
     

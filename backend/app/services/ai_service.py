@@ -1,44 +1,41 @@
 import os
-import json
 from dotenv import load_dotenv
-from openai import OpenAI
+from google import genai
+from google.genai import types
+from datetime import date, datetime, time
 from app.models.ai_model import Message
-from app.core.constants import USER, SYSTEM
-from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT
-from app.schemas.ai import TripParameters
+from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS
+from app.schemas.ai import TripParameters, ChatResponse, UIOption, GeminiResponse
 from app.models.ai_model import Trip
 from app.services.itinerary.itinerary_service import auto_generate_itinerary
+from app.services.user_services import get_user_by_id
 
 load_dotenv()
 
-client = OpenAI(api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1")
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "auto_generate_itinerary",
-            "description": """
-Generate the user's itinerary when all required trip details have been collected.
-
-Call this only when you know:
-- itinerary name
-- trip dates
-- pace of days
-- POIs and POI types to be excluded
-- user POI type preferences
-""",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    
-                },
-                "required": [
-                    
-                ]
-            }
-        }
-    }
+    types.Tool(
+        function_declarations=[
+            types.FunctionDeclaration(
+                name="auto_generate_itinerary",
+                description="""
+                            Generate the user's itinerary when all required trip details have been collected.
+                            Call this only when you know:
+                            - itinerary name
+                            - trip dates
+                            - pace of days
+                            - POIs and POI types to be excluded
+                            - user POI type preferences
+                            """,
+                parameters=types.Schema(
+                    type="OBJECT",
+                    properties={},
+                    required=[]
+                )
+            )
+        ]
+    )
 ]
 
 def convert_for_ai(history: list[Message]):
@@ -46,128 +43,163 @@ def convert_for_ai(history: list[Message]):
     for message in history:
         final_history.append({
             "role": message.role.value,
-            "content":message.content
+            "parts": [{
+                "text": message.content
+                }],
             })
     return final_history
 
-def generate_chat_response(history, summary, conv_id, trip_details: Trip, db, user):
-    prompt = f"""
-You are helping a user plan a trip.
-Previous conversation summary: {summary}
-Current trip details: {trip_details}
+def generate_chat_response(history, summary, trip_details: Trip, conv_id, db, user):
+    user_profile = get_user_by_id(user, db)
 
-Use the summary and trip details as context.
-Ask the user for missing details naturally.
+    system_instruction = f"""
+    {SYSTEM_PROMPT}
 
-When a tool returns an itinerary summary, explain the summary clearly to the user.
-Do not mention tools or internal processes.
-"""
-    messages = [
-    {
-        "role": SYSTEM,
-        "content": SYSTEM_PROMPT 
-    },
-    {
-        "role": SYSTEM,
-        "content": prompt
-    },
-    *history
-    ]
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=messages,
-        tools=tools,
-        tool_choice="auto"
+    User's name:
+    {user_profile.display_name}
+
+    User's accessibility:
+    {user_profile.accessibility}
+
+    Conversation summary:
+    {summary}
+
+    Current trip details:
+    {trip_details}
+
+    - Use the summary and trip details as context.
+    - Ask for missing trip details naturally.
+    - Only generate an itinerary when all required details are available.
+    The tool returs the itinerary details:
+    - Write ONE friendly paragraph.   
+    - Do not output JSON.
+    - Do not output keys.
+    - Do not output ui_action.
+    - Do not output itinerary.
+    - Describe some of the POIs but Do not list every POI generated
+    - Return only plain text.
+    - Only if a user has accessibility needs, tell them that their needs have been taken
+    into account.
+    """
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=history,
+        config={
+            "system_instruction": system_instruction,
+            "tools": tools,
+            "response_schema": GeminiResponse
+        }
     )
 
-    message = response.choices[0].message
-    print(f"message : {message}")
+    if response.function_calls:
+        function_call = response.function_calls[0]
+        if function_call.name == "auto_generate_itinerary":
+            itinerary_json = auto_generate_itinerary(
+                trip=trip_details,
+                conv_id=conv_id,
+                db=db,
+                user=user
+            )
+            itinerary_json = make_json_serializable(itinerary_json)
 
-    if message.tool_calls:
-        messages.append(message)
-        for tool_call in message.tool_calls:
-            if tool_call.function.name == "auto_generate_itinerary":
-
-                args = json.loads(
-                    tool_call.function.arguments
-                )
-                itinerary = auto_generate_itinerary(
-                    trip=trip_details,
-                    conv_id=conv_id,
-                    db=db,
-                    user=user
-                )
-
-                itinerary_summary = {
-                    "itinerary_name": trip_details.name,
-                    "number_of_days": itinerary["stops"][-1]["day_number"],
-                    "number_of_pois": len(itinerary["stops"]),
-                    "pois": [poi["poi_name"] for poi in itinerary["stops"]]
+            tool_response = types.Part.from_function_response(
+                name="auto_generate_itinerary",
+                response= {
+                    "trip_name": itinerary_json["trip_name"],
+                    "number_of_days": itinerary_json["stops"][-1]["day_number"],
+                    "number_of_pois": len(itinerary_json["stops"]),
+                    "some_pois": [stop["poi_name"] for stop in itinerary_json["stops"]]  
                 }
+            )
 
-                messages.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": json.dumps(itinerary_summary)
-                })
+            final_response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=[
+                    *history,
+                    response.candidates[0].content,
+                    types.Content(
+                        role="tool",
+                        parts=[
+                            tool_response
+                        ]
+                    )
+                ],
+                config={
+                    "system_instruction": system_instruction
+                }
+            )
+            return ChatResponse(
+                message=final_response.text,
+                ui_action=None,
+                itinerary=itinerary_json
+            )
+    
+    gemini_response = response.parsed
+    if gemini_response is None:
+        return ChatResponse(
+            message=response.text,
+            ui_action=None,
+            itinerary=None
+        )
+    if gemini_response.ui_action:
+        if gemini_response.ui_action.component == "poi_type_selector":
+            gemini_response.ui_action.options = [
+                UIOption(**option)
+                for option in POI_TYPE_OPTIONS
+                ]
+            
+    return gemini_response
 
-                final_response = client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
-                    messages=messages
-                )
+def extract_trip_parameters(prompt,last_message) -> TripParameters:
+    system_instruction = f"""
+    {EXTRACTION_PROMPT}
 
-                return {
-                "message": final_response.choices[0].message.content,
-                "itinerary": itinerary
-            }
-
-    return {
-        "message": message.content,
-        "itinerary": None
-        }
-
-def extract_trip_parameters(prompt):
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {
-                "role": SYSTEM,
-                "content": EXTRACTION_PROMPT
-            },
-            {
-                "role": USER,
-                "content": prompt
-            }
-        ],
-        response_format={
-            "type": "json_object"
+    Last message sent by the assistant:
+    {last_message or "None"}
+    Use it only to understand the context of the user's latest message.
+    """
+    response =  client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt,
+        config={
+            "system_instruction": system_instruction,
+            "response_schema": TripParameters
         }
     )
-    data = json.loads(
-        response.choices[0].message.content
-    )
-    return TripParameters.model_validate(data)
+    return response.parsed
 
 def create_summary(history):
     formatted_history = "\n".join(
-        f"{msg['role']}: {msg['content']}"
-        for msg in history
-    )
+    f"{msg['role'].capitalize()}: {msg['parts'][0]["text"]}"
+    for msg in history
+)
 
-    response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[
-            {
-                "role": SYSTEM,
-                "content": SUMMARY_PROMPT
-            },
-            {
-                "role": USER,
-                "content":formatted_history
-            }
-        ]
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=formatted_history,
+        config={
+            "system_instruction": SUMMARY_PROMPT
+        }
     )
-    return response.choices[0].message.content
+    return response.text
+
+def make_json_serializable(obj):
+    if isinstance(obj, (date, datetime, time)):
+        return obj.isoformat()
+
+    if isinstance(obj, dict):
+        return {
+            key: make_json_serializable(value)
+            for key, value in obj.items()
+        }
+
+    if isinstance(obj, list):
+        return [
+            make_json_serializable(item)
+            for item in obj
+        ]
+
+    return obj
 
 
 

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.ai_model import Conversation, Message, Trip
 from app.services.ai_service import convert_for_ai, create_summary
 from app.core.exceptions import ConversationNotFoundError
+from app.core.constants import ASSISTANT
 
 def start_conversation(db: Session, user):
     new_conversation = Conversation(
@@ -93,6 +94,15 @@ def update_summary(conv_id, history: list[dict], db: Session, user):
 def load_chat_summary(conv_id, db: Session, user):
     conversation = get_conversation_by_id(conv_id, db, user)
     return conversation.summary
+
+def get_last_message(conv_id, db: Session, user):
+    statement = select(Message.content).join(Conversation).where(
+        Message.conversation_id == conv_id,
+        Conversation.user_id == user,
+        Message.role == ASSISTANT
+    ).order_by(Message.created_at.desc()).limit(1)
+
+    return db.execute(statement).scalar_one_or_none()
 
 
         
