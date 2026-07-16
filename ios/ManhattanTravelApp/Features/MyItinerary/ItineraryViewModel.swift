@@ -15,6 +15,7 @@ final class ItineraryViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let service = ItineraryService()
+    private let itineraryService = ItineraryService()
     
     func load(force: Bool = false) async {
         guard force || itineraries.isEmpty else { return }
@@ -34,6 +35,13 @@ final class ItineraryViewModel: ObservableObject {
         do { try await service.deleteItinerary(id: itinerary.id) }
         catch { itineraries = backup
                 errorMessage = error.localizedDescription}
+    }
+    
+    func getItinerary(_ id: String) async {
+        errorMessage = nil
+        do { try await itineraryService.fetchItinerary(id: id)}
+        catch is CancellationError {}
+        catch { error.localizedDescription }
     }
     
 }

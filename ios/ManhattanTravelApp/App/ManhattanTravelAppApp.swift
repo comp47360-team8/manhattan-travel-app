@@ -10,7 +10,8 @@ struct ManhattanTravelAppApp: App {
             ContentView()
                 .environmentObject(authManager)
                 .environmentObject(savedStore)
-                
+                .preferredColorScheme(.light)
+
         }
     }
 }

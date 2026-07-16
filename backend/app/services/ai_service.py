@@ -75,7 +75,6 @@ def generate_chat_response(history, summary, trip_details: Trip, conv_id, db, us
     - Do not output JSON.
     - Do not output keys.
     - Do not output ui_action.
-    - Do not output itinerary.
     - Describe some of the POIs but Do not list every POI generated
     - Return only plain text.
     - Only if a user has accessibility needs, tell them that their needs have been taken

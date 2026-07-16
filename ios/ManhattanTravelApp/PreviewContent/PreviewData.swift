@@ -63,7 +63,6 @@ func mockUpData() -> [POI] {
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     do {
         let pois = try decoder.decode([POI].self, from: data)
-        print(pois.first)
                 return pois
             } catch {
                 print("Decode error:", error)
@@ -76,10 +75,10 @@ func d(_ s: String) -> Date {
     return f.date(from: s) ?? .now
 }
 
-let itineraryMock =  Itinerary(id: "1", name: "Long Weekend in NYC",
-                               startDate: d("2026-06-12"), endDate: d("2026-06-14"),
-                               placeCount: 9,
-                               coverImageUrl: "https://lh3.googleusercontent.com/place-photos/AJRVUZPF2V81imOkg032LX5oxjfXLw4k0jnYkXI05TOtJPXDydZNHg1NLArwBoRYODizKEZWd1CH0KUK9jx-LxI9hCOl4jjqG30uSahlxJoCgl0S712GcDNAeAJl_xAH9B47gysmAOz_aWG5dfyVZQ=s4800-w612")
+let itineraryMock = Itinerary(itineraryId: "1", tripName: "Long Weekend in NYC",
+                              tripDates: "12 Jun, 2026 - 14 Jun, 2026",
+                              numberOfPlaces: 9,
+                              heroImageUrl: "https://lh3.googleusercontent.com/place-photos/AJRVUZPF2V81imOkg032LX5oxjfXLw4k0jnYkXI05TOtJPXDydZNHg1NLArwBoRYODizKEZWd1CH0KUK9jx-LxI9hCOl4jjqG30uSahlxJoCgl0S712GcDNAeAJl_xAH9B47gysmAOz_aWG5dfyVZQ=s4800-w612")
 
 
 #endif

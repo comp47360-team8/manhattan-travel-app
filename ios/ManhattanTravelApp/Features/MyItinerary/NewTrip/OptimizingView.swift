@@ -12,25 +12,30 @@ import SwiftUI
 struct OptimizingView: View {
     @ObservedObject var vm: NewTripViewModel
     @Environment(\.dismiss) private var dismiss
-
-    private var dayCount: Int { vm.durationDays ?? 1 }
+    var onClose: () -> Void = {}
+    
 
     var body: some View {
         ZStack {
             OffpeakTheme.backGround
             if let result = vm.result {
-                OptimizedItineraryView(itinerary: result, onBack: { dismiss() })
-                    .transition(.opacity)
+                OptimizedItineraryView(
+                    itinerary: result,
+                    onBack: onClose,
+                    onEdit: { dismiss() }        // pop back to Choose Places to re-select & regenerate
+                )
+                .transition(.opacity)
+            } else if let error = vm.errorMessage {
+                errorState(error).transition(.opacity)
             } else {
-                loading
-                    .transition(.opacity)
+                loading.transition(.opacity)
             }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .animation(.easeInOut(duration: 0.3), value: vm.result == nil)
         .task {
-            if vm.result == nil { await vm.generate() }
+            if vm.result == nil && vm.errorMessage == nil { await vm.generate() }
         }
     }
 
@@ -92,7 +97,7 @@ struct OptimizingView: View {
     private var progressRow: some View {
         HStack(spacing: 8) {
             ProgressView().controlSize(.small).tint(OffpeakTheme.accent)
-            Text("Optimizing Day \(min(vm.optimizeDay, dayCount)) of \(dayCount)…")
+            Text("Checking busyness forecasts…")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(OffpeakTheme.textSecondary)
         }
@@ -110,6 +115,31 @@ struct OptimizingView: View {
         }
         .padding(14)
         .background(Color.white.opacity(0.45), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+    
+    private func errorState(_ message: String) -> some View {
+        VStack(spacing: 0) {
+            topBar
+            Spacer()
+            VStack(spacing: 14) {
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.system(size: 40)).foregroundColor(OffpeakTheme.coral)
+                Text("Couldn't build your itinerary")
+                    .font(.system(size: 18, weight: .bold)).foregroundColor(OffpeakTheme.ink)
+                Text(message)
+                    .font(.system(size: 14)).foregroundColor(OffpeakTheme.textSecondary)
+                    .multilineTextAlignment(.center).padding(.horizontal, 40)
+                Button { Task { await vm.generate() } } label: {
+                    Text("Try again")
+                        .font(.system(size: 15, weight: .semibold)).foregroundColor(.white)
+                        .padding(.horizontal, 28).frame(height: 48)
+                        .background(OffpeakTheme.accent, in: Capsule())
+                }
+                .padding(.top, 4)
+            }
+            Spacer(); Spacer()
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -146,6 +176,7 @@ struct SkeletonBlock: View {
             let vm = NewTripViewModel()
             vm.startDate = Date()
             vm.endDate = Calendar.current.date(byAdding: .day, value: 2, to: Date())
+//            vm.errorMessage = "preview test"
             return vm
         }())
     }

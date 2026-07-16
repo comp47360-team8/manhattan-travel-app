@@ -18,12 +18,16 @@ struct LoginView: View {
         }
         .padding(.vertical, 20)
         .padding(.horizontal, 10)
-        .background(Color(.systemGroupedBackground).opacity(0.5)) // the background?
+        .background(OffpeakTheme.backGround)
         .presentationDetents([.medium])
         .presentationDragIndicator(.hidden)
         //.interactiveDismissDisabled()
         .onAppear{
             authManager.clearErrors()
+            if authManager.startOnRegister {
+                authManager.startOnRegister = false
+                showRegister = true
+            }
         }
         .fullScreenCover(isPresented: $showRegister){
             RegisterView()
@@ -38,9 +42,9 @@ struct LoginView: View {
                         Text("WELCOME BACK")
                             .font(.caption.bold())
                             .foregroundColor(.secondary)
-                        Text("Log in to OFFPEAK")
+                        Text("Log in to Offpeak")
                             .font(.system(size: 26, weight: .bold))
-                            .foregroundColor(Color(red: 0.1, green: 0.18, blue: 0.32))
+                            .foregroundColor(OffpeakTheme.inkTitle)
             }
             Spacer()
             Button{
@@ -108,21 +112,29 @@ struct LoginView: View {
             }
             .font(.footnote)
             .bold()
-            .foregroundColor(Color(red: 0.78, green: 0.25, blue: 0.18))
+            .foregroundColor(OffpeakTheme.brand)
             .frame(maxWidth: .infinity, alignment: .trailing)
-            
+
             // Login Botton
             Button(action: {
                 Task {await authManager.login(email: email, password: password)}
             }) {
-                Text("Log In")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(red: 0.1, green: 0.18, blue: 0.32))
-                    .cornerRadius(14)
+                Group {
+                    if authManager.isLoggingIn {
+                        ProgressView()
+                            .tint(.white)
+                    } else {
+                        Text("Log In")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(OffpeakTheme.brand)
+                .cornerRadius(14)
             }
+            .disabled(authManager.isLoggingIn)
             
             HStack(spacing: 4){
                 Text("Don't have an account?")
@@ -131,7 +143,7 @@ struct LoginView: View {
                     showRegister = true
                 }
                 .bold()
-                .foregroundColor(Color(red: 0.78, green: 0.25, blue: 0.18))
+                .foregroundColor(OffpeakTheme.brand)
             }
             .font(.footnote)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -146,11 +158,20 @@ struct LoginView: View {
 
 }
 
-#Preview {
+#Preview("Login") {
     Color(.systemGroupedBackground)
            .ignoresSafeArea()
            .sheet(isPresented: .constant(true)) {
                LoginView()
                    .environmentObject(AuthManager())
            }
+}
+
+#Preview("Login loading") {
+    Color(.systemGroupedBackground)
+        .ignoresSafeArea()
+        .sheet(isPresented: .constant(true)) {
+            LoginView()
+                .environmentObject(AuthManager.previewing(loggingIn: true))
+        }
 }

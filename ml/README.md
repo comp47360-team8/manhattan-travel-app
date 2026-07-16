@@ -13,8 +13,8 @@ copies so the team has the data and DB seed in one place.
 | Path | What it is |
 |---|---|
 | `data/interim/` | Cleaned, per-source intermediate tables (13 CSVs, ~22 MB) — POI registry, spatial joins (taxi zone / subway / Citi Bike / nearest station), typical-week transport aggregates, weather, holidays, PLUTO capacity, signal-validation. |
-| `data/processed/` | Model-ready tables (Parquet): `modeling_table.parquet` (one row per POI × day-of-week × hour) and `model_dataset.parquet` (transformed + split-tagged features). |
-| `db/` | PostgreSQL for the POI layer: `01_ddl_create_poi_table.sql`, `02_ddl_create_busyness_forecast_table.sql`, `03_dml_seed_poi_table.sql` (generated seed). |
+| `data/processed/` | Model-ready tables: `modeling_table.parquet` (one row per POI × day-of-week × hour), `model_dataset.parquet` (transformed + split-tagged features), and `forecast_model.csv` (gbm_v1 busyness scores for the 67 POIs with no Google label). |
+| `db/` | PostgreSQL for the POI layer (1:1 mirror of Offpeak `db/`): `01_ddl_create_poi_table.sql`, `02_dml_seed_poi_table.sql`, `03_ddl_create_busyness_forecast_table.sql`, `04_dml_seed_busyness_forecast.sql` (hybrid: 12,895 observed + 8,999 model rows), `05_dml_update_poi_best_time.sql`. |
 
 > **Note on `db/`:** these are the ML-side source-of-truth copies. The backend's own
 > schema is managed by Alembic (`backend/alembic/`) and its seed lives in

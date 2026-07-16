@@ -9,20 +9,17 @@
 import Foundation
 
 struct Itinerary: Identifiable, Decodable {
-    let id: String
-    let name: String
-    let startDate: Date
-    let endDate: Date
-    let placeCount: Int
-    var coverImageUrl: String? = nil
+    let itineraryId: String
+    let tripName: String
+    let tripDates: String        // display string, e.g. "12 Jun, 2026 - 14 Jun, 2026"
+    let numberOfPlaces: Int
+    let heroImageUrl: String?
 
-    var coverURL: URL? { coverImageUrl.flatMap { URL(string: $0) } }
-
-    var dateRangeText: String {
-        let f = DateFormatter(); f.dateFormat = "MMM d"
-        return "\(f.string(from: startDate)) – \(f.string(from: endDate))"
-    }
-    var placesText: String { "\(placeCount) place\(placeCount == 1 ? "" : "s")" }
+    var id: String { itineraryId }
+    var name: String { tripName }
+    var coverURL: URL? { heroImageUrl.flatMap { URL(string: $0) } }
+    var dateRangeText: String { tripDates }
+    var placesText: String { "\(numberOfPlaces) place\(numberOfPlaces == 1 ? "" : "s")" }
 }
 
 

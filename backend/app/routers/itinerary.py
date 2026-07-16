@@ -23,6 +23,11 @@ def generate_itinerary(request: ItineraryRequest, db: Session = Depends(get_db))
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="Too many POIs for your date range. Maximum 5 POIs per day."
         )
+    except POINotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
     
     except POINotOpenDuringTrip as e:
         raise HTTPException(
