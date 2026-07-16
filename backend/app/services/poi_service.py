@@ -15,6 +15,11 @@ def get_poi_by_slug(slug: str, db: Session):
     result = db.execute(statement)
     return result.scalar_one_or_none()
 
+def get_poi_by_id(poi_id, db: Session):
+    statement = select(POI).where(POI.id == poi_id)
+    result = db.execute(statement)
+    return result.scalar_one_or_none()
+
 def get_pois_by_slug(slugs: list[str], db: Session):
     normalized_slugs = [slug.lower().strip() for slug in slugs]
     
