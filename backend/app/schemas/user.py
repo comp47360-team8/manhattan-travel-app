@@ -5,6 +5,7 @@ from pydantic_core import PydanticCustomError
 class UserBase(BaseModel):
     email: EmailStr
     display_name: str
+    accessibility: bool
 
 class UserCreate(UserBase):
     password: str

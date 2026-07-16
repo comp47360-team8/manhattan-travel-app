@@ -7,9 +7,13 @@ class UserLogin(BaseModel):
 class MobileLoginResponse(BaseModel):
     access_token: str
     refresh_token: str
+    display_name: str
+    accessibility: bool
 
 class WebLoginResponse(BaseModel):
     message: str
+    display_name: str
+    accessibility: bool
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str

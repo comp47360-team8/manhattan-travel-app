@@ -40,6 +40,47 @@ def get_crowd_level(id, day, slot, db: Session):
     
     return "Very Busy"
 
+def get_busyness_for_day(id, day: int, db: Session):
+    statement = select(
+        POIBusynessForecast.hour_of_day,
+        POIBusynessForecast.busyness_pct
+        ).where(
+            POIBusynessForecast.poi_id == id,
+            POIBusynessForecast.day_of_week == day
+        ).order_by(
+            POIBusynessForecast.hour_of_day
+        )
+    result = db.execute(statement).all()
+
+    return [
+        {
+            "hour_of_day": row[0],
+            "busyness": row[1]
+            }
+         for row in result
+         ]
+
+def get_busyness_for_trip(poi_ids, trip_days: list[int], db: Session):
+    statement = select(
+        POIBusynessForecast.poi_id,
+        func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct"),
+    ).where(
+        POIBusynessForecast.poi_id.in_(poi_ids),
+        POIBusynessForecast.day_of_week.in_(trip_days)
+    ).group_by(
+        POIBusynessForecast.poi_id
+    ).order_by(
+        func.avg(POIBusynessForecast.busyness_pct)
+        )
+    results = db.execute(statement).all()
+    return [
+    {
+        "poi_id": row.poi_id,
+        "avg_busyness_pct": row.avg_busyness_pct
+    }
+    for row in results
+]
+
 def save_itinerary_for_user(itinerary: ItineraryResponse, db: Session, user: uuid.UUID):
     itinerary_entry = SavedItinerary(
         user_id=user,
