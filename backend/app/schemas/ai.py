@@ -3,7 +3,7 @@ from datetime import date
 from typing import Literal
 
 class ChatRequest(BaseModel):
-    prompt: str
+    prompt: str | list
 
 class ChatIDResponse(BaseModel):
     conversation_id: str
