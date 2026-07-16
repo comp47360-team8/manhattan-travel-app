@@ -27,7 +27,6 @@ class UIAction(BaseModel):
     ]
     field: str
     selection: Literal[
-        "single",
         "multiple"
     ]
     options: list[UIOption]
