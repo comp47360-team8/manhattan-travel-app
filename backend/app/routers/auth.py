@@ -28,11 +28,11 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 @router.post("/login", response_model=WebLoginResponse)
 def login_for_web(data: UserLogin, db: Session = Depends(get_db), response: Response = None):
     try:
-        tokens = authenticate_user(data.email, data.password, db)
+        login_response = authenticate_user(data.email, data.password, db)
 
         response.set_cookie(
             key="access_token",
-            value=tokens["access_token"],
+            value=login_response["access_token"],
             httponly=True,
             secure=True,
             samesite="lax"
@@ -40,14 +40,16 @@ def login_for_web(data: UserLogin, db: Session = Depends(get_db), response: Resp
 
         response.set_cookie(
             key="refresh_token",
-            value=tokens["refresh_token"],
+            value=login_response["refresh_token"],
             httponly=True,
             secure=True,
             samesite="lax"
         )
 
         return WebLoginResponse(
-            message="Login successful."
+            message="Login successful",
+            display_name=login_response["display_name"],
+            accessibility=login_response["accessibility"]
         )
     
     except AuthenticationError as e:
@@ -60,11 +62,13 @@ def login_for_web(data: UserLogin, db: Session = Depends(get_db), response: Resp
 @router.post("/mobile/login", response_model=MobileLoginResponse)
 def login_for_mobile(data: UserLogin, db: Session = Depends(get_db)):
     try:
-        tokens = authenticate_user(data.email, data.password, db)
+        login_response = authenticate_user(data.email, data.password, db)
 
         return MobileLoginResponse(
-            access_token=tokens["access_token"],
-            refresh_token=tokens["refresh_token"]
+            access_token=login_response["access_token"],
+            refresh_token=login_response["refresh_token"],
+            display_name=login_response["display_name"],
+            accessibility=login_response["accessibility"]
         )
     
     except AuthenticationError as e:
