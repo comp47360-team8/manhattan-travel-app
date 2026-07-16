@@ -1,4 +1,5 @@
 // Shared API helpers used by the whole frontend.
+import { repairApiText } from "./text";
 //
 // The backend uses HttpOnly cookies for web authentication.
 // This means every request must include:
@@ -164,5 +165,5 @@ export async function apiFetch<T>(
     throw new Error(getErrorMessage(data, response.status));
   }
 
-  return data as T;
+  return repairApiText(data as T);
 }

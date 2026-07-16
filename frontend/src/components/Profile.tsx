@@ -1,47 +1,25 @@
-import { useState } from "react";
-
 import type { AuthUser, ProfilePreferences } from "../types";
 
 type ProfileProps = {
   user: AuthUser;
   onLogout: () => void;
+  preferences: ProfilePreferences;
+  onPreferencesChange: (preferences: ProfilePreferences) => void;
 };
 
-const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
-
-/*
-  I keep the accessibility preference on this device because the backend
-  does not currently expose a profile-preferences endpoint.
-*/
-function loadPreferences(): ProfilePreferences {
-  const fallback: ProfilePreferences = { stepFreeRoutes: false };
-
-  try {
-    const stored = localStorage.getItem(PROFILE_PREFERENCES_KEY);
-
-    if (!stored) {
-      return fallback;
-    }
-
-    const parsed = JSON.parse(stored) as Partial<ProfilePreferences>;
-    return { stepFreeRoutes: parsed.stepFreeRoutes === true };
-  } catch {
-    return fallback;
-  }
-}
-
-function Profile({ user, onLogout }: ProfileProps) {
-  const [preferences, setPreferences] =
-    useState<ProfilePreferences>(loadPreferences);
-
-  function toggleStepFreeRoutes() {
+function Profile({
+  user,
+  onLogout,
+  preferences,
+  onPreferencesChange,
+}: ProfileProps) {
+  function toggleAccessiblePlaces() {
     const updated = {
       ...preferences,
       stepFreeRoutes: !preferences.stepFreeRoutes,
     };
 
-    setPreferences(updated);
-    localStorage.setItem(PROFILE_PREFERENCES_KEY, JSON.stringify(updated));
+    onPreferencesChange(updated);
   }
 
   return (
@@ -81,10 +59,10 @@ function Profile({ user, onLogout }: ProfileProps) {
               </span>
 
               <div>
-                <h3>I need step-free routes</h3>
+                <h3>I need wheelchair-accessible attractions</h3>
                 <p>
-                  Prioritise accessible attractions and step-free options when
-                  creating an itinerary.
+                  Show confirmed accessible attractions first and warn me
+                  when accessibility information is limited or unavailable.
                 </p>
               </div>
             </div>
@@ -96,18 +74,19 @@ function Profile({ user, onLogout }: ProfileProps) {
                   ? "profile-toggle active"
                   : "profile-toggle"
               }
-              onClick={toggleStepFreeRoutes}
+              onClick={toggleAccessiblePlaces}
               role="switch"
               aria-checked={preferences.stepFreeRoutes}
-              aria-label="Use step-free routes"
+              aria-label="Prioritise wheelchair-accessible attractions"
             >
               <span />
             </button>
           </div>
 
           <p className="profile-preference-note">
-            This preference is saved on this device until a backend profile
-            preference endpoint is available.
+            This preference changes how attractions are prioritised, but it
+            never hides places or prevents you from choosing them. It is saved
+            on this device until a backend profile endpoint is available.
           </p>
         </section>
 

@@ -26,12 +26,8 @@ function CategoryTabs({
       <header className="category-filter-heading">
         <div>
           <p className="section-eyebrow">Filter by interest</p>
-          <h2>Choose what you want to explore</h2>
+          <h2>Browse by category</h2>
         </div>
-
-        <p>
-          Select one category to narrow the attraction list.
-        </p>
       </header>
 
       <div className="category-tabs" role="group" aria-label="Attraction category filters">

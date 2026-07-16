@@ -269,7 +269,7 @@ function AuthForm({
             Display name
             <input
               type="text"
-              placeholder="How should we address you?"
+              placeholder="What should we call you?"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               autoComplete="name"

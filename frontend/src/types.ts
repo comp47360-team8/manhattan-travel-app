@@ -122,6 +122,16 @@ export type BusynessResponse = {
 };
 
 /*
+  GET /api/pois/{slug}/crowd-forecast returns three forecast periods for
+  the selected attraction.
+*/
+export type PoiCrowdForecast = {
+  today: BusynessResponse[];
+  tomorrow: BusynessResponse[];
+  weekend: BusynessResponse[];
+};
+
+/*
   One stop returned by the itinerary generation endpoint.
 
   Python date and time values arrive in the browser as JSON strings.

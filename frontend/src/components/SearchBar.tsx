@@ -11,9 +11,12 @@ function SearchBar({
 }: SearchBarProps) {
   if (variant === "compact") {
     return (
-      <label className="search-field itinerary-search-field">
+      <div className="search-field itinerary-search-field">
         <span className="search-field-icon" aria-hidden="true">
-          ⌕
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="11" cy="11" r="6" />
+            <path d="m16 16 4 4" />
+          </svg>
         </span>
 
         <input
@@ -24,7 +27,18 @@ function SearchBar({
           onChange={(event) => onSearchChange(event.target.value)}
           aria-label="Search attractions for this itinerary"
         />
-      </label>
+
+        {value.trim() && (
+          <button
+            type="button"
+            className="search-clear-button"
+            onClick={() => onSearchChange("")}
+            aria-label="Clear attraction search"
+          >
+            {"\u00d7"}
+          </button>
+        )}
+      </div>
     );
   }
 
@@ -37,9 +51,12 @@ function SearchBar({
       </div>
 
       <div className="explore-search-control">
-        <label className="search-field">
+        <div className="search-field">
           <span className="search-field-icon" aria-hidden="true">
-            ⌕
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="11" cy="11" r="6" />
+              <path d="m16 16 4 4" />
+            </svg>
           </span>
           <input
             className="search"
@@ -49,17 +66,18 @@ function SearchBar({
             onChange={(event) => onSearchChange(event.target.value)}
             aria-label="Search attractions"
           />
-        </label>
 
-        {value.trim() && (
-          <button
-            type="button"
-            className="search-clear-button"
-            onClick={() => onSearchChange("")}
-          >
-            Clear search
-          </button>
-        )}
+          {value.trim() && (
+            <button
+              type="button"
+              className="search-clear-button"
+              onClick={() => onSearchChange("")}
+              aria-label="Clear attraction search"
+            >
+              {"\u00d7"}
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );

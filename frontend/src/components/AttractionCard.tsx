@@ -1,4 +1,8 @@
+import { useEffect, useRef } from "react";
+import poiPhotoFallback from "../assets/poi-photo-fallback.svg";
+
 type AttractionCardProps = {
+  slug: string;
   image: string;
   name: string;
   crowdLevel: string;
@@ -10,6 +14,7 @@ type AttractionCardProps = {
   isSaved: boolean;
   isSaving?: boolean;
   onSaveClick: () => void;
+  onForecastRequest: (slug: string) => void;
   onClick?: () => void;
 };
 
@@ -34,6 +39,7 @@ function getCrowdClass(crowdLevel: string): string {
 }
 
 function AttractionCard({
+  slug,
   image,
   name,
   crowdLevel,
@@ -45,10 +51,40 @@ function AttractionCard({
   isSaved,
   isSaving = false,
   onSaveClick,
+  onForecastRequest,
   onClick,
 }: AttractionCardProps) {
+  const cardRef = useRef<HTMLElement | null>(null);
+
+  /*
+    I request crowd data only when a card approaches the viewport. This keeps
+    Explore responsive without sending a forecast request for all 198 POIs.
+  */
+  useEffect(() => {
+    const card = cardRef.current;
+
+    if (!card || !("IntersectionObserver" in window)) {
+      onForecastRequest(slug);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          onForecastRequest(slug);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "240px" }
+    );
+
+    observer.observe(card);
+
+    return () => observer.disconnect();
+  }, [onForecastRequest, slug]);
+
   return (
-    <article className="attraction-card">
+    <article className="attraction-card" ref={cardRef}>
       <button
         type="button"
         className="attraction-card-main"
@@ -57,11 +93,13 @@ function AttractionCard({
       >
         <div className="attraction-card-image-wrapper">
           <img
-            src={image}
+            src={image || poiPhotoFallback}
             alt=""
             loading="lazy"
             onError={(event) => {
-              event.currentTarget.src = "https://placehold.co/600x380?text=Manhattan";
+              if (!event.currentTarget.src.endsWith("poi-photo-fallback.svg")) {
+                event.currentTarget.src = poiPhotoFallback;
+              }
             }}
           />
 

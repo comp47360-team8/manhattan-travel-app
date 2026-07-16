@@ -1,4 +1,5 @@
 import type { AuthUser } from "../types";
+import offpeakLogo from "../assets/offpeak-logo-blue.png";
 
 type TopNavProps = {
   currentPage: string;
@@ -57,7 +58,7 @@ function TopNav({
           aria-label="Offpeak home"
         >
           <span className="top-nav-brand-mark" aria-hidden="true">
-            O
+            <img src={offpeakLogo} alt="" />
           </span>
 
           <span className="top-nav-brand-name">Offpeak</span>
