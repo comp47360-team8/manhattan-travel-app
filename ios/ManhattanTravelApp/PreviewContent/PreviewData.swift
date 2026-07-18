@@ -76,7 +76,8 @@ func d(_ s: String) -> Date {
 }
 
 let itineraryMock = Itinerary(itineraryId: "1", tripName: "Long Weekend in NYC",
-                              tripDates: "12 Jun, 2026 - 14 Jun, 2026",
+                              startDate: "2026-06-12",
+                              endDate: "2026-06-14",
                               numberOfPlaces: 9,
                               heroImageUrl: "https://lh3.googleusercontent.com/place-photos/AJRVUZPF2V81imOkg032LX5oxjfXLw4k0jnYkXI05TOtJPXDydZNHg1NLArwBoRYODizKEZWd1CH0KUK9jx-LxI9hCOl4jjqG30uSahlxJoCgl0S712GcDNAeAJl_xAH9B47gysmAOz_aWG5dfyVZQ=s4800-w612")
 
