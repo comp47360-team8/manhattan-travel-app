@@ -17,32 +17,56 @@ struct GenerateItineraryRequest: Encodable {
     let tripName: String
     let tripDates: [String]        // ISO "yyyy-MM-dd" — [start, end]
     let pois: [String]             // POI slugs
-    let accessibilty: [String]     // accessibility labels to filter by, [] = no filter
+    let accessibility: [String]    // accessibility labels to filter by, [] = no filter
 }
 
 // MARK: - Response (also re-sent verbatim to `POST /api/itinerary` to save)
 
+/// Mirrors the backend `ItineraryResponse` (generate) and `ItinerarySavedResponse`
+/// (saved-itinerary detail). Fields that only one of the two returns are optional
+/// so a single type decodes both. Keys map from snake_case via the shared decoder.
 struct APIItinerary: Codable {
-    let itineraryId: String
+    let itineraryId: String?       // saved detail only
     let tripName: String
-    let tripDates: String
+    let startDate: String          // "yyyy-MM-dd"
+    let endDate: String
+    let warning: String?
+    let accessibility: [String]?   // generate response only
     let stops: [APIStop]
+
+    // Decodable is synthesized. Custom encode keeps `warning` / `accessibility`
+    // always present when re-posting to POST /api/itinerary — that endpoint
+    // treats them as required (nullable) and 422s if a key is missing.
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encodeIfPresent(itineraryId, forKey: .itineraryId)
+        try c.encode(tripName, forKey: .tripName)
+        try c.encode(startDate, forKey: .startDate)
+        try c.encode(endDate, forKey: .endDate)
+        try c.encode(warning, forKey: .warning)               // null, never omitted
+        try c.encode(accessibility ?? [], forKey: .accessibility)
+        try c.encode(stops, forKey: .stops)
+    }
 }
 
 struct APIStop: Codable {
+    let stopId: String?            // saved detail only
+    let poiId: Int
     let poiName: String
     let slug: String
-    let dayNumber: String          // "Day 1"
-    let dates: String              // "Thursday, 12 Jun"
+    let dayNumber: Int             // 1-based day index
+    let visitDate: String          // "yyyy-MM-dd"
     let slot: String               // "morning" | "afternoon" | "evening"
-    let slotTimes: String
+    let slotStart: String          // "HH:mm:ss"
+    let slotEnd: String
+    let position: Int
     let poiType: String
     let crowdLevel: String         // "Quiet" | "Moderate" | "Busy" | "Very Busy" | "Unavailable"
     let heroImageUrl: String
     let borough: String
     let neighborhood: String
-    let suggestedDuration: String
-    let accessibility: [String]
+    let suggestedDuration: Int     // minutes
+    let accessibility: [String]?
     let flags: [String]
     let busynessForDay: [APIBusyness]
 }
@@ -96,9 +120,9 @@ extension APIStop {
                      type: poiType,
                      neighborhood: neighborhood,
                      heroImageUrl: heroImageUrl,
-                     accessibilityLabels: accessibility.isEmpty ? nil : accessibility),
+                     accessibilityLabels: (accessibility?.isEmpty ?? true) ? nil : accessibility),
             part: DayPart.from(slot: slot),
-            reason: "\(neighborhood) · \(suggestedDuration)",
+            reason: "\(neighborhood) · \(suggestedDuration) min",
             crowd: StopCrowd.from(level: crowdLevel),
             hourly: hourlyCurve
         )
@@ -110,8 +134,8 @@ extension OptimizedItinerary {
     /// preserving the order the backend returns stops in.
     static func from(_ dto: APIItinerary, startDate: Date) -> OptimizedItinerary {
         let cal = Calendar.current
-        var order: [String] = []
-        var buckets: [String: [APIStop]] = [:]
+        var order: [Int] = []
+        var buckets: [Int: [APIStop]] = [:]
         for stop in dto.stops {
             if buckets[stop.dayNumber] == nil {
                 order.append(stop.dayNumber)

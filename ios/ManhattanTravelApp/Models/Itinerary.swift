@@ -8,18 +8,35 @@
 
 import Foundation
 
+/// Mirrors the backend `ItinerarySummaryResponse` — the lightweight list-card
+/// model (no stops). The full itinerary with stops is `APIItinerary`.
 struct Itinerary: Identifiable, Decodable {
     let itineraryId: String
     let tripName: String
-    let tripDates: String        // display string, e.g. "12 Jun, 2026 - 14 Jun, 2026"
+    let startDate: String        // "yyyy-MM-dd"
+    let endDate: String          // "yyyy-MM-dd"
     let numberOfPlaces: Int
     let heroImageUrl: String?
 
     var id: String { itineraryId }
     var name: String { tripName }
     var coverURL: URL? { heroImageUrl.flatMap { URL(string: $0) } }
-    var dateRangeText: String { tripDates }
     var placesText: String { "\(numberOfPlaces) place\(numberOfPlaces == 1 ? "" : "s")" }
+    var dateRangeText: String { Self.formatRange(startDate, endDate) }
+
+    private static func formatRange(_ start: String, _ end: String) -> String {
+        let parser = DateFormatter()
+        parser.locale = Locale(identifier: "en_US_POSIX")
+        parser.dateFormat = "yyyy-MM-dd"
+        let display = DateFormatter()
+        display.locale = Locale(identifier: "en_US_POSIX")
+        display.dateFormat = "d MMM, yyyy"
+        guard let s = parser.date(from: start), let e = parser.date(from: end) else {
+            return start == end ? start : "\(start) - \(end)"
+        }
+        return start == end ? display.string(from: s)
+                            : "\(display.string(from: s)) - \(display.string(from: e))"
+    }
 }
 
 
