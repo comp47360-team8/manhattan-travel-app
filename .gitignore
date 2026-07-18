@@ -247,3 +247,4 @@ ios/**/Pods/
 ## ignore ios doc
 ios/docs/
 ios/ManhattanTravelApp/Features/MyItinerary/NewTrip/NewTripViewModel.swift
+ios/ManhattanTravelApp/Features/MyItinerary/NewTrip/NewChoosePlaceView.swift
