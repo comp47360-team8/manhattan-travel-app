@@ -8,7 +8,7 @@ struct MainTabView: View {
                     Label("Explore", systemImage: "safari")
                 }
 
-            PlaceholderTab(title: "AI", systemImage: "sparkles")
+            AIPlannerView()
                 .tabItem {
                     Label("AI", systemImage: "sparkles")
                 }

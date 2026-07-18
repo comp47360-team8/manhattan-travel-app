@@ -22,8 +22,8 @@ final class ItineraryDetailViewModel: ObservableObject {
         guard result == nil else { return }
         isLoading = true; errorMessage = nil
         do {
-            let dto = try await service.fetchItinerary(id: id)     
-            result = OptimizedItinerary.from(dto, startDate: Self.startDate(from: dto.tripDates))
+            let dto = try await service.fetchItinerary(id: id)
+            result = OptimizedItinerary.from(dto, startDate: Self.startDate(from: dto.startDate))
         } catch is CancellationError {
         } catch {
             errorMessage = error.localizedDescription
@@ -31,12 +31,10 @@ final class ItineraryDetailViewModel: ObservableObject {
         isLoading = false
     }
 
-    private static func startDate(from tripDates: String) -> Date {
-        let first = tripDates.split(separator: "-").first
-            .map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
+    private static func startDate(from isoDate: String) -> Date {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
-        f.dateFormat = "dd MMM, yyyy"
-        return f.date(from: first) ?? .now
+        f.dateFormat = "yyyy-MM-dd"
+        return f.date(from: isoDate) ?? .now
     }
 }

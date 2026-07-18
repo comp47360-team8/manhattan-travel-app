@@ -177,7 +177,6 @@ final class AuthManager: ObservableObject {
 
 }
 
-#if DEBUG
 extension AuthManager {
     /// Preconfigured manager for SwiftUI previews (bypasses the network call).
     static func previewing(loggingIn: Bool = false, registering: Bool = false) -> AuthManager {
@@ -187,4 +186,3 @@ extension AuthManager {
         return manager
     }
 }
-#endif
