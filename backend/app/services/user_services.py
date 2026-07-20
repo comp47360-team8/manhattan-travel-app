@@ -10,6 +10,11 @@ def get_user_by_email(email: str, db: Session):
     result = db.execute(select(User).where(User.email == normalised_email))
     return result.scalar_one_or_none()
 
+def get_user_by_id(user_id, db: Session):
+    statement = select(User).where(
+        User.id == user_id
+    )
+    return db.execute(statement).scalar_one_or_none()
 
 def create_user(user: UserCreate, db: Session):
     existing_user = get_user_by_email(user.email, db)
@@ -23,6 +28,7 @@ def create_user(user: UserCreate, db: Session):
         email=user.email.lower().strip(),
         password_hash=hash_password(user.password),
         display_name=user.display_name.strip(),
+        accessibility=user.accessibility
     )
 
     db.add(new_user)

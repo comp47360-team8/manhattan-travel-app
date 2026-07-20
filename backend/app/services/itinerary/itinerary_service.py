@@ -1,16 +1,21 @@
+import math
 from sqlalchemy.orm import Session
-from datetime import timedelta, time
+from collections import defaultdict
+from datetime import date, timedelta, time
 from app.services.itinerary.assignment.utils import convert_to_days
 from app.services.itinerary.accessibility import filter_accessibility
 from app.services.itinerary.poi_profile import get_poi_profiles
 from app.services.itinerary.assignment.scheduler import assign_days, assign_slots
 from app.schemas.itinerary import ItineraryRequest
-from app.services.poi_service import get_pois_by_slug
-from app.services.poi_service import get_poi_by_slug
-from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day
+from app.services.poi_service import get_pois_by_slug, get_poi_by_slug, get_all_pois, get_poi_by_id
+from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day, get_busyness_for_trip
 from app.services.itinerary.ordering import reorder_pois
 from app.core.constants import MAX_POIS_PER_DAY
 from app.core.exceptions import MaximumPOIsExceeded, POINotFoundError, RepeatingPOI
+from app.models.ai_model import Trip
+from app.models.user_model import User
+from app.repositories.poi_repository import get_excluded_pois
+from app.services.user_services import get_user_by_id
 
 def create_itinerary(request: ItineraryRequest, db):
     pois, full_trip_days = validate_request(request, db)
@@ -103,7 +108,104 @@ def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str
             current_date += timedelta(days=1)
                     
     return final_itinerary
-                    
+
+def auto_generate_itinerary(trip: Trip, conv_id, db: Session, user):
+    user_profile = get_user_by_id(user, db)
+    pois = get_poi_candidates(trip, conv_id, db, user_profile)
+
+    request = ItineraryRequest(
+        trip_name=trip.name,
+        trip_dates=[trip.start_date, trip.end_date],
+        pois=pois,
+        accessibility=["wheelchair", "wheelchair-limited"] if user_profile.accessibility else []
+    )
+
+    itinerary = create_itinerary(request, db)
+    return itinerary
+
+def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
+    pois = get_all_pois(db)
+
+    if user.accessibility:
+        pois = filter_accessibility(pois, ["wheelchair", "wheelchair-limited"])
+
+    poi_slug_map = {poi.slug: poi for poi in pois}
+    poi_id_map = {poi.id: poi for poi in pois}
+
+    trip_days = convert_to_days([trip.start_date, trip.end_date])
+
+    poi_profiles = get_poi_profiles(pois, trip_days)
+
+    open_during_trip_filter = []
+    for poi in poi_profiles:
+        if any(day in poi.opening_days for day in trip_days):
+            open_during_trip_filter.append(poi)
+
+    types_excluded = []
+    for poi in open_during_trip_filter:
+        if poi_slug_map[poi.slug].type not in trip.excluded_types:
+            types_excluded.append(poi)
+    
+    excluded_poi_ids = get_excluded_pois(conv_id, db)
+    excluded_poi_slugs = {get_poi_by_id(poi_id, db).slug for poi_id in excluded_poi_ids}
+    
+    pois_excluded = []
+    for poi in types_excluded:
+        if poi.slug not in excluded_poi_slugs:
+            pois_excluded.append(poi)
+
+    poi_ids = [get_poi_by_slug(poi.slug, db).id for poi in pois_excluded]
+
+    poi_per_day = 3 if trip.pace == "relaxed" else 5
+    target_count = poi_per_day * len(trip_days)
+    max_per_type = math.ceil(target_count * 0.3)
+
+    preferred_types = set(trip.preferences)
+
+    if preferred_types:
+        total_preferred_type = math.ceil(target_count * 0.6)
+        max_per_preferred_type = math.ceil(total_preferred_type / len(preferred_types))
+
+    busyness_per_poi = get_busyness_for_trip(poi_ids, trip_days, db)
+
+    candidates = []
+    type_count = defaultdict(int)
+
+    if preferred_types:
+        available_preferred_pois = [
+            poi_id_map[poi["poi_id"]] for poi in busyness_per_poi 
+            if poi_id_map[poi["poi_id"]].type in preferred_types
+            ]
+    
+        preferred_target = min(total_preferred_type, len(available_preferred_pois))
+
+        for poi in available_preferred_pois:
+            if len(candidates) >= preferred_target:
+                break
+
+            if type_count[poi.type] >= max_per_preferred_type:
+                continue
+        
+            candidates.append(poi.slug)
+            type_count[poi.type] += 1
+    
+    for poi in busyness_per_poi:
+        if len(candidates) >= target_count:
+            break
+
+        poi_obj = poi_id_map[poi["poi_id"]]
+        poi_type = poi_obj.type
+
+        if poi_obj.slug in candidates:
+            continue
+
+        if type_count[poi_type] >= max_per_type:
+            continue
+
+        candidates.append(poi_obj.slug)
+        type_count[poi_type] += 1
+
+    return candidates
                     
 
 

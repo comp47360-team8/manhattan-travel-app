@@ -32,7 +32,9 @@ def authenticate_user(email: str, password: str, db: Session):
 
     return {
         "access_token": access_token, 
-        "refresh_token": refresh_token
+        "refresh_token": refresh_token,
+        "display_name": existing_user.display_name,
+        "accessibility": existing_user.accessibility
         }
 
 def refresh_session(refresh_token: str, db: Session):

@@ -8,13 +8,30 @@
 
 import SwiftUI
 
+/// Identifiable wrapper so the edit flow is presented via `fullScreenCover(item:)`
+/// — avoids the first-tap blank-sheet race that `isPresented:` + optional hits.
+private struct EditSession: Identifiable {
+    let id = UUID()
+    let vm: NewTripViewModel
+}
+
 /// Read-only detail for a saved itinerary. Loads the full itinerary by id
 /// and renders it with the shared `OptimizedItineraryView`.
 struct ItineraryDetailView: View {
     @StateObject private var vm: ItineraryDetailViewModel
+    @EnvironmentObject private var savedStore: SavedPOIStore
     @Environment(\.dismiss) private var dismiss
 
-    init(id: String) {
+    private let id: String
+    /// Called after a successful edit so the list can refresh.
+    var onEdited: () -> Void = {}
+
+    @State private var editSession: EditSession?
+    @State private var didEdit = false
+
+    init(id: String, onEdited: @escaping () -> Void = {}) {
+        self.id = id
+        self.onEdited = onEdited
         _vm = StateObject(wrappedValue: ItineraryDetailViewModel(id: id))
     }
 
@@ -23,7 +40,9 @@ struct ItineraryDetailView: View {
             OffpeakTheme.backGround.ignoresSafeArea()
 
             if let result = vm.result {
-                OptimizedItineraryView(itinerary: result, onBack: { dismiss() })
+                OptimizedItineraryView(itinerary: result,
+                                       onBack: { dismiss() },
+                                       onEdit: { beginEdit(from: result) })
             } else if let error = vm.errorMessage {
                 errorState(error)
             } else {
@@ -33,6 +52,32 @@ struct ItineraryDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .task { await vm.load() }
+        .fullScreenCover(item: $editSession, onDismiss: {
+            if didEdit { onEdited(); dismiss() }   // old itinerary was replaced → pop to list
+            didEdit = false
+        }) { session in
+            NavigationStack {
+                ChoosePlacesView(vm: session.vm, onClose: {
+                    didEdit = true
+                    editSession = nil
+                })
+            }
+            .environmentObject(savedStore)
+        }
+    }
+
+    /// Re-open the Choose Places flow, pre-filled with this itinerary's places,
+    /// dates and name. Saving there replaces this itinerary (see NewTripViewModel).
+    private func beginEdit(from result: OptimizedItinerary) {
+        let model = NewTripViewModel()
+        model.name = result.name
+        model.startDate = result.days.first?.date
+        model.endDate = result.days.last?.date
+        model.selectedPOIs = result.days.flatMap { $0.stops.map(\.poi) }
+        model.editingItineraryId = id
+        model.originalSelectionSlugs = Set(model.selectedPOIs.map(\.slug))
+        model.originalResult = result
+        editSession = EditSession(vm: model)
     }
 
     // MARK: - Shared top bar (loading / error only — the result view has its own)

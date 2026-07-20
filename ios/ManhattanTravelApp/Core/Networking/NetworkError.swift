@@ -41,7 +41,7 @@ enum NetworkError: LocalizedError {
             switch status {
             case 404:       return "Oops! We couldn't find that page."
             case 500...599: return "We're experiencing an unexpected server error."
-            default:        return detail          // 401(密码错误/会话过期)、409、422… 用后端返回的 detail
+            default:        return detail
             }
         case .network:  return "Can't reach the server. Check your connection."
         case .decoding: return "Unexpected response from server."

@@ -1,8 +1,8 @@
-from fastapi import Depends
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, POIBusynessForecast
 from app.domains.scheduling import POIProfile
+from app.models.ai_model import TripExcludedPOI, Trip, Conversation
 
 def load_coordinates(pois: list[POIProfile], db: Session):
     coordinates = {}
@@ -37,3 +37,56 @@ def get_poi_busyness_forecast(pois: list[POI], trip_days: list, db: Session):
 
     result = db.execute(statement).all()
     return result
+
+def get_excluded_pois(conv_id, db: Session):
+    statement = select(TripExcludedPOI.poi_id).join(Trip).join(Conversation).where(
+        Conversation.id == conv_id
+    )
+    return db.execute(statement).scalars().all()
+
+def get_busyness_for_day(id, day: int, db: Session):
+    statement = select(
+        POIBusynessForecast.hour_of_day,
+        POIBusynessForecast.busyness_pct
+        ).where(
+            POIBusynessForecast.poi_id == id,
+            POIBusynessForecast.day_of_week == day
+        ).order_by(
+            POIBusynessForecast.hour_of_day
+        )
+    result = db.execute(statement).all()
+
+    return [
+        {
+            "hour_of_day": row[0],
+            "busyness": row[1]
+            }
+         for row in result
+        ]
+
+def get_hourly_busyness(days, poi_id, db: Session):
+    statement = select(
+        POIBusynessForecast
+    ).where(
+        POIBusynessForecast.poi_id == poi_id,
+        POIBusynessForecast.day_of_week.in_(days)
+    ).order_by(
+        POIBusynessForecast.hour_of_day
+    )
+
+    return db.execute(statement).scalars().all()
+
+def get_weekend_hourly_busyness(poi_id, db: Session):
+    statement = select(
+        POIBusynessForecast.hour_of_day,
+        func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct")
+    ).where(
+        POIBusynessForecast.poi_id == poi_id,
+        POIBusynessForecast.day_of_week.in_([5, 6])
+    ).group_by(
+        POIBusynessForecast.hour_of_day
+    ).order_by(
+        POIBusynessForecast.hour_of_day
+    )
+
+    return db.execute(statement).all()

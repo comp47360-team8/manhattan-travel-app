@@ -1,8 +1,9 @@
+from datetime import date
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, SavedPOI
 from app.core.exceptions import POINotFoundError
-
+from app.repositories.poi_repository import get_hourly_busyness, get_weekend_hourly_busyness
 
 def get_all_pois(db: Session):
     statement = select(POI)
@@ -11,6 +12,11 @@ def get_all_pois(db: Session):
 
 def get_poi_by_slug(slug: str, db: Session):
     statement = select(POI).where(POI.slug == slug.lower().strip())
+    result = db.execute(statement)
+    return result.scalar_one_or_none()
+
+def get_poi_by_id(poi_id, db: Session):
+    statement = select(POI).where(POI.id == poi_id)
     result = db.execute(statement)
     return result.scalar_one_or_none()
 
@@ -84,4 +90,37 @@ def unsave_poi_for_user(slug: str, db: Session, user: int):
     db.delete(saved_poi)
     db.commit()
 
+def get_poi_busyness(poi: POI, db: Session):
+    today = date.today().weekday()
+    tomorrow = (today + 1) % 7
+
+    rows = get_hourly_busyness([today, tomorrow], poi.id, db)
+
+    weekend_busyness = get_weekend_hourly_busyness(poi.id,db)
+
+    crowd_levels = {
+        "today": [],
+        "tomorrow": [],
+        "weekend": []
+    }
+
+    for row in rows:
+        entry = {
+            "hour_of_day": row.hour_of_day,
+            "busyness": row.busyness_pct
+        }
+
+        if row.day_of_week == today:
+            crowd_levels["today"].append(entry)
+
+        elif row.day_of_week == tomorrow:
+            crowd_levels["tomorrow"].append(entry)
+
+    for row in weekend_busyness:
+        crowd_levels["weekend"].append({
+            "hour_of_day": row.hour_of_day,
+            "busyness": row.avg_busyness_pct
+        })
+
+    return crowd_levels
 

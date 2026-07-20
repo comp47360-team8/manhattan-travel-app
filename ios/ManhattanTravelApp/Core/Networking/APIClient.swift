@@ -143,7 +143,16 @@ actor APIClient {
     private static func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        do { return try decoder.decode(type, from: data) } catch { throw NetworkError.decoding }
+        do { return try decoder.decode(type, from: data) }
+        catch {
+            #if DEBUG
+            print("🔴 Decoding \(T.self) failed:", error)
+            if let raw = String(data: data, encoding: .utf8) {
+                print("🔴 Raw response body:\n", raw.prefix(3000))
+            }
+            #endif
+            throw NetworkError.decoding
+        }
     }
 
     private static func asHTTP(_ response: URLResponse) throws -> HTTPURLResponse {
