@@ -1,8 +1,8 @@
 // Shared TypeScript types used across the web frontend.
 //
-// The itinerary and POI types mirror the current FastAPI schemas.
-// The authentication types are intentionally flexible because some auth
-// endpoints currently return only a success message rather than full user data.
+// The itinerary, POI and authentication types mirror the current FastAPI
+// schemas. Optional compatibility fields allow older API responses to remain
+// readable while the web and mobile authentication responses differ.
 
 /* =========================================================
    Authentication and profile types
@@ -11,7 +11,7 @@
 export type AuthMode = "login" | "register";
 
 /*
-  Basic user information stored by the frontend after login or registration.
+  Basic display information stored by the frontend after authentication.
 
   The backend currently authenticates web users using HttpOnly cookies.
   The cookie itself cannot be read by JavaScript, which is intentional.
@@ -19,26 +19,25 @@ export type AuthMode = "login" | "register";
 export type AuthUser = {
   email: string;
   displayName: string;
+  accessibility: boolean;
 };
 
 /*
-  Possible successful authentication response.
-
-  Some backend responses may return only:
-  { message: "Login successful." }
-
-  The optional fields allow the frontend to use additional user information
-  later without breaking the current implementation.
+  Successful authentication and registration responses currently use slightly
+  different shapes. These optional fields keep one small adapter at the
+  frontend boundary instead of spreading response-shape checks through the UI.
 */
 export type AuthResponse = {
   message?: string;
   email?: string;
   display_name?: string;
   username?: string;
+  accessibility?: boolean;
   user?: {
     email?: string;
     display_name?: string;
     username?: string;
+    accessibility?: boolean;
   };
 };
 
@@ -122,6 +121,16 @@ export type BusynessResponse = {
 };
 
 /*
+  GET /api/pois/{slug}/crowd-forecast returns three forecast periods for
+  the selected attraction.
+*/
+export type PoiCrowdForecast = {
+  today: BusynessResponse[];
+  tomorrow: BusynessResponse[];
+  weekend: BusynessResponse[];
+};
+
+/*
   One stop returned by the itinerary generation endpoint.
 
   Python date and time values arrive in the browser as JSON strings.
@@ -145,6 +154,7 @@ export type ItineraryStop = {
   accessibility: unknown[];
   flags: string[];
   busyness_for_day: BusynessResponse[];
+  why_this_time?: string | null;
 };
 
 /*
@@ -212,6 +222,32 @@ export type SavedItinerary = {
 */
 export type AddStopRequest = {
   slug: string;
+};
+
+/* =========================================================
+   AI Planner types
+========================================================= */
+
+export type AiConversationResponse = {
+  conversation_id: string;
+};
+
+export type AiUiOption = {
+  label: string;
+  value: string;
+};
+
+export type AiUiAction = {
+  component: "poi_type_selector";
+  field: string;
+  selection: "multiple";
+  options: AiUiOption[];
+};
+
+export type AiChatResponse = {
+  message: string;
+  ui_action: AiUiAction | null;
+  itinerary: ItineraryResponse | null;
 };
 
 /* =========================================================

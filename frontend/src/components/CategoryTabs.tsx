@@ -23,7 +23,14 @@ function CategoryTabs({
 }: CategoryTabsProps) {
   return (
     <section className="category-section" aria-label="Attraction categories">
-      <div className="category-tabs" role="list">
+      <header className="category-filter-heading">
+        <div>
+          <p className="section-eyebrow">Filter by interest</p>
+          <h2>Browse by category</h2>
+        </div>
+      </header>
+
+      <div className="category-tabs" role="group" aria-label="Attraction category filters">
         {categories.map((category) => {
           const isActive = selectedCategory === category.id;
 
@@ -35,7 +42,7 @@ function CategoryTabs({
               onClick={() => onCategoryChange(category.id)}
               aria-pressed={isActive}
             >
-              <span>{category.label}</span>
+              <span className="category-label">{category.label}</span>
               <span className="category-count" aria-label={`${categoryCounts[category.id] ?? 0} places`}>
                 {categoryCounts[category.id] ?? 0}
               </span>

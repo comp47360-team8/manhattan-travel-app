@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 420 320 300" preserveAspectRatio="none" fill="none">
+  <title>Decorative Manhattan skyline outline</title>
+  <g stroke="#0B3547" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 706H308" stroke-width="2" opacity=".82"/>
+    <path d="M22 706V596H76V706" stroke-width="2"/>
+    <path d="M30 596V568H68V596M40 568V542H58V568" stroke-width="2"/>
+    <path d="M49 542V514" stroke-width="2"/>
+    <path d="M29 620H69M29 644H69M29 668H69" stroke-width="1.4" opacity=".72"/>
+    <path d="M38 610V694M50 610V694M62 610V694" stroke-width="1.1" opacity=".58"/>
+
+    <path d="M76 706V626H112V706" stroke-width="2"/>
+    <path d="M83 626V604H105V626M87 604V588H101V604" stroke-width="1.8"/>
+    <path d="M84 648H104M84 670H104" stroke-width="1.2" opacity=".64"/>
+
+    <path d="M112 706V574H158V706" stroke-width="2"/>
+    <path d="M119 574V548H151V574M125 548V522H145V548" stroke-width="2"/>
+    <path d="M135 522V472" stroke-width="2"/>
+    <path d="M120 598H150M120 622H150M120 646H150M120 670H150" stroke-width="1.25" opacity=".68"/>
+    <path d="M127 586V694M138 586V694M149 586V694" stroke-width="1" opacity=".54"/>
+
+    <path d="M158 706V612H190V706" stroke-width="2"/>
+    <path d="M164 612V592H184V612" stroke-width="1.8"/>
+    <path d="M166 634H182M166 656H182M166 678H182" stroke-width="1.1" opacity=".62"/>
+
+    <path d="M190 706V536H240V706" stroke-width="2.2"/>
+    <path d="M198 536V508H232V536M204 508V480H226V508" stroke-width="2"/>
+    <path d="M215 480V432" stroke-width="2"/>
+    <path d="M199 560H231M199 584H231M199 608H231M199 632H231M199 656H231M199 680H231" stroke-width="1.25" opacity=".7"/>
+    <path d="M207 548V694M217 548V694M227 548V694" stroke-width="1" opacity=".54"/>
+
+    <path d="M240 706V622H270V706" stroke-width="2"/>
+    <path d="M246 622V600H264V622" stroke-width="1.8"/>
+    <path d="M247 646H263M247 670H263" stroke-width="1.1" opacity=".62"/>
+
+    <path d="M270 706V582H302V706" stroke-width="2"/>
+    <path d="M278 582V554H294V582M282 554V534H290V554" stroke-width="1.8"/>
+    <path d="M278 606H294M278 630H294M278 654H294M278 678H294" stroke-width="1.1" opacity=".65"/>
+
+    <path d="M4 706C70 681 126 688 176 696C224 703 266 692 316 670" stroke="#B7954F" stroke-width="2.5" opacity=".72"/>
+    <path d="M14 692C76 670 124 674 176 684C224 694 270 681 306 658" stroke="#B7954F" stroke-width="1.2" opacity=".5"/>
+  </g>
+</svg>

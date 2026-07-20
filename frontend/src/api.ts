@@ -1,4 +1,5 @@
 // Shared API helpers used by the whole frontend.
+import { repairApiText } from "./text";
 //
 // The backend uses HttpOnly cookies for web authentication.
 // This means every request must include:
@@ -11,6 +12,8 @@ type BackendErrorData = {
   detail?: string | Array<{ msg?: string }>;
   message?: string;
 };
+
+const API_TIMEOUT_MS = 15_000;
 
 /*
   Converts backend errors into messages that make sense to a normal user.
@@ -146,17 +149,33 @@ export async function apiFetch<T>(
       ...options,
       headers,
       credentials: "include",
+      /*
+        A stopped or unresponsive local backend previously left buttons in a
+        permanent loading state. Every normal request now fails clearly after
+        15 seconds. A caller-provided signal is still respected when present.
+      */
+      signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
     });
- } catch (error) {
-  console.error(`Could not connect to ${url}:`, error);
+  } catch (error) {
+    console.error(`Could not connect to ${url}:`, error);
 
-  throw new Error(
-    "Could not connect to the server. Check that the backend is running.",
-    {
-      cause: error,
+    if (
+      error instanceof DOMException &&
+      (error.name === "AbortError" || error.name === "TimeoutError")
+    ) {
+      throw new Error(
+        "The server took too long to respond. Check that the backend is running, then try again.",
+        { cause: error }
+      );
     }
-  );
-}
+
+    throw new Error(
+      "Could not connect to the server. Check that the backend is running.",
+      {
+        cause: error,
+      }
+    );
+  }
 
   const data = await readResponseBody(response);
 
@@ -164,5 +183,5 @@ export async function apiFetch<T>(
     throw new Error(getErrorMessage(data, response.status));
   }
 
-  return data as T;
+  return repairApiText(data as T);
 }

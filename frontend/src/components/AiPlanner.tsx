@@ -1,4 +1,16 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+import { apiFetch } from "../api";
+import { groupStopsByDay } from "../itinerary";
+import type {
+  AiChatResponse,
+  AiConversationResponse,
+  AiUiAction,
+  ItineraryResponse,
+  Poi,
+  SavedItinerary,
+} from "../types";
+import BusynessChart from "./BusynessChart";
 
 const PROMPT_SUGGESTIONS = [
   "Plan a low-crowd day with museums and architecture.",
@@ -6,23 +18,264 @@ const PROMPT_SUGGESTIONS = [
   "Plan a relaxed local day with markets and neighbourhood walks.",
 ];
 
-/*
-  The AI backend is not available yet, so I keep this page honest and show a
-  complete frontend state without pretending that a plan was generated.
-*/
-function AIPlanner() {
-  const [prompt, setPrompt] = useState("");
-  const [message, setMessage] = useState("");
+const OPENING_MESSAGE =
+  "Are you starting a new trip, or refining an existing itinerary in My Itinerary?";
 
-  function submitPlannerRequest() {
-    if (prompt.trim() === "") {
-      setMessage("Describe the kind of Manhattan trip you would like to plan.");
+type PlannerMessage = {
+  id: number;
+  role: "user" | "assistant";
+  text: string;
+};
+
+type AIPlannerProps = {
+  pois: Poi[];
+  isAuthenticated: boolean;
+  onLoginRequired: () => void;
+  onItineraryGenerated: (itinerary: ItineraryResponse) => void;
+};
+
+function formatDate(value: string): string {
+  const date = new Date(`${value}T12:00:00`);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(date);
+}
+
+function formatTime(value: string): string {
+  const [hourText, minuteText] = value.split(":");
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-GB", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(2026, 0, 1, hour, minute));
+}
+
+function isAuthenticationError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    error.message.toLowerCase().includes("log in")
+  );
+}
+
+function AIPlanner({
+  pois,
+  isAuthenticated,
+  onLoginRequired,
+  onItineraryGenerated,
+}: AIPlannerProps) {
+  const [prompt, setPrompt] = useState("");
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<PlannerMessage[]>([
+    {
+      id: 1,
+      role: "assistant",
+      text: OPENING_MESSAGE,
+    },
+  ]);
+  const [uiAction, setUiAction] = useState<AiUiAction | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [itinerary, setItinerary] = useState<ItineraryResponse | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const itineraryDays = useMemo(
+    () => (itinerary ? groupStopsByDay(itinerary.stops) : []),
+    [itinerary]
+  );
+
+  function requireLogin(): boolean {
+    if (isAuthenticated) {
+      return false;
+    }
+
+    setErrorMessage("Please log in to use the AI Planner.");
+    onLoginRequired();
+    return true;
+  }
+
+  async function getConversationId(): Promise<string> {
+    if (conversationId) {
+      return conversationId;
+    }
+
+    const created = await apiFetch<AiConversationResponse>(
+      "/api/ai/conversations",
+      { method: "POST" }
+    );
+
+    setConversationId(created.conversation_id);
+    return created.conversation_id;
+  }
+
+  async function sendPlannerMessage(
+    value: string | string[],
+    displayText: string
+  ) {
+    if (requireLogin()) {
       return;
     }
 
-    setMessage(
-      "AI itinerary generation is currently in development. Your request has not been sent because the Gemini backend endpoint is not available yet."
+    setErrorMessage("");
+    setSuccessMessage("");
+    setIsSending(true);
+    setMessages((current) => [
+      ...current,
+      { id: Date.now(), role: "user", text: displayText },
+    ]);
+
+    try {
+      const activeConversationId = await getConversationId();
+
+      /*
+        The backend route currently contains the spelling "converstions".
+        I use that exact source route until the backend renames it.
+      */
+      const response = await apiFetch<AiChatResponse>(
+        `/api/ai/converstions/${activeConversationId}/messages`,
+        {
+          method: "POST",
+          body: JSON.stringify({ prompt: value }),
+          // Gemini may need longer than a standard API request to reply.
+          signal: AbortSignal.timeout(90_000),
+        }
+      );
+
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          role: "assistant",
+          text: response.message,
+        },
+      ]);
+      setUiAction(response.ui_action);
+      setSelectedOptions([]);
+
+      if (response.itinerary) {
+        setItinerary(response.itinerary);
+        setSuccessMessage(
+          "Your itinerary is ready. Review it here, then open it in My Itinerary."
+        );
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "The AI Planner could not complete that request.";
+
+      if (message === "Please log in to continue.") {
+        onLoginRequired();
+      }
+
+      setErrorMessage(
+        message.includes("server could not complete")
+          ? "The AI service is temporarily unavailable. Check that the backend Gemini API key is configured, then try again."
+          : message
+      );
+    } finally {
+      setIsSending(false);
+    }
+  }
+
+  async function submitPlannerRequest() {
+    const trimmedPrompt = prompt.trim();
+
+    if (!trimmedPrompt) {
+      setErrorMessage(
+        "Describe the kind of Manhattan trip you would like to plan."
+      );
+      return;
+    }
+
+    setPrompt("");
+    await sendPlannerMessage(trimmedPrompt, trimmedPrompt);
+  }
+
+  function toggleOption(value: string) {
+    setSelectedOptions((current) =>
+      current.includes(value)
+        ? current.filter((option) => option !== value)
+        : [...current, value]
     );
+  }
+
+  async function submitOptions() {
+    if (selectedOptions.length === 0) {
+      setErrorMessage("Select at least one option before continuing.");
+      return;
+    }
+
+    const labels =
+      uiAction?.options
+        .filter((option) => selectedOptions.includes(option.value))
+        .map((option) => option.label) ?? selectedOptions;
+
+    await sendPlannerMessage(selectedOptions, labels.join(", "));
+  }
+
+  function startNewConversation() {
+    setConversationId(null);
+    setPrompt("");
+    setMessages([
+      {
+        id: Date.now(),
+        role: "assistant",
+        text: OPENING_MESSAGE,
+      },
+    ]);
+    setUiAction(null);
+    setSelectedOptions([]);
+    setItinerary(null);
+    setErrorMessage("");
+    setSuccessMessage("");
+  }
+
+  async function saveItinerary() {
+    if (!itinerary || requireLogin()) {
+      return;
+    }
+
+    setErrorMessage("");
+    setSuccessMessage("");
+    setIsSaving(true);
+
+    try {
+      const saved = await apiFetch<SavedItinerary>("/api/itinerary", {
+        method: "POST",
+        body: JSON.stringify(itinerary),
+      });
+
+      setSuccessMessage(`Itinerary "${saved.trip_name}" was saved.`);
+    } catch (error) {
+      if (isAuthenticationError(error)) {
+        setErrorMessage("Please log in to save this itinerary.");
+        onLoginRequired();
+        return;
+      }
+
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "The itinerary could not be saved."
+      );
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -39,33 +292,91 @@ function AIPlanner() {
 
         <div className="ai-planner-badge" role="status">
           <span aria-hidden="true" />
-          Backend integration in development
+          Connected to the Offpeak AI service
         </div>
       </section>
 
-      <section className="ai-planner-card">
+      <section className="ai-planner-card ai-chat-card">
         <div className="ai-planner-card-heading">
           <div>
-            <p className="section-eyebrow">Trip request</p>
-            <h2>What would you like to experience?</h2>
+            <p className="section-eyebrow">Conversation</p>
+            <h2>Build your trip with Offpeak</h2>
           </div>
-          <span>{prompt.length}/600</span>
+
+          {conversationId && (
+            <button
+              type="button"
+              className="ai-new-conversation"
+              onClick={startNewConversation}
+              disabled={isSending}
+            >
+              Start again
+            </button>
+          )}
         </div>
 
+        <div className="ai-chat-history" aria-live="polite">
+          {messages.map((message) => (
+            <article
+              key={message.id}
+              className={`ai-chat-message ${message.role}`}
+            >
+              <strong>{message.role === "assistant" ? "Offpeak" : "You"}</strong>
+              <p>{message.text}</p>
+            </article>
+          ))}
+
+          {isSending && (
+            <article className="ai-chat-message assistant">
+              <strong>Offpeak</strong>
+              <p>Planning your next step...</p>
+            </article>
+          )}
+        </div>
+
+        {uiAction?.component === "poi_type_selector" && (
+          <fieldset className="ai-option-selector">
+            <legend>Select all that interest you</legend>
+
+            <div>
+              {uiAction.options.map((option) => (
+                <label key={option.value}>
+                  <input
+                    type="checkbox"
+                    checked={selectedOptions.includes(option.value)}
+                    onChange={() => toggleOption(option.value)}
+                    disabled={isSending}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => void submitOptions()}
+              disabled={isSending || selectedOptions.length === 0}
+            >
+              Continue with these interests
+            </button>
+          </fieldset>
+        )}
+
         <label htmlFor="ai-planner-prompt" className="sr-only">
-          Describe your ideal Manhattan trip
+          Reply to the AI trip planner
         </label>
 
         <textarea
           id="ai-planner-prompt"
-          rows={8}
+          rows={6}
           maxLength={600}
-          placeholder="Example: Plan a quiet two-day trip focused on museums, parks, accessible attractions and affordable food."
+          placeholder="Tell Offpeak your dates, pace, interests or anything you want to avoid."
           value={prompt}
           onChange={(event) => {
             setPrompt(event.target.value);
-            setMessage("");
+            setErrorMessage("");
           }}
+          disabled={isSending}
         />
 
         <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
@@ -75,8 +386,9 @@ function AIPlanner() {
               type="button"
               onClick={() => {
                 setPrompt(suggestion);
-                setMessage("");
+                setErrorMessage("");
               }}
+              disabled={isSending}
             >
               {suggestion}
             </button>
@@ -86,25 +398,127 @@ function AIPlanner() {
         <button
           type="button"
           className="ai-planner-submit"
-          onClick={submitPlannerRequest}
+          onClick={() => void submitPlannerRequest()}
+          disabled={isSending}
         >
-          Generate with AI
+          {isSending ? "Sending..." : "Send to AI Planner"}
         </button>
 
-        {message && <p className="ai-planner-message">{message}</p>}
+        <span className="ai-character-count">{prompt.length}/600</span>
+
+        {errorMessage && (
+          <p className="error-message" role="alert">
+            {errorMessage}
+          </p>
+        )}
+
+        {successMessage && (
+          <p className="success-message" role="status">
+            {successMessage}
+          </p>
+        )}
       </section>
 
-      <section className="ai-planner-status">
-        <div className="ai-planner-status-icon" aria-hidden="true">✦</div>
-        <div>
-          <h2>What is ready</h2>
-          <p>
-            The complete web interface, prompt validation and responsive design
-            are ready. The remaining dependency is the backend Gemini endpoint
-            and its confirmed request and response schema.
-          </p>
-        </div>
-      </section>
+      {itinerary && (
+        <section className="ai-itinerary-result">
+          <header>
+            <div>
+              <p className="section-eyebrow">Generated itinerary</p>
+              <h2>{itinerary.trip_name}</h2>
+              <p>
+                {itinerary.start_date} to {itinerary.end_date}
+              </p>
+            </div>
+
+            <div className="ai-itinerary-actions">
+              <button
+                type="button"
+                onClick={() => onItineraryGenerated(itinerary)}
+                disabled={itinerary.stops.length === 0}
+              >
+                Open in My Itinerary
+              </button>
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => void saveItinerary()}
+                disabled={isSaving || itinerary.stops.length === 0}
+              >
+                {isSaving ? "Saving..." : "Save itinerary"}
+              </button>
+            </div>
+          </header>
+
+          {itinerary.warning?.trim() && (
+            <p className="fallback-message">
+              <strong>Scheduling note:</strong> {itinerary.warning}
+            </p>
+          )}
+
+          {itinerary.stops.length === 0 ? (
+            <p className="fallback-message">
+              The AI completed the request but did not return any scheduled
+              stops. Add more trip details and ask it to try again.
+            </p>
+          ) : (
+            <div className="ai-itinerary-days">
+              {itineraryDays.map((day) => (
+                <section key={`${day.dayNumber}-${day.visitDate}`}>
+                  <h3>
+                    Day {day.dayNumber} · {formatDate(day.visitDate)}
+                  </h3>
+
+                  {day.stops.map((stop) => {
+                    const poi = pois.find((item) => item.slug === stop.slug);
+                    const whyThisTime =
+                      stop.why_this_time?.trim() ||
+                      poi?.why_this_time?.trim();
+
+                    return (
+                      <article
+                        key={`${stop.slug}-${stop.position}`}
+                        className="ai-itinerary-stop"
+                      >
+                        <div className="ai-itinerary-stop-heading">
+                          <div>
+                            <span>
+                              {formatTime(stop.slot_start)}–
+                              {formatTime(stop.slot_end)}
+                            </span>
+                            <h4>{stop.poi_name}</h4>
+                            <p>
+                              {stop.neighborhood}, {stop.borough}
+                            </p>
+                          </div>
+                          <strong>{stop.crowd_level} crowds</strong>
+                        </div>
+
+                        <p>
+                          <strong>Why this time:</strong>{" "}
+                          {whyThisTime ||
+                            "A detailed recommendation explanation is not available for this stop."}
+                        </p>
+
+                        {stop.busyness_for_day?.length > 0 ? (
+                          <BusynessChart
+                            hours={stop.busyness_for_day}
+                            poiName={stop.poi_name}
+                          />
+                        ) : (
+                          <p className="fallback-message">
+                            Hourly crowd data is not available for this stop.
+                          </p>
+                        )}
+                      </article>
+                    );
+                  })}
+                </section>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
     </main>
   );
 }

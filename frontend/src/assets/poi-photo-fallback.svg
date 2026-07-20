@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
+  <title id="title">Offpeak photo unavailable</title>
+  <desc id="description">A subtle Manhattan skyline illustration used when an attraction photo cannot be loaded.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b3448"/>
+      <stop offset="1" stop-color="#315a61"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4ead8" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#d6bd82" stop-opacity=".7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#background)"/>
+  <circle cx="960" cy="150" r="92" fill="#d6bd82" opacity=".2"/>
+  <path d="M0 565h85V430h55V565h38V350h68v215h42V462h62v103h48V290h72v275h44V395h58v170h48V245h82v320h45V330h68v235h48V415h56v150h40V370h70v195h91V760H0z" fill="url(#ground)" opacity=".42"/>
+  <path d="M0 585h1200" stroke="#f4ead8" stroke-width="4" opacity=".55"/>
+  <g fill="#fff" text-anchor="middle">
+    <text x="600" y="640" font-family="Arial, sans-serif" font-size="38" font-weight="700">Photo unavailable</text>
+    <text x="600" y="690" font-family="Arial, sans-serif" font-size="22" opacity=".78">Explore the attraction details below</text>
+  </g>
+</svg>

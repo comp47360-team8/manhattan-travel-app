@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import "./App.css";
 
 import AIPlanner from "./components/AiPlanner";
 import AttractionCard from "./components/AttractionCard";
 import AuthForm from "./components/AuthForm";
+import BusynessChart from "./components/BusynessChart";
 import CategoryTabs from "./components/CategoryTabs";
 import MyItinerary from "./components/MyItinerary";
 import Profile from "./components/Profile";
 import SavedItineraries from "./components/SavedItineraries";
 import SearchBar from "./components/SearchBar";
 import TopNav from "./components/TopNav";
+import poiPhotoFallback from "./assets/poi-photo-fallback.svg";
 
 import { apiFetch } from "./api";
 
@@ -18,7 +20,10 @@ import type {
   ApiMessageResponse,
   AuthMode,
   AuthUser,
+  ItineraryResponse,
+  PoiCrowdForecast,
   Poi,
+  ProfilePreferences,
 } from "./types";
 
 type Page =
@@ -29,6 +34,11 @@ type Page =
   | "profile";
 
 const USER_STORAGE_KEY = "offpeak_user";
+const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
+
+type ForecastPeriod = "today" | "tomorrow" | "weekend";
+
+type AccessibilitySupport = "confirmed" | "limited" | "unknown";
 
 /*
   Reads the locally stored display information for the logged-in user.
@@ -57,11 +67,62 @@ function loadStoredUser(): AuthUser | null {
     return {
       email: parsedUser.email,
       displayName: parsedUser.displayName,
+      accessibility: parsedUser.accessibility === true,
     };
   } catch (error) {
     console.error("Could not read the stored user:", error);
     localStorage.removeItem(USER_STORAGE_KEY);
     return null;
+  }
+}
+
+/*
+  The preference is kept on this device until the backend exposes a profile
+  preference endpoint. App owns it so Explore, Profile and My Itinerary all
+  use the same value immediately.
+*/
+function getProfilePreferencesKey(user: AuthUser): string {
+  return `${PROFILE_PREFERENCES_KEY}:${user.email.trim().toLowerCase()}`;
+}
+
+function loadProfilePreferences(
+  user: AuthUser | null
+): ProfilePreferences {
+  const fallback: ProfilePreferences = {
+    stepFreeRoutes: user?.accessibility === true,
+  };
+
+  if (!user) {
+    return fallback;
+  }
+
+  try {
+    const accountKey = getProfilePreferencesKey(user);
+    const stored =
+      localStorage.getItem(accountKey) ??
+      localStorage.getItem(PROFILE_PREFERENCES_KEY);
+
+    if (!stored) {
+      return fallback;
+    }
+
+    const parsed = JSON.parse(stored) as Partial<ProfilePreferences>;
+    const preferences = {
+      stepFreeRoutes: parsed.stepFreeRoutes === true,
+    };
+
+    /*
+      I migrate the earlier device-wide value to this account so existing
+      users keep their selection without exposing it to other accounts.
+    */
+    if (!localStorage.getItem(accountKey)) {
+      localStorage.setItem(accountKey, JSON.stringify(preferences));
+      localStorage.removeItem(PROFILE_PREFERENCES_KEY);
+    }
+
+    return preferences;
+  } catch {
+    return fallback;
   }
 }
 
@@ -101,15 +162,27 @@ function isWheelchairAccessible(poi: Poi): boolean {
   );
 }
 
-/*
-  Creates readable crowd wording without displaying technical placeholders.
-*/
-function getCrowdLabel(poi: Poi): string {
-  if (poi.current_busyness?.trim()) {
-    return poi.current_busyness;
+function getAccessibilitySupport(poi: Poi): AccessibilitySupport {
+  const labels = (poi.accessibility_labels ?? []).map((label) =>
+    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
+  );
+
+  if (
+    labels.some(
+      (label) =>
+        label === "wheelchair" ||
+        label === "wheelchair_yes" ||
+        label.includes("step_free")
+    )
+  ) {
+    return "confirmed";
   }
 
-  return "Crowd update pending";
+  if (labels.some((label) => label.includes("wheelchair_limited"))) {
+    return "limited";
+  }
+
+  return "unknown";
 }
 
 /*
@@ -124,6 +197,135 @@ function getBestTimeLabel(poi: Poi): string {
   return "Recommendation pending";
 }
 
+function getNewYorkHour(): number {
+  const hour = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    hour: "numeric",
+    hourCycle: "h23",
+  }).format(new Date());
+
+  return Number(hour);
+}
+
+function getCardCrowdSummary(
+  forecast: PoiCrowdForecast
+): string {
+  if (forecast.today.length === 0) {
+    return "Forecast unavailable";
+  }
+
+  const currentHour = getNewYorkHour();
+  const currentForecast = forecast.today.find(
+    (entry) => entry.hour_of_day === currentHour
+  );
+  const selectedForecast =
+    currentForecast ??
+    forecast.today.reduce((quietest, entry) =>
+      entry.busyness < quietest.busyness ? entry : quietest
+    );
+  const percentage = Math.round(selectedForecast.busyness);
+  const level =
+    percentage <= 35
+      ? "Quiet"
+      : percentage <= 65
+        ? "Moderate"
+        : "Busy";
+
+  return currentForecast
+    ? `${level} now · ${percentage}%`
+    : `${level} period · ${percentage}%`;
+}
+
+/*
+  I show up to six real readings spread across the available daytime forecast.
+  Some periods contain fewer readings, so I preserve the honest API coverage
+  instead of inventing percentages just to fill every chart position.
+*/
+function selectForecastSlots(
+  hours: PoiCrowdForecast[ForecastPeriod]
+): PoiCrowdForecast[ForecastPeriod] {
+  const daytimeHours = hours.filter(
+    (entry) => entry.hour_of_day >= 10 && entry.hour_of_day <= 20
+  );
+
+  if (daytimeHours.length <= 6) {
+    return daytimeHours;
+  }
+
+  const finalIndex = daytimeHours.length - 1;
+  const selectedIndexes = Array.from({ length: 6 }, (_, index) =>
+    Math.round((index * finalIndex) / 5)
+  );
+
+  return selectedIndexes.map((index) => daytimeHours[index]);
+}
+
+const openingHourDays = [
+  ["mon", "Monday"],
+  ["tue", "Tuesday"],
+  ["wed", "Wednesday"],
+  ["thu", "Thursday"],
+  ["fri", "Friday"],
+  ["sat", "Saturday"],
+  ["sun", "Sunday"],
+] as const;
+
+function formatOpeningTime(value: string): string {
+  const [hourText, minute = "00"] = value.split(":");
+  const hour = Number(hourText);
+
+  if (!Number.isInteger(hour) || hour < 0 || hour > 23) {
+    return value;
+  }
+
+  const displayHour = hour % 12 || 12;
+  const displayMinute = minute === "00" ? "" : `:${minute}`;
+  return `${displayHour}${displayMinute} ${hour >= 12 ? "PM" : "AM"}`;
+}
+
+/*
+  I format the structured hours returned by the API instead of printing the
+  legacy text field, which can contain damaged dash characters.
+*/
+function formatOpeningHours(poi: Poi): string[] {
+  if (poi.opening_hours) {
+    const lines = openingHourDays.map(([key, label]) => {
+      const periods = poi.opening_hours?.[key];
+
+      if (!Array.isArray(periods) || periods.length === 0) {
+        return `${label}: Closed`;
+      }
+
+      const formattedPeriods = periods
+        .filter(
+          (period): period is [string, string] =>
+            Array.isArray(period) &&
+            typeof period[0] === "string" &&
+            typeof period[1] === "string"
+        )
+        .map(
+          ([start, end]) =>
+            `${formatOpeningTime(start)}–${formatOpeningTime(end)}`
+        );
+
+      return `${label}: ${formattedPeriods.join(", ") || "Closed"}`;
+    });
+
+    return lines;
+  }
+
+  if (poi.opening_hours_text?.trim()) {
+    return poi.opening_hours_text.split(";").map((line) =>
+      line
+        .trim()
+        .replace(/[^\x20-\x7E]+/g, "–")
+        .replace(/–+/g, "–")
+    );
+  }
+
+  return ["Not currently available"];
+}
+
 function App() {
   /*
     Authentication state.
@@ -134,11 +336,15 @@ function App() {
   const [user, setUser] = useState<AuthUser | null>(loadStoredUser);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("login");
+  const [profilePreferences, setProfilePreferences] =
+    useState<ProfilePreferences>(() => loadProfilePreferences(user));
 
   /*
     Navigation state.
   */
   const [currentPage, setCurrentPage] = useState<Page>("explore");
+  const [aiGeneratedItinerary, setAiGeneratedItinerary] =
+    useState<ItineraryResponse | null>(null);
 
   /*
     POI API state.
@@ -147,6 +353,57 @@ function App() {
   const [selectedPoi, setSelectedPoi] = useState<Poi | null>(null);
   const [isLoadingPois, setIsLoadingPois] = useState(true);
   const [poiError, setPoiError] = useState("");
+  const [selectedPoiForecast, setSelectedPoiForecast] =
+    useState<PoiCrowdForecast | null>(null);
+  const [isLoadingForecasts, setIsLoadingForecasts] = useState(false);
+  const [forecastError, setForecastError] = useState("");
+  const [forecastPeriod, setForecastPeriod] =
+    useState<ForecastPeriod>("today");
+  const selectedPoiSlug = selectedPoi?.slug;
+  const [crowdSummaryBySlug, setCrowdSummaryBySlug] = useState<
+    Record<string, string>
+  >({});
+  const crowdSummaryCacheRef = useRef<Record<string, string>>({});
+  const loadingCrowdSlugsRef = useRef(new Set<string>());
+
+  /*
+    Card forecasts are loaded lazily and cached by slug. Duplicate cards in
+    Featured and All Attractions therefore share one backend request.
+  */
+  const requestCardCrowdSummary = useCallback(async (slug: string) => {
+    if (
+      crowdSummaryCacheRef.current[slug] ||
+      loadingCrowdSlugsRef.current.has(slug)
+    ) {
+      return;
+    }
+
+    loadingCrowdSlugsRef.current.add(slug);
+
+    try {
+      const forecast = await apiFetch<PoiCrowdForecast>(
+        `/api/pois/${encodeURIComponent(slug)}/crowd-forecast`
+      );
+      const summary = getCardCrowdSummary(forecast);
+
+      crowdSummaryCacheRef.current[slug] = summary;
+      setCrowdSummaryBySlug((current) => ({
+        ...current,
+        [slug]: summary,
+      }));
+    } catch (error) {
+      console.info(`Card forecast was not loaded for ${slug}:`, error);
+      const summary = "Forecast unavailable";
+
+      crowdSummaryCacheRef.current[slug] = summary;
+      setCrowdSummaryBySlug((current) => ({
+        ...current,
+        [slug]: summary,
+      }));
+    } finally {
+      loadingCrowdSlugsRef.current.delete(slug);
+    }
+  }, []);
 
   /*
     Explore search and filter state.
@@ -166,6 +423,8 @@ function App() {
   const [savePoiMessageType, setSavePoiMessageType] = useState<
     "success" | "error"
   >("success");
+  const [pendingAccessibleSave, setPendingAccessibleSave] =
+    useState<Poi | null>(null);
 
   /*
     Load all POIs when the application starts.
@@ -207,23 +466,82 @@ function App() {
     };
   }, []);
 
+  /*
+    The crowd endpoint belongs to one attraction, so I request it only when
+    that POI is opened. This avoids sending 198 separate requests on Explore.
+  */
+  useEffect(() => {
+    if (!selectedPoiSlug) {
+      return;
+    }
+
+    const slug = selectedPoiSlug;
+    let isCancelled = false;
+
+    async function loadCrowdForecast() {
+      try {
+        setIsLoadingForecasts(true);
+        setForecastError("");
+
+        const data = await apiFetch<PoiCrowdForecast>(
+          `/api/pois/${encodeURIComponent(slug)}/crowd-forecast`
+        );
+
+        if (!isCancelled) {
+          setSelectedPoiForecast(data);
+        }
+      } catch (error) {
+        console.error("Failed to load the crowd forecast:", error);
+
+        if (!isCancelled) {
+          setSelectedPoiForecast(null);
+          setForecastError(
+            "Hourly crowd forecasts are temporarily unavailable."
+          );
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingForecasts(false);
+        }
+      }
+    }
+
+    void loadCrowdForecast();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedPoiSlug]);
 
   /*
-  I keep the local logout function stable because it is used by an effect
-  and several authentication actions throughout the application.
-*/
-const handleLocalLogout = useCallback(() => {
-  localStorage.removeItem(USER_STORAGE_KEY);
-  setUser(null);
-  setSavedPoiSlugs([]);
-  setSelectedPoi(null);
+    I keep the local logout function stable because it is used by an effect
+    and several authentication actions throughout the application.
+  */
+  const handleLocalLogout = useCallback(() => {
+    localStorage.removeItem(USER_STORAGE_KEY);
+    setUser(null);
+    setProfilePreferences({ stepFreeRoutes: false });
+    setSavedPoiSlugs([]);
+    setSelectedPoi(null);
+    setPendingAccessibleSave(null);
 
-  setCurrentPage((page) =>
-    page === "profile" || page === "saved"
-      ? "explore"
-      : page
-  );
-}, []);
+    setCurrentPage((page) =>
+      page === "profile" || page === "saved" || page === "itinerary"
+        ? "explore"
+        : page
+    );
+  }, []);
+
+  /*
+    I update the shared saved-place state when a place is removed from the
+    Saved page so the Explore heart changes immediately without a refresh.
+  */
+  const handleSavedPlaceRemoved = useCallback((slug: string) => {
+    setSavedPoiSlugs((currentSavedSlugs) =>
+      currentSavedSlugs.filter((savedSlug) => savedSlug !== slug)
+    );
+  }, []);
+
   /*
     Load saved attractions only when the frontend considers the user logged in.
 
@@ -348,9 +666,50 @@ const handleLocalLogout = useCallback(() => {
     Recommended attractions are chosen from POIs containing genuine
     best-time data from the backend.
   */
-  const featuredPois = pois
-    .filter((poi) => Boolean(poi.best_time_label?.trim()))
+  const featuredPois = [...pois]
+    .filter(
+      (poi) =>
+        Boolean(poi.best_time_label?.trim()) &&
+        poi.google_review_star !== null
+    )
+    .sort((firstPoi, secondPoi) => {
+      const ratingDifference =
+        (secondPoi.google_review_star ?? 0) -
+        (firstPoi.google_review_star ?? 0);
+
+      if (ratingDifference !== 0) {
+        return ratingDifference;
+      }
+
+      return (
+        (secondPoi.google_review_count ?? 0) -
+        (firstPoi.google_review_count ?? 0)
+      );
+    })
     .slice(0, 4);
+
+  /*
+    When the profile preference is enabled, I show every attraction with
+    confirmed accessibility before the complete attraction list. I do not
+    limit this section because the preference is intended to surface all
+    suitable options, not only a small featured sample.
+  */
+  const accessiblePreferredPois = [...pois]
+    .filter((poi) => getAccessibilitySupport(poi) === "confirmed")
+    .sort((firstPoi, secondPoi) => {
+      const ratingDifference =
+        (secondPoi.google_review_star ?? 0) -
+        (firstPoi.google_review_star ?? 0);
+
+      if (ratingDifference !== 0) {
+        return ratingDifference;
+      }
+
+      return (
+        (secondPoi.google_review_count ?? 0) -
+        (firstPoi.google_review_count ?? 0)
+      );
+    });
 
   function openLogin() {
     setAuthMode("login");
@@ -372,10 +731,23 @@ const handleLocalLogout = useCallback(() => {
 
   function handleAuthenticationSuccess(authenticatedUser: AuthUser) {
     setUser(authenticatedUser);
+    setProfilePreferences(
+      loadProfilePreferences(authenticatedUser)
+    );
     setIsAuthModalOpen(false);
     setSavePoiMessage("");
   }
 
+  function updateProfilePreferences(preferences: ProfilePreferences) {
+    setProfilePreferences(preferences);
+
+    if (user) {
+      localStorage.setItem(
+        getProfilePreferencesKey(user),
+        JSON.stringify(preferences)
+      );
+    }
+  }
 
   async function handleLogout() {
     try {
@@ -400,13 +772,15 @@ const handleLocalLogout = useCallback(() => {
     const nextPage = page as Page;
 
     /*
-      Profile and Saved are account areas.
+      Profile, Saved and My Itinerary are account areas.
 
       Opening them while logged out displays the login modal rather than a
       technical authentication error.
     */
     if (
-      (nextPage === "profile" || nextPage === "saved") &&
+      (nextPage === "profile" ||
+        nextPage === "saved" ||
+        nextPage === "itinerary") &&
       !user
     ) {
       openLogin();
@@ -423,7 +797,7 @@ const handleLocalLogout = useCallback(() => {
     });
   }
 
-  async function toggleSavePoi(slug: string) {
+  async function updateSavedPoi(slug: string) {
     if (!user) {
       setSavePoiMessageType("error");
       setSavePoiMessage(
@@ -495,16 +869,37 @@ const handleLocalLogout = useCallback(() => {
     }
   }
 
+  function toggleSavePoi(slug: string) {
+    const poi = pois.find((item) => item.slug === slug);
+    const isCurrentlySaved = savedPoiSlugs.includes(slug);
+
+    if (
+      user &&
+      poi &&
+      !isCurrentlySaved &&
+      profilePreferences.stepFreeRoutes &&
+      getAccessibilitySupport(poi) !== "confirmed"
+    ) {
+      setPendingAccessibleSave(poi);
+      return;
+    }
+
+    void updateSavedPoi(slug);
+  }
+
   function renderAttractionCard(poi: Poi) {
     return (
       <AttractionCard
         key={poi.slug}
+        slug={poi.slug}
         image={
           poi.hero_image_url ||
-          "https://placehold.co/600x380?text=Manhattan"
+          poiPhotoFallback
         }
         name={poi.name}
-        crowdLevel={getCrowdLabel(poi)}
+        crowdLevel={
+          crowdSummaryBySlug[poi.slug] ?? "Loading forecast"
+        }
         bestTime={getBestTimeLabel(poi)}
         neighborhood={
           poi.neighborhood ||
@@ -517,7 +912,10 @@ const handleLocalLogout = useCallback(() => {
         isSaved={savedPoiSlugs.includes(poi.slug)}
         isSaving={savingPoiSlug === poi.slug}
         onSaveClick={() => toggleSavePoi(poi.slug)}
+        onForecastRequest={requestCardCrowdSummary}
         onClick={() => {
+          setSelectedPoiForecast(null);
+          setForecastPeriod("today");
           setSelectedPoi(poi);
           setSavePoiMessage("");
 
@@ -551,13 +949,13 @@ const handleLocalLogout = useCallback(() => {
                 </p>
 
                 <h1>
-                  Manhattan, at your best time
+                  Explore Manhattan at quieter times
                 </h1>
 
                 <p className="hero-subtitle">
-                  Discover attractions, quieter visiting
-                  windows and accessible places across the
-                  city.
+                  Find attractions, compare hourly crowd
+                  forecasts and plan visits around the times
+                  that suit you.
                 </p>
 
                 {!user && (
@@ -586,11 +984,6 @@ const handleLocalLogout = useCallback(() => {
                 )}
               </header>
 
-              <SearchBar
-                value={searchTerm}
-                onSearchChange={setSearchTerm}
-              />
-
               <section className="explore-filter-shell" aria-label="Explore filters">
                 <CategoryTabs
                   selectedCategory={selectedCategory}
@@ -600,16 +993,27 @@ const handleLocalLogout = useCallback(() => {
 
                 <div className="explore-filter-footer">
                   <div className="explore-accessibility-filter">
-                    <label>
+                    <label className="accessibility-filter-control">
                       <input
                         type="checkbox"
+                        className="accessibility-filter-input"
                         checked={accessibleOnly}
                         onChange={(event) =>
                           setAccessibleOnly(event.target.checked)
                         }
                       />
 
-                      <span>Show accessible attractions only</span>
+                      <span
+                        className="accessibility-filter-switch"
+                        aria-hidden="true"
+                      />
+
+                      <span className="accessibility-filter-copy">
+                        <strong>Accessible places only</strong>
+                        <small>
+                          Show attractions with wheelchair or step-free information.
+                        </small>
+                      </span>
                     </label>
                   </div>
 
@@ -624,6 +1028,11 @@ const handleLocalLogout = useCallback(() => {
                   )}
                 </div>
               </section>
+
+              <SearchBar
+                value={searchTerm}
+                onSearchChange={setSearchTerm}
+              />
 
               {isLoadingPois && (
                 <p className="loading-message">
@@ -652,14 +1061,47 @@ const handleLocalLogout = useCallback(() => {
               {!isLoadingPois &&
                 !poiError &&
                 !filtersActive &&
+                profilePreferences.stepFreeRoutes &&
+                accessiblePreferredPois.length > 0 && (
+                  <section className="featured-section accessible-picks-section">
+                    <div className="section-heading-row">
+                      <p className="section-eyebrow">
+                        Your accessibility preference
+                      </p>
+
+                      <h2>Accessible places for you</h2>
+
+                      <p className="section-description">
+                        All {accessiblePreferredPois.length} attractions with
+                        confirmed wheelchair or step-free access are shown
+                        first. The complete attraction list remains available
+                        below.
+                      </p>
+                    </div>
+
+                    <section className="featured-grid">
+                      {accessiblePreferredPois.map(renderAttractionCard)}
+                    </section>
+                  </section>
+                )}
+
+              {!isLoadingPois &&
+                !poiError &&
+                !filtersActive &&
+                !profilePreferences.stepFreeRoutes &&
                 featuredPois.length > 0 && (
                   <section className="featured-section">
                     <div className="section-heading-row">
                       <p className="section-eyebrow">
-                        Recommended windows
+                        Data-backed picks
                       </p>
 
-                      <h2>Best times to visit</h2>
+                      <h2>Popular places with quieter times</h2>
+
+                      <p className="section-description">
+                        Highly rated attractions with published quieter-time
+                        recommendations, ranked by rating and review count.
+                      </p>
                     </div>
 
                     <section className="featured-grid">
@@ -736,9 +1178,18 @@ const handleLocalLogout = useCallback(() => {
                     className="poi-detail-hero"
                     src={
                       selectedPoi.hero_image_url ||
-                      "https://placehold.co/1000x620?text=Manhattan"
+                      poiPhotoFallback
                     }
                     alt={selectedPoi.name}
+                    onError={(event) => {
+                      if (
+                        !event.currentTarget.src.endsWith(
+                          "poi-photo-fallback.svg"
+                        )
+                      ) {
+                        event.currentTarget.src = poiPhotoFallback;
+                      }
+                    }}
                   />
 
                   <p className="section-eyebrow">
@@ -795,40 +1246,60 @@ const handleLocalLogout = useCallback(() => {
                           Crowd information
                         </p>
 
-                        <h2>Current crowd outlook</h2>
+                        <h2>Hourly crowd forecast</h2>
                       </div>
                     </div>
 
-                    {selectedPoi.current_busyness ? (
-                      <div className="current-crowd-card">
-                        <span className="current-crowd-dot" />
+                    <div
+                      className="forecast-period-tabs"
+                      role="group"
+                      aria-label="Crowd forecast period"
+                    >
+                      {(["today", "tomorrow", "weekend"] as ForecastPeriod[]).map(
+                        (period) => (
+                          <button
+                            key={period}
+                            type="button"
+                            className={forecastPeriod === period ? "active" : ""}
+                            onClick={() => setForecastPeriod(period)}
+                            aria-pressed={forecastPeriod === period}
+                          >
+                            {period.charAt(0).toUpperCase() + period.slice(1)}
+                          </button>
+                        )
+                      )}
+                    </div>
+
+                    {isLoadingForecasts ? (
+                      <p className="fallback-message">
+                        Loading hourly forecast...
+                      </p>
+                    ) : (selectedPoiForecast?.[forecastPeriod]?.length ?? 0) > 0 ? (
+                      <BusynessChart
+                        hours={selectForecastSlots(
+                          selectedPoiForecast?.[forecastPeriod] ?? []
+                        )}
+                        poiName={selectedPoi.name}
+                      />
+                    ) : (
+                      <div className="forecast-status-card" role="status">
+                        <span className="forecast-status-icon" aria-hidden="true">
+                          i
+                        </span>
 
                         <div>
-                          <strong>
-                            {
-                              selectedPoi.current_busyness
-                            }
-                          </strong>
-
+                          <strong>Forecast unavailable</strong>
                           <p>
-                            {selectedPoi.current_busyness_at
-                              ? `Updated ${selectedPoi.current_busyness_at}`
-                              : "Latest available crowd assessment"}
+                            {forecastError ||
+                              `No ${forecastPeriod} crowd forecast is available for this attraction.`}
                           </p>
                         </div>
                       </div>
-                    ) : (
-                      <p className="fallback-message">
-                        Hourly crowd forecast data is not
-                        available from the current POI API
-                        response.
-                      </p>
                     )}
 
                     <p className="chart-note">
-                      Generated itineraries display hourly
-                      busyness data when the scheduler returns
-                      it.
+                      Forecast percentages are estimates. Lower bars indicate
+                      quieter expected visiting periods.
                     </p>
                   </section>
 
@@ -841,7 +1312,10 @@ const handleLocalLogout = useCallback(() => {
                       <div className="accessibility-grid">
                         {selectedPoi.accessibility_labels.map(
                           (label) => (
-                            <p key={label}>✓ {label}</p>
+                            <p key={label}>
+                              <span aria-hidden="true">✓</span>{" "}
+                              {label.replaceAll("_", " ")}
+                            </p>
                           )
                         )}
                       </div>
@@ -907,10 +1381,26 @@ const handleLocalLogout = useCallback(() => {
 
                     <p>
                       <strong>Opening hours</strong>
-                      <br />
-                      {selectedPoi.opening_hours_text ||
-                        "Not currently available"}
                     </p>
+
+                    <ul className="opening-hours-list">
+                      {formatOpeningHours(selectedPoi).map((line) => {
+                        const [day, ...hours] = line.split(": ");
+
+                        return (
+                          <li key={line}>
+                            {hours.length > 0 ? (
+                              <>
+                                <span>{day}</span>
+                                <strong>{hours.join(": ")}</strong>
+                              </>
+                            ) : (
+                              <span>{line}</span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
 
                     <p>
                       <strong>Admission</strong>
@@ -963,6 +1453,8 @@ const handleLocalLogout = useCallback(() => {
           <MyItinerary
             pois={pois}
             onLoginRequired={openLogin}
+            preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
+            initialItinerary={aiGeneratedItinerary}
           />
         )}
 
@@ -970,15 +1462,29 @@ const handleLocalLogout = useCallback(() => {
           <SavedItineraries
             pois={pois}
             onLoginRequired={openLogin}
+            onSavedPlaceRemoved={handleSavedPlaceRemoved}
+            preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
           />
         )}
 
-        {currentPage === "ai" && <AIPlanner />}
+        {currentPage === "ai" && (
+          <AIPlanner
+            pois={pois}
+            isAuthenticated={Boolean(user)}
+            onLoginRequired={openLogin}
+            onItineraryGenerated={(itinerary) => {
+              setAiGeneratedItinerary(itinerary);
+              setCurrentPage("itinerary");
+            }}
+          />
+        )}
 
         {currentPage === "profile" && user && (
           <Profile
             user={user}
             onLogout={handleLogout}
+            preferences={profilePreferences}
+            onPreferencesChange={updateProfilePreferences}
           />
         )}
       </main>
@@ -1017,6 +1523,66 @@ const handleLocalLogout = useCallback(() => {
             onLoginClick={switchToLogin}
             onAuthSuccess={handleAuthenticationSuccess}
           />
+        </div>
+      )}
+
+      {pendingAccessibleSave && (
+        <div
+          className="accessibility-warning-overlay"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setPendingAccessibleSave(null);
+            }
+          }}
+        >
+          <section
+            className="accessibility-warning-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="save-accessibility-warning-title"
+            aria-describedby="save-accessibility-warning-description"
+          >
+            <div className="accessibility-warning-icon" aria-hidden="true">
+              ♿
+            </div>
+
+            <p className="section-eyebrow">Accessibility check</p>
+
+            <h2 id="save-accessibility-warning-title">
+              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
+                ? "Limited accessibility reported"
+                : "Accessibility information not confirmed"}
+            </h2>
+
+            <p id="save-accessibility-warning-description">
+              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
+                ? `${pendingAccessibleSave.name} reports limited wheelchair access, so some areas or facilities may not be accessible.`
+                : `${pendingAccessibleSave.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
+            </p>
+
+            <div className="accessibility-warning-actions">
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setPendingAccessibleSave(null)}
+              >
+                Choose another place
+              </button>
+
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() => {
+                  const slug = pendingAccessibleSave.slug;
+                  setPendingAccessibleSave(null);
+                  void updateSavedPoi(slug);
+                }}
+              >
+                Save anyway
+              </button>
+            </div>
+          </section>
         </div>
       )}
     </div>

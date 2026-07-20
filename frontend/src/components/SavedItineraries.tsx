@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { apiFetch } from "../api";
+import { groupStopsByDay } from "../itinerary";
+import BusynessChart from "./BusynessChart";
+import poiPhotoFallback from "../assets/poi-photo-fallback.svg";
 
 import type {
   AddStopRequest,
@@ -12,7 +15,9 @@ import type {
 
 type SavedItinerariesProps = {
   onLoginRequired?: () => void;
+  onSavedPlaceRemoved?: (slug: string) => void;
   pois: Poi[];
+  preferAccessiblePlaces: boolean;
 };
 
 type SavedView = "places" | "itineraries";
@@ -44,6 +49,34 @@ function formatDate(dateValue: string): string {
   }).format(date);
 }
 
+function formatClockTime(timeValue: string): string {
+  const [hoursText, minutes = "00"] = timeValue.split(":");
+  const hours = Number(hoursText);
+
+  if (!Number.isFinite(hours)) {
+    return timeValue;
+  }
+
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 || 12;
+
+  return `${displayHours}:${minutes} ${period}`;
+}
+
+function crowdLevelClass(crowdLevel: string): string {
+  const level = crowdLevel.toLowerCase();
+
+  if (level.includes("quiet") || level.includes("low")) {
+    return "quiet";
+  }
+
+  if (level.includes("busy") || level.includes("high")) {
+    return "busy";
+  }
+
+  return "moderate";
+}
+
 function isAuthenticationError(error: unknown): boolean {
   if (!(error instanceof Error)) {
     return false;
@@ -60,9 +93,34 @@ function isAuthenticationError(error: unknown): boolean {
   );
 }
 
+function isConfirmedAccessible(poi: Poi): boolean {
+  const labels = (poi.accessibility_labels ?? []).map((label) =>
+    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
+  );
+
+  return labels.some(
+    (label) =>
+      label === "wheelchair" ||
+      label === "wheelchair_yes" ||
+      label.includes("step_free")
+  );
+}
+
+function hasLimitedAccessibility(poi: Poi): boolean {
+  return (poi.accessibility_labels ?? []).some((label) =>
+    label
+      .toLowerCase()
+      .replaceAll("-", "_")
+      .replaceAll(" ", "_")
+      .includes("wheelchair_limited")
+  );
+}
+
 function SavedItineraries({
   onLoginRequired,
+  onSavedPlaceRemoved,
   pois,
+  preferAccessiblePlaces,
 }: SavedItinerariesProps) {
   /*
     The Saved page contains two related account areas:
@@ -95,6 +153,8 @@ function SavedItineraries({
   */
   const [selectedItinerary, setSelectedItinerary] =
     useState<SavedItinerary | null>(null);
+  const [activeSavedDayNumber, setActiveSavedDayNumber] =
+    useState(1);
 
   const [isLoadingItineraries, setIsLoadingItineraries] =
     useState(true);
@@ -127,6 +187,8 @@ function SavedItineraries({
   */
   const [confirmationAction, setConfirmationAction] =
     useState<ConfirmationAction>(null);
+  const [pendingAccessibilityPoi, setPendingAccessibilityPoi] =
+    useState<Poi | null>(null);
 
   const filteredSavedPlaces = savedPlaces.filter(
     (poi) => {
@@ -179,7 +241,22 @@ function SavedItineraries({
         (stop) => stop.slug === poi.slug
       );
     })
+    .sort(
+      (firstPoi, secondPoi) =>
+        preferAccessiblePlaces
+          ? Number(isConfirmedAccessible(secondPoi)) -
+            Number(isConfirmedAccessible(firstPoi))
+          : 0
+    )
     .slice(0, 6);
+
+  const savedItineraryDays = selectedItinerary
+    ? groupStopsByDay(selectedItinerary.stops)
+    : [];
+  const activeSavedDay =
+    savedItineraryDays.find(
+      (day) => day.dayNumber === activeSavedDayNumber
+    ) ?? savedItineraryDays[0] ?? null;
 
   /*
     I keep this callback stable so the Saved page can reuse it without
@@ -307,6 +384,8 @@ function SavedItineraries({
         )
       );
 
+      onSavedPlaceRemoved?.(slug);
+
       setSuccessMessage(
         response.message ||
           "Attraction removed from your saved places."
@@ -344,6 +423,9 @@ function SavedItineraries({
         );
 
       setSelectedItinerary(data);
+      setActiveSavedDayNumber(
+        groupStopsByDay(data.stops)[0]?.dayNumber ?? 1
+      );
 
       window.scrollTo({
         top: 0,
@@ -423,7 +505,7 @@ function SavedItineraries({
     }
   }
 
-  async function addPoiToSavedItinerary(
+  async function addPoiToSavedItineraryWithoutWarning(
     slug: string
   ) {
     if (!selectedItinerary) {
@@ -470,6 +552,21 @@ function SavedItineraries({
     } finally {
       setAddingPoiSlug(null);
     }
+  }
+
+  function addPoiToSavedItinerary(slug: string) {
+    const poi = pois.find((item) => item.slug === slug);
+
+    if (
+      poi &&
+      preferAccessiblePlaces &&
+      !isConfirmedAccessible(poi)
+    ) {
+      setPendingAccessibilityPoi(poi);
+      return;
+    }
+
+    void addPoiToSavedItineraryWithoutWarning(slug);
   }
 
   async function removeStopFromSavedItinerary(
@@ -685,10 +782,19 @@ function SavedItineraries({
                         <img
                           src={
                             poi.hero_image_url ||
-                            "https://placehold.co/700x430?text=Manhattan"
+                            poiPhotoFallback
                           }
                           alt={poi.name}
                           loading="lazy"
+                          onError={(event) => {
+                            if (
+                              !event.currentTarget.src.endsWith(
+                                "poi-photo-fallback.svg"
+                              )
+                            ) {
+                              event.currentTarget.src = poiPhotoFallback;
+                            }
+                          }}
                         />
 
                         <button
@@ -814,11 +920,20 @@ function SavedItineraries({
                           <img
                             src={
                               itinerary.hero_image_url ||
-                              "https://placehold.co/700x430?text=Manhattan+Trip"
+                              poiPhotoFallback
                             }
                             alt={
                               itinerary.trip_name
                             }
+                            onError={(event) => {
+                              if (
+                                !event.currentTarget.src.endsWith(
+                                  "poi-photo-fallback.svg"
+                                )
+                              ) {
+                                event.currentTarget.src = poiPhotoFallback;
+                              }
+                            }}
                           />
 
                           <div className="saved-itinerary-card-body">
@@ -929,126 +1044,195 @@ function SavedItineraries({
                   </button>
                 </div>
 
-                <div className="itinerary-timeline">
-                  {selectedItinerary.stops.map(
-                    (stop, index) => (
-                      <div
-                        className="itinerary-timeline-row"
-                        key={`${stop.stop_id}-${index}`}
-                      >
-                        <div className="timeline-time">
-                          {stop.slot_start.slice(
-                            0,
-                            5
-                          )}
-                          –
-                          {stop.slot_end.slice(
-                            0,
-                            5
-                          )}
-                        </div>
+                {savedItineraryDays.length > 0 ? (
+                  <div className="saved-itinerary-plan">
+                    <div
+                      className="itinerary-day-tabs"
+                      role="tablist"
+                      aria-label="Saved itinerary days"
+                    >
+                      {savedItineraryDays.map((day) => {
+                        const isActive =
+                          day.dayNumber === activeSavedDay?.dayNumber;
 
-                        <article className="timeline-card">
-                          <p className="card-location">
-                            Day {stop.day_number} ·{" "}
-                            {formatDate(
-                              stop.visit_date
-                            )}
-                          </p>
-
-                          <h3>
-                            {stop.poi_name}
-                          </h3>
-
-                          <p className="best-time">
-                            {stop.slot} ·{" "}
-                            {stop.crowd_level}
-                          </p>
-
-                          <p className="why-this-time">
-                            {stop.neighborhood},{" "}
-                            {stop.borough}
-                          </p>
-
-                          <p className="why-this-time">
-                            Suggested visit:{" "}
-                            {
-                              stop.suggested_duration
-                            }{" "}
-                            minutes
-                          </p>
-
-                          {stop.flags.length >
-                            0 && (
-                            <div className="stop-flags">
-                              {stop.flags.map(
-                                (flag) => (
-                                  <span key={flag}>
-                                    {flag}
-                                  </span>
-                                )
-                              )}
-                            </div>
-                          )}
-
+                        return (
                           <button
+                            key={`${day.dayNumber}-${day.visitDate}`}
                             type="button"
-                            className="remove-stop-button"
+                            role="tab"
+                            aria-selected={isActive}
+                            className={isActive ? "active" : ""}
                             onClick={() =>
-                              setConfirmationAction({
-                                kind: "remove-stop",
-                                stopId: stop.stop_id,
-                                itemName: stop.poi_name,
-                              })
-                            }
-                            disabled={
-                              removingStopId ===
-                              stop.stop_id
+                              setActiveSavedDayNumber(day.dayNumber)
                             }
                           >
-                            {removingStopId ===
-                            stop.stop_id
-                              ? "Removing..."
-                              : "Remove from itinerary"}
+                            <strong>Day {day.dayNumber}</strong>
+                            <span>{formatDate(day.visitDate)}</span>
                           </button>
+                        );
+                      })}
+                    </div>
 
-                          {stop.busyness_for_day
-                            .length > 0 && (
-                            <div
-                              className="mini-busyness-chart"
-                              aria-label={`Hourly busyness forecast for ${stop.poi_name}`}
-                            >
-                              {stop.busyness_for_day
-                                .slice(0, 24)
-                                .map((hour) => (
-                                  <div
-                                    className="mini-busyness-column"
-                                    key={
-                                      hour.hour_of_day
-                                    }
-                                    title={`${hour.hour_of_day}:00 — ${hour.busyness}% busy`}
-                                  >
-                                    <div
-                                      className="mini-busyness-bar"
-                                      style={{
-                                        height: `${Math.max(
-                                          6,
-                                          Math.min(
-                                            hour.busyness,
-                                            100
-                                          )
-                                        )}%`,
-                                      }}
-                                    />
+                    <div className="itinerary-days">
+                      {savedItineraryDays
+                        .filter(
+                          (day) =>
+                            day.dayNumber === activeSavedDay?.dayNumber
+                        )
+                        .map((day) => (
+                          <section
+                            className="itinerary-day-group"
+                            key={`${day.dayNumber}-${day.visitDate}`}
+                          >
+                            <header className="itinerary-day-heading">
+                              <div>
+                                <p className="section-eyebrow">
+                                  Day {day.dayNumber}
+                                </p>
+                                <h3>{formatDate(day.visitDate)}</h3>
+                              </div>
+
+                              <span>
+                                {day.stops.length}{" "}
+                                {day.stops.length === 1 ? "place" : "places"}
+                              </span>
+                            </header>
+
+                            <div className="itinerary-timeline">
+                              {day.stops.map((stop) => (
+                                <div
+                                  className="itinerary-timeline-row"
+                                  key={stop.stop_id}
+                                >
+                                  <div className="timeline-time">
+                                    <strong>{stop.slot}</strong>
+                                    <span>
+                                      {formatClockTime(stop.slot_start)} –{" "}
+                                      {formatClockTime(stop.slot_end)}
+                                    </span>
                                   </div>
-                                ))}
+
+                                  <article className="timeline-card">
+                                    <div className="timeline-card-image">
+                                      <img
+                                        src={
+                                          stop.hero_image_url ||
+                                          poiPhotoFallback
+                                        }
+                                        alt=""
+                                        onError={(event) => {
+                                          if (
+                                            !event.currentTarget.src.endsWith(
+                                              "poi-photo-fallback.svg"
+                                            )
+                                          ) {
+                                            event.currentTarget.src =
+                                              poiPhotoFallback;
+                                          }
+                                        }}
+                                      />
+                                    </div>
+
+                                    <div className="timeline-card-content">
+                                      <p className="card-location">
+                                        {stop.neighborhood}, {stop.borough}
+                                      </p>
+
+                                      <div className="timeline-card-heading">
+                                        <h3>{stop.poi_name}</h3>
+                                        <span
+                                          className={`crowd-level-pill ${crowdLevelClass(
+                                            stop.crowd_level
+                                          )}`}
+                                        >
+                                          {stop.crowd_level} crowds
+                                        </span>
+                                      </div>
+
+                                      <p className="recommended-window">
+                                        <strong>
+                                          Recommended {stop.slot} window
+                                        </strong>
+                                        <span>
+                                          {formatClockTime(stop.slot_start)} –{" "}
+                                          {formatClockTime(stop.slot_end)}
+                                        </span>
+                                      </p>
+
+                                      <p className="why-this-time">
+                                        <strong>Why this time:</strong>{" "}
+                                        {pois.find(
+                                          (poi) => poi.slug === stop.slug
+                                        )?.why_this_time?.trim() ||
+                                          "Detailed recommendation data is not available for this stop."}
+                                      </p>
+
+                                      <div className="timeline-card-details">
+                                        <span>
+                                          Suggested duration:{" "}
+                                          {stop.suggested_duration} minutes
+                                        </span>
+
+                                        {(stop.accessibility?.length ?? 0) > 0 && (
+                                          <span>
+                                            Accessible:{" "}
+                                            {stop.accessibility?.join(", ")}
+                                          </span>
+                                        )}
+                                      </div>
+
+                                      {stop.flags.length > 0 && (
+                                        <div className="stop-flags">
+                                          {stop.flags.map((flag) => (
+                                            <span key={flag}>{flag}</span>
+                                          ))}
+                                        </div>
+                                      )}
+
+                                      <button
+                                        type="button"
+                                        className="remove-stop-button"
+                                        onClick={() =>
+                                          setConfirmationAction({
+                                            kind: "remove-stop",
+                                            stopId: stop.stop_id,
+                                            itemName: stop.poi_name,
+                                          })
+                                        }
+                                        disabled={
+                                          removingStopId === stop.stop_id
+                                        }
+                                      >
+                                        {removingStopId === stop.stop_id
+                                          ? "Removing..."
+                                          : "Remove from itinerary"}
+                                      </button>
+
+                                      {stop.busyness_for_day.length > 0 ? (
+                                        <BusynessChart
+                                          hours={stop.busyness_for_day}
+                                          poiName={stop.poi_name}
+                                        />
+                                      ) : (
+                                        <p className="fallback-message">
+                                          Hourly crowd forecast is not available
+                                          for this stop.
+                                        </p>
+                                      )}
+                                    </div>
+                                  </article>
+                                </div>
+                              ))}
                             </div>
-                          )}
-                        </article>
-                      </div>
-                    )
-                  )}
-                </div>
+                          </section>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="fallback-message">
+                    This saved itinerary does not contain any scheduled stops.
+                  </p>
+                )}
 
                 <section className="saved-itinerary-editor">
                   <div className="saved-itinerary-editor-heading">
@@ -1195,6 +1379,66 @@ function SavedItineraries({
                 {confirmationAction.kind === "delete-itinerary"
                   ? "Delete itinerary"
                   : "Remove attraction"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {pendingAccessibilityPoi && (
+        <div
+          className="accessibility-warning-overlay"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setPendingAccessibilityPoi(null);
+            }
+          }}
+        >
+          <section
+            className="accessibility-warning-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="saved-itinerary-accessibility-warning-title"
+            aria-describedby="saved-itinerary-accessibility-warning-description"
+          >
+            <div className="accessibility-warning-icon" aria-hidden="true">
+              ♿
+            </div>
+
+            <p className="section-eyebrow">Accessibility check</p>
+
+            <h2 id="saved-itinerary-accessibility-warning-title">
+              {hasLimitedAccessibility(pendingAccessibilityPoi)
+                ? "Limited accessibility reported"
+                : "Accessibility information not confirmed"}
+            </h2>
+
+            <p id="saved-itinerary-accessibility-warning-description">
+              {hasLimitedAccessibility(pendingAccessibilityPoi)
+                ? `${pendingAccessibilityPoi.name} reports limited wheelchair access. Some areas or facilities may not be accessible.`
+                : `${pendingAccessibilityPoi.name} does not have confirmed wheelchair-accessibility information. You can still add it and review the plan.`}
+            </p>
+
+            <div className="accessibility-warning-actions">
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setPendingAccessibilityPoi(null)}
+              >
+                Choose another place
+              </button>
+
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() => {
+                  const slug = pendingAccessibilityPoi.slug;
+                  setPendingAccessibilityPoi(null);
+                  void addPoiToSavedItineraryWithoutWarning(slug);
+                }}
+              >
+                Add anyway
               </button>
             </div>
           </section>
