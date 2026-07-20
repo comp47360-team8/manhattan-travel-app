@@ -43,15 +43,8 @@ function SearchBar({
   }
 
   return (
-    <section className="explore-search-panel" aria-labelledby="explore-search-title">
-      <div className="explore-search-copy">
-        <p className="section-eyebrow">Find a place</p>
-        <h2 id="explore-search-title">Search Manhattan attractions</h2>
-        <p>Search by attraction name, neighbourhood, borough, or category.</p>
-      </div>
-
-      <div className="explore-search-control">
-        <div className="search-field">
+    <div className="explore-search-control">
+      <div className="search-field">
           <span className="search-field-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
               <circle cx="11" cy="11" r="6" />
@@ -77,9 +70,8 @@ function SearchBar({
               {"\u00d7"}
             </button>
           )}
-        </div>
       </div>
-    </section>
+    </div>
   );
 }
 

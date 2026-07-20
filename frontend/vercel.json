@@ -4,6 +4,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://api.offpeak.live/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ]
 }
