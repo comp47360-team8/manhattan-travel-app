@@ -26,10 +26,11 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           # alembic/env.py imports app.core.config, which instantiates Settings() at
-          # import time and so validates every field. Migrations never sign a token,
-          # but the import fails without this. Locally it comes from the gitignored
-          # backend/.env, which no CI checkout has.
+          # import time and so validates every field. Migrations never sign a token
+          # or call Gemini, but the import fails without these. Locally they come from
+          # the gitignored backend/.env, which no CI checkout has.
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           pip install -r requirements.txt
           alembic upgrade head

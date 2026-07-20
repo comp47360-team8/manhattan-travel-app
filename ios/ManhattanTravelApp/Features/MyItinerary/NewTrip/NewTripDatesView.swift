@@ -16,16 +16,10 @@ struct NewTripDatesView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                topBar
+            ZStack {
+                OffpeakTheme.backGround
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("Name your trip & pick dates")
-                                .font(.system(size: 28, weight: .bold)).foregroundColor(OffpeakTheme.ink)
-                            Text("Give it a name, then choose start and end dates.")
-                                .font(.system(size: 14)).foregroundColor(OffpeakTheme.textSecondary)
-                        }
                         nameField
                         RangeCalendar(start: $vm.startDate, end: $vm.endDate)
                             .padding(16)
@@ -34,13 +28,46 @@ struct NewTripDatesView: View {
                     }
                     .padding(20)
                 }
-                continueBar
+                .safeAreaInset(edge: .top, spacing: 0) { pinnedHeader }
+                .safeAreaInset(edge: .bottom, spacing: 0) { continueBar }
             }
-            .background(OffpeakTheme.backGround)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(isPresented: $goToPlaces) {
                 ChoosePlacesView(vm: vm, onClose: onClose)
             }
+        }
+    }
+
+    /// Frosted, bottom-fading header — matches ChoosePlacesView.
+    private var pinnedHeader: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            topBar
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Name your trip & pick dates")
+                    .font(.system(size: 28, weight: .bold)).foregroundColor(OffpeakTheme.ink)
+                Text("Give it a name, then choose start and end dates.")
+                    .font(.system(size: 14)).foregroundColor(OffpeakTheme.textSecondary)
+            }
+            .padding(.horizontal, 20)
+        }
+        .padding(.bottom, 14)
+        .background {
+            ZStack {
+                Rectangle().fill(.thinMaterial)
+                OffpeakTheme.backgroundGradient
+                    .opacity(0.55)
+            }
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .black, location: 0.0),
+                        .init(color: .black.opacity(0.9), location: 0.8),
+                        .init(color: .black.opacity(0.8), location: 0.9),
+                        .init(color: .black.opacity(0.0), location: 1.0)
+                    ],
+                    startPoint: .top, endPoint: .bottom)
+            )
+            .ignoresSafeArea(edges: .top)
         }
     }
 
@@ -88,6 +115,8 @@ struct NewTripDatesView: View {
             }
         }
     }
+    
+    
 
     private var continueBar: some View {
         Button { goToPlaces = true } label: {
@@ -101,6 +130,18 @@ struct NewTripDatesView: View {
         }
         .disabled(!vm.canContinue)
         .padding(.horizontal, 20).padding(.bottom, 8)
+        .padding(.top, 16)
+        .padding(.bottom, 8)
+        .background {
+            Rectangle()
+                .fill(.regularMaterial)
+                .mask(
+                    LinearGradient(
+                        colors: [.black.opacity(0), .black.opacity(0.6), .black, .black],
+                        startPoint: .top, endPoint: .bottom)
+                )
+                .ignoresSafeArea(edges: .bottom)
+        }
     }
 }
 

@@ -51,11 +51,14 @@ final class SavedPOIStore: ObservableObject {
 
         do {
             if wasSaved {
+                // Removal is already applied optimistically — no reload. Reloading
+                // here would race concurrent unsaves and momentarily resurrect items.
                 try await service.unsave(slug: slug)
             } else {
                 try await service.save(slug: slug)
+                // Reload to pull the newly-saved POI's full data into the list.
+                await load(force: true)
             }
-            await load(force: true)
         } catch {
             // Roll back to the pre-toggle state.
             savedPOIs = previousPOIs

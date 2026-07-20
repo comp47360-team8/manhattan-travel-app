@@ -23,7 +23,7 @@ struct ItineraryListView: View {
                     .safeAreaInset(edge: .top, spacing: 0) { header }
                     .refreshable { await vm.load(force: true) }
                     .navigationDestination(for: String.self) { id in
-                        ItineraryDetailView(id: id)
+                        ItineraryDetailView(id: id, onEdited: { Task { await vm.load(force: true) } })
                     }
                     .task { if authManager.isLoggedIn {await vm.load()} }
                     .fullScreenCover(isPresented: $showNewTrip, onDismiss: {
@@ -47,7 +47,7 @@ struct ItineraryListView: View {
                 Text("My Itinerary")
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(OffpeakTheme.ink)
-                Text("\(vm.itineraries.count) itineraries planned")
+                Text("\(vm.itineraries.count) itinerariey planned")
                     .font(.system(size: 14))
                     .foregroundColor(OffpeakTheme.textSecondary)
             }

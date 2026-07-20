@@ -25,6 +25,14 @@ final class NewTripViewModel: ObservableObject {
     @Published var generated: APIItinerary?
     @Published var errorMessage: String?
     @Published var isSaving: Bool = false
+
+    /// When set, this is an *edit*: after the new itinerary saves, the old one
+    /// (this id) is deleted so the list shows the edited version, not a duplicate.
+    var editingItineraryId: String?
+    /// The POI set the edit started from — used to skip regeneration on a no-op edit.
+    var originalSelectionSlugs: Set<String>?
+    /// The already-loaded itinerary, reused verbatim when the edit changes nothing.
+    var originalResult: OptimizedItinerary?
     
     private var tripDateStrings: [String] {
         [startDate, endDate].compactMap { $0 }.map(Self.apiDate.string)  // → [start, end]
@@ -76,20 +84,36 @@ final class NewTripViewModel: ObservableObject {
     /// screen can show progress, then publishes `result`.
     func generate() async {
         guard let start = startDate, !selectedPOIs.isEmpty else { return }
- 
+
+        // Editing but the POI selection is unchanged → reuse the existing itinerary,
+        // don't save a duplicate.
+        if editingItineraryId != nil,
+           let baseline = originalSelectionSlugs,
+           baseline == Set(selectedPOIs.map(\.slug)),
+           let existing = originalResult {
+            result = existing
+            return
+        }
+
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         
         let request = GenerateItineraryRequest(
             tripName: trimmed.isEmpty ? "My Trip" : trimmed,
             tripDates: tripDateStrings,
             pois: selectedPOIs.map(\.slug),
-            accessibilty: []
- 
+            accessibility: []
         )
         
         do {
             let dto = try await itineraryService.generate(request)
-            try await itineraryService.save(dto)
+            let saved = try await itineraryService.save(dto)
+            // Editing: drop the previously-saved version now that the new one exists.
+            if let oldId = editingItineraryId {
+                try? await itineraryService.deleteItinerary(id: oldId)
+            }
+            // Track the newly-saved id so a further regenerate in the same session
+            // replaces this one too (instead of leaving a duplicate).
+            editingItineraryId = saved.itineraryId
             result = OptimizedItinerary.from(dto, startDate: start) // for UI view
         } catch is CancellationError {
         } catch {

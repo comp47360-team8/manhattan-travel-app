@@ -31,12 +31,14 @@ struct POIDetail: Decodable, POIImageRepresentable {
     var websiteUrl: String? = nil
 
     
-    var ratingText: String? { googleReviewStar.map { String(format: "%.1f", $0) } }
+    var ratingText: String? {
+        googleReviewStar.map { String(format: "%.1f", $0) }
+    }
     var descriptionText: String? { (description?.isEmpty == false ? description : nil) ?? summary }
     var admissionLabel: String {
         if let t = admissionText, !t.isEmpty { return t }
         if let f = admissionFee { return "$\(f)" }
-        return "Free"
+        return "Admission information is not available"
     }
     /// 副标题里的简短票价（Free admission / $25）
     var admissionShort: String { admissionFee.map { "$\($0)" } ?? "Free admission" }
