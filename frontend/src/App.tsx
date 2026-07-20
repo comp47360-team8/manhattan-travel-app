@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./App.css";
 
@@ -32,6 +33,67 @@ type Page =
   | "itinerary"
   | "saved"
   | "profile";
+
+const PAGE_PATHS: Record<Page, string> = {
+  explore: "/explore",
+  ai: "/planner",
+  itinerary: "/itinerary",
+  saved: "/saved",
+  profile: "/profile",
+};
+
+const PROTECTED_PAGES: Page[] = ["itinerary", "saved", "profile"];
+
+function normalisePath(pathname: string): string {
+  return pathname.length > 1
+    ? pathname.replace(/\/+$/, "")
+    : pathname;
+}
+
+function getPageFromPath(pathname: string): Page {
+  const path = normalisePath(pathname);
+
+  if (path === "/planner") {
+    return "ai";
+  }
+
+  if (path === "/itinerary") {
+    return "itinerary";
+  }
+
+  if (path === "/saved") {
+    return "saved";
+  }
+
+  if (path === "/profile") {
+    return "profile";
+  }
+
+  return "explore";
+}
+
+function getPoiSlugFromPath(pathname: string): string | null {
+  const match = normalisePath(pathname).match(/^\/explore\/([^/]+)$/);
+
+  if (!match) {
+    return null;
+  }
+
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+function isKnownAppPath(pathname: string): boolean {
+  const path = normalisePath(pathname);
+
+  return (
+    Object.values(PAGE_PATHS).includes(path) ||
+    /^\/explore\/[^/]+$/.test(path)
+  );
+}
 
 const USER_STORAGE_KEY = "offpeak_user";
 const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
@@ -327,6 +389,12 @@ function formatOpeningHours(poi: Poi): string[] {
 }
 
 function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPage = getPageFromPath(location.pathname);
+  const routePoiSlug = getPoiSlugFromPath(location.pathname);
+  const isProtectedPage = PROTECTED_PAGES.includes(currentPage);
+
   /*
     Authentication state.
 
@@ -339,10 +407,6 @@ function App() {
   const [profilePreferences, setProfilePreferences] =
     useState<ProfilePreferences>(() => loadProfilePreferences(user));
 
-  /*
-    Navigation state.
-  */
-  const [currentPage, setCurrentPage] = useState<Page>("explore");
   const [aiGeneratedItinerary, setAiGeneratedItinerary] =
     useState<ItineraryResponse | null>(null);
 
@@ -350,9 +414,12 @@ function App() {
     POI API state.
   */
   const [pois, setPois] = useState<Poi[]>([]);
-  const [selectedPoi, setSelectedPoi] = useState<Poi | null>(null);
   const [isLoadingPois, setIsLoadingPois] = useState(true);
   const [poiError, setPoiError] = useState("");
+  const selectedPoi = routePoiSlug
+    ? pois.find((poi) => poi.slug === routePoiSlug) ?? null
+    : null;
+  const isPoiDetailRoute = routePoiSlug !== null;
   const [selectedPoiForecast, setSelectedPoiForecast] =
     useState<PoiCrowdForecast | null>(null);
   const [isLoadingForecasts, setIsLoadingForecasts] = useState(false);
@@ -365,6 +432,16 @@ function App() {
   >({});
   const crowdSummaryCacheRef = useRef<Record<string, string>>({});
   const loadingCrowdSlugsRef = useRef(new Set<string>());
+
+  /*
+    I keep the address bar canonical so direct links and browser history use
+    the same page URLs as navigation inside the app.
+  */
+  useEffect(() => {
+    if (location.pathname === "/" || !isKnownAppPath(location.pathname)) {
+      navigate(PAGE_PATHS.explore, { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   /*
     Card forecasts are loaded lazily and cached by slug. Duplicate cards in
@@ -513,24 +590,14 @@ function App() {
     };
   }, [selectedPoiSlug]);
 
-  /*
-    I keep the local logout function stable because it is used by an effect
-    and several authentication actions throughout the application.
-  */
-  const handleLocalLogout = useCallback(() => {
+  /* Clear local display state after the backend session ends. */
+  function handleLocalLogout() {
     localStorage.removeItem(USER_STORAGE_KEY);
     setUser(null);
     setProfilePreferences({ stepFreeRoutes: false });
     setSavedPoiSlugs([]);
-    setSelectedPoi(null);
     setPendingAccessibleSave(null);
-
-    setCurrentPage((page) =>
-      page === "profile" || page === "saved" || page === "itinerary"
-        ? "explore"
-        : page
-    );
-  }, []);
+  }
 
   /*
     I update the shared saved-place state when a place is removed from the
@@ -577,7 +644,11 @@ function App() {
             The local display state may remain after the secure cookie expires.
             Clear it so the interface returns to the logged-out state.
           */
-          handleLocalLogout();
+          localStorage.removeItem(USER_STORAGE_KEY);
+          setUser(null);
+          setProfilePreferences({ stepFreeRoutes: false });
+          setSavedPoiSlugs([]);
+          setPendingAccessibleSave(null);
         }
       }
     }
@@ -587,7 +658,7 @@ function App() {
     return () => {
       isCancelled = true;
     };
-  }, [user, handleLocalLogout]);
+  }, [user]);
 
   /*
     Search by name, neighbourhood, borough, or POI type.
@@ -765,10 +836,18 @@ function App() {
       );
     } finally {
       handleLocalLogout();
+
+      if (isProtectedPage) {
+        navigate(PAGE_PATHS.explore, { replace: true });
+      }
     }
   }
 
   function goToPage(page: string) {
+    if (!Object.hasOwn(PAGE_PATHS, page)) {
+      return;
+    }
+
     const nextPage = page as Page;
 
     /*
@@ -787,8 +866,7 @@ function App() {
       return;
     }
 
-    setCurrentPage(nextPage);
-    setSelectedPoi(null);
+    navigate(PAGE_PATHS[nextPage]);
     setSavePoiMessage("");
 
     window.scrollTo({
@@ -916,7 +994,9 @@ function App() {
         onClick={() => {
           setSelectedPoiForecast(null);
           setForecastPeriod("today");
-          setSelectedPoi(poi);
+          navigate(
+            `${PAGE_PATHS.explore}/${encodeURIComponent(poi.slug)}`
+          );
           setSavePoiMessage("");
 
           window.scrollTo({
@@ -940,8 +1020,25 @@ function App() {
       />
 
       <main className="page-container">
+        {isProtectedPage && !user && (
+          <section className="route-login-card" aria-labelledby="login-required-title">
+            <p className="section-eyebrow">Account required</p>
+            <h1 id="login-required-title">Please log in to continue</h1>
+            <p>
+              This page contains your personal Offpeak information and is
+              available after you log in.
+            </p>
+            <div className="route-login-actions">
+              <button type="button" onClick={openLogin}>Log in</button>
+              <button type="button" onClick={() => goToPage("explore")}>
+                Return to Explore
+              </button>
+            </div>
+          </section>
+        )}
+
         {currentPage === "explore" &&
-          selectedPoi === null && (
+          !isPoiDetailRoute && (
             <>
               <header className="explore-hero">
                 <p className="hero-eyebrow">
@@ -984,55 +1081,29 @@ function App() {
                 )}
               </header>
 
-              <section className="explore-filter-shell" aria-label="Explore filters">
+              <section
+                className="explore-filter-shell"
+                aria-labelledby="explore-filter-title"
+              >
+                <h2 id="explore-filter-title" className="sr-only">
+                  Search and filter Manhattan attractions
+                </h2>
+
+                <SearchBar
+                  value={searchTerm}
+                  onSearchChange={setSearchTerm}
+                />
+
                 <CategoryTabs
                   selectedCategory={selectedCategory}
                   categoryCounts={categoryCounts}
                   onCategoryChange={setSelectedCategory}
+                  accessibleOnly={accessibleOnly}
+                  onAccessibleOnlyChange={setAccessibleOnly}
+                  filtersActive={filtersActive}
+                  onClearFilters={clearExploreFilters}
                 />
-
-                <div className="explore-filter-footer">
-                  <div className="explore-accessibility-filter">
-                    <label className="accessibility-filter-control">
-                      <input
-                        type="checkbox"
-                        className="accessibility-filter-input"
-                        checked={accessibleOnly}
-                        onChange={(event) =>
-                          setAccessibleOnly(event.target.checked)
-                        }
-                      />
-
-                      <span
-                        className="accessibility-filter-switch"
-                        aria-hidden="true"
-                      />
-
-                      <span className="accessibility-filter-copy">
-                        <strong>Accessible places only</strong>
-                        <small>
-                          Show attractions with wheelchair or step-free information.
-                        </small>
-                      </span>
-                    </label>
-                  </div>
-
-                  {filtersActive && (
-                    <button
-                      type="button"
-                      className="clear-filters-button"
-                      onClick={clearExploreFilters}
-                    >
-                      Clear all filters
-                    </button>
-                  )}
-                </div>
               </section>
-
-              <SearchBar
-                value={searchTerm}
-                onSearchChange={setSearchTerm}
-              />
 
               {isLoadingPois && (
                 <p className="loading-message">
@@ -1147,14 +1218,38 @@ function App() {
           )}
 
         {currentPage === "explore" &&
+          isPoiDetailRoute &&
+          isLoadingPois && (
+            <p className="fallback-message" role="status">
+              Loading attraction details...
+            </p>
+          )}
+
+        {currentPage === "explore" &&
+          isPoiDetailRoute &&
+          !isLoadingPois &&
+          !poiError &&
+          selectedPoi === null && (
+            <section className="route-login-card">
+              <p className="section-eyebrow">Attraction not found</p>
+              <h1>This attraction is unavailable</h1>
+              <p>The link may be outdated, or the attraction may have moved.</p>
+              <div className="route-login-actions">
+                <button type="button" onClick={() => goToPage("explore")}>
+                  Return to Explore
+                </button>
+              </div>
+            </section>
+          )}
+
+        {currentPage === "explore" &&
           selectedPoi !== null && (
             <section className="poi-detail">
               <button
                 type="button"
                 className="back-button"
                 onClick={() => {
-                  setSelectedPoi(null);
-                  setSavePoiMessage("");
+                  goToPage("explore");
                 }}
               >
                 ← Back to Explore
@@ -1449,7 +1544,7 @@ function App() {
             </section>
           )}
 
-        {currentPage === "itinerary" && (
+        {currentPage === "itinerary" && user && (
           <MyItinerary
             pois={pois}
             onLoginRequired={openLogin}
@@ -1474,7 +1569,7 @@ function App() {
             onLoginRequired={openLogin}
             onItineraryGenerated={(itinerary) => {
               setAiGeneratedItinerary(itinerary);
-              setCurrentPage("itinerary");
+              navigate(PAGE_PATHS.itinerary);
             }}
           />
         )}
