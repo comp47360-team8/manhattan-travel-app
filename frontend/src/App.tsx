@@ -20,6 +20,7 @@ import type {
   ApiMessageResponse,
   AuthMode,
   AuthUser,
+  ItineraryResponse,
   PoiCrowdForecast,
   Poi,
   ProfilePreferences,
@@ -66,6 +67,7 @@ function loadStoredUser(): AuthUser | null {
     return {
       email: parsedUser.email,
       displayName: parsedUser.displayName,
+      accessibility: parsedUser.accessibility === true,
     };
   } catch (error) {
     console.error("Could not read the stored user:", error);
@@ -86,7 +88,9 @@ function getProfilePreferencesKey(user: AuthUser): string {
 function loadProfilePreferences(
   user: AuthUser | null
 ): ProfilePreferences {
-  const fallback: ProfilePreferences = { stepFreeRoutes: false };
+  const fallback: ProfilePreferences = {
+    stepFreeRoutes: user?.accessibility === true,
+  };
 
   if (!user) {
     return fallback;
@@ -232,6 +236,30 @@ function getCardCrowdSummary(
     : `${level} period · ${percentage}%`;
 }
 
+/*
+  I show up to six real readings spread across the available daytime forecast.
+  Some periods contain fewer readings, so I preserve the honest API coverage
+  instead of inventing percentages just to fill every chart position.
+*/
+function selectForecastSlots(
+  hours: PoiCrowdForecast[ForecastPeriod]
+): PoiCrowdForecast[ForecastPeriod] {
+  const daytimeHours = hours.filter(
+    (entry) => entry.hour_of_day >= 10 && entry.hour_of_day <= 20
+  );
+
+  if (daytimeHours.length <= 6) {
+    return daytimeHours;
+  }
+
+  const finalIndex = daytimeHours.length - 1;
+  const selectedIndexes = Array.from({ length: 6 }, (_, index) =>
+    Math.round((index * finalIndex) / 5)
+  );
+
+  return selectedIndexes.map((index) => daytimeHours[index]);
+}
+
 const openingHourDays = [
   ["mon", "Monday"],
   ["tue", "Tuesday"],
@@ -315,6 +343,8 @@ function App() {
     Navigation state.
   */
   const [currentPage, setCurrentPage] = useState<Page>("explore");
+  const [aiGeneratedItinerary, setAiGeneratedItinerary] =
+    useState<ItineraryResponse | null>(null);
 
   /*
     POI API state.
@@ -483,25 +513,24 @@ function App() {
     };
   }, [selectedPoiSlug]);
 
-
   /*
-  I keep the local logout function stable because it is used by an effect
-  and several authentication actions throughout the application.
-*/
-const handleLocalLogout = useCallback(() => {
-  localStorage.removeItem(USER_STORAGE_KEY);
-  setUser(null);
-  setProfilePreferences({ stepFreeRoutes: false });
-  setSavedPoiSlugs([]);
-  setSelectedPoi(null);
-  setPendingAccessibleSave(null);
+    I keep the local logout function stable because it is used by an effect
+    and several authentication actions throughout the application.
+  */
+  const handleLocalLogout = useCallback(() => {
+    localStorage.removeItem(USER_STORAGE_KEY);
+    setUser(null);
+    setProfilePreferences({ stepFreeRoutes: false });
+    setSavedPoiSlugs([]);
+    setSelectedPoi(null);
+    setPendingAccessibleSave(null);
 
-  setCurrentPage((page) =>
-    page === "profile" || page === "saved" || page === "itinerary"
-      ? "explore"
-      : page
-  );
-}, []);
+    setCurrentPage((page) =>
+      page === "profile" || page === "saved" || page === "itinerary"
+        ? "explore"
+        : page
+    );
+  }, []);
 
   /*
     I update the shared saved-place state when a place is removed from the
@@ -1247,14 +1276,9 @@ const handleLocalLogout = useCallback(() => {
                       </p>
                     ) : (selectedPoiForecast?.[forecastPeriod]?.length ?? 0) > 0 ? (
                       <BusynessChart
-                        hours={(selectedPoiForecast?.[forecastPeriod] ?? [])
-                          .filter(
-                            (entry) =>
-                              entry.hour_of_day >= 10 &&
-                              entry.hour_of_day <= 20 &&
-                              entry.hour_of_day % 2 === 0
-                          )
-                          .slice(0, 6)}
+                        hours={selectForecastSlots(
+                          selectedPoiForecast?.[forecastPeriod] ?? []
+                        )}
                         poiName={selectedPoi.name}
                       />
                     ) : (
@@ -1430,6 +1454,7 @@ const handleLocalLogout = useCallback(() => {
             pois={pois}
             onLoginRequired={openLogin}
             preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
+            initialItinerary={aiGeneratedItinerary}
           />
         )}
 
@@ -1442,7 +1467,17 @@ const handleLocalLogout = useCallback(() => {
           />
         )}
 
-        {currentPage === "ai" && <AIPlanner />}
+        {currentPage === "ai" && (
+          <AIPlanner
+            pois={pois}
+            isAuthenticated={Boolean(user)}
+            onLoginRequired={openLogin}
+            onItineraryGenerated={(itinerary) => {
+              setAiGeneratedItinerary(itinerary);
+              setCurrentPage("itinerary");
+            }}
+          />
+        )}
 
         {currentPage === "profile" && user && (
           <Profile

@@ -12,17 +12,11 @@ import type {
   SavedItinerary,
 } from "../types";
 
-/*
-  App.tsx already fetches all POIs and passes them into this component.
-
-  onLoginRequired is optional for now so the project still builds before
-  we update App.tsx. Later, App.tsx will pass the function that opens the
-  existing login modal.
-*/
 type MyItineraryProps = {
   pois: Poi[];
-  onLoginRequired?: () => void;
+  onLoginRequired: () => void;
   preferAccessiblePlaces: boolean;
+  initialItinerary?: ItineraryResponse | null;
 };
 
 /*
@@ -130,6 +124,22 @@ function crowdLevelClass(crowdLevel: string): string {
   return "moderate";
 }
 
+function isAuthenticationError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes("log in") ||
+    message.includes("not authenticated") ||
+    message.includes("authentication failed") ||
+    message.includes("unauthorised") ||
+    message.includes("unauthorized")
+  );
+}
+
 function ItineraryPoiIdentity({ poi }: { poi: Poi }) {
   const location = [poi.neighborhood, poi.borough]
     .filter((value, index, values) => value && values.indexOf(value) === index)
@@ -185,6 +195,7 @@ function MyItinerary({
   pois,
   onLoginRequired,
   preferAccessiblePlaces,
+  initialItinerary = null,
 }: MyItineraryProps) {
   /*
     Basic form state.
@@ -196,10 +207,16 @@ function MyItinerary({
     - selected POI slugs
     - accessibility requirements
   */
-  const [tripName, setTripName] = useState("");
+  const [tripName, setTripName] = useState(
+    initialItinerary?.trip_name ?? ""
+  );
   const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(
+    initialItinerary?.start_date ?? ""
+  );
+  const [endDate, setEndDate] = useState(
+    initialItinerary?.end_date ?? ""
+  );
   const [accessibilityNeed, setAccessibilityNeed] = useState("");
   const [pendingAccessibilityPoi, setPendingAccessibilityPoi] =
     useState<Poi | null>(null);
@@ -207,7 +224,9 @@ function MyItinerary({
   /*
     The planner stays locked until valid dates have been confirmed.
   */
-  const [datesConfirmed, setDatesConfirmed] = useState(false);
+  const [datesConfirmed, setDatesConfirmed] = useState(
+    initialItinerary !== null
+  );
   const [dateError, setDateError] = useState("");
 
   /*
@@ -216,7 +235,13 @@ function MyItinerary({
     This matches the backend request because the itinerary endpoint expects
     a list of POI slug names rather than full POI objects.
   */
-  const [selectedPoiSlugs, setSelectedPoiSlugs] = useState<string[]>([]);
+  const [selectedPoiSlugs, setSelectedPoiSlugs] = useState<string[]>(() =>
+    initialItinerary
+      ? Array.from(
+          new Set(initialItinerary.stops.map((stop) => stop.slug))
+        )
+      : []
+  );
 
   /*
     Saved POIs are loaded from the logged-in user's account.
@@ -235,14 +260,20 @@ function MyItinerary({
     generated response must be sent back when saving.
   */
   const [generatedItinerary, setGeneratedItinerary] =
-    useState<ItineraryResponse | null>(null);
-  const [activeDayNumber, setActiveDayNumber] = useState<number | null>(null);
+    useState<ItineraryResponse | null>(initialItinerary);
+  const [activeDayNumber, setActiveDayNumber] = useState<number | null>(
+    initialItinerary
+      ? groupStopsByDay(initialItinerary.stops)[0]?.dayNumber ?? null
+      : null
+  );
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const [itineraryError, setItineraryError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(
+    initialItinerary ? "Your AI-generated itinerary is ready." : ""
+  );
 
   /*
     Load the user's saved POIs when this component first appears.
@@ -265,17 +296,10 @@ function MyItinerary({
           A logged-out user is allowed to use itinerary generation, so we only
           show a small message inside the Saved Places panel.
         */
-        if (error instanceof Error) {
-          const message = error.message.toLowerCase();
-
-          if (
-            message.includes("not authenticated") ||
-            message.includes("authentication")
-          ) {
-            setSavedPoisMessage("Log in to view your saved places.");
-          } else {
-            setSavedPoisMessage("Saved places could not be loaded.");
-          }
+        if (isAuthenticationError(error)) {
+          setSavedPoisMessage("Log in to view your saved places.");
+        } else {
+          setSavedPoisMessage("Saved places could not be loaded.");
         }
       } finally {
         setIsLoadingSavedPois(false);
@@ -306,19 +330,19 @@ function MyItinerary({
 
   const filteredPois = pois
     .filter((poi) => {
-    if (!canUseInItinerary(poi)) {
-      return false;
-    }
+      if (!canUseInItinerary(poi)) {
+        return false;
+      }
 
-    return (
-      normalisedSearchTerm === "" ||
-      poi.name.toLowerCase().includes(normalisedSearchTerm) ||
-      poi.type.toLowerCase().includes(normalisedSearchTerm) ||
-      poi.borough.toLowerCase().includes(normalisedSearchTerm) ||
-      (poi.neighborhood ?? "")
-        .toLowerCase()
-        .includes(normalisedSearchTerm)
-    );
+      return (
+        normalisedSearchTerm === "" ||
+        poi.name.toLowerCase().includes(normalisedSearchTerm) ||
+        poi.type.toLowerCase().includes(normalisedSearchTerm) ||
+        poi.borough.toLowerCase().includes(normalisedSearchTerm) ||
+        (poi.neighborhood ?? "")
+          .toLowerCase()
+          .includes(normalisedSearchTerm)
+      );
     })
     .sort((firstPoi, secondPoi) => {
       if (!accessibilityPriorityActive) {
@@ -490,13 +514,7 @@ function MyItinerary({
       return;
     }
 
-    /*
-      This shape matches the current FastAPI ItineraryRequest model.
-
-      Important:
-      "accessibilty" is misspelled in the backend model, so the frontend must
-      use the same spelling until the backend changes.
-    */
+    // This object mirrors the current FastAPI ItineraryRequest schema.
     const requestBody: ItineraryGenerateRequest = {
       trip_name: tripName.trim(),
       trip_dates: [startDate, endDate],
@@ -513,6 +531,8 @@ function MyItinerary({
         {
           method: "POST",
           body: JSON.stringify(requestBody),
+          // Scheduling may need to evaluate several days and forecast rows.
+          signal: AbortSignal.timeout(60_000),
         }
       );
 
@@ -563,36 +583,28 @@ function MyItinerary({
       setIsSaving(true);
 
       /*
-  Saving now returns the full saved itinerary, including:
-  - itinerary_id
-  - stop_id values
-  - the regenerated saved stops
-*/
-const savedResult = await apiFetch<SavedItinerary>("/api/itinerary", {
-  method: "POST",
-  body: JSON.stringify(generatedItinerary),
-});
+        Saving returns the persisted itinerary with its itinerary and stop IDs.
+        The response confirms that the backend, rather than local state, owns
+        the saved copy.
+      */
+      const savedResult = await apiFetch<SavedItinerary>("/api/itinerary", {
+        method: "POST",
+        body: JSON.stringify(generatedItinerary),
+      });
 
-setSuccessMessage(
-  `Itinerary "${savedResult.trip_name}" was saved successfully.`
-);
+      setSuccessMessage(
+        `Itinerary "${savedResult.trip_name}" was saved successfully.`
+      );
     } catch (error) {
       console.error("Saving itinerary failed:", error);
 
+      if (isAuthenticationError(error)) {
+        setItineraryError("Please log in before saving your itinerary.");
+        onLoginRequired();
+        return;
+      }
+
       if (error instanceof Error) {
-        const message = error.message.toLowerCase();
-
-        if (
-          message.includes("not authenticated") ||
-          message.includes("authentication failed") ||
-          message.includes("unauthorised") ||
-          message.includes("unauthorized")
-        ) {
-          setItineraryError("Please log in before saving your itinerary.");
-          onLoginRequired?.();
-          return;
-        }
-
         setItineraryError(error.message);
       } else {
         setItineraryError("The itinerary could not be saved.");
@@ -894,8 +906,9 @@ setSuccessMessage(
                   <h2>{generatedItinerary.trip_name}</h2>
 
                   <p>
-  {generatedItinerary.start_date} to {generatedItinerary.end_date}
-</p>
+                    {generatedItinerary.start_date} to{" "}
+                    {generatedItinerary.end_date}
+                  </p>
                 </div>
 
                 <button
@@ -907,13 +920,13 @@ setSuccessMessage(
                   {isSaving ? "Saving..." : "Save Itinerary"}
                 </button>
               </div>
-              {/* I show scheduling warnings returned by the backend without hiding valid stops. */}
-{generatedItinerary.warning?.trim() && (
-  <p className="fallback-message" role="status">
-    <strong>Scheduling note:</strong>{" "}
-    {generatedItinerary.warning}
-  </p>
-)}
+              {/* Backend warnings remain visible without hiding valid stops. */}
+              {generatedItinerary.warning?.trim() && (
+                <p className="fallback-message" role="status">
+                  <strong>Scheduling note:</strong>{" "}
+                  {generatedItinerary.warning}
+                </p>
+              )}
               {generatedScheduleHasOverlap && (
                 <p className="fallback-message" role="status">
                   <strong>Scheduling conflict:</strong> Some places share an
@@ -959,123 +972,134 @@ setSuccessMessage(
                           day.dayNumber === activeGeneratedDay?.dayNumber
                       )
                       .map((day) => (
-                    <section
-                      className="itinerary-day-group"
-                      key={`${day.dayNumber}-${day.visitDate}`}
-                    >
-                      <header className="itinerary-day-heading">
-                        <div>
-                          <p className="section-eyebrow">Day {day.dayNumber}</p>
-                          <h3>{formatItineraryDate(day.visitDate)}</h3>
-                        </div>
-
-                        <span>
-                          {day.stops.length} {day.stops.length === 1 ? "place" : "places"}
-                        </span>
-                      </header>
-
-                      <div className="itinerary-timeline">
-                        {day.stops.map((stop) => (
-                          <div
-                            key={`${stop.slug}-${stop.position}`}
-                            className="itinerary-timeline-row"
-                          >
-                            <div className="timeline-time">
-                              <strong>{stop.slot}</strong>
-                              <span>
-                                {formatClockTime(stop.slot_start)} –{" "}
-                                {formatClockTime(stop.slot_end)}
-                              </span>
+                        <section
+                          className="itinerary-day-group"
+                          key={`${day.dayNumber}-${day.visitDate}`}
+                        >
+                          <header className="itinerary-day-heading">
+                            <div>
+                              <p className="section-eyebrow">
+                                Day {day.dayNumber}
+                              </p>
+                              <h3>{formatItineraryDate(day.visitDate)}</h3>
                             </div>
 
-                            <article className="timeline-card">
-                              <div className="timeline-card-image">
-                                <img
-                                  src={stop.hero_image_url || poiPhotoFallback}
-                                  alt=""
-                                  onError={(event) => {
-                                    if (
-                                      !event.currentTarget.src.endsWith(
-                                        "poi-photo-fallback.svg"
-                                      )
-                                    ) {
-                                      event.currentTarget.src =
-                                        poiPhotoFallback;
-                                    }
-                                  }}
-                                />
-                              </div>
+                            <span>
+                              {day.stops.length}{" "}
+                              {day.stops.length === 1 ? "place" : "places"}
+                            </span>
+                          </header>
 
-                              <div className="timeline-card-content">
-                              <p className="card-location">
-                                {stop.neighborhood}, {stop.borough}
-                              </p>
-
-                              <div className="timeline-card-heading">
-                                <h3>{stop.poi_name}</h3>
-                                <span
-                                  className={`crowd-level-pill ${crowdLevelClass(
-                                    stop.crowd_level
-                                  )}`}
-                                >
-                                  {stop.crowd_level} crowds
-                                </span>
-                              </div>
-
-                              <p className="recommended-window">
-                                <strong>Recommended {stop.slot} window</strong>
-                                <span>
-                                  {stop.slot_start.slice(0, 5)}–{stop.slot_end.slice(0, 5)} · {stop.crowd_level}
-                                </span>
-                              </p>
-
-                              <p className="why-this-time">
-                                <strong>Why this time:</strong>{" "}
-                                {pois.find(
-                                  (poi) => poi.slug === stop.slug
-                                )?.why_this_time?.trim() ||
-                                  "Detailed recommendation data is not available for this stop."}
-                              </p>
-
-                              <div className="timeline-card-details">
-                                <span>
-                                  Suggested duration: {stop.suggested_duration}{" "}
-                                  minutes
-                                </span>
-
-                                {stop.accessibility.length > 0 && (
+                          <div className="itinerary-timeline">
+                            {day.stops.map((stop) => (
+                              <div
+                                key={`${stop.slug}-${stop.position}`}
+                                className="itinerary-timeline-row"
+                              >
+                                <div className="timeline-time">
+                                  <strong>{stop.slot}</strong>
                                   <span>
-                                    Accessible: {stop.accessibility
-                                      .map(String)
-                                      .join(", ")}
+                                    {formatClockTime(stop.slot_start)} –{" "}
+                                    {formatClockTime(stop.slot_end)}
                                   </span>
-                                )}
-                              </div>
-
-                              {stop.flags.length > 0 && (
-                                <div className="stop-flags">
-                                  {stop.flags.map((flag) => (
-                                    <span key={flag}>{flag}</span>
-                                  ))}
                                 </div>
-                              )}
 
-                              {stop.busyness_for_day.length > 0 ? (
-                                <BusynessChart
-                                  hours={stop.busyness_for_day}
-                                  poiName={stop.poi_name}
-                                />
-                              ) : (
-                                <p className="fallback-message">
-                                  Hourly crowd forecast is not available for this stop.
-                                </p>
-                              )}
+                                <article className="timeline-card">
+                                  <div className="timeline-card-image">
+                                    <img
+                                      src={
+                                        stop.hero_image_url || poiPhotoFallback
+                                      }
+                                      alt=""
+                                      onError={(event) => {
+                                        if (
+                                          !event.currentTarget.src.endsWith(
+                                            "poi-photo-fallback.svg"
+                                          )
+                                        ) {
+                                          event.currentTarget.src =
+                                            poiPhotoFallback;
+                                        }
+                                      }}
+                                    />
+                                  </div>
+
+                                  <div className="timeline-card-content">
+                                    <p className="card-location">
+                                      {stop.neighborhood}, {stop.borough}
+                                    </p>
+
+                                    <div className="timeline-card-heading">
+                                      <h3>{stop.poi_name}</h3>
+                                      <span
+                                        className={`crowd-level-pill ${crowdLevelClass(
+                                          stop.crowd_level
+                                        )}`}
+                                      >
+                                        {stop.crowd_level} crowds
+                                      </span>
+                                    </div>
+
+                                    <p className="recommended-window">
+                                      <strong>
+                                        Recommended {stop.slot} window
+                                      </strong>
+                                      <span>
+                                        {stop.slot_start.slice(0, 5)}–
+                                        {stop.slot_end.slice(0, 5)} ·{" "}
+                                        {stop.crowd_level}
+                                      </span>
+                                    </p>
+
+                                    <p className="why-this-time">
+                                      <strong>Why this time:</strong>{" "}
+                                      {pois
+                                        .find((poi) => poi.slug === stop.slug)
+                                        ?.why_this_time?.trim() ||
+                                        "Detailed recommendation data is not available for this stop."}
+                                    </p>
+
+                                    <div className="timeline-card-details">
+                                      <span>
+                                        Suggested duration:{" "}
+                                        {stop.suggested_duration} minutes
+                                      </span>
+
+                                      {stop.accessibility.length > 0 && (
+                                        <span>
+                                          Accessible:{" "}
+                                          {stop.accessibility
+                                            .map(String)
+                                            .join(", ")}
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {stop.flags.length > 0 && (
+                                      <div className="stop-flags">
+                                        {stop.flags.map((flag) => (
+                                          <span key={flag}>{flag}</span>
+                                        ))}
+                                      </div>
+                                    )}
+
+                                    {stop.busyness_for_day.length > 0 ? (
+                                      <BusynessChart
+                                        hours={stop.busyness_for_day}
+                                        poiName={stop.poi_name}
+                                      />
+                                    ) : (
+                                      <p className="fallback-message">
+                                        Hourly crowd forecast is not available
+                                        for this stop.
+                                      </p>
+                                    )}
+                                  </div>
+                                </article>
                               </div>
-                            </article>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </section>
+                        </section>
                       ))}
                   </div>
                 </div>

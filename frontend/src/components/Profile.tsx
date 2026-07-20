@@ -84,9 +84,9 @@ function Profile({
           </div>
 
           <p className="profile-preference-note">
-            This preference changes how attractions are prioritised, but it
-            never hides places or prevents you from choosing them. It is saved
-            on this device until a backend profile endpoint is available.
+            Your account preference is restored when you sign in. Changes made
+            here update this device immediately, prioritise suitable places,
+            and never hide attractions or prevent you from choosing them.
           </p>
         </section>
 

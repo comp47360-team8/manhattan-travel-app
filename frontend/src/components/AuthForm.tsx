@@ -30,10 +30,8 @@ function getNameFromEmail(email: string): string {
 }
 
 /*
-  Builds the user object used by the frontend.
-
-  The backend may currently return only a success message, but this function
-  also supports future responses containing email, username, or display name.
+  Normalises the web login and registration responses into the display
+  information used by the frontend.
 */
 function buildAuthenticatedUser(
   response: AuthResponse,
@@ -54,6 +52,10 @@ function buildAuthenticatedUser(
   return {
     email: responseEmail,
     displayName: responseDisplayName,
+    accessibility:
+      response.user?.accessibility ??
+      response.accessibility ??
+      false,
   };
 }
 
@@ -70,6 +72,7 @@ function AuthForm({
   // These fields are only used during registration.
   const [username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [accessibility, setAccessibility] = useState(false);
 
   // Message shown inside the authentication modal.
   const [authMessage, setAuthMessage] = useState("");
@@ -185,37 +188,62 @@ function AuthForm({
       return;
     }
 
+    let accountCreated = false;
+
     try {
       setIsSubmitting(true);
 
-      const response = await apiFetch<AuthResponse>("/api/auth/signup", {
+      const signupResponse = await apiFetch<AuthResponse>("/api/auth/signup", {
         method: "POST",
         body: JSON.stringify({
           email: email.trim(),
           display_name: username.trim(),
+          accessibility,
           password,
           confirm_password: confirmPassword,
         }),
       });
+      accountCreated = true;
 
-      const user = buildAuthenticatedUser(response, email, username);
+      /*
+        Signup creates the account but does not establish the HttpOnly cookie
+        session. Logging in immediately keeps the navbar and protected requests
+        consistent with the server-side authentication state.
+      */
+      const loginResponse = await apiFetch<AuthResponse>("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      });
+
+      const user = buildAuthenticatedUser(
+        loginResponse,
+        email,
+        signupResponse.display_name || username
+      );
 
       localStorage.setItem("offpeak_user", JSON.stringify(user));
 
-      setAuthMessage(
-        response.message || "Your account has been created successfully."
-      );
+      setAuthMessage("Your account has been created and you are now logged in.");
       setIsError(false);
 
       onAuthSuccess?.(user);
     } catch (error) {
       console.error("Registration failed:", error);
 
-      showError(
-        error instanceof Error
-          ? error.message
-          : "Registration could not be completed."
-      );
+      if (accountCreated) {
+        showError(
+          "Your account was created, but automatic login failed. Please switch to Log in and continue with the same details."
+        );
+      } else {
+        showError(
+          error instanceof Error
+            ? error.message
+            : "Registration could not be completed."
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -315,6 +343,27 @@ function AuthForm({
               autoComplete="new-password"
               disabled={isSubmitting}
             />
+          </label>
+        )}
+
+        {!isLogin && (
+          <label className="auth-accessibility-option">
+            <input
+              type="checkbox"
+              checked={accessibility}
+              onChange={(event) => setAccessibility(event.target.checked)}
+              disabled={isSubmitting}
+            />
+
+            <span className="auth-accessibility-check" aria-hidden="true" />
+
+            <span>
+              <strong>I need wheelchair-accessible attractions</strong>
+              <small>
+                Accessible places will be prioritised and warnings will be
+                shown when accessibility information is unavailable.
+              </small>
+            </span>
           </label>
         )}
 
