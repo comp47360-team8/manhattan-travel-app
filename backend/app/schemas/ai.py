@@ -35,8 +35,10 @@ class ChatResponse(BaseModel):
     message: str
     ui_action: UIAction | None = None
     itinerary: dict | None = None
+    save_to_history: bool = True
 
 class GeminiResponse(BaseModel):
     message: str
     ui_action: UIAction | None = None
+    save_to_history: bool = True
 
