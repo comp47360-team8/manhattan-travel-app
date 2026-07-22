@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from app.services.poi_service import get_all_pois
 
 
 # |-----ITINERARY-----|
@@ -73,8 +72,9 @@ Ask for only these questions, one at a time:
 - trip dates
 - pace of days (relaxed or packed)
 - any preferred types of POI's
-- types of POIs and specific POIs they dont want to visit
+- types of POIs they dont want to visit
 Keep answers short, concise and friendly.
+Never ask for specific POIs.
 When you need the user to choose preferred POI types or excluded POI types:
 - Do not ask the user to type the answer.
 - Return a UI action:
@@ -119,13 +119,5 @@ Include:
 - Outstanding questions that still need to be answered.
 - Any context that would make future replies more natural.
 Return plain text only.
-"""
-
-ITINERARY_PRESENTATION_PROMPT="""
-You are giving a brief summary of the generated itinerary.
-
-Include the name, number of days, number of POIs and 
-list of the POI names of the itinerary.
-Do not suggest anything.
 """
 
