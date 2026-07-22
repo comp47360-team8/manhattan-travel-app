@@ -1,9 +1,12 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.ai_model import Conversation, Message, Trip
-from app.services.ai_service import convert_for_ai, create_summary
+from app.services.ai.selector import LLMSelector
+from app.core.config import settings
 from app.core.exceptions import ConversationNotFoundError
 from app.core.constants import ASSISTANT
+
+provider = LLMSelector.create(settings.AI_PROVIDER)
 
 def start_conversation(db: Session, user):
     new_conversation = Conversation(
@@ -61,12 +64,11 @@ def load_chat_history(conv_id, db: Session, user):
         in_order.append(history[index])
         index -= 1
         count += 1
-
-    final_history = convert_for_ai(in_order)
-    return final_history 
+        
+    return in_order
 
 def update_summary(conv_id, history: list[dict], db: Session, user):
-    new_summary = create_summary(history)
+    new_summary = provider.create_summary(history)
 
     update_statement = select(Conversation).where(
         Conversation.id == conv_id,
