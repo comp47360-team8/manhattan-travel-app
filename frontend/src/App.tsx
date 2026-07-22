@@ -270,10 +270,11 @@ function getNewYorkHour(): number {
 }
 
 function getCardCrowdSummary(
-  forecast: PoiCrowdForecast
+  forecast: PoiCrowdForecast,
+  isClosedToday: boolean
 ): string {
   if (forecast.today.length === 0) {
-    return "Forecast unavailable";
+    return isClosedToday ? "Not open today" : "Forecast unavailable";
   }
 
   const currentHour = getNewYorkHour();
@@ -331,6 +332,36 @@ const openingHourDays = [
   ["sat", "Saturday"],
   ["sun", "Sunday"],
 ] as const;
+
+type OpeningHourDayKey = (typeof openingHourDays)[number][0];
+
+function getNewYorkOpeningHourDay(): OpeningHourDayKey {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    weekday: "short",
+  })
+    .format(new Date())
+    .toLowerCase() as OpeningHourDayKey;
+}
+
+/*
+  I only treat an attraction as closed when its structured schedule explicitly
+  contains no periods for today. Missing opening-hours data remains unknown.
+*/
+function isPoiClosedToday(poi: Poi): boolean {
+  if (!poi.opening_hours) {
+    return false;
+  }
+
+  const today = getNewYorkOpeningHourDay();
+
+  if (!Object.hasOwn(poi.opening_hours, today)) {
+    return false;
+  }
+
+  const periods = poi.opening_hours[today];
+  return periods === null || (Array.isArray(periods) && periods.length === 0);
+}
 
 function formatOpeningTime(value: string): string {
   const [hourText, minute = "00"] = value.split(":");
@@ -427,6 +458,9 @@ function App() {
   const [forecastPeriod, setForecastPeriod] =
     useState<ForecastPeriod>("today");
   const selectedPoiSlug = selectedPoi?.slug;
+  const selectedPoiIsClosedToday = selectedPoi
+    ? isPoiClosedToday(selectedPoi)
+    : false;
   const [crowdSummaryBySlug, setCrowdSummaryBySlug] = useState<
     Record<string, string>
   >({});
@@ -455,13 +489,16 @@ function App() {
       return;
     }
 
+    const poi = pois.find((item) => item.slug === slug);
+    const isClosedToday = poi ? isPoiClosedToday(poi) : false;
+
     loadingCrowdSlugsRef.current.add(slug);
 
     try {
       const forecast = await apiFetch<PoiCrowdForecast>(
         `/api/pois/${encodeURIComponent(slug)}/crowd-forecast`
       );
-      const summary = getCardCrowdSummary(forecast);
+      const summary = getCardCrowdSummary(forecast, isClosedToday);
 
       crowdSummaryCacheRef.current[slug] = summary;
       setCrowdSummaryBySlug((current) => ({
@@ -470,7 +507,9 @@ function App() {
       }));
     } catch (error) {
       console.info(`Card forecast was not loaded for ${slug}:`, error);
-      const summary = "Forecast unavailable";
+      const summary = isClosedToday
+        ? "Not open today"
+        : "Forecast unavailable";
 
       crowdSummaryCacheRef.current[slug] = summary;
       setCrowdSummaryBySlug((current) => ({
@@ -480,7 +519,7 @@ function App() {
     } finally {
       loadingCrowdSlugsRef.current.delete(slug);
     }
-  }, []);
+  }, [pois]);
 
   /*
     Explore search and filter state.
@@ -1383,10 +1422,18 @@ function App() {
                         </span>
 
                         <div>
-                          <strong>Forecast unavailable</strong>
+                          <strong>
+                            {forecastPeriod === "today" &&
+                            selectedPoiIsClosedToday
+                              ? "Not open today"
+                              : "Forecast unavailable"}
+                          </strong>
                           <p>
-                            {forecastError ||
-                              `No ${forecastPeriod} crowd forecast is available for this attraction.`}
+                            {forecastPeriod === "today" &&
+                            selectedPoiIsClosedToday
+                              ? `${selectedPoi.name} is closed today, so an hourly crowd forecast is not shown.`
+                              : forecastError ||
+                                `No ${forecastPeriod} crowd forecast is available for this attraction.`}
                           </p>
                         </div>
                       </div>

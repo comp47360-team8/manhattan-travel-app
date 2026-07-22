@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { apiFetch } from "../api";
 import { groupStopsByDay } from "../itinerary";
@@ -92,11 +92,39 @@ function AIPlanner({
   const [successMessage, setSuccessMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const itineraryResultRef = useRef<HTMLElement | null>(null);
 
   const itineraryDays = useMemo(
     () => (itinerary ? groupStopsByDay(itinerary.stops) : []),
     [itinerary]
   );
+  const hasUserSentMessage = messages.some(
+    (message) => message.role === "user"
+  );
+
+  /*
+    Once the backend returns an itinerary, I move the viewport and keyboard
+    focus to the result so it is not hidden below the conversation.
+  */
+  useEffect(() => {
+    if (!itinerary) {
+      return;
+    }
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      const result = itineraryResultRef.current;
+
+      result?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "start",
+      });
+      result?.focus({ preventScroll: true });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [itinerary]);
 
   function requireLogin(): boolean {
     if (isAuthenticated) {
@@ -379,21 +407,23 @@ function AIPlanner({
           disabled={isSending}
         />
 
-        <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
-          {PROMPT_SUGGESTIONS.map((suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => {
-                setPrompt(suggestion);
-                setErrorMessage("");
-              }}
-              disabled={isSending}
-            >
-              {suggestion}
-            </button>
-          ))}
-        </div>
+        {!hasUserSentMessage && (
+          <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
+            {PROMPT_SUGGESTIONS.map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                onClick={() => {
+                  setPrompt(suggestion);
+                  setErrorMessage("");
+                }}
+                disabled={isSending}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        )}
 
         <button
           type="button"
@@ -420,7 +450,11 @@ function AIPlanner({
       </section>
 
       {itinerary && (
-        <section className="ai-itinerary-result">
+        <section
+          ref={itineraryResultRef}
+          className="ai-itinerary-result"
+          tabIndex={-1}
+        >
           <header>
             <div>
               <p className="section-eyebrow">Generated itinerary</p>
