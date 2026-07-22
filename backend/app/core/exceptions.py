@@ -26,3 +26,6 @@ class RepeatingPOI(Exception):
 class ConversationNotFoundError(Exception):
     pass
 
+class LLMUnresponsiveError(Exception):
+    pass
+
