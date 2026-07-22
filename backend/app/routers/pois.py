@@ -51,7 +51,7 @@ def get_poi_photo(slug: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Attraction not found."
         )
-    photo_url = get_photo_url(poi.google_place_id)
+    photo_url = get_photo_url(poi.google_place_id, db)
     if not photo_url:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
