@@ -31,6 +31,8 @@ jobs:
           # the gitignored backend/.env, which no CI checkout has.
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          AI_PROVIDER: ${{ secrets.AI_PROVIDER }}
         run: |
           pip install -r requirements.txt
           alembic upgrade head
