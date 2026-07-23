@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str
     GROQ_API_KEY: str
     AI_PROVIDER: str
+    # Optional so a missing value never breaks Settings() import (the migration
+    # step imports this module). The photo endpoint degrades to 404 when unset.
+    GOOGLE_PLACES_API_KEY: str = ""
     ALLOWED_ORIGINS: str = "http://localhost:5173"
 
     @property
