@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.services.poi_service import get_all_pois, get_poi_by_slug, unsave_poi_for_user
-from app.services.poi_service import save_poi_for_user, get_poi_busyness
+from app.services.poi_service import (
+    get_all_pois, get_poi_by_slug, unsave_poi_for_user, 
+    save_poi_for_user, get_poi_busyness)
 from app.core.exceptions import POINotFoundError
 from app.dependencies.auth import authorise_access
 from app.schemas.poi import POIDetailedResponse, POISaveResponse, POIUnsaveResponse, POIBusynessResponse

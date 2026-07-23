@@ -24,6 +24,10 @@ class POIDetailedResponse(BaseModel):
 
     longitude: float | None
 
+    current_busyness: str 
+
+    current_busyness_pct : int | None
+
     hero_image_url: str | None
 
     gallery_image_urls: list[str] | None
