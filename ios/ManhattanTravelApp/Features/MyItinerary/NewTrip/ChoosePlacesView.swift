@@ -9,13 +9,16 @@ import SwiftUI
 
 struct ChoosePlacesView: View {
     @ObservedObject var vm: NewTripViewModel
+    @Binding var path: NavigationPath
     @EnvironmentObject private var savedStore: SavedPOIStore
     @Environment(\.dismiss) private var dismiss
     var onClose: () -> Void = {}
+    /// Fired when the user taps Generate. The edit flow uses this to clear the
+    /// list's navigation stack, so closing the cover later returns to the list.
+    var onGenerate: () -> Void = {}
 
     @State private var search = ""
     @State private var accessibleOnly = false
-    @State private var goToOptimize = false
 
     var body: some View {
         ZStack {
@@ -44,9 +47,6 @@ struct ChoosePlacesView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
-        .navigationDestination(isPresented: $goToOptimize) {
-            OptimizingView(vm: vm, onClose: onClose)
-        }
         .task {
             await vm.loadPlaces()
             await savedStore.load()
@@ -231,7 +231,7 @@ struct ChoosePlacesView: View {
     }
 
     private var generateBar: some View {
-        Button { vm.result = nil; vm.errorMessage = nil; goToOptimize = true } label: {
+        Button { onGenerate(); vm.result = nil; vm.errorMessage = nil; path.append(NewTripStep.optimizing) } label: {
             HStack(spacing: 8) { Text("Generate"); Image(systemName: "arrow.right") }
                 .font(.system(size: 17, weight: .semibold)).foregroundColor(.white)
                 .frame(maxWidth: .infinity).frame(height: 54)
@@ -291,7 +291,7 @@ private func previewPOI(_ slug: String, _ name: String, _ hood: String,
     // allPOIs non-empty makes `loadPlaces()` skip the network in the preview.
 
     return NavigationStack {
-        ChoosePlacesView(vm: vm)
+        ChoosePlacesView(vm: vm, path: .constant(NavigationPath()))
             .environmentObject(SavedPOIStore.previewStore(saved))
     }
 }
