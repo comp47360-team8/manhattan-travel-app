@@ -4,11 +4,15 @@ from sqlalchemy.orm import Session
 from app.models.poi_model import POI, SavedPOI
 from app.core.exceptions import POINotFoundError
 from app.repositories.poi_repository import get_hourly_busyness, get_weekend_hourly_busyness, get_current_busyness
+from app.schemas.poi import POIDetailedResponse
+from app.services.photo_service import poi_photo_url
 
-def get_all_pois(db: Session):
-    statement = select(POI)
-    pois = db.execute(statement).scalars().all()
+def attach_current_busyness(pois: list[POI], db: Session):
+    """Set the (non-persisted) current_busyness fields POIDetailedResponse needs.
 
+    Every POI served through POIDetailedResponse requires these, so this must run
+    on any path that returns POIs (list, detail, saved) — not just the list.
+    """
     busyness = get_current_busyness(pois, db)
 
     for poi in pois:
@@ -23,7 +27,26 @@ def get_all_pois(db: Session):
             poi.current_busyness_pct = None
 
     return pois
-    
+
+def serialise_poi(poi: POI) -> POIDetailedResponse:
+    """Serialise a POI, pointing hero_image_url at our durable photo proxy.
+
+    Shared by every endpoint that returns a POI (list, detail, saved) so they all
+    hand clients the same self-healing image URL rather than the stored Google URL
+    that expires. Falls back to the stored value when no proxy URL applies. The
+    POI must already have current_busyness attached (see attach_current_busyness).
+    """
+    response = POIDetailedResponse.model_validate(poi)
+    proxy = poi_photo_url(poi.slug, poi.google_place_id)
+    if proxy:
+        response.hero_image_url = proxy
+    return response
+
+def get_all_pois(db: Session):
+    statement = select(POI)
+    pois = db.execute(statement).scalars().all()
+    return attach_current_busyness(pois, db)
+
 
 def get_poi_by_slug(slug: str, db: Session):
     statement = select(POI).where(POI.slug == slug.lower().strip())
@@ -92,8 +115,8 @@ def get_saved_pois(db: Session, user: int):
     statement = (
         select(POI).join(SavedPOI, POI.id == SavedPOI.poi_id).where(SavedPOI.user_id == user)
     )
-    result = db.execute(statement)
-    return result.scalars().all()
+    pois = db.execute(statement).scalars().all()
+    return attach_current_busyness(pois, db)
 
 
 def unsave_poi_for_user(slug: str, db: Session, user: int):
