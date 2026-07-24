@@ -8,6 +8,7 @@ from app.services.itinerary.poi_profile import get_poi_profiles
 from app.services.itinerary.assignment.scheduler import assign_days, assign_slots
 from app.schemas.itinerary import ItineraryRequest
 from app.services.poi_service import get_pois_by_slug, get_poi_by_slug, get_all_pois, get_poi_by_id
+from app.services.photo_service import poi_photo_url
 from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day, get_busyness_for_trip
 from app.services.itinerary.ordering import reorder_pois
 from app.core.constants import MAX_POIS_PER_DAY
@@ -94,7 +95,7 @@ def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str
                         "position": i,
                         "poi_type": poi_object.type,
                         "crowd_level": crowd_level,
-                        "hero_image_url": poi_object.hero_image_url,
+                        "hero_image_url": poi_photo_url(poi_object.slug, poi_object.google_place_id) or poi_object.hero_image_url or "",
                         "borough": poi_object.borough,
                         "neighborhood": poi_object.neighborhood,
                         "suggested_duration": poi_object.recommended_duration_min,

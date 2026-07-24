@@ -34,6 +34,21 @@ _TIMEOUT_S = 8.0
 _CACHE_TTL = timedelta(hours=6)
 
 
+def poi_photo_url(slug: str | None, google_place_id: str | None) -> str | None:
+    """Absolute URL of our photo proxy for a POI, or None if it can't serve one.
+
+    Points a hero image at GET /api/pois/{slug}/photo so the link is durable and
+    self-healing rather than a stored Google URL that expires. Absolute (built
+    from PUBLIC_API_URL) because the iOS client does URL(string:) with no base.
+    None when the POI has no place_id to resolve from or no key is configured, so
+    callers fall back to whatever they had stored. Pure string building — no DB or
+    network — so it is cheap to call while serialising lists of POIs or stops.
+    """
+    if not slug or not google_place_id or not settings.GOOGLE_PLACES_API_KEY:
+        return None
+    return f"{settings.PUBLIC_API_URL.rstrip('/')}/api/pois/{slug}/photo"
+
+
 def get_photo_url(place_id: str | None, db: Session) -> str | None:
     """Return a currently-valid image URL for a place, or None if unavailable.
 

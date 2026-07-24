@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     # Optional so a missing value never breaks Settings() import (the migration
     # step imports this module). The photo endpoint degrades to 404 when unset.
     GOOGLE_PLACES_API_KEY: str = ""
+    # Absolute base for the photo-proxy URLs handed to clients. A fixed value
+    # rather than request.base_url so deep serialisation layers (itineraries) can
+    # build the same link without a request, and so it is immune to proxy-header
+    # host confusion. Defaults to the production API host; override per env.
+    PUBLIC_API_URL: str = "https://api.offpeak.live"
     ALLOWED_ORIGINS: str = "http://localhost:5173"
 
     @property

@@ -7,6 +7,7 @@ from app.schemas.itinerary import ItineraryResponse
 from app.core.exceptions import ItineraryNotFound, StopNotFound, POINotFoundError
 from app.schemas.itinerary import ItineraryRequest
 from app.services.poi_service import get_poi_by_slug
+from app.services.photo_service import poi_photo_url
 
 def get_crowd_level(id, day, slot, db: Session):
     statement = select(
@@ -137,7 +138,7 @@ def serialize_itinerary(itinerary: SavedItinerary):
                 "position": stop.position,
                 "poi_type": stop.poi.type,
                 "crowd_level": stop.crowd_level,
-                "hero_image_url": stop.hero_image_url,
+                "hero_image_url": poi_photo_url(stop.poi.slug, stop.poi.google_place_id) or stop.hero_image_url or "",
                 "borough": stop.poi.borough,
                 "neighborhood": stop.poi.neighborhood,
                 "suggested_duration": stop.poi.recommended_duration_min,
@@ -158,7 +159,10 @@ def get_saved_itineraries(db: Session, user: uuid.UUID):
         "start_date": itinerary.start_date,
         "end_date": itinerary.end_date,
         "number_of_places": len(itinerary.stops),
-        "hero_image_url": itinerary.stops[0].hero_image_url if len(itinerary.stops) > 0 else None
+        "hero_image_url": (
+            poi_photo_url(itinerary.stops[0].poi.slug, itinerary.stops[0].poi.google_place_id)
+            or itinerary.stops[0].hero_image_url
+        ) if len(itinerary.stops) > 0 else None
     }
     for itinerary in all_itineraries]
 
