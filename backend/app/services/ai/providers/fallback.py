@@ -1,3 +1,4 @@
+import json
 from app.services.ai.base import LLMProvider
 from app.services.ai.providers.gemini import GeminiProvider
 from app.services.ai.providers.llama import LlamaProvider
@@ -9,26 +10,29 @@ class FallbackProvider(LLMProvider):
         self.primary = GeminiProvider()
         self.fallback = LlamaProvider()
 
-    def extract_trip_parameters(self, *args, **kwargs):
+    def extract_trip_parameters(self, prompt, last_message, trip_details):
+        if isinstance(prompt, list):
+            prompt = json.dumps(prompt)
+
         try:
-            return self.primary.extract_trip_parameters(*args, **kwargs)
+            return self.primary.extract_trip_parameters(prompt, last_message, trip_details)
         except LLMUnresponsiveError as e:
             self._fallback_message(e)
 
             try:
-                return self.fallback.extract_trip_parameters(*args, **kwargs)
+                return self.fallback.extract_trip_parameters(prompt, last_message, trip_details)
             except LLMUnresponsiveError as e:
                 print(f"Error occured during extraction: {e}")
                 raise
 
-    def generate_chat_response(self, *args, **kwargs):
+    def generate_chat_response(self, history, summary, trip_details, conv_id, db, user):
         try:
-            return self.primary.generate_chat_response(*args, **kwargs)
+            return self.primary.generate_chat_response(history, summary, trip_details, conv_id, db, user)
         except LLMUnresponsiveError as e:
             self._fallback_message(e)
 
             try:
-                return self.fallback.generate_chat_response(*args, **kwargs)
+                return self.fallback.generate_chat_response(history, summary, trip_details, conv_id, db, user)
             except LLMUnresponsiveError as e:
                 print(f"Error occured during chat generation: {e}")
                 return ChatResponse(
