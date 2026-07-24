@@ -31,3 +31,8 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: psql "$DATABASE_URL" -f backend/db/06_dml_update_poi_best_time.sql
+
+      - name: Update POI summaries and descriptions
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: psql "$DATABASE_URL" -f backend/db/07_dml_update_poi_content.sql
