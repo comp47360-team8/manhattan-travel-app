@@ -35,13 +35,21 @@ struct POIDetail: Decodable, POIImageRepresentable {
         googleReviewStar.map { String(format: "%.1f", $0) }
     }
     var descriptionText: String? { (description?.isEmpty == false ? description : nil) ?? summary }
-    var admissionLabel: String {
+    
+    var admissionDetail: String? {
         if let t = admissionText, !t.isEmpty { return t }
         if let f = admissionFee { return "$\(f)" }
-        return "Admission information is not available"
+        return nil       
     }
-    /// 副标题里的简短票价（Free admission / $25）
-    var admissionShort: String { admissionFee.map { "$\($0)" } ?? "Free admission" }
+    
+    var admissionShort: String? {
+        if let f = admissionFee {
+            return f == 0 ? "Free admission" : "$\(f)"
+        }
+        return nil                                         
+    }
+
+    
     var durationText: String? {
         guard let m = recommendedDurationMin else { return nil }
         if m < 60 { return "\(m) min" }
@@ -58,6 +66,13 @@ struct POIDetail: Decodable, POIImageRepresentable {
             default:                    return nil
             }
         }
+    }
+    
+    var openingHoursDisplay: String? {
+        openingHoursText?
+            .split(separator: ";")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .joined(separator: "\n")
     }
     
 }
