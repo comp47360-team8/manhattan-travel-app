@@ -12,19 +12,20 @@ import SwiftUI
 struct OptimizingView: View {
     @ObservedObject var vm: NewTripViewModel
     @Environment(\.dismiss) private var dismiss
+    /// Closes the whole cover (back to the itinerary list) once the user is done
+    /// viewing the generated result.
     var onClose: () -> Void = {}
-    
+
 
     var body: some View {
         ZStack {
             OffpeakTheme.backGround
             if let result = vm.result {
-                OptimizedItineraryView(
-                    itinerary: result,
-                    onBack: onClose,
-                    onEdit: { dismiss() }        // pop back to Choose Places to re-select & regenerate
-                )
-                .transition(.opacity)
+                OptimizedItineraryView(itinerary: result,
+                                       onBack: onClose,
+                                       onEdit: nil,          // no re-edit inside the cover
+                                       enablePOINavigation: true)
+                    .transition(.opacity)
             } else if let error = vm.errorMessage {
                 errorState(error).transition(.opacity)
             } else {

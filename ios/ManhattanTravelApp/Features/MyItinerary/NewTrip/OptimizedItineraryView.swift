@@ -12,7 +12,9 @@ struct OptimizedItineraryView: View {
     let itinerary: OptimizedItinerary
     var onBack: () -> Void = {}
     var onEdit: (() -> Void)? = nil          // nil = hide the Edit button (e.g. saved-detail)
+    var enablePOINavigation: Bool = false
 
+    
     @State private var selectedDay = 0
 
     var body: some View {
@@ -140,7 +142,14 @@ struct OptimizedItineraryView: View {
                     .foregroundColor(OffpeakTheme.textTertiary)
             }
             ForEach(stops) { stop in
-                StopCard(stop: stop)
+                if enablePOINavigation {
+                    NavigationLink(value: POIRoute(slug: stop.poi.slug)) {
+                        StopCard(stop: stop)
+                    }
+                    .buttonStyle(.plain)          
+                } else {
+                    StopCard(stop: stop)
+                }
             }
         }
     }
@@ -148,7 +157,7 @@ struct OptimizedItineraryView: View {
 
 // MARK: - Stop card
 
-private struct StopCard: View {
+struct StopCard: View {
     let stop: ItineraryStop
 
     var body: some View {
