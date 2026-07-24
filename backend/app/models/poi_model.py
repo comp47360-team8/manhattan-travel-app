@@ -218,3 +218,23 @@ class POIBusynessForecast(Base):
     )
 
     poi_forecast = relationship("POI", back_populates="busyness_forecast")
+
+
+class POIPhotoCache(Base):
+    """Shared cache of resolved Google photo URLs, keyed by Google place_id.
+
+    Google's photo media URLs expire, so we resolve them on demand and store the
+    result here with a timestamp. Living in Postgres (not process memory) means it
+    survives Render's free-tier sleeps: the first viewer of a POI within the TTL
+    pays the Google round trip, everyone else is served from this row. Not FK'd to
+    poi — it is a cache of an external identifier, independent of POI lifecycle.
+    """
+    __tablename__ = "poi_photo_cache"
+
+    place_id: Mapped[str] = mapped_column(String(255), primary_key=True)
+
+    photo_uri: Mapped[str] = mapped_column(Text, nullable=False)
+
+    fetched_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
