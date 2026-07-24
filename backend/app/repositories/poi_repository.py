@@ -1,4 +1,5 @@
-from sqlalchemy import select, func, text
+from sqlalchemy import select, func
+from zoneinfo import ZoneInfo
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, POIBusynessForecast
@@ -93,14 +94,18 @@ def get_weekend_hourly_busyness(poi_id, db: Session):
     return db.execute(statement).all()
 
 def get_current_busyness(pois: list[POI], db: Session):
+    ny_now = datetime.now(ZoneInfo("America/New_York"))
+    hour = ny_now.hour
+    day = ny_now.weekday()
+
     statement = select(
         POIBusynessForecast.poi_id,
         POIBusynessForecast.level,
         POIBusynessForecast.busyness_pct
         ).where(
         POIBusynessForecast.poi_id.in_([poi.id for poi in pois]),
-        POIBusynessForecast.hour_of_day == datetime.now().hour,
-        POIBusynessForecast.day_of_week == datetime.now().weekday()
+        POIBusynessForecast.hour_of_day == hour,
+        POIBusynessForecast.day_of_week == day
     )
 
     rows = db.execute(statement).all()
