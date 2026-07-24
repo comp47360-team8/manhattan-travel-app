@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.services.poi_service import get_all_pois, get_poi_by_slug, unsave_poi_for_user
-from app.services.poi_service import save_poi_for_user, get_poi_busyness
+from app.services.poi_service import (
+    get_all_pois, get_poi_by_slug, unsave_poi_for_user, 
+    save_poi_for_user, get_poi_busyness)
 from app.services.photo_service import get_photo_url
 from app.core.config import settings
 from app.core.exceptions import POINotFoundError

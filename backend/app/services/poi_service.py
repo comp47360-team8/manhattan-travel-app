@@ -3,12 +3,27 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, SavedPOI
 from app.core.exceptions import POINotFoundError
-from app.repositories.poi_repository import get_hourly_busyness, get_weekend_hourly_busyness
+from app.repositories.poi_repository import get_hourly_busyness, get_weekend_hourly_busyness, get_current_busyness
 
 def get_all_pois(db: Session):
     statement = select(POI)
-    result = db.execute(statement)
-    return result.scalars().all()
+    pois = db.execute(statement).scalars().all()
+
+    busyness = get_current_busyness(pois, db)
+
+    for poi in pois:
+        current = busyness.get(poi.id)
+
+        if current:
+            poi.current_busyness = current["txt"]
+            poi.current_busyness_pct = current["pct"]
+
+        else:
+            poi.current_busyness = "Closed"
+            poi.current_busyness_pct = None
+
+    return pois
+    
 
 def get_poi_by_slug(slug: str, db: Session):
     statement = select(POI).where(POI.slug == slug.lower().strip())
