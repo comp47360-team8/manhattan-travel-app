@@ -8,30 +8,22 @@
 
 import SwiftUI
 
-/// Identifiable wrapper so the edit flow is presented via `fullScreenCover(item:)`
-/// — avoids the first-tap blank-sheet race that `isPresented:` + optional hits.
-private struct EditSession: Identifiable {
-    let id = UUID()
-    let vm: NewTripViewModel
-}
-
 /// Read-only detail for a saved itinerary. Loads the full itinerary by id
-/// and renders it with the shared `OptimizedItineraryView`.
+/// and renders it with the shared `OptimizedItineraryView`. Editing is handed
+/// off to the list, which presents the edit flow in its own full-screen cover.
 struct ItineraryDetailView: View {
     @StateObject private var vm: ItineraryDetailViewModel
     @EnvironmentObject private var savedStore: SavedPOIStore
     @Environment(\.dismiss) private var dismiss
 
     private let id: String
-    /// Called after a successful edit so the list can refresh.
-    var onEdited: () -> Void = {}
+    /// Called when the user taps Edit, with a pre-filled draft. The list presents
+    /// the edit flow in a cover and, on success, shows the new result there.
+    var onEditRequested: (NewTripViewModel) -> Void = { _ in }
 
-    @State private var editSession: EditSession?
-    @State private var didEdit = false
-
-    init(id: String, onEdited: @escaping () -> Void = {}) {
+    init(id: String, onEditRequested: @escaping (NewTripViewModel) -> Void = { _ in }) {
         self.id = id
-        self.onEdited = onEdited
+        self.onEditRequested = onEditRequested
         _vm = StateObject(wrappedValue: ItineraryDetailViewModel(id: id))
     }
 
@@ -42,7 +34,8 @@ struct ItineraryDetailView: View {
             if let result = vm.result {
                 OptimizedItineraryView(itinerary: result,
                                        onBack: { dismiss() },
-                                       onEdit: { beginEdit(from: result) })
+                                       onEdit: { beginEdit(from: result) },
+                                       enablePOINavigation: true)
             } else if let error = vm.errorMessage {
                 errorState(error)
             } else {
@@ -52,22 +45,14 @@ struct ItineraryDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .task { await vm.load() }
-        .fullScreenCover(item: $editSession, onDismiss: {
-            if didEdit { onEdited(); dismiss() }   // old itinerary was replaced → pop to list
-            didEdit = false
-        }) { session in
-            NavigationStack {
-                ChoosePlacesView(vm: session.vm, onClose: {
-                    didEdit = true
-                    editSession = nil
-                })
-            }
-            .environmentObject(savedStore)
+        .navigationDestination(for: POIRoute.self) { route in
+            POIDetailView(slug: route.slug, isSaved: savedStore.isSaved(slug: route.slug))
         }
     }
 
-    /// Re-open the Choose Places flow, pre-filled with this itinerary's places,
-    /// dates and name. Saving there replaces this itinerary (see NewTripViewModel).
+    /// Build a draft pre-filled with this itinerary's places, dates and name,
+    /// then hand it to the list to run the edit flow (see NewTripViewModel —
+    /// saving there replaces this itinerary).
     private func beginEdit(from result: OptimizedItinerary) {
         let model = NewTripViewModel()
         model.name = result.name
@@ -77,7 +62,7 @@ struct ItineraryDetailView: View {
         model.editingItineraryId = id
         model.originalSelectionSlugs = Set(model.selectedPOIs.map(\.slug))
         model.originalResult = result
-        editSession = EditSession(vm: model)
+        onEditRequested(model)
     }
 
     // MARK: - Shared top bar (loading / error only — the result view has its own)

@@ -120,7 +120,9 @@ actor APIClient {
                     let tokens = try await authService.refresh(RefreshRequest(refreshToken: refreshToken))
                     TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
                 } catch {
-                    Self.expireSession()
+                    if case NetworkError.http(let status, _) = error, status == 401 {
+                        Self.expireSession()
+                    }
                     throw error
                 }
             }

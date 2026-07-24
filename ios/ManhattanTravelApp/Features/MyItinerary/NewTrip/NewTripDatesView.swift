@@ -9,13 +9,14 @@ import SwiftUI
 
 struct NewTripDatesView: View {
     @StateObject private var vm = NewTripViewModel()
+    @EnvironmentObject private var savedStore: SavedPOIStore
     @Environment(\.dismiss) private var dismiss
-    @State private var goToPlaces = false
+    @State private var path = NavigationPath()
     var onClose: () -> Void = {}
 
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ZStack {
                 OffpeakTheme.backGround
                 ScrollView {
@@ -32,8 +33,14 @@ struct NewTripDatesView: View {
                 .safeAreaInset(edge: .bottom, spacing: 0) { continueBar }
             }
             .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(isPresented: $goToPlaces) {
-                ChoosePlacesView(vm: vm, onClose: onClose)
+            .navigationDestination(for: NewTripStep.self) { step in
+                switch step {
+                case .choosePlaces: ChoosePlacesView(vm: vm, path: $path)
+                case .optimizing:   OptimizingView(vm: vm, onClose: onClose)
+                }
+            }
+            .navigationDestination(for: POIRoute.self) { route in
+                POIDetailView(slug: route.slug, isSaved: savedStore.isSaved(slug: route.slug))
             }
         }
     }
@@ -119,7 +126,7 @@ struct NewTripDatesView: View {
     
 
     private var continueBar: some View {
-        Button { goToPlaces = true } label: {
+        Button { path.append(NewTripStep.choosePlaces) } label: {
             HStack(spacing: 8) { Text("Continue"); Image(systemName: "arrow.right") }
                 .font(.system(size: 17, weight: .semibold)).foregroundColor(.white)
                 .frame(maxWidth: .infinity).frame(height: 54)
