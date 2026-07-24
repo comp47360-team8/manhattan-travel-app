@@ -19,7 +19,7 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 const OPENING_MESSAGE =
-  "Are you starting a new trip, or refining an existing itinerary in My Itinerary?";
+  "Hi! I'm your trip planner. Tell me about your preferred dates, travel pace, interests, or anything you'd like to avoid.";
 
 type PlannerMessage = {
   id: number;
@@ -93,6 +93,7 @@ function AIPlanner({
   const [isSending, setIsSending] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const itineraryResultRef = useRef<HTMLElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const itineraryDays = useMemo(
     () => (itinerary ? groupStopsByDay(itinerary.stops) : []),
@@ -125,6 +126,21 @@ function AIPlanner({
 
     return () => window.cancelAnimationFrame(animationFrame);
   }, [itinerary]);
+
+  /*
+    Keeps the prompt box a single compact line until the user actually
+    types something longer, instead of always showing a tall empty box.
+  */
+  useEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 140)}px`;
+  }, [prompt]);
 
   function requireLogin(): boolean {
     if (isAuthenticated) {
@@ -317,18 +333,12 @@ function AIPlanner({
             dates and accessibility needs.
           </p>
         </div>
-
-        <div className="ai-planner-badge" role="status">
-          <span aria-hidden="true" />
-          Connected to the Offpeak AI service
-        </div>
       </section>
 
       <section className="ai-planner-card ai-chat-card">
         <div className="ai-planner-card-heading">
           <div>
-            <p className="section-eyebrow">Conversation</p>
-            <h2>Build your trip with Offpeak</h2>
+            <p className="section-eyebrow">Chat with Offpeak</p>
           </div>
 
           {conversationId && (
@@ -378,34 +388,18 @@ function AIPlanner({
                   <span>{option.label}</span>
                 </label>
               ))}
-            </div>
 
-            <button
-              type="button"
-              onClick={() => void submitOptions()}
-              disabled={isSending || selectedOptions.length === 0}
-            >
-              Continue with these interests
-            </button>
+              <button
+                type="button"
+                className="ai-option-selector-continue"
+                onClick={() => void submitOptions()}
+                disabled={isSending || selectedOptions.length === 0}
+              >
+                Continue
+              </button>
+            </div>
           </fieldset>
         )}
-
-        <label htmlFor="ai-planner-prompt" className="sr-only">
-          Reply to the AI trip planner
-        </label>
-
-        <textarea
-          id="ai-planner-prompt"
-          rows={6}
-          maxLength={600}
-          placeholder="Tell Offpeak your dates, pace, interests or anything you want to avoid."
-          value={prompt}
-          onChange={(event) => {
-            setPrompt(event.target.value);
-            setErrorMessage("");
-          }}
-          disabled={isSending}
-        />
 
         {!hasUserSentMessage && (
           <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
@@ -425,17 +419,6 @@ function AIPlanner({
           </div>
         )}
 
-        <button
-          type="button"
-          className="ai-planner-submit"
-          onClick={() => void submitPlannerRequest()}
-          disabled={isSending}
-        >
-          {isSending ? "Sending..." : "Send to AI Planner"}
-        </button>
-
-        <span className="ai-character-count">{prompt.length}/600</span>
-
         {errorMessage && (
           <p className="error-message" role="alert">
             {errorMessage}
@@ -447,6 +430,47 @@ function AIPlanner({
             {successMessage}
           </p>
         )}
+
+        <label htmlFor="ai-planner-prompt" className="sr-only">
+          Reply to the AI trip planner
+        </label>
+
+        <div className="ai-composer">
+          <textarea
+            id="ai-planner-prompt"
+            ref={textareaRef}
+            rows={1}
+            maxLength={600}
+            placeholder="Tell Offpeak your dates, pace, interests or anything you want to avoid."
+            value={prompt}
+            onChange={(event) => {
+              setPrompt(event.target.value);
+              setErrorMessage("");
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                void submitPlannerRequest();
+              }
+            }}
+            disabled={isSending}
+          />
+
+          <button
+            type="button"
+            className="ai-composer-send"
+            onClick={() => void submitPlannerRequest()}
+            disabled={isSending}
+            aria-label={isSending ? "Sending" : "Send to AI Planner"}
+          >
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M12 19V5" />
+              <path d="m5 12 7-7 7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <span className="ai-character-count">{prompt.length}/600</span>
       </section>
 
       {itinerary && (
