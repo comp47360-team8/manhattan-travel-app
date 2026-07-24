@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, SavedPOI
@@ -106,7 +107,7 @@ def unsave_poi_for_user(slug: str, db: Session, user: int):
     db.commit()
 
 def get_poi_busyness(poi: POI, db: Session):
-    today = date.today().weekday()
+    today = datetime.now(ZoneInfo("America/New_York")).weekday()
     tomorrow = (today + 1) % 7
 
     rows = get_hourly_busyness([today, tomorrow], poi.id, db)
