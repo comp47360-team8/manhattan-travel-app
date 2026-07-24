@@ -1,6 +1,7 @@
+import httpx
 from google import genai
 from google.genai import types
-from google.api_core.exceptions import ServiceUnavailable, ResourceExhausted, DeadlineExceeded
+from google.genai.errors import APIError
 from datetime import date, datetime, time
 from app.services.ai.base import LLMProvider
 from app.models.ai_model import Message
@@ -121,7 +122,7 @@ class GeminiProvider(LLMProvider):
                     "response_schema": GeminiResponse
                 }
             )
-        except (ServiceUnavailable ,ResourceExhausted, DeadlineExceeded) as e:
+        except (APIError, httpx.HTTPError) as e:
             raise LLMUnresponsiveError(e) from e
 
         if response.function_calls:
@@ -208,7 +209,7 @@ class GeminiProvider(LLMProvider):
                     "response_schema": TripParameters
                 }
             )
-        except (ServiceUnavailable ,ResourceExhausted, DeadlineExceeded) as e:
+        except (APIError, httpx.HTTPError) as e:
             raise LLMUnresponsiveError(e) from e
         
         return response.parsed
@@ -229,8 +230,8 @@ class GeminiProvider(LLMProvider):
                     "system_instruction": SUMMARY_PROMPT
                 }
             )
-        except (ServiceUnavailable ,ResourceExhausted, DeadlineExceeded) as e:
-            raise LLMUnresponsiveError() from e
+        except (APIError, httpx.HTTPError) as e:
+            raise LLMUnresponsiveError(e) from e
         
         return response.text
 
