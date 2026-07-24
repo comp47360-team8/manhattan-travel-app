@@ -120,8 +120,6 @@ actor APIClient {
                     let tokens = try await authService.refresh(RefreshRequest(refreshToken: refreshToken))
                     TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
                 } catch {
-                    // 只有刷新被明确拒绝(401)才判定会话过期 → 踢登录；
-                    // 网络错误 / 500 / 超时等一律不踢，让上层显示错误、可重试。
                     if case NetworkError.http(let status, _) = error, status == 401 {
                         Self.expireSession()
                     }

@@ -95,11 +95,7 @@ final class AuthManager: ObservableObject {
             let tokens = try await authService.login(LoginRequest(email: email, password: password))
             TokenStore.save(access: tokens.accessToken, refresh: tokens.refreshToken)
 
-            // Reuse the stored display name if it belongs to this same email;
-            // otherwise fall back to the email's local part.
-            let storedName = UserDefaults.standard.string(forKey: AuthManager.emailKey) == email
-                ? UserDefaults.standard.string(forKey: AuthManager.nameKey) : nil
-            let name = storedName ?? AuthManager.displayName(fromEmail: email)
+            let name = tokens.displayName
             AuthManager.persistProfile(name: name, email: email)
             currentUser = AuthManager.makeUser(name: name, email: email)
             isLoggedIn = true

@@ -33,6 +33,7 @@ struct SignUpResponse: Decodable {
 struct LoginResponse: Decodable {
     let accessToken: String
     let refreshToken: String
+    let displayName: String
 }
 
 // logout request
