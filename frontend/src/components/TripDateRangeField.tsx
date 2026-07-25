@@ -72,6 +72,13 @@ function TripDateRangeField({
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
+  /*
+    DayPicker's range util (min defaults to 0) reports the very first click as a
+    complete same-day range {from, to}. This ref lets us treat that first click
+    as choosing the start and wait for the end, rather than closing straight
+    away, while still allowing a deliberate single-day trip on a second click.
+  */
+  const awaitingEndDateRef = useRef(false);
 
   const today = startOfToday();
 
@@ -189,25 +196,45 @@ function TripDateRangeField({
     };
   }, [isOpen]);
 
+  function closePopover() {
+    awaitingEndDateRef.current = false;
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }
+
   function handleSelect(range: DateRange | undefined) {
     if (!range?.from) {
+      awaitingEndDateRef.current = false;
       onChange("", "");
       return;
     }
 
-    const nextStart = toIsoDate(range.from);
-    const nextEnd = range.to ? toIsoDate(range.to) : "";
-
-    onChange(nextStart, nextEnd);
+    const fromIso = toIsoDate(range.from);
+    const toIso = range.to ? toIsoDate(range.to) : "";
 
     /*
-      A complete range means the user has finished picking, so the popover
-      closes and the planner unlocks. This replaces the old Confirm Dates step.
+      A span across two different days is unambiguously complete: unlock the
+      planner and close.
     */
-    if (range.to) {
-      setIsOpen(false);
-      triggerRef.current?.focus();
+    if (toIso && toIso !== fromIso) {
+      onChange(fromIso, toIso);
+      closePopover();
+      return;
     }
+
+    /*
+      Otherwise the library is reporting a single day. Treat the first such
+      click as choosing the start and keep the calendar open for the end date;
+      a second click on the same day confirms a one-day trip.
+    */
+    if (!awaitingEndDateRef.current) {
+      awaitingEndDateRef.current = true;
+      onChange(fromIso, "");
+      return;
+    }
+
+    onChange(fromIso, fromIso);
+    closePopover();
   }
 
   const fromDate = fromIsoDate(startDate);
@@ -216,9 +243,10 @@ function TripDateRangeField({
   let triggerLabel = "Select your trip dates";
 
   if (fromDate && toDate) {
+    const dayCount = countInclusiveDays(fromDate, toDate);
     triggerLabel = `${formatTriggerDate(fromDate)} – ${formatTriggerDate(
       toDate
-    )} · ${countInclusiveDays(fromDate, toDate)} days`;
+    )} · ${dayCount} ${dayCount === 1 ? "day" : "days"}`;
   } else if (fromDate) {
     triggerLabel = `${formatTriggerDate(fromDate)} – select end date`;
   }
@@ -232,7 +260,15 @@ function TripDateRangeField({
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         data-placeholder={fromDate ? undefined : "true"}
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={() =>
+          setIsOpen((open) => {
+            if (!open) {
+              /* A fresh open always starts a new start-then-end selection. */
+              awaitingEndDateRef.current = false;
+            }
+            return !open;
+          })
+        }
       >
         {triggerLabel}
       </button>
