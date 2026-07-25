@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.routers import health, auth, pois, users, itinerary, ai, debug  # debug: TEMPORARY
+from app.routers import health, auth, pois, users, itinerary, ai
 
 # instantiate app
 app = FastAPI()
@@ -22,7 +22,6 @@ app.include_router(pois.router)
 app.include_router(users.router)
 app.include_router(itinerary.router)
 app.include_router(ai.router)
-app.include_router(debug.router)  # TEMPORARY — remove after Gemini region diagnosis
 
 @app.get("/")
 def root():

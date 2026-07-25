@@ -1,7 +1,6 @@
-import httpx
+import random
 from google import genai
 from google.genai import types
-from google.genai.errors import APIError
 from datetime import date, datetime, time
 from app.services.ai.base import LLMProvider
 from app.models.ai_model import Message
@@ -57,8 +56,51 @@ def make_json_serializable(obj):
 
 class GeminiProvider(LLMProvider):
     def __init__(self):
-        self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
-    
+        # One URL (ideally a Webshare rotating endpoint) or a comma-separated list.
+        # Routing Gemini through a non-Frankfurt egress avoids the 400
+        # FAILED_PRECONDITION "User location is not supported" block; see config.
+        self._proxies = [
+            p.strip() for p in settings.GEMINI_PROXY_URL.split(",") if p.strip()
+        ]
+        self._attempts = settings.GEMINI_PROXY_RETRIES if self._proxies else 1
+        # Reuse one client for the direct path; when proxied we build per-attempt so
+        # each retry rotates to a fresh egress IP.
+        self._direct_client = (
+            None if self._proxies else genai.Client(api_key=settings.GEMINI_API_KEY)
+        )
+
+    def _client(self, proxy):
+        if proxy is None:
+            return self._direct_client
+        http_options = types.HttpOptions(
+            client_args={"proxy": proxy},
+            async_client_args={"proxy": proxy},
+        )
+        return genai.Client(api_key=settings.GEMINI_API_KEY, http_options=http_options)
+
+    def _generate(self, **kwargs):
+        # Retry across rotating egress IPs so a dead/blocked proxy self-heals; on
+        # exhaustion raise so FallbackProvider can switch to Llama.
+        last_err = None
+        start = random.randrange(len(self._proxies)) if self._proxies else 0
+        for i in range(self._attempts):
+            proxy = (
+                self._proxies[(start + i) % len(self._proxies)]
+                if self._proxies
+                else None
+            )
+            try:
+                return self._client(proxy).models.generate_content(**kwargs)
+            except Exception as e:
+                # Broad by design: this wraps only the network call, and any
+                # failure (API error, transport/proxy error, or the genai client
+                # lifecycle RuntimeError seen on dead proxies) should rotate/retry
+                # and ultimately fall back to Llama rather than 500 the request.
+                last_err = e
+                if self._proxies:
+                    print(f"Gemini attempt {i + 1}/{self._attempts} via proxy failed: {e}")
+        raise LLMUnresponsiveError(last_err) from last_err
+
     def convert_for_gemini(self, history: list[Message]):
         final_history = []
         for message in history:
@@ -112,18 +154,15 @@ class GeminiProvider(LLMProvider):
         - Only if a user has accessibility needs, tell them that their needs have been taken
         into account.
         """
-        try:
-            response = self.client.models.generate_content(
-                model="gemini-3.5-flash",
-                contents=converted_history,
-                config={
-                    "system_instruction": system_instruction,
-                    "tools": tools,
-                    "response_schema": GeminiResponse
-                }
-            )
-        except (APIError, httpx.HTTPError) as e:
-            raise LLMUnresponsiveError(e) from e
+        response = self._generate(
+            model="gemini-3.5-flash",
+            contents=converted_history,
+            config={
+                "system_instruction": system_instruction,
+                "tools": tools,
+                "response_schema": GeminiResponse
+            }
+        )
 
         if response.function_calls:
             function_call = response.function_calls[0]
@@ -146,7 +185,7 @@ class GeminiProvider(LLMProvider):
                     }
                 )
 
-                final_response = self.client.models.generate_content(
+                final_response = self._generate(
                     model="gemini-3.5-flash",
                     contents=[
                         *converted_history,
@@ -200,18 +239,15 @@ class GeminiProvider(LLMProvider):
         {trip_details}
         Use this only for context.
         """
-        try:
-            response =  self.client.models.generate_content(
-                model="gemini-3.5-flash",
-                contents=prompt,
-                config={
-                    "system_instruction": system_instruction,
-                    "response_schema": TripParameters
-                }
-            )
-        except (APIError, httpx.HTTPError) as e:
-            raise LLMUnresponsiveError(e) from e
-        
+        response = self._generate(
+            model="gemini-3.5-flash",
+            contents=prompt,
+            config={
+                "system_instruction": system_instruction,
+                "response_schema": TripParameters
+            }
+        )
+
         return response.parsed
 
     def create_summary(self, history):
@@ -222,17 +258,14 @@ class GeminiProvider(LLMProvider):
         for msg in converted_history
         )
         
-        try:
-            response = self.client.models.generate_content(
-                model="gemini-3.5-flash",
-                contents=formatted_history,
-                config={
-                    "system_instruction": SUMMARY_PROMPT
-                }
-            )
-        except (APIError, httpx.HTTPError) as e:
-            raise LLMUnresponsiveError(e) from e
-        
+        response = self._generate(
+            model="gemini-3.5-flash",
+            contents=formatted_history,
+            config={
+                "system_instruction": SUMMARY_PROMPT
+            }
+        )
+
         return response.text
 
 
