@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import BusynessChart from "./BusynessChart";
+import TripDateRangeField from "./TripDateRangeField";
 import { apiFetch } from "../api";
 import { groupStopsByDay } from "../itinerary";
 import poiPhotoFallback from "../assets/poi-photo-fallback.svg";
@@ -222,12 +223,11 @@ function MyItinerary({
     useState<Poi | null>(null);
 
   /*
-    The planner stays locked until valid dates have been confirmed.
+    The planner stays locked until a full date range has been chosen. With the
+    range picker this is fully derived from the two dates, so there is no
+    separate confirm step or ordering error to track.
   */
-  const [datesConfirmed, setDatesConfirmed] = useState(
-    initialItinerary !== null
-  );
-  const [dateError, setDateError] = useState("");
+  const datesConfirmed = startDate !== "" && endDate !== "";
 
   /*
     Selected attractions are stored using their slugs.
@@ -369,28 +369,14 @@ function MyItinerary({
   );
 
   /*
-    Confirm that both dates are present and in the correct order.
+    Update both trip dates from the range picker. A range end that is earlier
+    than the start is impossible in range mode, so no ordering check is needed.
   */
-  function confirmDates() {
-    setDateError("");
-    setItineraryError("");
+  function handleTripDatesChange(nextStart: string, nextEnd: string) {
+    setStartDate(nextStart);
+    setEndDate(nextEnd);
+    setGeneratedItinerary(null);
     setSuccessMessage("");
-
-    if (startDate === "" || endDate === "") {
-      setDateError(
-        "Date selection not completed. Please pick a start and end date."
-      );
-      setDatesConfirmed(false);
-      return;
-    }
-
-    if (endDate < startDate) {
-      setDateError("End date cannot be before the start date.");
-      setDatesConfirmed(false);
-      return;
-    }
-
-    setDatesConfirmed(true);
   }
 
   /*
@@ -492,7 +478,7 @@ function MyItinerary({
     }
 
     if (!datesConfirmed) {
-      setItineraryError("Confirm your travel dates before generating.");
+      setItineraryError("Choose your travel dates before generating.");
       return;
     }
 
@@ -666,39 +652,14 @@ function MyItinerary({
             />
           </label>
 
-          <label htmlFor="start-date">
-            Start date
-            <input
-              id="start-date"
-              type="date"
-              value={startDate}
-              onChange={(event) => {
-                setStartDate(event.target.value);
-
-                /*
-                  Dates must be confirmed again whenever either date changes.
-                */
-                setDatesConfirmed(false);
-                setGeneratedItinerary(null);
-                setSuccessMessage("");
-              }}
+          <div className="trip-date-control">
+            <span className="trip-date-control-label">Trip dates</span>
+            <TripDateRangeField
+              startDate={startDate}
+              endDate={endDate}
+              onChange={handleTripDatesChange}
             />
-          </label>
-
-          <label htmlFor="end-date">
-            End date
-            <input
-              id="end-date"
-              type="date"
-              value={endDate}
-              onChange={(event) => {
-                setEndDate(event.target.value);
-                setDatesConfirmed(false);
-                setGeneratedItinerary(null);
-                setSuccessMessage("");
-              }}
-            />
-          </label>
+          </div>
 
           <label htmlFor="accessibility-need">
             Accessibility
@@ -719,16 +680,12 @@ function MyItinerary({
             </select>
           </label>
 
-          <button type="button" onClick={confirmDates}>
-            Confirm Dates
-          </button>
         </div>
-
-        {dateError && <p className="error-message">{dateError}</p>}
 
         {datesConfirmed && (
           <p className="success-message">
-            Dates confirmed: {startDate} to {endDate}
+            Trip dates: {formatItineraryDate(startDate)} –{" "}
+            {formatItineraryDate(endDate)}
           </p>
         )}
       </section>
