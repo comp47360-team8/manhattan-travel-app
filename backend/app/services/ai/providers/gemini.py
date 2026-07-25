@@ -73,8 +73,14 @@ class GeminiProvider(LLMProvider):
         if proxy is None:
             return self._direct_client
         http_options = types.HttpOptions(
-            client_args={"proxy": proxy},
-            async_client_args={"proxy": proxy},
+            client_args={"proxy": proxy, "timeout": 30.0},
+            async_client_args={"proxy": proxy, "timeout": 30.0},
+            # attempts=1 disables genai's internal retry. On a failed proxy request
+            # that retry closes the httpx client and masks the real cause as
+            # "Cannot send a request, as the client has been closed." With it off,
+            # the true error (ProxyError / ConnectTimeout / etc.) surfaces in the
+            # logs, while our own _generate loop still retries + rotates proxies.
+            retry_options=types.HttpRetryOptions(attempts=1),
         )
         return genai.Client(api_key=settings.GEMINI_API_KEY, http_options=http_options)
 
