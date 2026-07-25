@@ -96,11 +96,16 @@ class GeminiProvider(LLMProvider):
                 else None
             )
             try:
-                return self._client(proxy).models.generate_content(**kwargs)
+                # Hold a strong reference to the client for the whole call. A
+                # chained `self._client(proxy).models.generate_content(...)` lets
+                # the temporary genai.Client get garbage-collected mid-request,
+                # which closes its httpx client -> "Cannot send a request, as the
+                # client has been closed." Binding it here prevents that.
+                client = self._client(proxy)
+                return client.models.generate_content(**kwargs)
             except Exception as e:
                 # Broad by design: this wraps only the network call, and any
-                # failure (API error, transport/proxy error, or the genai client
-                # lifecycle RuntimeError seen on dead proxies) should rotate/retry
+                # failure (API error, transport/proxy error) should rotate/retry
                 # and ultimately fall back to Llama rather than 500 the request.
                 last_err = e
                 if self._proxies:
