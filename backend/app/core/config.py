@@ -9,6 +9,15 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str
     GROQ_API_KEY: str
     AI_PROVIDER: str
+    # Optional proxy for Gemini's outbound calls. Render's Frankfurt egress IP is
+    # rejected by Gemini ("User location is not supported", 400 FAILED_PRECONDITION);
+    # routing through a non-Frankfurt egress fixes it. Accepts a single URL — ideally
+    # a Webshare *rotating* endpoint so churning free IPs are handled upstream — or a
+    # comma-separated list the provider rotates across on retry. Empty = direct.
+    GEMINI_PROXY_URL: str = ""
+    # How many egress attempts (each a fresh rotation) before giving up and letting
+    # the LLM fallback take over. Only applied when GEMINI_PROXY_URL is set.
+    GEMINI_PROXY_RETRIES: int = 3
     # Optional so a missing value never breaks Settings() import (the migration
     # step imports this module). The photo endpoint degrades to 404 when unset.
     GOOGLE_PLACES_API_KEY: str = ""
