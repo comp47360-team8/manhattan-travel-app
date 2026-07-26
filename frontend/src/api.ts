@@ -13,6 +13,36 @@ type BackendErrorData = {
   message?: string;
 };
 
+export type ApiErrorKind = "http" | "network" | "timeout";
+
+/*
+  Keeps the failure category and HTTP status available to page components.
+  This lets a feature show a useful message without matching technical error
+  text returned by the backend.
+*/
+export class ApiError extends Error {
+  readonly kind: ApiErrorKind;
+  readonly status?: number;
+
+  constructor(
+    message: string,
+    {
+      kind,
+      status,
+      cause,
+    }: {
+      kind: ApiErrorKind;
+      status?: number;
+      cause?: unknown;
+    }
+  ) {
+    super(message, { cause });
+    this.name = "ApiError";
+    this.kind = kind;
+    this.status = status;
+  }
+}
+
 // Default timeout for ordinary requests. Kept generous enough to survive a
 // backend cold start (the free host spins down when idle) instead of aborting
 // mid-boot. Slow endpoints (AI chat, itinerary generation) pass their own
@@ -243,15 +273,19 @@ export async function apiFetch<T>(
       error instanceof DOMException &&
       (error.name === "AbortError" || error.name === "TimeoutError")
     ) {
-      throw new Error(
+      throw new ApiError(
         "The server took too long to respond. Check that the backend is running, then try again.",
-        { cause: error }
+        {
+          kind: "timeout",
+          cause: error,
+        }
       );
     }
 
-    throw new Error(
+    throw new ApiError(
       "Could not connect to the server. Check that the backend is running.",
       {
+        kind: "network",
         cause: error,
       }
     );
@@ -264,7 +298,10 @@ export async function apiFetch<T>(
       notifyAuthenticationRequired();
     }
 
-    throw new Error(getErrorMessage(data, response.status));
+    throw new ApiError(getErrorMessage(data, response.status), {
+      kind: "http",
+      status: response.status,
+    });
   }
 
   return repairApiText(data as T);
