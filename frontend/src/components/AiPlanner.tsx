@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { apiFetch } from "../api";
+import { ApiError, apiFetch } from "../api";
 import { groupStopsByDay } from "../itinerary";
 import type {
   AiChatResponse,
@@ -20,6 +20,13 @@ const PROMPT_SUGGESTIONS = [
 
 const OPENING_MESSAGE =
   "Hi! I'm your trip planner. Tell me about your preferred dates, travel pace, interests, or anything you'd like to avoid.";
+
+const AI_QUOTA_ERROR =
+  "You've reached today's AI usage limit. Please try again later.";
+const AI_CONNECTION_ERROR =
+  "Something went wrong with the connection. Check your network and try again.";
+const AI_SERVER_ERROR =
+  "The system is busy right now. Please try again shortly.";
 
 type PlannerMessage = {
   id: number;
@@ -68,6 +75,29 @@ function isAuthenticationError(error: unknown): boolean {
     error instanceof Error &&
     error.message.toLowerCase().includes("log in")
   );
+}
+
+function getAiPlannerErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (error.status === 429) {
+      return AI_QUOTA_ERROR;
+    }
+
+    if (error.kind === "network") {
+      return AI_CONNECTION_ERROR;
+    }
+
+    if (
+      error.kind === "timeout" ||
+      (error.status !== undefined && error.status >= 500)
+    ) {
+      return AI_SERVER_ERROR;
+    }
+  }
+
+  return error instanceof Error
+    ? error.message
+    : "The AI Planner could not complete that request.";
 }
 
 function AIPlanner({
@@ -217,20 +247,13 @@ function AIPlanner({
         );
       }
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "The AI Planner could not complete that request.";
+      const message = getAiPlannerErrorMessage(error);
 
       if (message === "Please log in to continue.") {
         onLoginRequired();
       }
 
-      setErrorMessage(
-        message.includes("server could not complete")
-          ? "The AI service is temporarily unavailable. Check that the backend Gemini API key is configured, then try again."
-          : message
-      );
+      setErrorMessage(message);
     } finally {
       setIsSending(false);
     }
