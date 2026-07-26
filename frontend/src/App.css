@@ -1419,7 +1419,8 @@ a {
    My Itinerary page
 ========================================================= */
 
-.my-itinerary {
+.my-itinerary,
+.itinerary-detail {
   width: min(100%, 1120px);
   margin: 0 auto;
   padding: 64px 0 80px;
@@ -1441,13 +1442,8 @@ a {
 }
 
 .itinerary-date-panel,
-.itinerary-search-section,
-.selected-pois-section,
 .saved-pois-section,
-.popular-pois-section,
-.itinerary-generate-panel,
-.generated-itinerary-section,
-.itinerary-start-state {
+.popular-pois-section {
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   background: var(--bg-white);
@@ -1463,6 +1459,18 @@ a {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+
+/*
+  The button commits the trip setup, so it sits on its own row rather than
+  competing with the three fields above it.
+*/
+.itinerary-date-grid .start-planning-button {
+  grid-column: 1 / -1;
+  justify-self: end;
+  min-height: 48px;
+  padding: 12px 26px;
+  font-size: 14px;
 }
 
 .my-itinerary label {
@@ -1640,47 +1648,330 @@ a {
   }
 }
 
-.itinerary-start-state {
-  margin-top: 28px;
-  padding: 34px;
-  border-style: dashed;
-  border-color: var(--color-gold);
+/* =========================================================
+   My Trips carousel
+========================================================= */
+
+.my-trips-section {
+  margin-top: 44px;
+}
+
+.my-trips-heading h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 26px;
+  line-height: 33px;
+  letter-spacing: -0.025em;
+}
+
+.my-trips-heading p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 23px;
+}
+
+/*
+  A scroll-snap strip rather than a wrapping grid: the trip list is a shelf the
+  user skims, and it must not push the planner below the fold as it grows. Same
+  approach as the Explore category strip.
+*/
+.my-trips-carousel {
+  margin: 22px 0 0;
+  padding: 0 4px 6px;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(232px, 262px);
+  gap: 22px;
+
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline proximity;
+  scrollbar-width: none;
+}
+
+.my-trips-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.my-trip-card {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.my-trip-card a {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--radius-md);
+  color: inherit;
+  text-decoration: none;
+}
+
+.my-trip-card a:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 4px;
+}
+
+.my-trip-card-image {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
   background: var(--bg-warm);
 }
 
-.itinerary-start-state h2 {
-  margin: 0 0 8px;
-  color: var(--color-navy);
-  font-size: 25px;
+.my-trip-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.itinerary-start-state p {
-  margin: 0;
+.my-trip-card a:hover .my-trip-card-image img {
+  transform: scale(1.04);
+}
+
+.my-trip-card-name {
+  color: var(--color-navy);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.my-trip-card a:hover .my-trip-card-name {
+  color: var(--color-brick);
+}
+
+.my-trip-card-dates {
   color: var(--text-muted);
-  line-height: 24px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   How it works
+========================================================= */
+
+.how-it-works {
+  margin-top: 40px;
+  padding: 22px 24px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-warm);
+}
+
+.how-it-works-intro h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.how-it-works-intro p {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.how-it-works-steps {
+  margin: 18px 0 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+
+  list-style: none;
+  counter-reset: how-it-works;
+}
+
+.how-it-works-steps li {
+  position: relative;
+  min-width: 0;
+  padding: 14px 14px 14px 46px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--bg-white);
+}
+
+.how-it-works-icon {
+  position: absolute;
+  top: 13px;
+  left: 14px;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.how-it-works-step-number {
+  position: absolute;
+  top: 34px;
+  left: 18px;
+
+  color: var(--color-gold);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.how-it-works-steps strong {
+  display: block;
+  color: var(--color-navy);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.how-it-works-steps li > span:last-child {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* =========================================================
+   Planner: trip header and place pickers
+========================================================= */
+
+.itinerary-trip-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-bottom: 26px;
+}
+
+.itinerary-trip-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.itinerary-trip-header h1 {
+  margin: 0;
+  color: var(--color-navy);
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 4.4vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.my-itinerary .itinerary-trip-name-edit {
+  padding: 6px 9px;
+
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+
+  font-size: 16px;
+}
+
+.my-itinerary .itinerary-trip-name-edit:hover:not(:disabled) {
+  background: var(--bg-warm);
+  color: var(--color-navy);
+}
+
+.itinerary-trip-name-input {
+  width: min(100%, 460px);
+  min-height: 52px;
+  padding: 8px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-white);
+  color: var(--color-navy);
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 3.8vw, 38px);
+  letter-spacing: -0.04em;
+}
+
+.itinerary-trip-name-input:focus {
+  border-color: var(--color-navy);
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.my-itinerary .trip-date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.my-itinerary .trip-date-chip:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+  color: var(--color-navy);
+}
+
+/*
+  Deliberately quiet: searching is the fallback route into the trip, behind
+  Saved and Popular Picks, so the field should not read as the primary action.
+*/
+.itinerary-search-bar {
+  margin-bottom: 26px;
+}
+
+.itinerary-search-bar .search-field {
+  max-width: none;
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  box-shadow: none;
+}
+
+.itinerary-search-bar .search-field:focus-within {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+}
+
+.itinerary-search-results {
+  margin-top: 10px;
+  padding: 4px 18px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  box-shadow: var(--shadow-sm);
 }
 
 .itinerary-planner-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
   gap: 24px;
-  margin-top: 30px;
 }
 
-.itinerary-search-section,
-.selected-pois-section,
+.itinerary-picker-column {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+
 .saved-pois-section,
 .popular-pois-section {
   min-width: 0;
   padding: 24px;
 }
 
-.itinerary-search-section h2,
-.selected-pois-section h2,
 .saved-pois-section h2,
-.popular-pois-section h2,
-.itinerary-generate-panel h2,
-.generated-itinerary-section h2 {
+.popular-pois-section h2 {
   margin: 0;
   color: var(--color-navy);
   font-size: 24px;
@@ -1688,32 +1979,192 @@ a {
   letter-spacing: -0.025em;
 }
 
-.itinerary-search-section > p,
-.selected-pois-section > p,
 .saved-pois-section > p,
-.popular-pois-section > p,
-.itinerary-generate-panel p {
+.popular-pois-section > p {
   margin: 8px 0 0;
   color: var(--text-muted);
   font-size: 14px;
   line-height: 23px;
 }
 
-.itinerary-search-section .search-field {
-  max-width: none;
-  margin-top: 18px;
+.saved-pois-section .section-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
 }
 
-.itinerary-search-results {
-  margin-top: 18px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-soft);
+.section-heading-link {
+  color: var(--color-brick);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
-.itinerary-search-results h3 {
-  margin: 0 0 8px;
+.section-heading-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Your Selections panel
+========================================================= */
+
+/*
+  Given visual weight over the picker column on purpose: it is the running
+  state of the trip, and it stays in view while the user scrolls the lists.
+*/
+.selections-panel {
+  position: sticky;
+  top: 96px;
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid var(--border-soft);
+  border-top: 3px solid var(--color-brick);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  box-shadow: var(--shadow-md);
+}
+
+.selections-panel-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.selections-panel-header h2 {
+  margin: 0;
   color: var(--color-navy);
+  font-size: 19px;
+  letter-spacing: -0.015em;
+}
+
+.selections-count {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.selections-progress {
+  height: 4px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--border-soft);
+}
+
+.selections-progress span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-brick);
+  transition: width 0.25s ease;
+}
+
+.selections-list {
+  margin-top: 6px;
+}
+
+.selections-panel .itinerary-poi-row {
+  min-height: 56px;
+  padding: 11px 0;
+}
+
+.selections-panel .itinerary-poi-thumbnail {
+  width: 42px;
+  height: 36px;
+  flex-basis: 42px;
+}
+
+.my-itinerary .selection-remove-button {
+  padding: 4px 9px;
+
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+
   font-size: 16px;
+  line-height: 1;
+}
+
+.my-itinerary .selection-remove-button:hover:not(:disabled) {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.selections-capacity {
+  margin: 14px 0 0;
+  padding: 12px;
+
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-warm);
+  color: var(--text-muted);
+
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.selections-tip {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* =========================================================
+   POI details link
+========================================================= */
+
+.itinerary-poi-row-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.poi-details-link {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-muted);
+
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.poi-details-link:hover {
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+}
+
+.poi-details-link:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+.timeline-details-link {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  margin-top: 14px;
+  padding: 6px 10px;
+
+  border-color: var(--border-soft);
+  color: var(--color-brick);
+  font-size: 12px;
 }
 
 .itinerary-poi-row {
@@ -1799,14 +2250,9 @@ a {
   color: var(--text-light);
 }
 
-.itinerary-generate-panel {
-  margin-top: 30px;
-  padding: 26px;
-
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  align-items: center;
-  gap: 24px;
+/* Fixed width so the label swapping to "Added" does not reflow the row. */
+.my-itinerary .itinerary-add-button {
+  min-width: 88px;
 }
 
 .generate-itinerary-button {
@@ -1826,38 +2272,49 @@ a {
    Generated itinerary
 ========================================================= */
 
-.generated-itinerary-section {
-  margin-top: 30px;
-  padding: 28px;
-}
+/* =========================================================
+   Itinerary detail page
+========================================================= */
 
-.itinerary-section-header {
+.itinerary-detail-heading {
   margin-bottom: 26px;
-  padding-bottom: 22px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-
-  border-bottom: 1px solid var(--border-soft);
 }
 
-.itinerary-section-header p {
-  margin: 7px 0 0;
+.itinerary-detail-heading h1 {
+  margin: 14px 0 0;
+  color: var(--color-navy);
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(38px, 5.4vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.itinerary-detail-meta {
+  margin: 10px 0 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
-.save-itinerary-button {
-  flex: 0 0 auto;
-  background: var(--color-brick) !important;
-  border-color: var(--color-brick) !important;
+.itinerary-detail .itinerary-detail-back {
+  padding: 7px 13px;
+
+  border-color: var(--border-soft);
+  background: var(--bg-white);
+  color: var(--color-navy);
+
+  font-size: 12px;
 }
 
-.save-itinerary-button:hover:not(:disabled) {
-  background: var(--color-brick-dark) !important;
-  border-color: var(--color-brick-dark) !important;
+.itinerary-detail .itinerary-detail-back:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--text-light);
+}
+
+.itinerary-detail > .fallback-message,
+.itinerary-detail > .error-message {
+  margin-bottom: 18px;
 }
 
 .itinerary-timeline {
@@ -1999,27 +2456,6 @@ a {
   background: transparent;
   color: var(--color-navy);
   font-weight: 900;
-}
-
-.timeline-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 17px;
-}
-
-.timeline-actions button {
-  padding: 8px 11px;
-  border-color: var(--border-soft);
-  background: var(--bg-white);
-  color: var(--color-navy);
-  font-size: 11px;
-}
-
-.timeline-actions button:hover:not(:disabled) {
-  border-color: var(--color-navy);
-  background: var(--color-navy);
-  color: var(--text-light);
 }
 
 .stop-accessibility-list,
@@ -3039,9 +3475,13 @@ a {
 
   .itinerary-date-grid,
   .itinerary-planner-grid,
-  .itinerary-generate-panel,
+  .how-it-works-steps,
   .profile-account-card {
     grid-template-columns: 1fr;
+  }
+
+  .selections-panel {
+    position: static;
   }
 
   .itinerary-timeline-row {
@@ -3179,19 +3619,15 @@ a {
   }
 
   .itinerary-date-panel,
-  .itinerary-search-section,
-  .selected-pois-section,
   .saved-pois-section,
   .popular-pois-section,
-  .itinerary-generate-panel,
-  .generated-itinerary-section,
+  .selections-panel,
   .saved-itinerary-detail,
   .profile-section,
   .ai-planner-card {
     padding: 20px;
   }
 
-  .itinerary-section-header,
   .saved-itineraries-heading,
   .saved-itinerary-detail-heading,
   .profile-signout-section {
@@ -3199,7 +3635,6 @@ a {
     align-items: stretch;
   }
 
-  .save-itinerary-button,
   .saved-itineraries-heading > button,
   .saved-itinerary-detail-heading > button,
   .profile-signout-button {
@@ -4451,11 +4886,6 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-top: 0;
 }
 
-/* The planner now has the three agreed sections: search, selections and saved. */
-.itinerary-search-section {
-  grid-column: 1 / -1;
-}
-
 @media (max-width: 780px) {
   .explore-search-panel {
     grid-template-columns: 1fr;
@@ -4465,8 +4895,12 @@ input[type="search"]::-webkit-search-cancel-button {
     grid-template-columns: 1fr;
   }
 
-  .itinerary-search-section {
-    grid-column: auto;
+  .how-it-works-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .my-trips-carousel {
+    grid-auto-columns: minmax(196px, 216px);
   }
 }
 
@@ -4745,22 +5179,18 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 /* =========================================================
-   Generated itinerary — day tabs and image-led timeline
+   Itinerary plan — day tabs and image-led timeline
 ========================================================= */
 
-.generated-itinerary-section {
-  padding: 0;
+/*
+  The plan itself is a bordered card inside the detail page, so the page section
+  stays plain and the card carries the frame.
+*/
+.itinerary-detail .generated-itinerary-plan {
   overflow: hidden;
-  box-shadow: none;
-}
-
-.generated-itinerary-section .itinerary-section-header {
-  margin: 0;
-  padding: 28px 30px 24px;
-}
-
-.generated-itinerary-section > .fallback-message {
-  margin: 20px 30px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
 }
 
 .itinerary-day-tabs {
@@ -4802,27 +5232,27 @@ input[type="search"]::-webkit-search-cancel-button {
   white-space: nowrap;
 }
 
-.generated-itinerary-section .itinerary-days {
+.itinerary-detail .itinerary-days {
   gap: 0;
 }
 
-.generated-itinerary-section .itinerary-day-group {
+.itinerary-detail .itinerary-day-group {
   padding: 28px 30px 34px;
   border: 0;
   border-radius: 0;
   background: transparent;
 }
 
-.generated-itinerary-section .itinerary-day-heading {
+.itinerary-detail .itinerary-day-heading {
   margin-bottom: 24px;
 }
 
-.generated-itinerary-section .itinerary-timeline {
+.itinerary-detail .itinerary-timeline {
   position: relative;
   gap: 28px;
 }
 
-.generated-itinerary-section .itinerary-timeline::before {
+.itinerary-detail .itinerary-timeline::before {
   content: "";
   position: absolute;
   top: 0;
@@ -4832,34 +5262,34 @@ input[type="search"]::-webkit-search-cancel-button {
   background: var(--border-soft);
 }
 
-.generated-itinerary-section .itinerary-timeline-row {
+.itinerary-detail .itinerary-timeline-row {
   position: relative;
   grid-template-columns: 125px minmax(0, 1fr);
   gap: 24px;
 }
 
-.generated-itinerary-section .timeline-time {
+.itinerary-detail .timeline-time {
   padding: 19px 18px 0 0;
   display: grid;
   gap: 4px;
   color: var(--color-navy);
 }
 
-.generated-itinerary-section .timeline-time strong {
+.itinerary-detail .timeline-time strong {
   color: var(--color-navy);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.generated-itinerary-section .timeline-time span {
+.itinerary-detail .timeline-time span {
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 700;
   line-height: 17px;
 }
 
-.generated-itinerary-section .timeline-card {
+.itinerary-detail .timeline-card {
   padding: 0;
   display: grid;
   grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1.28fr);
@@ -4869,7 +5299,7 @@ input[type="search"]::-webkit-search-cancel-button {
   box-shadow: 0 8px 22px rgba(8, 43, 61, 0.06);
 }
 
-.generated-itinerary-section .timeline-card:hover {
+.itinerary-detail .timeline-card:hover {
   transform: none;
 }
 
@@ -4905,7 +5335,7 @@ input[type="search"]::-webkit-search-cancel-button {
   gap: 16px;
 }
 
-.generated-itinerary-section .timeline-card-heading h3 {
+.itinerary-detail .timeline-card-heading h3 {
   margin-top: 0;
 }
 
@@ -4950,18 +5380,18 @@ input[type="search"]::-webkit-search-cancel-button {
   font-weight: 750;
 }
 
-.generated-itinerary-section .busyness-forecast {
+.itinerary-detail .busyness-forecast {
   margin-top: 18px;
   padding: 13px;
   box-shadow: none;
 }
 
-.generated-itinerary-section .mini-busyness-chart {
+.itinerary-detail .mini-busyness-chart {
   min-height: 76px;
 }
 
 @media (max-width: 860px) {
-  .generated-itinerary-section .timeline-card {
+  .itinerary-detail .timeline-card {
     grid-template-columns: 1fr;
   }
 
@@ -4976,22 +5406,21 @@ input[type="search"]::-webkit-search-cancel-button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .generated-itinerary-section .itinerary-section-header,
-  .generated-itinerary-section .itinerary-day-group {
+  .itinerary-detail .itinerary-day-group {
     padding-right: 18px;
     padding-left: 18px;
   }
 
-  .generated-itinerary-section .itinerary-timeline::before {
+  .itinerary-detail .itinerary-timeline::before {
     display: none;
   }
 
-  .generated-itinerary-section .itinerary-timeline-row {
+  .itinerary-detail .itinerary-timeline-row {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .generated-itinerary-section .timeline-time {
+  .itinerary-detail .timeline-time {
     padding: 0;
   }
 

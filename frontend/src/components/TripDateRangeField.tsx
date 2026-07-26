@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { DayPicker } from "@daypicker/react";
 import type { DateRange } from "@daypicker/react";
+import { countInclusiveDays, parseIsoDate } from "../itinerary";
 
 type TripDateRangeFieldProps = {
   startDate: string;
@@ -23,18 +24,14 @@ function toIsoDate(date: Date): string {
 }
 
 /*
-  Parse at local midnight, matching the convention used elsewhere in the app
-  (see formatItineraryDate in MyItinerary). Using new Date(isoString) directly
-  would parse as UTC and can shift the day.
+  DayPicker wants undefined rather than null for an unset end of the range.
 */
 function fromIsoDate(value: string): Date | undefined {
   if (value === "") {
     return undefined;
   }
 
-  const date = new Date(`${value}T00:00:00`);
-
-  return Number.isNaN(date.getTime()) ? undefined : date;
+  return parseIsoDate(value) ?? undefined;
 }
 
 function startOfToday(): Date {
@@ -49,16 +46,6 @@ function formatTriggerDate(date: Date): string {
     month: "short",
     year: "numeric",
   }).format(date);
-}
-
-/*
-  The range ends are inclusive, so a Fri–Fri selection is a single day.
-*/
-function countInclusiveDays(from: Date, to: Date): number {
-  const millisecondsPerDay = 24 * 60 * 60 * 1000;
-  const difference = to.getTime() - from.getTime();
-
-  return Math.round(difference / millisecondsPerDay) + 1;
 }
 
 function TripDateRangeField({

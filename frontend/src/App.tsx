@@ -8,6 +8,7 @@ import AttractionCard from "./components/AttractionCard";
 import AuthForm from "./components/AuthForm";
 import BusynessChart from "./components/BusynessChart";
 import CategoryTabs from "./components/CategoryTabs";
+import ItineraryDetail from "./components/ItineraryDetail";
 import MyItinerary from "./components/MyItinerary";
 import Profile from "./components/Profile";
 import SavedItineraries from "./components/SavedItineraries";
@@ -60,7 +61,11 @@ function getPageFromPath(pathname: string): Page {
     return "ai";
   }
 
-  if (path === "/itinerary") {
+  /*
+    A saved itinerary detail page still belongs to the My Itinerary area, so the
+    nav keeps that tab highlighted while /itinerary/{id} is open.
+  */
+  if (path === "/itinerary" || /^\/itinerary\/[^/]+$/.test(path)) {
     return "itinerary";
   }
 
@@ -89,12 +94,27 @@ function getPoiSlugFromPath(pathname: string): string | null {
   }
 }
 
+function getItineraryIdFromPath(pathname: string): string | null {
+  const match = normalisePath(pathname).match(/^\/itinerary\/([^/]+)$/);
+
+  if (!match) {
+    return null;
+  }
+
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
+}
+
 function isKnownAppPath(pathname: string): boolean {
   const path = normalisePath(pathname);
 
   return (
     Object.values(PAGE_PATHS).includes(path) ||
-    /^\/explore\/[^/]+$/.test(path)
+    /^\/explore\/[^/]+$/.test(path) ||
+    /^\/itinerary\/[^/]+$/.test(path)
   );
 }
 
@@ -427,6 +447,7 @@ function App() {
   const navigate = useNavigate();
   const currentPage = getPageFromPath(location.pathname);
   const routePoiSlug = getPoiSlugFromPath(location.pathname);
+  const routeItineraryId = getItineraryIdFromPath(location.pathname);
   const isProtectedPage = PROTECTED_PAGES.includes(currentPage);
 
   /*
@@ -1625,14 +1646,30 @@ function App() {
             </section>
           )}
 
-        {currentPage === "itinerary" && user && (
-          <MyItinerary
-            pois={pois}
-            onLoginRequired={openLogin}
-            preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
-            initialItinerary={aiGeneratedItinerary}
-          />
-        )}
+        {currentPage === "itinerary" &&
+          user &&
+          (routeItineraryId ? (
+            <ItineraryDetail
+              itineraryId={routeItineraryId}
+              pois={pois}
+              onBackToPlanner={() => navigate(PAGE_PATHS.itinerary)}
+            />
+          ) : (
+            <MyItinerary
+              pois={pois}
+              onLoginRequired={openLogin}
+              preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
+              initialItinerary={aiGeneratedItinerary}
+              onOpenItinerary={(itineraryId) => {
+                /*
+                  The AI handoff has been consumed. Leaving it in place would
+                  re-seed the planner every time the user came back here.
+                */
+                setAiGeneratedItinerary(null);
+                navigate(`/itinerary/${encodeURIComponent(itineraryId)}`);
+              }}
+            />
+          ))}
 
         {currentPage === "saved" && user && (
           <SavedItineraries

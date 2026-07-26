@@ -186,6 +186,31 @@ export function getErrorMessage(
 }
 
 /*
+  Recognises the messages getErrorMessage produces for an expired or missing
+  session. Several pages need this to show a login prompt instead of a
+  technical failure, so it lives here beside the wording it matches.
+*/
+export function isAuthenticationError(error: unknown): boolean {
+  if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+    return true;
+  }
+
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes("log in") ||
+    message.includes("not authenticated") ||
+    message.includes("authentication failed") ||
+    message.includes("unauthorised") ||
+    message.includes("unauthorized")
+  );
+}
+
+/*
   Attempts to read a response body safely.
 
   Some backend failures return plain text instead of JSON.
