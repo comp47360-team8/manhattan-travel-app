@@ -191,7 +191,9 @@ a {
 .page-container {
   width: min(100%, 1440px);
   margin: 0 auto;
-  padding: 0 48px 80px;
+  /* Top gap so the first block (e.g. the Explore hero) clears the sticky
+     top nav instead of butting up against it. */
+  padding: 32px 48px 80px;
 }
 
 .section-eyebrow,
@@ -5654,7 +5656,9 @@ input[type="search"]::-webkit-search-cancel-button {
   results change without scrolling past two separate control cards.
 */
 .explore-filter-shell {
-  margin-top: 22px;
+  /* Match the vertical rhythm of the sections below (.featured-section /
+     .all-attractions-section, 42px) so the filter isn't glued to the hero. */
+  margin-top: 42px;
   padding: 18px;
   display: grid;
   gap: 14px;
@@ -5756,7 +5760,8 @@ input[type="search"]::-webkit-search-cancel-button {
 
 @media (max-width: 640px) {
   .explore-filter-shell {
-    margin-top: 16px;
+    /* No mobile margin override: inherit the base 42px rhythm so the gap above
+       the filter matches the gap between the sections at every width. */
     padding: 13px;
     gap: 11px;
     border-radius: 15px;
