@@ -1853,14 +1853,10 @@ a {
   min-width: 0;
 }
 
+/* Sizing lives with the canonical page-title rules at the end of this file. */
 .itinerary-trip-header h1 {
   margin: 0;
   color: var(--color-navy);
-
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(30px, 4.4vw, 46px);
-  line-height: 1.04;
-  letter-spacing: -0.04em;
   overflow-wrap: anywhere;
 }
 
@@ -1889,9 +1885,10 @@ a {
   background: var(--bg-white);
   color: var(--color-navy);
 
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: clamp(26px, 3.8vw, 38px);
-  letter-spacing: -0.04em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .itinerary-trip-name-input:focus {
@@ -2278,14 +2275,10 @@ a {
   margin-bottom: 26px;
 }
 
+/* Sizing lives with the canonical page-title rules at the end of this file. */
 .itinerary-detail-heading h1 {
   margin: 14px 0 0;
   color: var(--color-navy);
-
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(38px, 5.4vw, 56px);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
 }
 
 .itinerary-detail-meta {
@@ -6422,10 +6415,23 @@ input[type="search"]::-webkit-search-cancel-button {
 .my-itinerary > h1,
 .saved-itineraries-heading h1,
 .profile-heading h1,
-.poi-detail h1 {
+.poi-detail h1,
+.itinerary-detail-heading h1 {
   font-size: clamp(40px, 6vw, 64px);
   font-weight: 800;
   line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+/*
+  The trip name is content inside the planner rather than a page title, so it
+  sits a step below the canonical size while keeping the same weight and
+  tracking.
+*/
+.itinerary-trip-header h1 {
+  font-size: clamp(30px, 4.4vw, 46px);
+  font-weight: 800;
+  line-height: 1.06;
   letter-spacing: -0.02em;
 }
 
