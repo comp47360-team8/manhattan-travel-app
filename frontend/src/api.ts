@@ -13,7 +13,11 @@ type BackendErrorData = {
   message?: string;
 };
 
-const API_TIMEOUT_MS = 15_000;
+// Default timeout for ordinary requests. Kept generous enough to survive a
+// backend cold start (the free host spins down when idle) instead of aborting
+// mid-boot. Slow endpoints (AI chat, itinerary generation) pass their own
+// longer signal at the call site.
+const API_TIMEOUT_MS = 30_000;
 
 /*
   Converts backend errors into messages that make sense to a normal user.
@@ -152,7 +156,8 @@ export async function apiFetch<T>(
       /*
         A stopped or unresponsive local backend previously left buttons in a
         permanent loading state. Every normal request now fails clearly after
-        15 seconds. A caller-provided signal is still respected when present.
+        the default timeout. A caller-provided signal is still respected when
+        present (AI chat and itinerary generation pass longer timeouts).
       */
       signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
     });
