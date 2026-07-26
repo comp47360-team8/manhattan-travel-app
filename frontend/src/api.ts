@@ -20,6 +20,77 @@ type BackendErrorData = {
 const API_TIMEOUT_MS = 30_000;
 
 /*
+  App.tsx listens for this event so every protected request follows the same
+  expired-session behaviour. The event is only sent after the refresh cookie
+  is also missing or invalid.
+*/
+export const AUTHENTICATION_REQUIRED_EVENT =
+  "offpeak:authentication-required";
+
+let refreshSessionPromise: Promise<boolean> | null = null;
+
+function isWebAuthRequest(url: string): boolean {
+  return url.split("?", 1)[0].startsWith("/api/auth/");
+}
+
+function notifyAuthenticationRequired(): void {
+  window.dispatchEvent(
+    new Event(AUTHENTICATION_REQUIRED_EVENT)
+  );
+}
+
+async function refreshWebSession(): Promise<boolean> {
+  if (refreshSessionPromise) {
+    return refreshSessionPromise;
+  }
+
+  /*
+    Several protected requests can fail together when a page opens. Sharing
+    one promise prevents each request from rotating the refresh token.
+  */
+  refreshSessionPromise = (async () => {
+    try {
+      const response = await fetch("/api/auth/refresh", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+        signal: AbortSignal.timeout(API_TIMEOUT_MS),
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.info("The web session could not be refreshed:", error);
+      return false;
+    }
+  })();
+
+  try {
+    return await refreshSessionPromise;
+  } finally {
+    refreshSessionPromise = null;
+  }
+}
+
+async function sendRequest(
+  url: string,
+  options: RequestInit,
+  headers: Headers
+): Promise<Response> {
+  return fetch(url, {
+    ...options,
+    headers,
+    credentials: "include",
+    /*
+      A new timeout signal is created for a retry when the caller did not
+      provide one. This gives the repeated request its own response window.
+    */
+    signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
+  });
+}
+
+/*
   Converts backend errors into messages that make sense to a normal user.
 
   FastAPI can return errors in several different formats:
@@ -149,18 +220,22 @@ export async function apiFetch<T>(
   let response: Response;
 
   try {
-    response = await fetch(url, {
-      ...options,
-      headers,
-      credentials: "include",
-      /*
-        A stopped or unresponsive local backend previously left buttons in a
-        permanent loading state. Every normal request now fails clearly after
-        the default timeout. A caller-provided signal is still respected when
-        present (AI chat and itinerary generation pass longer timeouts).
-      */
-      signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
-    });
+    response = await sendRequest(url, options, headers);
+
+    /*
+      Access cookies expire before refresh cookies. For a protected request,
+      refresh once and then repeat the original request once. Authentication
+      endpoints are excluded so an incorrect login cannot start this flow.
+    */
+    if (response.status === 401 && !isWebAuthRequest(url)) {
+      const sessionWasRefreshed = await refreshWebSession();
+
+      if (sessionWasRefreshed) {
+        response = await sendRequest(url, options, headers);
+      } else {
+        // The original 401 is handled below after its response body is read.
+      }
+    }
   } catch (error) {
     console.error(`Could not connect to ${url}:`, error);
 
@@ -185,6 +260,10 @@ export async function apiFetch<T>(
   const data = await readResponseBody(response);
 
   if (!response.ok) {
+    if (response.status === 401 && !isWebAuthRequest(url)) {
+      notifyAuthenticationRequired();
+    }
+
     throw new Error(getErrorMessage(data, response.status));
   }
 

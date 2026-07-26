@@ -15,7 +15,10 @@ import SearchBar from "./components/SearchBar";
 import TopNav from "./components/TopNav";
 import poiPhotoFallback from "./assets/poi-photo-fallback.svg";
 
-import { apiFetch } from "./api";
+import {
+  apiFetch,
+  AUTHENTICATION_REQUIRED_EVENT,
+} from "./api";
 
 import type {
   ApiMessageResponse,
@@ -630,13 +633,44 @@ function App() {
   }, [selectedPoiSlug]);
 
   /* Clear local display state after the backend session ends. */
-  function handleLocalLogout() {
+  const handleLocalLogout = useCallback(() => {
     localStorage.removeItem(USER_STORAGE_KEY);
     setUser(null);
     setProfilePreferences({ stepFreeRoutes: false });
     setSavedPoiSlugs([]);
     setPendingAccessibleSave(null);
-  }
+  }, [
+    setPendingAccessibleSave,
+    setProfilePreferences,
+    setSavedPoiSlugs,
+    setUser,
+  ]);
+
+  /*
+    The API helper emits one shared event when neither authentication cookie
+    can recover the session. Returning to Explore unmounts protected pages
+    before their parallel requests can repeatedly reopen the login modal.
+  */
+  useEffect(() => {
+    function handleAuthenticationRequired() {
+      handleLocalLogout();
+      navigate(PAGE_PATHS.explore, { replace: true });
+      setAuthMode("login");
+      setIsAuthModalOpen(true);
+    }
+
+    window.addEventListener(
+      AUTHENTICATION_REQUIRED_EVENT,
+      handleAuthenticationRequired
+    );
+
+    return () => {
+      window.removeEventListener(
+        AUTHENTICATION_REQUIRED_EVENT,
+        handleAuthenticationRequired
+      );
+    };
+  }, [handleLocalLogout, navigate]);
 
   /*
     I update the shared saved-place state when a place is removed from the
@@ -1603,7 +1637,6 @@ function App() {
         {currentPage === "saved" && user && (
           <SavedItineraries
             pois={pois}
-            onLoginRequired={openLogin}
             onSavedPlaceRemoved={handleSavedPlaceRemoved}
             preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
           />
