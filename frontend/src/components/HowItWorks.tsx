@@ -46,10 +46,6 @@ function HowItWorks() {
       <ol className="how-it-works-steps">
         {STEPS.map((step, index) => (
           <li key={step.title}>
-            <span className="how-it-works-icon" aria-hidden="true">
-              {step.icon}
-            </span>
-
             <span className="how-it-works-step-number" aria-hidden="true">
               {index + 1}
             </span>

@@ -768,7 +768,6 @@ function MyItinerary({
               onClick={editTripDates}
               title="Change your travel dates"
             >
-              <span aria-hidden="true">📅</span>
               {formatTripRange(startDate, endDate)} · {tripDayCount}{" "}
               {tripDayCount === 1 ? "day" : "days"}
             </button>
@@ -941,8 +940,7 @@ function MyItinerary({
               </p>
 
               <p className="selections-tip">
-                <span aria-hidden="true">💡</span> Offpeak spreads your places
-                evenly across your {tripDayCount}{" "}
+                Offpeak spreads your places evenly across your {tripDayCount}{" "}
                 {tripDayCount === 1 ? "day" : "days"} and puts each one in its
                 quietest window.
               </p>

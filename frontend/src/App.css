@@ -1794,28 +1794,28 @@ a {
 .how-it-works-steps li {
   position: relative;
   min-width: 0;
-  padding: 14px 14px 14px 46px;
+  padding: 14px 14px 14px 42px;
 
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
   background: var(--bg-white);
 }
 
-.how-it-works-icon {
+.how-it-works-step-number {
   position: absolute;
   top: 13px;
   left: 14px;
-  font-size: 19px;
-  line-height: 1;
-}
 
-.how-it-works-step-number {
-  position: absolute;
-  top: 34px;
-  left: 18px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
 
-  color: var(--color-gold);
-  font-size: 11px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold);
+  color: var(--text-light);
+
+  font-size: 10px;
   font-weight: 900;
 }
 
@@ -2110,8 +2110,6 @@ a {
 }
 
 .selections-tip {
-  display: flex;
-  gap: 8px;
   margin: 14px 0 16px;
   color: var(--text-muted);
   font-size: 12px;
