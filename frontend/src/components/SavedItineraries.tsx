@@ -14,7 +14,6 @@ import type {
 } from "../types";
 
 type SavedItinerariesProps = {
-  onLoginRequired?: () => void;
   onSavedPlaceRemoved?: (slug: string) => void;
   pois: Poi[];
   preferAccessiblePlaces: boolean;
@@ -117,7 +116,6 @@ function hasLimitedAccessibility(poi: Poi): boolean {
 }
 
 function SavedItineraries({
-  onLoginRequired,
   onSavedPlaceRemoved,
   pois,
   preferAccessiblePlaces,
@@ -272,10 +270,9 @@ function SavedItineraries({
         "You need to log in to view your saved items."
       );
 
-      onLoginRequired?.();
       return true;
     },
-    [onLoginRequired]
+    []
   );
 
   const loadSavedPlaces = useCallback(async () => {
