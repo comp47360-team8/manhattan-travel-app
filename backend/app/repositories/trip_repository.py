@@ -28,18 +28,32 @@ def update_trip(conv_id: str, extracted: TripParameters, exclude_pois: list[str]
         trip.pace = extracted.pace
     
     if extracted.excluded_types:
-        for poi_type in extracted.excluded_types:
-            if poi_type not in trip.excluded_types:
-                trip.excluded_types.append(poi_type)
-            if poi_type in trip.preferences and poi_type != "none":
-                trip.preferences = [item for item in trip.preferences if item != poi_type]
+        if trip.excluded_types == ["none"]:
+            trip.excluded_types.remove("none")
+
+        if extracted.excluded_types == ["none"]:
+            trip.excluded_types = ["none"]
+
+        else:
+            for poi_type in extracted.excluded_types:
+                if poi_type not in trip.excluded_types:
+                    trip.excluded_types.append(poi_type)
+                if poi_type in trip.preferences and poi_type != "none":
+                    trip.preferences = [item for item in trip.preferences if item != poi_type]
 
     if extracted.preferences:
-        for preference in extracted.preferences:
-            if preference not in trip.preferences:
-                trip.preferences.append(preference)
-            if preference in trip.excluded_types and preference != "none":
-                trip.excluded_types = [item for item in trip.excluded_types if item != preference]
+        if trip.preferences == ["none"]:
+            trip.preferences.remove("none")
+            
+        if extracted.preferences == ["none"]:
+            trip.preferences = ["none"]
+
+        else:
+            for preference in extracted.preferences:
+                if preference not in trip.preferences:
+                    trip.preferences.append(preference)
+                if preference in trip.excluded_types and preference != "none":
+                    trip.excluded_types = [item for item in trip.excluded_types if item != preference]
    
 
     if exclude_pois:
