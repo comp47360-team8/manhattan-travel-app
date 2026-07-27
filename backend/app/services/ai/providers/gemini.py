@@ -3,6 +3,7 @@ from google import genai
 from google.genai import types
 from google.genai.errors import APIError
 from datetime import date, datetime, time
+from zoneinfo import ZoneInfo
 from app.services.ai.base import LLMProvider
 from app.models.ai_model import Message
 from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS
@@ -79,7 +80,7 @@ class GeminiProvider(LLMProvider):
         {SYSTEM_PROMPT}
 
         Today's date:
-        {date.today()}
+        {datetime.now(ZoneInfo("America/New_York"))}
         Users cannot select a date in the past.
         If the user selects a date in the past without specifying the year,
         ask them to specify the year.
@@ -101,7 +102,10 @@ class GeminiProvider(LLMProvider):
 
         - Use the summary and trip details as context.
         - Ask for missing trip details naturally.
-        - Only generate an itinerary when all required details are available.
+        - Only generate an itinerary when all required details are available:
+            - dates, pace and name of trip cannot be null.
+            - preferences and excluded_types lists cannot be empty.
+
         The tool returs the itinerary details:
         - Write ONE friendly paragraph.   
         - Do not output JSON.
@@ -119,7 +123,7 @@ class GeminiProvider(LLMProvider):
                 config={
                     "system_instruction": system_instruction,
                     "tools": tools,
-                    "response_schema": GeminiResponse
+                    "response_schema": GeminiResponse,
                 }
             )
         except (APIError, httpx.HTTPError) as e:
@@ -189,16 +193,16 @@ class GeminiProvider(LLMProvider):
         {EXTRACTION_PROMPT}
 
         Today's date:
-        {date.today()}
+        {datetime.now(ZoneInfo("America/New_York"))}
         Users cannot select a date in the past.
-
-        Last message sent by the assistant:
-        {last_message or "None"}
-        Use it only to understand the context of the user's latest message.
 
         Current trip details are:
         {trip_details}
-        Use this only for context.
+
+        Last assistant message:
+        {last_message}
+
+        Use trip details and last messsage for context only.
         """
         try:
             response =  self.client.models.generate_content(
