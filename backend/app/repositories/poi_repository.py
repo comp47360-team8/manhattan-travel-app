@@ -1,4 +1,4 @@
-from sqlalchemy import select, func, text
+from sqlalchemy import select, func
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.models.poi_model import POI, POIBusynessForecast
