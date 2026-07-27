@@ -1,7 +1,5 @@
 import re
 from rapidfuzz import process, fuzz
-from fastapi import Depends
-from app.database import get_db
 from app.models.poi_model import POI
 from app.models.ai_model import Trip
 from app.repositories.trip_repository import get_trip
@@ -9,8 +7,6 @@ from app.schemas.ai import TripParameters
 
 def get_trip_details(conv_id, db):
     trip = get_trip(conv_id, db)
-
-    excluded_pois = [poi.slug for poi in trip.excluded_pois]
 
     trip_details = TripParameters(
         name=trip.name,
@@ -55,5 +51,15 @@ def normalize(text: str) -> str:
     text = re.sub(r"[^\w\s]", "", text)
     text = re.sub(r"\b(the|a|an)\b", "", text)
     return " ".join(text.split())
+
+def is_trip_ready(trip: Trip) -> bool:
+    return (
+        trip.start_date is not None
+        and trip.end_date is not None
+        and trip.pace is not None
+        and trip.name is not None
+        and len(trip.preferences) > 0
+        and len(trip.excluded_types) > 0
+    )
 
 

@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.models.ai_model import Trip, TripExcludedPOI
+from app.models.ai_model import Trip, TripExcludedPOI, Conversation
 from app.schemas.ai import TripParameters
 from app.services.poi_service import get_pois_by_slug
 
@@ -9,7 +9,10 @@ def get_trip(conv_id, db: Session):
     return db.execute(statement).scalar_one_or_none()
 
 def update_trip(conv_id: str, extracted: TripParameters, exclude_pois: list[str] | None, db: Session, user):
-    statement = select(Trip).where(Trip.conversation_id == conv_id)
+    statement = select(Trip).join(Conversation).where(
+        Trip.conversation_id == conv_id,
+        Conversation.user_id == user
+        )
     trip = db.execute(statement).scalar_one_or_none()
 
     if extracted.name:
@@ -23,20 +26,34 @@ def update_trip(conv_id: str, extracted: TripParameters, exclude_pois: list[str]
 
     if extracted.pace:
         trip.pace = extracted.pace
-
+    
     if extracted.excluded_types:
-        for poi_type in extracted.excluded_types:
-            if poi_type not in trip.excluded_types:
-                trip.excluded_types.append(poi_type)
-            if poi_type in trip.preferences:
-                trip.preferences = [item for item in trip.preferences if item != poi_type]
+        if trip.excluded_types == ["none"]:
+            trip.excluded_types.remove("none")
+
+        if extracted.excluded_types == ["none"]:
+            trip.excluded_types = ["none"]
+
+        else:
+            for poi_type in extracted.excluded_types:
+                if poi_type not in trip.excluded_types:
+                    trip.excluded_types.append(poi_type)
+                if poi_type in trip.preferences and poi_type != "none":
+                    trip.preferences = [item for item in trip.preferences if item != poi_type]
 
     if extracted.preferences:
-        for preference in extracted.preferences:
-            if preference not in trip.preferences:
-                trip.preferences.append(preference)
-            if preference in trip.excluded_types:
-                trip.excluded_types = [item for item in trip.excluded_types if item != preference]
+        if trip.preferences == ["none"]:
+            trip.preferences.remove("none")
+            
+        if extracted.preferences == ["none"]:
+            trip.preferences = ["none"]
+
+        else:
+            for preference in extracted.preferences:
+                if preference not in trip.preferences:
+                    trip.preferences.append(preference)
+                if preference in trip.excluded_types and preference != "none":
+                    trip.excluded_types = [item for item in trip.excluded_types if item != preference]
    
 
     if exclude_pois:

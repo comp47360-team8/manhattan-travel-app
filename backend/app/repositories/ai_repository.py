@@ -35,11 +35,9 @@ def get_conversation_by_id(conv_id, db: Session, user):
     
     return conversation
 
-def save_message(message: str, role: str, conv_id, db: Session, user):
-    conversation = get_conversation_by_id(conv_id, db, user)
-
+def save_message(message: str, role: str, conv_id, db: Session):
     save_message = Message(
-        conversation_id=conversation.id,
+        conversation_id=conv_id,
         role=role,
         content=message
     )
