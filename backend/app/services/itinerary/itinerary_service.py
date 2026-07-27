@@ -118,7 +118,7 @@ def auto_generate_itinerary(trip: Trip, conv_id, db: Session, user):
         trip_name=trip.name,
         trip_dates=[trip.start_date, trip.end_date],
         pois=pois,
-        accessibility=["wheelchair", "wheelchair-limited"] if user_profile.accessibility else []
+        accessibility=["wheelchair"] if user_profile.accessibility else []
     )
 
     itinerary = create_itinerary(request, db)
@@ -128,7 +128,7 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
     pois = get_all_pois(db)
 
     if user.accessibility:
-        pois = filter_accessibility(pois, ["wheelchair", "wheelchair-limited"])
+        pois = filter_accessibility(pois, ["wheelchair"])
 
     poi_slug_map = {poi.slug: poi for poi in pois}
     poi_id_map = {poi.id: poi for poi in pois}

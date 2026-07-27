@@ -91,6 +91,8 @@ Describes what each column means, where its data comes from, when it may be NULL
 |---|---|---|---|
 | `accessibility_labels` | TEXT[] | YES | Array of accessibility feature tags. Current values: `"wheelchair"` (fully accessible), `"wheelchair_limited"` (partial access). Sourced from the OpenStreetMap `wheelchair` tag via `src/02_enrich_poi_attributes_osm.py`. Empty array means no OSM data (not necessarily inaccessible). |
 
+**How the app reads this column.** Only `"wheelchair"` (and `"step_free"`, were it ever populated) counts as accessible. `"wheelchair_limited"` is deliberately treated as *not* accessible, because partial access is no access for a visitor who needs step-free entry — it earns no ♿ badge and is excluded by every accessibility filter. An empty array is never presented as "no accessible features", since that would assert something this column cannot support; the UI links to the POI's `website_url` instead. This is intentional — see `frontend/src/accessibility.ts` and `backend/app/services/itinerary/accessibility.py`.
+
 ---
 
 ## Admission
