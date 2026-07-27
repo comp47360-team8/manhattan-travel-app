@@ -6076,15 +6076,27 @@ input[type="search"]::-webkit-search-cancel-button {
   color: var(--text-light);
 }
 
+/*
+  A <fieldset> carries UA padding (0.35em 0.75em 0.625em) and a 2px inline
+  margin, and a <legend> carries its own inline padding. Those were only
+  partly overridden, which left the whole selection area sitting 4px right of
+  the card heading, the chat and the suggestion buttons. Zero them outright so
+  it lines up with everything else in the card.
+
+  min-inline-size is a fieldset-specific default of min-content; without this
+  the chips refuse to wrap on narrow screens.
+*/
 .ai-option-selector {
   margin: 0 0 18px;
-  padding: 0 4px;
+  padding: 0;
+  min-inline-size: 0;
   border: none;
   background: transparent;
 }
 
 .ai-option-selector legend {
-  padding: 0 6px;
+  margin-bottom: 10px;
+  padding: 0;
   color: var(--color-navy);
   font-size: 13px;
   font-weight: 900;
@@ -6093,7 +6105,8 @@ input[type="search"]::-webkit-search-cancel-button {
 .ai-option-selector > div {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
 
 .ai-option-selector label {
@@ -6102,13 +6115,13 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .ai-option-selector label span {
   display: block;
-  padding: 8px 11px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  padding: 9px 15px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
   background: var(--bg-white);
   color: var(--color-navy);
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 850;
   cursor: pointer;
 }
 
@@ -6124,13 +6137,13 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .ai-option-selector-continue {
-  padding: 8px 14px;
+  padding: 9px 16px;
   margin: 0;
   border: 1px solid var(--color-brick);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-brick);
-  color: white;
-  font-size: 11px;
+  color: var(--text-light);
+  font-size: 12px;
   font-weight: 850;
 }
 
@@ -6144,17 +6157,7 @@ input[type="search"]::-webkit-search-cancel-button {
   outline-offset: 2px;
 }
 
-.ai-option-selector > button {
-  margin-top: 14px;
-  padding: 10px 13px;
-  border: 1px solid var(--color-brick);
-  border-radius: 8px;
-  background: var(--color-brick);
-  color: white;
-  font-weight: 850;
-}
-
-.ai-character-count {
+ .ai-character-count {
   display: block;
   margin-top: 8px;
   color: var(--text-muted);
