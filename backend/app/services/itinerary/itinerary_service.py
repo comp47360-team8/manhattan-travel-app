@@ -142,10 +142,14 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
         if any(day in poi.opening_days for day in trip_days):
             open_during_trip_filter.append(poi)
 
-    types_excluded = []
-    for poi in open_during_trip_filter:
-        if poi_slug_map[poi.slug].type not in trip.excluded_types:
-            types_excluded.append(poi)
+    if trip.excluded_types == ["none"]:
+        types_excluded = open_during_trip_filter
+        
+    else:
+        types_excluded = []
+        for poi in open_during_trip_filter:
+            if poi_slug_map[poi.slug].type not in trip.excluded_types:
+                types_excluded.append(poi)
     
     excluded_poi_ids = get_excluded_pois(conv_id, db)
     excluded_poi_slugs = {get_poi_by_id(poi_id, db).slug for poi_id in excluded_poi_ids}
@@ -163,7 +167,7 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
 
     preferred_types = set(trip.preferences)
 
-    if preferred_types:
+    if preferred_types and preferred_types != ["none"]:
         total_preferred_type = math.ceil(target_count * 0.6)
         max_per_preferred_type = math.ceil(total_preferred_type / len(preferred_types))
 
@@ -172,7 +176,7 @@ def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
     candidates = []
     type_count = defaultdict(int)
 
-    if preferred_types:
+    if preferred_types and preferred_types != ["none"]:
         available_preferred_pois = [
             poi_id_map[poi["poi_id"]] for poi in busyness_per_poi 
             if poi_id_map[poi["poi_id"]].type in preferred_types
