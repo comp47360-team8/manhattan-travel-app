@@ -37,18 +37,6 @@ type MyItineraryProps = {
 const MAX_POIS_PER_DAY = 5;
 
 /*
-  The current itinerary service cannot schedule a POI when opening hours are
-  missing. I keep those places in Explore, but exclude them from this planner
-  until the backend handles null opening-hour data safely.
-*/
-function canUseInItinerary(poi: Poi): boolean {
-  return (
-    poi.opening_hours !== null &&
-    Object.keys(poi.opening_hours).length > 0
-  );
-}
-
-/*
   Renders the confirmed range as "Jul 15 – 17, 2026" when the trip stays inside
   one month, and spells out both months otherwise.
 */
@@ -265,10 +253,6 @@ function MyItinerary({
 
   const filteredPois = pois
     .filter((poi) => {
-      if (!canUseInItinerary(poi)) {
-        return false;
-      }
-
       return (
         normalisedSearchTerm === "" ||
         poi.name.toLowerCase().includes(normalisedSearchTerm) ||
@@ -296,9 +280,7 @@ function MyItinerary({
 
   const savedSlugs = new Set(savedPois.map((poi) => poi.slug));
 
-  const savedPoiOptions = [...savedPois]
-    .filter(canUseInItinerary)
-    .sort(byAccessibilityPreference);
+  const savedPoiOptions = [...savedPois].sort(byAccessibilityPreference);
 
   /*
     There is no popularity endpoint, so "popular" is derived the same way as the
@@ -306,7 +288,6 @@ function MyItinerary({
     Places already offered in Saved are left out so the two lists do not repeat.
   */
   const popularPois = pois
-    .filter(canUseInItinerary)
     .filter((poi) => !savedSlugs.has(poi.slug))
     .sort(
       (firstPoi, secondPoi) =>
@@ -373,13 +354,6 @@ function MyItinerary({
 
     if (!poi) {
       setItineraryError("That attraction could not be found.");
-      return;
-    }
-
-    if (!canUseInItinerary(poi)) {
-      setItineraryError(
-        `${poi.name} cannot currently be scheduled because its opening hours are unavailable.`
-      );
       return;
     }
 
@@ -488,17 +462,6 @@ function MyItinerary({
     if (selectedPoiSlugs.length === 0) {
       setItineraryError(
         "Add at least one place before generating your itinerary."
-      );
-      return;
-    }
-
-    const unsupportedPoi = selectedPois.find(
-      (poi) => !canUseInItinerary(poi)
-    );
-
-    if (unsupportedPoi) {
-      setItineraryError(
-        `${unsupportedPoi.name} cannot be scheduled because its opening hours are unavailable.`
       );
       return;
     }
