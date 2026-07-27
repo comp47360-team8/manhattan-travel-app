@@ -106,6 +106,8 @@ class GeminiProvider(LLMProvider):
             - dates, pace and name of trip cannot be null.
             - preferences and excluded_types lists cannot be empty.
 
+        NEVER return ui_action in message field of response schema.
+
         The tool returs the itinerary details:
         - Write ONE friendly paragraph.   
         - Do not output JSON.
