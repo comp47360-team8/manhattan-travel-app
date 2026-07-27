@@ -51,7 +51,7 @@ struct ExploreView: View {
                     .padding(.bottom, 32)
             }
             .refreshable {
-                await Task { await viewModel.loadPOIs(force: true) }.value
+                await viewModel.loadPOIs(force: true)
             }
             .background(OffpeakTheme.backGround)
             .safeAreaInset(edge: .top, spacing: 0) { topBar }

@@ -13,7 +13,112 @@ type BackendErrorData = {
   message?: string;
 };
 
-const API_TIMEOUT_MS = 15_000;
+export type ApiErrorKind = "http" | "network" | "timeout";
+
+/*
+  Keeps the failure category and HTTP status available to page components.
+  This lets a feature show a useful message without matching technical error
+  text returned by the backend.
+*/
+export class ApiError extends Error {
+  readonly kind: ApiErrorKind;
+  readonly status?: number;
+
+  constructor(
+    message: string,
+    {
+      kind,
+      status,
+      cause,
+    }: {
+      kind: ApiErrorKind;
+      status?: number;
+      cause?: unknown;
+    }
+  ) {
+    super(message, { cause });
+    this.name = "ApiError";
+    this.kind = kind;
+    this.status = status;
+  }
+}
+
+// Default timeout for ordinary requests. Kept generous enough to survive a
+// backend cold start (the free host spins down when idle) instead of aborting
+// mid-boot. Slow endpoints (AI chat, itinerary generation) pass their own
+// longer signal at the call site.
+const API_TIMEOUT_MS = 30_000;
+
+/*
+  App.tsx listens for this event so every protected request follows the same
+  expired-session behaviour. The event is only sent after the refresh cookie
+  is also missing or invalid.
+*/
+export const AUTHENTICATION_REQUIRED_EVENT =
+  "offpeak:authentication-required";
+
+let refreshSessionPromise: Promise<boolean> | null = null;
+
+function isWebAuthRequest(url: string): boolean {
+  return url.split("?", 1)[0].startsWith("/api/auth/");
+}
+
+function notifyAuthenticationRequired(): void {
+  window.dispatchEvent(
+    new Event(AUTHENTICATION_REQUIRED_EVENT)
+  );
+}
+
+async function refreshWebSession(): Promise<boolean> {
+  if (refreshSessionPromise) {
+    return refreshSessionPromise;
+  }
+
+  /*
+    Several protected requests can fail together when a page opens. Sharing
+    one promise prevents each request from rotating the refresh token.
+  */
+  refreshSessionPromise = (async () => {
+    try {
+      const response = await fetch("/api/auth/refresh", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+        signal: AbortSignal.timeout(API_TIMEOUT_MS),
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.info("The web session could not be refreshed:", error);
+      return false;
+    }
+  })();
+
+  try {
+    return await refreshSessionPromise;
+  } finally {
+    refreshSessionPromise = null;
+  }
+}
+
+async function sendRequest(
+  url: string,
+  options: RequestInit,
+  headers: Headers
+): Promise<Response> {
+  return fetch(url, {
+    ...options,
+    headers,
+    credentials: "include",
+    /*
+      A new timeout signal is created for a retry when the caller did not
+      provide one. This gives the repeated request its own response window.
+    */
+    signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
+  });
+}
 
 /*
   Converts backend errors into messages that make sense to a normal user.
@@ -81,6 +186,31 @@ export function getErrorMessage(
 }
 
 /*
+  Recognises the messages getErrorMessage produces for an expired or missing
+  session. Several pages need this to show a login prompt instead of a
+  technical failure, so it lives here beside the wording it matches.
+*/
+export function isAuthenticationError(error: unknown): boolean {
+  if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+    return true;
+  }
+
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+
+  return (
+    message.includes("log in") ||
+    message.includes("not authenticated") ||
+    message.includes("authentication failed") ||
+    message.includes("unauthorised") ||
+    message.includes("unauthorized")
+  );
+}
+
+/*
   Attempts to read a response body safely.
 
   Some backend failures return plain text instead of JSON.
@@ -145,17 +275,22 @@ export async function apiFetch<T>(
   let response: Response;
 
   try {
-    response = await fetch(url, {
-      ...options,
-      headers,
-      credentials: "include",
-      /*
-        A stopped or unresponsive local backend previously left buttons in a
-        permanent loading state. Every normal request now fails clearly after
-        15 seconds. A caller-provided signal is still respected when present.
-      */
-      signal: options.signal ?? AbortSignal.timeout(API_TIMEOUT_MS),
-    });
+    response = await sendRequest(url, options, headers);
+
+    /*
+      Access cookies expire before refresh cookies. For a protected request,
+      refresh once and then repeat the original request once. Authentication
+      endpoints are excluded so an incorrect login cannot start this flow.
+    */
+    if (response.status === 401 && !isWebAuthRequest(url)) {
+      const sessionWasRefreshed = await refreshWebSession();
+
+      if (sessionWasRefreshed) {
+        response = await sendRequest(url, options, headers);
+      } else {
+        // The original 401 is handled below after its response body is read.
+      }
+    }
   } catch (error) {
     console.error(`Could not connect to ${url}:`, error);
 
@@ -163,15 +298,19 @@ export async function apiFetch<T>(
       error instanceof DOMException &&
       (error.name === "AbortError" || error.name === "TimeoutError")
     ) {
-      throw new Error(
+      throw new ApiError(
         "The server took too long to respond. Check that the backend is running, then try again.",
-        { cause: error }
+        {
+          kind: "timeout",
+          cause: error,
+        }
       );
     }
 
-    throw new Error(
+    throw new ApiError(
       "Could not connect to the server. Check that the backend is running.",
       {
+        kind: "network",
         cause: error,
       }
     );
@@ -180,7 +319,14 @@ export async function apiFetch<T>(
   const data = await readResponseBody(response);
 
   if (!response.ok) {
-    throw new Error(getErrorMessage(data, response.status));
+    if (response.status === 401 && !isWebAuthRequest(url)) {
+      notifyAuthenticationRequired();
+    }
+
+    throw new ApiError(getErrorMessage(data, response.status), {
+      kind: "http",
+      status: response.status,
+    });
   }
 
   return repairApiText(data as T);

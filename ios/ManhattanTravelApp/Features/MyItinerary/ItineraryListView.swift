@@ -7,14 +7,23 @@
 
 import SwiftUI
 
+/// Identifiable wrapper so the edit flow is presented via `fullScreenCover(item:)`
+/// — avoids the first-tap blank-sheet race that `isPresented:` + optional hits.
+private struct EditSession: Identifiable {
+    let id = UUID()
+    let vm: NewTripViewModel
+}
+
 struct ItineraryListView: View {
     @EnvironmentObject private var authManager: AuthManager
     @EnvironmentObject private var savedStore: SavedPOIStore
     @StateObject private var vm = ItineraryViewModel()
     @State private var showNewTrip = false
-    
+    @State private var path = NavigationPath()
+    @State private var editSession: EditSession?
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Group{
                 if authManager.isLoggedIn {
                     VStack{
@@ -23,7 +32,9 @@ struct ItineraryListView: View {
                     .safeAreaInset(edge: .top, spacing: 0) { header }
                     .refreshable { await vm.load(force: true) }
                     .navigationDestination(for: String.self) { id in
-                        ItineraryDetailView(id: id, onEdited: { Task { await vm.load(force: true) } })
+                        ItineraryDetailView(id: id, onEditRequested: { model in
+                            editSession = EditSession(vm: model)
+                        })
                     }
                     .task { if authManager.isLoggedIn {await vm.load()} }
                     .fullScreenCover(isPresented: $showNewTrip, onDismiss: {
@@ -31,7 +42,17 @@ struct ItineraryListView: View {
                     }) {
                         NewTripDatesView(onClose: { showNewTrip = false })
                         .environmentObject(savedStore)
+                        .environmentObject(authManager)
                                         }
+                    .fullScreenCover(item: $editSession, onDismiss: {
+                        Task { await vm.load(force: true) }
+                    }) { session in
+                        EditItineraryFlow(vm: session.vm,
+                                          onGenerate: { path = NavigationPath() },
+                                          onClose: { editSession = nil })
+                        .environmentObject(savedStore)
+                        .environmentObject(authManager)
+                    }
                 }else{
                     loginPrompt
                 }

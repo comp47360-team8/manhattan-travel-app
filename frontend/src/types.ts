@@ -151,7 +151,12 @@ export type ItineraryStop = {
   borough: string;
   neighborhood: string;
   suggested_duration: number;
-  accessibility: unknown[];
+  /*
+    Fed straight from the POI's nullable accessibility_labels column, so a
+    saved stop for a place with no labels sends null here. Most Manhattan POIs
+    have none, so this must stay nullable.
+  */
+  accessibility: unknown[] | null;
   flags: string[];
   busyness_for_day: BusynessResponse[];
   why_this_time?: string | null;

@@ -57,7 +57,8 @@ struct POIDetailView: View {
             VStack(alignment: .leading, spacing: 24) {
                 titleBlock(poi)
                 if let desc = poi.descriptionText {
-                   ExpandableText(text: desc)
+                    Divider()
+                    ExpandableText(text: desc)
                 }
                 if let label = poi.bestTimeLabel { recommendedTime(label, why: poi.whyThisTime) }
                 crowdForecast
@@ -73,38 +74,41 @@ struct POIDetailView: View {
                 .frame(height: 300)
                 .frame(maxWidth: .infinity)
                 .overlay {
-                    if let url = poi.heroURL {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .success(let image): image.resizable().scaledToFill()
-                            case .failure:            heroPlaceholder(poi)
-                            case .empty:              heroPlaceholder(poi)
-                            @unknown default:         heroPlaceholder(poi)
-                            }
-                        }
-                    } else {
+                    CachedImage(url: poi.heroURL) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: {
                         heroPlaceholder(poi)
                     }
                 }
                 .clipped()
+                .overlay(alignment: .bottomTrailing) {
+                    if let level = currentLevel {
+                        busynessBadge(level)
+                    }
+                }
         
     }
 
     private func titleBlock(_ poi: POIDetail) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(poi.name)
-                .font(.system(size: 30, weight: .bold))
-                .kerning(-0.5)
-                .foregroundColor(OffpeakTheme.ink)
+            HStack(alignment: .top, spacing: 8) {
+                Text(poi.name)
+                    .font(.system(size: 30, weight: .bold))
+                    .kerning(-0.5)
+                    .foregroundColor(OffpeakTheme.ink)
 
-            if let url = poi.mapExternalUrl, let u = URL(string: url) {
-                Link(destination: u) {
-                    HStack(spacing: 3) {
-                        Text("View on map")
-                        Image(systemName: "arrow.up.right")
+                Spacer(minLength: 8)
+
+                if let url = poi.mapExternalUrl, let u = URL(string: url) {
+                    Link(destination: u) {
+                        HStack(spacing: 3) {
+                            Text("View on map")
+                            Image(systemName: "arrow.up.right")
+                        }
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(OffpeakTheme.navy)
                     }
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(OffpeakTheme.navy)
+                    .fixedSize()
                 }
             }
 
@@ -117,8 +121,10 @@ struct POIDetailView: View {
                         Text(star).foregroundColor(OffpeakTheme.ink)
                     }
                 }
-                Text("·").foregroundColor(Color(hex: 0xC2CAD6))
-                Text(poi.admissionShort).foregroundColor(Color(hex: 0x3D5E42))
+                if let admission = poi.admissionShort {
+                    Text("·").foregroundColor(Color(hex: 0xC2CAD6))
+                    Text(admission).foregroundColor(Color(hex: 0x3D5E42))
+                }
             }
             .font(.system(size: 14, weight: .medium))
             .foregroundColor(OffpeakTheme.textSecondary)
@@ -144,54 +150,99 @@ struct POIDetailView: View {
     }
 
     private var crowdForecast: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("Crowd forecast").font(.system(size: 18, weight: .bold)).foregroundColor(OffpeakTheme.ink)
+        let bars = vm.forecast?.bars(for: day) ?? []
 
-            // day picker
-            HStack(spacing: 0) {
-                ForEach(ForecastDay.allCases) { d in
-                    let on = d == day
-                    Text(d.rawValue)
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(on ? OffpeakTheme.ink : OffpeakTheme.textTertiary)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 34)
-                        .background(on ? Color.white : Color.clear, in: Capsule())
-                        .onTapGesture { day = d }
+        return VStack(alignment: .leading, spacing: 12) {
+          
+            Text("Crowd forecast")
+                .font(.system(size: 18, weight: .bold))
+                .foregroundColor(OffpeakTheme.ink)
+
+           
+            VStack(alignment: .leading, spacing: 14) {
+                
+                HStack(spacing: 0) {
+                    ForEach(ForecastDay.allCases) { d in
+                        let on = d == day
+                        Text(d.rawValue)
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(on ? OffpeakTheme.ink : OffpeakTheme.textTertiary)
+                            .frame(maxWidth: .infinity).frame(height: 34)
+                            .background(on ? Color.white : Color.clear, in: Capsule())
+                            .onTapGesture { day = d }
+                    }
+                }
+                .padding(4)
+                .background(OffpeakTheme.navy.opacity(0.06), in: Capsule())
+
+
+                chart(bars, highlightHour: day == .today ? manhattanHour : nil) 
+
+                Divider()
+
+                HStack(spacing: 16) {
+                    legend(.quiet, "Quiet"); legend(.moderate, "Moderate"); legend(.busy, "Busy")
+                    Spacer()
+                    if day == .today {
+                        HStack(spacing: 5) {
+                            Circle().fill(OffpeakTheme.brand).frame(width: 8, height: 8)
+                            Text("Now").font(.system(size: 12, weight: .semibold)).foregroundColor(OffpeakTheme.brand)
+                        }
+                    }
                 }
             }
-            .padding(4)
-            .background(OffpeakTheme.navy.opacity(0.06), in: Capsule())
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.white, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
 
-            chart(mockForecast(for: day))
-
-            HStack(spacing: 16) {
-                legend(.quiet, "Quiet"); legend(.moderate, "Moderate"); legend(.busy, "Busy")
-            }
-            Text("Based on historical patterns + ML prediction · not real-time")
+            Text("Based on historical patterns + ML prediction")
                 .font(.system(size: 11))
                 .foregroundColor(OffpeakTheme.textTertiary)
         }
-        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.white, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        
     }
 
-    private func chart(_ bars: [HourBar]) -> some View {
-        VStack(spacing: 8) {
-            HStack(alignment: .bottom, spacing: 10) {
-                ForEach(bars) { bar in
-                    RoundedRectangle(cornerRadius: 5)
-                        .fill(bar.level.color)
-                        .frame(height: max(8, 120 * bar.value))
-                        .frame(maxWidth: .infinity)
-                }
+
+    @ViewBuilder
+    private func chart(_ bars: [HourBar], highlightHour: Int?) -> some View {
+        if bars.allSatisfy({ !$0.hasData }) {
+            VStack(spacing: 10) {
+                Image(systemName: "chart.bar.xaxis")
+                    .font(.system(size: 26, weight: .light))
+                    .foregroundColor(OffpeakTheme.textTertiary)
+                Text("No crowd forecast for this spot yet")
+                    .font(.system(size: 13))
+                    .foregroundColor(OffpeakTheme.textSecondary)
             }
-            .frame(height: 120, alignment: .bottom)
-            HStack(spacing: 10) {
-                ForEach(bars) { bar in
-                    Text(bar.label).font(.system(size: 11)).foregroundColor(OffpeakTheme.textTertiary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 150)
+        } else {
+            VStack(spacing: 10) {
+                HStack(alignment: .bottom, spacing: 7) {
+                    ForEach(bars) { bar in
+                        let isNow = bar.hour == highlightHour
+                        ZStack(alignment: .bottom) {
+                            Capsule().fill(isNow ? OffpeakTheme.brand.opacity(0.20) : OffpeakTheme.navy.opacity(0.06))
+                            if bar.hasData {
+                                Capsule().fill(bar.level.color)
+                                    .frame(height: max(6, 120 * bar.value))
+                            }
+                        }
+                        .frame(maxWidth: 18, maxHeight: .infinity)
                         .frame(maxWidth: .infinity)
+                    }
+                }
+                .frame(height: 120)
+                HStack(spacing: 7) {
+                    ForEach(Array(bars.enumerated()), id: \.element.id) { index, bar in
+                        Text(index % 3 == 0 ? "\(bar.hour)" : "")
+                            .font(.system(size: 10, weight: .medium))
+                            .fixedSize()
+                            .foregroundColor(OffpeakTheme.textTertiary)
+                            .frame(maxWidth: .infinity)
+                        
+                    }
                 }
             }
         }
@@ -208,10 +259,10 @@ struct POIDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Details").font(.system(size: 18, weight: .bold)).foregroundColor(OffpeakTheme.ink)
             VStack(spacing: 0) {
-                detailRow("clock", "OPEN HOURS", poi.openingHoursText)
-                detailRow("dollarsign", "ADMISSION", poi.admissionLabel)
+                detailRow("clock", "OPEN HOURS", poi.openingHoursDisplay)
+                detailRow("dollarsign", "ADMISSION", poi.admissionDetail)
                 detailRow("hourglass", "RECOMMENDED DURATION", poi.durationText)
-                detailRow("mappin.and.ellipse", "CLOSEST SUBWAY", poi.closestSubway, divider: false)
+                subwayRow(poi)
             }
             .padding(16)
             .background(Color.white, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -231,6 +282,27 @@ struct POIDetailView: View {
             }
             .padding(.vertical, 10)
             if divider { Rectangle().fill(Color(hex: 0x142850, alpha: 0.07)).frame(height: 0.5) }
+        }
+    }
+
+    @ViewBuilder
+    private func subwayRow(_ poi: POIDetail) -> some View {
+        if let subway = poi.closestSubway {
+            let lines = subway.subwayLines
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "tram.fill").font(.system(size: 16)).foregroundColor(OffpeakTheme.navy).frame(width: 22)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("CLOSEST SUBWAY").font(.system(size: 10, weight: .bold)).tracking(0.6).foregroundColor(OffpeakTheme.textTertiary)
+                    if !lines.isEmpty {
+                        HStack(spacing: 5) {
+                            ForEach(lines, id: \.self) { SubwayBullet(line: $0) }
+                        }
+                    }
+                    Text(subway.subwayStations).font(.system(size: 15, weight: .semibold)).foregroundColor(OffpeakTheme.ink)
+                }
+                Spacer()
+            }
+            .padding(.vertical, 10)
         }
     }
 
@@ -288,6 +360,31 @@ struct POIDetailView: View {
                     .offset(x: 120, y: 20)
             )
     }
+    
+    private var manhattanHour: Int {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "America/New_York")!
+        return cal.component(.hour, from: Date())
+    }
+    
+    private var currentLevel: CrowdLevel? {
+        vm.forecast?.bars(for: .today).first(where: { $0.hour == manhattanHour && $0.hasData })?.level
+    }
+    
+    private func busynessBadge(_ level: CrowdLevel) -> some View {
+        HStack(spacing: 6) {
+            Circle().fill(level.color).frame(width: 8, height: 8)
+            Text("\(level.label) right now")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(OffpeakTheme.ink)
+        }
+        .padding(.horizontal, 12).padding(.vertical, 8)
+        .background(.ultraThinMaterial, in: Capsule())
+        .padding(16)
+    }
+    
+   
+
 }
 
 struct ExpandableText: View {

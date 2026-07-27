@@ -98,6 +98,15 @@ struct OptimizedItinerary: Identifiable {
     let days: [ItineraryDay]
 }
 
+struct POIRoute: Hashable {
+    let slug: String
+}
+
+enum NewTripStep: Hashable {
+    case choosePlaces
+    case optimizing
+}
+
 // MARK: - Mock optimiser
 
 extension OptimizedItinerary {

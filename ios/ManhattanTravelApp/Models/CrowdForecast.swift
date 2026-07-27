@@ -11,18 +11,27 @@ enum CrowdLevel {
     case quiet, moderate, busy
     var color: Color {
         switch self {
-        case .quiet:    return OffpeakTheme.sage
+        case .quiet:    return Color(hex: 0x5FA766)
         case .moderate: return OffpeakTheme.amber
         case .busy:     return OffpeakTheme.coral
+        }
+    }
+    var label: String {
+        switch self {
+            case .quiet:    return "Quiet"
+            case .moderate: return "Moderate"
+            case .busy:     return "Busy"
         }
     }
 }
 
 struct HourBar: Identifiable {
     let id = UUID()
-    let label: String     // "8a"
-    let value: Double     // 0...1 柱高
+    let hour: Int
+    let label: String
+    let value: Double
     let level: CrowdLevel
+    let hasData: Bool
 }
 
 enum ForecastDay: String, CaseIterable, Identifiable {
@@ -30,17 +39,50 @@ enum ForecastDay: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-/// TODO: 后端 forecast 接口好了之后替换掉
-func mockForecast(for day: ForecastDay) -> [HourBar] {
-    let hours = ["8a", "10a", "12p", "2p", "4p", "6p", "8p"]
-    let base: [Double]
-    switch day {
-    case .today:    base = [0.30, 0.70, 0.62, 0.85, 1.00, 0.66, 0.34]
-    case .tomorrow: base = [0.35, 0.60, 0.72, 0.78, 0.90, 0.55, 0.30]
-    case .weekend:  base = [0.50, 0.80, 0.95, 1.00, 0.92, 0.70, 0.45]
+
+
+struct POIBusynessResponse: Decodable {
+    let today: [HourlyBusyness]
+    let tomorrow: [HourlyBusyness]
+    let weekend: [HourlyBusyness]
+}
+
+
+struct HourlyBusyness: Decodable {
+    let hourOfDay: Int
+    let busyness: Double
+}
+
+
+extension POIBusynessResponse {
+    
+    func bars(for day: ForecastDay) -> [HourBar] {
+        let source: [HourlyBusyness]
+        switch day {
+            case .today: source = today
+            case .tomorrow: source = tomorrow
+            case .weekend: source = weekend
+        }
+        
+        let byHour = Dictionary(source.map { ($0.hourOfDay, $0.busyness) },
+                                uniquingKeysWith: { a, _ in a })
+
+        func hourLabel(_ h: Int) -> String {
+            let period = h < 12 ? "a" : "p"
+            let twelve = h % 12 == 0 ? 12 : h % 12
+            return "\(twelve)\(period)"
+        }
+
+        return (0..<24).map { hour in
+            if let busyness = byHour[hour] {
+                let value = busyness / 100
+                let level: CrowdLevel = value < 0.45 ? .quiet : (value < 0.8 ? .moderate : .busy)
+                return HourBar(hour: hour, label: hourLabel(hour), value: value, level: level, hasData: true)
+            } else {
+                return HourBar(hour: hour, label: hourLabel(hour), value: 0, level: .quiet, hasData: false)
+            }
+        }
     }
-    return zip(hours, base).map { label, v in
-        let level: CrowdLevel = v < 0.45 ? .quiet : (v < 0.8 ? .moderate : .busy)
-        return HourBar(label: label, value: v, level: level)
-    }
+    
+    
 }

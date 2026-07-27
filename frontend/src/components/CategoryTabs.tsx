@@ -84,7 +84,7 @@ function CategoryTabs({
           aria-pressed={accessibleOnly}
           title="Show only attractions with wheelchair or step-free information"
         >
-          Accessible places only
+          Wheelchair Accessible Only
         </button>
       </div>
     </div>

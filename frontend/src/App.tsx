@@ -8,6 +8,7 @@ import AttractionCard from "./components/AttractionCard";
 import AuthForm from "./components/AuthForm";
 import BusynessChart from "./components/BusynessChart";
 import CategoryTabs from "./components/CategoryTabs";
+import ItineraryDetail from "./components/ItineraryDetail";
 import MyItinerary from "./components/MyItinerary";
 import Profile from "./components/Profile";
 import SavedItineraries from "./components/SavedItineraries";
@@ -15,7 +16,16 @@ import SearchBar from "./components/SearchBar";
 import TopNav from "./components/TopNav";
 import poiPhotoFallback from "./assets/poi-photo-fallback.svg";
 
-import { apiFetch } from "./api";
+import {
+  apiFetch,
+  AUTHENTICATION_REQUIRED_EVENT,
+} from "./api";
+
+import {
+  confirmedAccessibilityLabels,
+  formatAccessibilityLabel,
+  isWheelchairAccessible,
+} from "./accessibility";
 
 import type {
   ApiMessageResponse,
@@ -57,7 +67,11 @@ function getPageFromPath(pathname: string): Page {
     return "ai";
   }
 
-  if (path === "/itinerary") {
+  /*
+    A saved itinerary detail page still belongs to the My Itinerary area, so the
+    nav keeps that tab highlighted while /itinerary/{id} is open.
+  */
+  if (path === "/itinerary" || /^\/itinerary\/[^/]+$/.test(path)) {
     return "itinerary";
   }
 
@@ -86,12 +100,27 @@ function getPoiSlugFromPath(pathname: string): string | null {
   }
 }
 
+function getItineraryIdFromPath(pathname: string): string | null {
+  const match = normalisePath(pathname).match(/^\/itinerary\/([^/]+)$/);
+
+  if (!match) {
+    return null;
+  }
+
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
+}
+
 function isKnownAppPath(pathname: string): boolean {
   const path = normalisePath(pathname);
 
   return (
     Object.values(PAGE_PATHS).includes(path) ||
-    /^\/explore\/[^/]+$/.test(path)
+    /^\/explore\/[^/]+$/.test(path) ||
+    /^\/itinerary\/[^/]+$/.test(path)
   );
 }
 
@@ -99,8 +128,6 @@ const USER_STORAGE_KEY = "offpeak_user";
 const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
 
 type ForecastPeriod = "today" | "tomorrow" | "weekend";
-
-type AccessibilitySupport = "confirmed" | "limited" | "unknown";
 
 /*
   Reads the locally stored display information for the logged-in user.
@@ -205,46 +232,6 @@ function isAuthenticationError(error: unknown): boolean {
     message.includes("access token") ||
     message.includes("refresh token")
   );
-}
-
-/*
-  Checks whether a POI contains a wheelchair-related accessibility label.
-*/
-function isWheelchairAccessible(poi: Poi): boolean {
-  return (
-    poi.accessibility_labels?.some((label) => {
-      const normalisedLabel = label.toLowerCase();
-
-      return (
-        normalisedLabel.includes("wheelchair") ||
-        normalisedLabel.includes("step-free") ||
-        normalisedLabel.includes("step free")
-      );
-    }) ?? false
-  );
-}
-
-function getAccessibilitySupport(poi: Poi): AccessibilitySupport {
-  const labels = (poi.accessibility_labels ?? []).map((label) =>
-    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
-  );
-
-  if (
-    labels.some(
-      (label) =>
-        label === "wheelchair" ||
-        label === "wheelchair_yes" ||
-        label.includes("step_free")
-    )
-  ) {
-    return "confirmed";
-  }
-
-  if (labels.some((label) => label.includes("wheelchair_limited"))) {
-    return "limited";
-  }
-
-  return "unknown";
 }
 
 /*
@@ -424,6 +411,7 @@ function App() {
   const navigate = useNavigate();
   const currentPage = getPageFromPath(location.pathname);
   const routePoiSlug = getPoiSlugFromPath(location.pathname);
+  const routeItineraryId = getItineraryIdFromPath(location.pathname);
   const isProtectedPage = PROTECTED_PAGES.includes(currentPage);
 
   /*
@@ -461,6 +449,14 @@ function App() {
   const selectedPoiIsClosedToday = selectedPoi
     ? isPoiClosedToday(selectedPoi)
     : false;
+  /*
+    Only confirmed labels are listed. A place tagged as having limited
+    wheelchair access falls through to the same fallback as a place with no
+    OSM data at all, because partial access is not access.
+  */
+  const selectedPoiAccessibility = confirmedAccessibilityLabels(
+    selectedPoi?.accessibility_labels
+  );
   const [crowdSummaryBySlug, setCrowdSummaryBySlug] = useState<
     Record<string, string>
   >({});
@@ -630,13 +626,44 @@ function App() {
   }, [selectedPoiSlug]);
 
   /* Clear local display state after the backend session ends. */
-  function handleLocalLogout() {
+  const handleLocalLogout = useCallback(() => {
     localStorage.removeItem(USER_STORAGE_KEY);
     setUser(null);
     setProfilePreferences({ stepFreeRoutes: false });
     setSavedPoiSlugs([]);
     setPendingAccessibleSave(null);
-  }
+  }, [
+    setPendingAccessibleSave,
+    setProfilePreferences,
+    setSavedPoiSlugs,
+    setUser,
+  ]);
+
+  /*
+    The API helper emits one shared event when neither authentication cookie
+    can recover the session. Returning to Explore unmounts protected pages
+    before their parallel requests can repeatedly reopen the login modal.
+  */
+  useEffect(() => {
+    function handleAuthenticationRequired() {
+      handleLocalLogout();
+      navigate(PAGE_PATHS.explore, { replace: true });
+      setAuthMode("login");
+      setIsAuthModalOpen(true);
+    }
+
+    window.addEventListener(
+      AUTHENTICATION_REQUIRED_EVENT,
+      handleAuthenticationRequired
+    );
+
+    return () => {
+      window.removeEventListener(
+        AUTHENTICATION_REQUIRED_EVENT,
+        handleAuthenticationRequired
+      );
+    };
+  }, [handleLocalLogout, navigate]);
 
   /*
     I update the shared saved-place state when a place is removed from the
@@ -805,7 +832,7 @@ function App() {
     suitable options, not only a small featured sample.
   */
   const accessiblePreferredPois = [...pois]
-    .filter((poi) => getAccessibilitySupport(poi) === "confirmed")
+    .filter(isWheelchairAccessible)
     .sort((firstPoi, secondPoi) => {
       const ratingDifference =
         (secondPoi.google_review_star ?? 0) -
@@ -995,7 +1022,7 @@ function App() {
       poi &&
       !isCurrentlySaved &&
       profilePreferences.stepFreeRoutes &&
-      getAccessibilitySupport(poi) !== "confirmed"
+      !isWheelchairAccessible(poi)
     ) {
       setPendingAccessibleSave(poi);
       return;
@@ -1448,23 +1475,32 @@ function App() {
                   <section className="accessibility-panel">
                     <h2>Accessibility</h2>
 
-                    {selectedPoi.accessibility_labels &&
-                    selectedPoi.accessibility_labels.length >
-                      0 ? (
+                    {selectedPoiAccessibility.length > 0 ? (
                       <div className="accessibility-grid">
-                        {selectedPoi.accessibility_labels.map(
-                          (label) => (
-                            <p key={label}>
-                              <span aria-hidden="true">✓</span>{" "}
-                              {label.replaceAll("_", " ")}
-                            </p>
-                          )
-                        )}
+                        {selectedPoiAccessibility.map((label) => (
+                          <p key={label}>
+                            <span aria-hidden="true">✓</span>{" "}
+                            {formatAccessibilityLabel(label)}
+                          </p>
+                        ))}
                       </div>
+                    ) : selectedPoi.website_url ? (
+                      <p className="fallback-message">
+                        Check the{" "}
+                        <a
+                          className="inline-website-link"
+                          href={selectedPoi.website_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          official website
+                        </a>{" "}
+                        for accessibility features.
+                      </p>
                     ) : (
                       <p className="fallback-message">
-                        Accessibility information has not been
-                        supplied for this attraction.
+                        Accessibility information is not
+                        available for this attraction.
                       </p>
                     )}
                   </section>
@@ -1591,19 +1627,35 @@ function App() {
             </section>
           )}
 
-        {currentPage === "itinerary" && user && (
-          <MyItinerary
-            pois={pois}
-            onLoginRequired={openLogin}
-            preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
-            initialItinerary={aiGeneratedItinerary}
-          />
-        )}
+        {currentPage === "itinerary" &&
+          user &&
+          (routeItineraryId ? (
+            <ItineraryDetail
+              itineraryId={routeItineraryId}
+              pois={pois}
+              preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
+              onBackToPlanner={() => navigate(PAGE_PATHS.itinerary)}
+            />
+          ) : (
+            <MyItinerary
+              pois={pois}
+              onLoginRequired={openLogin}
+              preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
+              initialItinerary={aiGeneratedItinerary}
+              onOpenItinerary={(itineraryId) => {
+                /*
+                  The AI handoff has been consumed. Leaving it in place would
+                  re-seed the planner every time the user came back here.
+                */
+                setAiGeneratedItinerary(null);
+                navigate(`/itinerary/${encodeURIComponent(itineraryId)}`);
+              }}
+            />
+          ))}
 
         {currentPage === "saved" && user && (
           <SavedItineraries
             pois={pois}
-            onLoginRequired={openLogin}
             onSavedPlaceRemoved={handleSavedPlaceRemoved}
             preferAccessiblePlaces={profilePreferences.stepFreeRoutes}
           />
@@ -1692,15 +1744,11 @@ function App() {
             <p className="section-eyebrow">Accessibility check</p>
 
             <h2 id="save-accessibility-warning-title">
-              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
-                ? "Limited accessibility reported"
-                : "Accessibility information not confirmed"}
+              Accessibility information not confirmed
             </h2>
 
             <p id="save-accessibility-warning-description">
-              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
-                ? `${pendingAccessibleSave.name} reports limited wheelchair access, so some areas or facilities may not be accessible.`
-                : `${pendingAccessibleSave.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
+              {`${pendingAccessibleSave.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
             </p>
 
             <div className="accessibility-warning-actions">

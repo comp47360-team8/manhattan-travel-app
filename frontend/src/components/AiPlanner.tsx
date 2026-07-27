@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { apiFetch } from "../api";
+import { ApiError, apiFetch } from "../api";
 import { groupStopsByDay } from "../itinerary";
 import type {
   AiChatResponse,
@@ -19,7 +19,14 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 const OPENING_MESSAGE =
-  "Are you starting a new trip, or refining an existing itinerary in My Itinerary?";
+  "Hi! I'm your trip planner. Tell me about your preferred dates, travel pace, interests, or anything you'd like to avoid.";
+
+const AI_QUOTA_ERROR =
+  "You've reached today's AI usage limit. Please try again later.";
+const AI_CONNECTION_ERROR =
+  "Something went wrong with the connection. Check your network and try again.";
+const AI_SERVER_ERROR =
+  "The system is busy right now. Please try again shortly.";
 
 type PlannerMessage = {
   id: number;
@@ -70,6 +77,29 @@ function isAuthenticationError(error: unknown): boolean {
   );
 }
 
+function getAiPlannerErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    if (error.status === 429) {
+      return AI_QUOTA_ERROR;
+    }
+
+    if (error.kind === "network") {
+      return AI_CONNECTION_ERROR;
+    }
+
+    if (
+      error.kind === "timeout" ||
+      (error.status !== undefined && error.status >= 500)
+    ) {
+      return AI_SERVER_ERROR;
+    }
+  }
+
+  return error instanceof Error
+    ? error.message
+    : "The AI Planner could not complete that request.";
+}
+
 function AIPlanner({
   pois,
   isAuthenticated,
@@ -93,6 +123,8 @@ function AIPlanner({
   const [isSending, setIsSending] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const itineraryResultRef = useRef<HTMLElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const chatHistoryRef = useRef<HTMLDivElement | null>(null);
 
   const itineraryDays = useMemo(
     () => (itinerary ? groupStopsByDay(itinerary.stops) : []),
@@ -125,6 +157,70 @@ function AIPlanner({
 
     return () => window.cancelAnimationFrame(animationFrame);
   }, [itinerary]);
+
+  /*
+    The conversation is a fixed-height scroller, so anything new is appended
+    out of sight. After every turn I pin the scroller to the bottom, which puts
+    the end of the newest bubble directly above the composer: a reply is read
+    without scrolling, and a sent message is visibly sent.
+
+    This runs on isSending too, so the "Planning your next step..." bubble is
+    also brought into view rather than appearing below the fold of the scroller.
+
+    Scrolling unconditionally is safe here because messages only ever arrive as
+    a direct result of the user acting -- there is no background stream that
+    could yank the view away while they are reading back.
+  */
+  useEffect(() => {
+    const history = chatHistoryRef.current;
+
+    if (!history) {
+      return;
+    }
+
+    // Wait for the new bubble to be laid out, so scrollHeight includes it.
+    const animationFrame = window.requestAnimationFrame(() => {
+      const newest = history.lastElementChild;
+
+      /*
+        One exception to bottoming out: a reply taller than the scroller would
+        land the user at its last line, having to scroll up to read it from the
+        start. In that case the top of the bubble is aligned instead, so reading
+        still begins at the beginning. Replies are normally a few lines, so this
+        is the rare path -- everything that fits still ends against the composer.
+      */
+      const targetTop =
+        newest && newest.getBoundingClientRect().height > history.clientHeight
+          ? history.scrollTop +
+            (newest.getBoundingClientRect().top -
+              history.getBoundingClientRect().top)
+          : history.scrollHeight;
+
+      history.scrollTo({
+        top: targetTop,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [messages, isSending]);
+
+  /*
+    Keeps the prompt box a single compact line until the user actually
+    types something longer, instead of always showing a tall empty box.
+  */
+  useEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 140)}px`;
+  }, [prompt]);
 
   function requireLogin(): boolean {
     if (isAuthenticated) {
@@ -201,20 +297,13 @@ function AIPlanner({
         );
       }
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "The AI Planner could not complete that request.";
+      const message = getAiPlannerErrorMessage(error);
 
       if (message === "Please log in to continue.") {
         onLoginRequired();
       }
 
-      setErrorMessage(
-        message.includes("server could not complete")
-          ? "The AI service is temporarily unavailable. Check that the backend Gemini API key is configured, then try again."
-          : message
-      );
+      setErrorMessage(message);
     } finally {
       setIsSending(false);
     }
@@ -317,18 +406,12 @@ function AIPlanner({
             dates and accessibility needs.
           </p>
         </div>
-
-        <div className="ai-planner-badge" role="status">
-          <span aria-hidden="true" />
-          Connected to the Offpeak AI service
-        </div>
       </section>
 
       <section className="ai-planner-card ai-chat-card">
         <div className="ai-planner-card-heading">
           <div>
-            <p className="section-eyebrow">Conversation</p>
-            <h2>Build your trip with Offpeak</h2>
+            <p className="section-eyebrow">Chat with Offpeak</p>
           </div>
 
           {conversationId && (
@@ -343,7 +426,11 @@ function AIPlanner({
           )}
         </div>
 
-        <div className="ai-chat-history" aria-live="polite">
+        <div
+          className="ai-chat-history"
+          ref={chatHistoryRef}
+          aria-live="polite"
+        >
           {messages.map((message) => (
             <article
               key={message.id}
@@ -378,34 +465,18 @@ function AIPlanner({
                   <span>{option.label}</span>
                 </label>
               ))}
-            </div>
 
-            <button
-              type="button"
-              onClick={() => void submitOptions()}
-              disabled={isSending || selectedOptions.length === 0}
-            >
-              Continue with these interests
-            </button>
+              <button
+                type="button"
+                className="ai-option-selector-continue"
+                onClick={() => void submitOptions()}
+                disabled={isSending || selectedOptions.length === 0}
+              >
+                Continue
+              </button>
+            </div>
           </fieldset>
         )}
-
-        <label htmlFor="ai-planner-prompt" className="sr-only">
-          Reply to the AI trip planner
-        </label>
-
-        <textarea
-          id="ai-planner-prompt"
-          rows={6}
-          maxLength={600}
-          placeholder="Tell Offpeak your dates, pace, interests or anything you want to avoid."
-          value={prompt}
-          onChange={(event) => {
-            setPrompt(event.target.value);
-            setErrorMessage("");
-          }}
-          disabled={isSending}
-        />
 
         {!hasUserSentMessage && (
           <div className="ai-planner-suggestions" aria-label="Prompt suggestions">
@@ -425,17 +496,6 @@ function AIPlanner({
           </div>
         )}
 
-        <button
-          type="button"
-          className="ai-planner-submit"
-          onClick={() => void submitPlannerRequest()}
-          disabled={isSending}
-        >
-          {isSending ? "Sending..." : "Send to AI Planner"}
-        </button>
-
-        <span className="ai-character-count">{prompt.length}/600</span>
-
         {errorMessage && (
           <p className="error-message" role="alert">
             {errorMessage}
@@ -447,6 +507,47 @@ function AIPlanner({
             {successMessage}
           </p>
         )}
+
+        <label htmlFor="ai-planner-prompt" className="sr-only">
+          Reply to the AI trip planner
+        </label>
+
+        <div className="ai-composer">
+          <textarea
+            id="ai-planner-prompt"
+            ref={textareaRef}
+            rows={1}
+            maxLength={600}
+            placeholder="Tell Offpeak your dates, pace, interests or anything you want to avoid."
+            value={prompt}
+            onChange={(event) => {
+              setPrompt(event.target.value);
+              setErrorMessage("");
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                void submitPlannerRequest();
+              }
+            }}
+            disabled={isSending}
+          />
+
+          <button
+            type="button"
+            className="ai-composer-send"
+            onClick={() => void submitPlannerRequest()}
+            disabled={isSending}
+            aria-label={isSending ? "Sending" : "Send to AI Planner"}
+          >
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M12 19V5" />
+              <path d="m5 12 7-7 7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <span className="ai-character-count">{prompt.length}/600</span>
       </section>
 
       {itinerary && (

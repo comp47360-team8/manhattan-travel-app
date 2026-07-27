@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FlexibleInt: Decodable {
+struct FlexibleInt: Codable {
     let value: Int?
 
     init(from decoder: Decoder) throws {
@@ -19,6 +19,11 @@ struct FlexibleInt: Decodable {
         } else {
             value = nil
         }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.singleValueContainer()
+        try c.encode(value)
     }
 }
 
@@ -41,7 +46,7 @@ enum POICategory: String, CaseIterable, Identifiable {
 }
 
 
-struct POI: Identifiable, Decodable, POIImageRepresentable {
+struct POI: Identifiable, Codable, POIImageRepresentable {
     var id: String { slug }
 
     let slug: String
