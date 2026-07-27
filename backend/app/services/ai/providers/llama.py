@@ -1,48 +1,27 @@
 import json
 from openai import OpenAI, APIError, APITimeoutError, RateLimitError
-from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from app.models.ai_model import Message
 from app.core.constants import USER, SYSTEM
-from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS
+from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS, ITINERARY_SUMMARY_PROMPT
 from app.schemas.ai import TripParameters, ChatResponse, UIOption
 from app.models.ai_model import Trip
 from app.services.itinerary.itinerary_service import auto_generate_itinerary
+from app.services.trip_service import is_trip_ready
 from app.services.ai.base import LLMProvider
 from app.services.user_services import get_user_by_id
 from app.core.config import settings
 from app.core.exceptions import LLMUnresponsiveError
 
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "auto_generate_itinerary",
-            "description": """
-                Generate the user's itinerary when all required trip details have been collected.
-
-                Call this only when you know:
-                - itinerary name
-                - trip dates
-                - pace of days
-                - POIs and POI types to be excluded
-                - user POI type preferences
-                """,
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    
-                },
-                "required": [   
-                ]
-            }
-        }
-    }
-]
-
-
 class LlamaProvider(LLMProvider):
     def __init__(self):
-        self.client = OpenAI(api_key=settings.GROQ_API_KEY, base_url="https://api.groq.com/openai/v1")
+        self.client = OpenAI(
+            api_key=settings.GROQ_API_KEY, 
+            base_url="https://api.groq.com/openai/v1",
+            timeout=15.0
+            )
+    
     
     def convert_for_llama(self, history: list[Message]):
         final_history = []
@@ -57,11 +36,61 @@ class LlamaProvider(LLMProvider):
         converted_history = self.convert_for_llama(history)
 
         user_profile = get_user_by_id(user, db)
+
+        if is_trip_ready(trip_details):
+            itinerary_json = auto_generate_itinerary(trip_details, conv_id, db, user)
+
+            itinerary_details = {
+                "trip_name": itinerary_json["trip_name"],
+                "number_of_days": itinerary_json["stops"][-1]["day_number"],
+                "number_of_pois": len(itinerary_json["stops"]),
+                "pois": [stop["poi_name"] for stop in itinerary_json["stops"]]
+                }
+            
+            instruction = f"""
+            {ITINERARY_SUMMARY_PROMPT}
+
+            itinerary details:
+            {itinerary_details}
+
+            User's name:
+            {user_profile.display_name}
+
+            User's accessibility:
+            {user_profile.accessibility}
+
+            Conversation summary:
+            {summary}
+            """
+            messages = [
+            {
+                "role": SYSTEM,
+                "content": instruction
+            },
+            *converted_history
+            ]
+
+            try:
+                response = self.client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=messages,
+                )
+        
+            except (APIError, APITimeoutError, RateLimitError) as e:
+                raise LLMUnresponsiveError(e) from e
+            
+            return ChatResponse(
+                message=response.choices[0].message.content,
+                ui_action=None,
+                itinerary=itinerary_json,
+                save_to_history=True
+            )
+
         system_instruction = f"""
         {SYSTEM_PROMPT}
 
         Today's date:
-        {date.today()}
+        {datetime.now(ZoneInfo("America/New_York"))}
         Users cannot select a date in the past.
         If the user selects a date in the past without specifying the year,
         ask them to specify the year.
@@ -81,9 +110,10 @@ class LlamaProvider(LLMProvider):
         Current trip details:
         {trip_details}
 
-        If you are NOT calling a tool:
-        - Return ONLY JSON matching this schema.
-        - Do not include any text before or after the JSON.
+        Return ONLY JSON matching the schema below where:
+        - "message" is the message you generated.
+        - "ui_action" is set as described earlier.
+        - Do not include any text before or after the JSON - it goes into "message" in the schema above.
         - Do not use markdown.
         Schema:
         {{
@@ -91,26 +121,21 @@ class LlamaProvider(LLMProvider):
         "ui_action": {{
             "component": "string",
             "field": "string",
-            "selection": "single|multiple",
+            "selection": "multiple",
             "options": []
         }} | null
         }}
-    
-        If you call the auto_generate_itinerary tool, ignore the JSON schema. 
-        After receiving the tool result, write ONE friendly paragraph in plain text.
+        - For every ui_action, options must always be an array of objects:
+        [
+            {{
+                "label": "string",
+                "value": "string"
+            }}
+        ]
+        Never return options as an array of strings.
 
         - Use the summary and trip details as context.
         - Ask for missing trip details naturally.
-        - Only generate an itinerary when all required details are available.
-        The tool returs the itinerary details:
-        - Write ONE friendly paragraph.   
-        - Do not output JSON.
-        - Do not output keys.
-        - Do not output ui_action.
-        - Describe some of the POIs but Do not list every POI generated
-        - Return only plain text.
-        - Only if a user has accessibility needs, tell them that their needs have been taken
-        into account.
         """
         messages = [
         {
@@ -124,66 +149,25 @@ class LlamaProvider(LLMProvider):
             response = self.client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=messages,
-                tools=tools,
-                tool_choice="auto",
+                response_format={"type": "json_object"}
             )
+    
         except (APIError, APITimeoutError, RateLimitError) as e:
             raise LLMUnresponsiveError(e) from e
 
         message = response.choices[0].message
-
-        if message.tool_calls:
-            messages.append(message)
-            for tool_call in message.tool_calls:
-                if tool_call.function.name == "auto_generate_itinerary":
-
-                    itinerary = auto_generate_itinerary(
-                        trip=trip_details,
-                        conv_id=conv_id,
-                        db=db,
-                        user=user
-                    )
-
-                    itinerary_summary = {
-                        "trip_name": trip_details.name,
-                        "number_of_days": itinerary["stops"][-1]["day_number"],
-                        "number_of_pois": len(itinerary["stops"]),
-                        "pois": [poi["poi_name"] for poi in itinerary["stops"]]
-                    }
-
-                    messages.append({
-                        "role": "tool",
-                        "tool_call_id": tool_call.id,
-                        "content": json.dumps(itinerary_summary)
-                    })
-
-                    final_response = self.client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
-                        messages=messages
-                    )
-
-                    return ChatResponse(
-                    message=final_response.choices[0].message.content,
-                    ui_action=None,
-                    itinerary=itinerary
-                    )
-
+        
         try:
-            llama_response = ChatResponse.model_validate_json(
-                message.content
-            )
-        except Exception:
-            return ChatResponse(
-                message=message.content,
-                ui_action=None,
-                itinerary=None
-            )
-
+            llama_response = ChatResponse.model_validate_json(message.content)
+        except Exception as e:
+            print("Failed to parse LLM JSON response")
+            raise
+        
         if llama_response.ui_action:
             if llama_response.ui_action.component == "poi_type_selector":
                 llama_response.ui_action.options = [
                     UIOption(**option)
-                    for option in POI_TYPE_OPTIONS
+                    for option in POI_TYPE_OPTIONS[:-1]
                 ]
         return llama_response
 
@@ -192,20 +176,20 @@ class LlamaProvider(LLMProvider):
         {EXTRACTION_PROMPT}
 
         Today's date:
-        {date.today()}
+        {datetime.now(ZoneInfo("America/New_York"))}
         Users cannot select a date in the past.
-
-        Last message sent by the assistant:
-        {last_message or "None"}
-        Use it only to understand the context of the user's latest message.
 
         Current trip details are:
         {trip_details}
-        Use this only for context.
+
+        Last assistant message:
+        {last_message}
+        
+        Use trip details and last messsage for context only.
         """
         try:
             response = self.client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="llama-3.1-8b-instant",
                 messages=[
                     {
                         "role": SYSTEM,
@@ -216,16 +200,13 @@ class LlamaProvider(LLMProvider):
                         "content": prompt
                     }
                 ],
-                response_format={
-                    "type": "json_object"
-                }
+                response_format={"type": "json_object"}
             )
         except (APIError, APITimeoutError, RateLimitError) as e:
             raise LLMUnresponsiveError(e) from e
 
-        data = json.loads(
-            response.choices[0].message.content
-        )
+        data = json.loads(response.choices[0].message.content)
+
         return TripParameters.model_validate(data)
 
     def create_summary(self, history):
