@@ -124,6 +124,7 @@ function AIPlanner({
   const [isSaving, setIsSaving] = useState(false);
   const itineraryResultRef = useRef<HTMLElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const chatHistoryRef = useRef<HTMLDivElement | null>(null);
 
   const itineraryDays = useMemo(
     () => (itinerary ? groupStopsByDay(itinerary.stops) : []),
@@ -156,6 +157,55 @@ function AIPlanner({
 
     return () => window.cancelAnimationFrame(animationFrame);
   }, [itinerary]);
+
+  /*
+    The conversation is a fixed-height scroller, so anything new is appended
+    out of sight. After every turn I pin the scroller to the bottom, which puts
+    the end of the newest bubble directly above the composer: a reply is read
+    without scrolling, and a sent message is visibly sent.
+
+    This runs on isSending too, so the "Planning your next step..." bubble is
+    also brought into view rather than appearing below the fold of the scroller.
+
+    Scrolling unconditionally is safe here because messages only ever arrive as
+    a direct result of the user acting -- there is no background stream that
+    could yank the view away while they are reading back.
+  */
+  useEffect(() => {
+    const history = chatHistoryRef.current;
+
+    if (!history) {
+      return;
+    }
+
+    // Wait for the new bubble to be laid out, so scrollHeight includes it.
+    const animationFrame = window.requestAnimationFrame(() => {
+      const newest = history.lastElementChild;
+
+      /*
+        One exception to bottoming out: a reply taller than the scroller would
+        land the user at its last line, having to scroll up to read it from the
+        start. In that case the top of the bubble is aligned instead, so reading
+        still begins at the beginning. Replies are normally a few lines, so this
+        is the rare path -- everything that fits still ends against the composer.
+      */
+      const targetTop =
+        newest && newest.getBoundingClientRect().height > history.clientHeight
+          ? history.scrollTop +
+            (newest.getBoundingClientRect().top -
+              history.getBoundingClientRect().top)
+          : history.scrollHeight;
+
+      history.scrollTo({
+        top: targetTop,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [messages, isSending]);
 
   /*
     Keeps the prompt box a single compact line until the user actually
@@ -376,7 +426,11 @@ function AIPlanner({
           )}
         </div>
 
-        <div className="ai-chat-history" aria-live="polite">
+        <div
+          className="ai-chat-history"
+          ref={chatHistoryRef}
+          aria-live="polite"
+        >
           {messages.map((message) => (
             <article
               key={message.id}
