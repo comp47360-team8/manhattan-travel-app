@@ -1227,6 +1227,22 @@ a {
   color: var(--text-light);
 }
 
+/*
+  Sits inside a sentence rather than standing alone as a chip, so it keeps the
+  surrounding text size and only carries link affordances. Brick on the white
+  fallback panel measures about 6.2:1, so it passes AA without relying on
+  colour alone -- the underline does that.
+*/
+.inline-website-link {
+  color: var(--color-brick);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.inline-website-link:hover {
+  color: var(--color-brick-dark);
+}
+
 /* =========================================================
    Authentication modal
 ========================================================= */
@@ -1419,10 +1435,19 @@ a {
    My Itinerary page
 ========================================================= */
 
-.my-itinerary {
+.my-itinerary,
+.itinerary-detail {
   width: min(100%, 1120px);
   margin: 0 auto;
-  padding: 64px 0 80px;
+  padding: 28px 0 72px;
+}
+
+/*
+  The plan is a reading surface, so it opens tighter than the marketing-style
+  pages: on a 13" laptop two stops must be visible without scrolling.
+*/
+.itinerary-detail {
+  padding: 24px 0 64px;
 }
 
 .my-itinerary > h1 {
@@ -1434,20 +1459,57 @@ a {
 
 .my-itinerary > p {
   max-width: 680px;
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   color: var(--text-muted);
-  font-size: 17px;
-  line-height: 29px;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+/*
+  Eyebrow and the explainer shortcut share one row so the shortcut costs no
+  vertical space on a laptop screen.
+*/
+.itinerary-intro-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.itinerary-intro-row .section-eyebrow {
+  margin: 0;
+}
+
+.how-it-works-jump {
+  padding: 6px 13px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-white);
+  color: var(--color-brick);
+
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.how-it-works-jump:hover {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.how-it-works-jump:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
 }
 
 .itinerary-date-panel,
-.itinerary-search-section,
-.selected-pois-section,
 .saved-pois-section,
-.popular-pois-section,
-.itinerary-generate-panel,
-.generated-itinerary-section,
-.itinerary-start-state {
+.popular-pois-section {
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   background: var(--bg-white);
@@ -1455,14 +1517,30 @@ a {
 }
 
 .itinerary-date-panel {
-  margin-top: 34px;
-  padding: 26px;
+  margin-top: 22px;
+  padding: 20px;
 }
 
+/*
+  One row: name, dates, accessibility and the button. On a 13" laptop this is
+  what keeps the title, the create card and the trips carousel on one screen.
+*/
 .itinerary-date-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 14px 16px;
+}
+
+/*
+  The button commits the trip setup, so it sits on its own row rather than
+  competing with the three fields above it.
+*/
+.itinerary-date-grid .start-planning-button {
+  min-height: 46px;
+  padding: 10px 22px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .my-itinerary label {
@@ -1477,8 +1555,13 @@ a {
   text-transform: uppercase;
 }
 
-.my-itinerary input,
-.my-itinerary select {
+/*
+  Scoped to the date panel grid so the compact search input in the planner
+  keeps its own borderless treatment (.search) and does not gain a second
+  border from this blanket rule.
+*/
+.itinerary-date-grid input,
+.itinerary-date-grid select {
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
@@ -1492,8 +1575,8 @@ a {
   text-transform: none;
 }
 
-.my-itinerary input:focus,
-.my-itinerary select:focus {
+.itinerary-date-grid input:focus,
+.itinerary-date-grid select:focus {
   border-color: var(--color-navy);
   outline: none;
   box-shadow: 0 0 0 4px rgba(8, 43, 61, 0.08);
@@ -1515,47 +1598,449 @@ a {
   background: var(--color-navy-soft);
 }
 
-.itinerary-start-state {
-  margin-top: 28px;
-  padding: 34px;
-  border-style: dashed;
-  border-color: var(--color-gold);
+/* =========================================================
+   Trip date range picker
+========================================================= */
+
+.trip-date-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trip-date-control-label {
+  color: var(--color-navy);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/*
+  Two classes so this beats `.my-itinerary button`, which would otherwise
+  paint the trigger navy. The trigger looks like the sibling date inputs.
+*/
+.itinerary-date-grid .trip-date-trigger {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-white);
+  color: var(--text-main);
+
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  text-transform: none;
+}
+
+.itinerary-date-grid .trip-date-trigger[data-placeholder="true"] {
+  color: var(--text-muted);
+}
+
+.itinerary-date-grid .trip-date-trigger:hover:not(:disabled) {
+  background: var(--bg-white);
+  border-color: var(--color-navy);
+}
+
+.itinerary-date-grid .trip-date-trigger:focus-visible,
+.itinerary-date-grid .trip-date-trigger[aria-expanded="true"] {
+  border-color: var(--color-navy);
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/*
+  The calendar is portalled to the body, outside .my-itinerary, so it is styled
+  purely through DayPicker's custom properties plus a few resets for the global
+  button rules that still reach it.
+*/
+.trip-date-popover {
+  position: fixed;
+  z-index: 60;
+  padding: var(--space-5);
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  box-shadow: var(--shadow-lg);
+}
+
+.trip-date-popover .rdp-root {
+  --rdp-accent-color: var(--color-navy);
+  --rdp-accent-background-color: var(--bg-warm);
+  --rdp-range_start-date-background-color: var(--color-navy);
+  --rdp-range_end-date-background-color: var(--color-navy);
+  --rdp-range_middle-color: var(--color-navy);
+  --rdp-today-color: var(--color-brick);
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 38px;
+  --rdp-day_button-height: 38px;
+  --rdp-day_button-border-radius: var(--radius-sm);
+  --rdp-months-gap: var(--space-6);
+  --rdp-disabled-opacity: 1;
+
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+.trip-date-popover .rdp-caption_label {
+  color: var(--color-navy);
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.trip-date-popover .rdp-button_previous,
+.trip-date-popover .rdp-button_next {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--bg-white);
+  color: var(--color-navy);
+}
+
+.trip-date-popover .rdp-chevron {
+  fill: var(--color-navy);
+}
+
+/* Global button rules reach into the portal, so neutralise them here. */
+.trip-date-popover .rdp-day_button:not(:disabled):active {
+  transform: none;
+}
+
+@media (max-width: 780px) {
+  .trip-date-popover {
+    max-width: calc(100vw - 32px);
+    overflow-x: auto;
+  }
+}
+
+/* =========================================================
+   My Trips carousel
+========================================================= */
+
+.my-trips-section {
+  margin-top: 26px;
+}
+
+.my-trips-heading h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 26px;
+  line-height: 33px;
+  letter-spacing: -0.025em;
+}
+
+.my-trips-heading p {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 23px;
+}
+
+/*
+  A scroll-snap strip rather than a wrapping grid: the trip list is a shelf the
+  user skims, and it must not push the planner below the fold as it grows. Same
+  approach as the Explore category strip.
+*/
+.my-trips-carousel {
+  margin: 16px 0 0;
+  padding: 0 4px 6px;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(212px, 240px);
+  gap: 22px;
+
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline proximity;
+  scrollbar-width: none;
+}
+
+.my-trips-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.my-trip-card {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.my-trip-card a {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--radius-md);
+  color: inherit;
+  text-decoration: none;
+}
+
+.my-trip-card a:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 4px;
+}
+
+.my-trip-card-image {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
   background: var(--bg-warm);
 }
 
-.itinerary-start-state h2 {
-  margin: 0 0 8px;
-  color: var(--color-navy);
-  font-size: 25px;
+.my-trip-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.itinerary-start-state p {
-  margin: 0;
+.my-trip-card a:hover .my-trip-card-image img {
+  transform: scale(1.04);
+}
+
+.my-trip-card-name {
+  color: var(--color-navy);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.my-trip-card a:hover .my-trip-card-name {
+  color: var(--color-brick);
+}
+
+.my-trip-card-dates {
   color: var(--text-muted);
-  line-height: 24px;
+  font-size: 13px;
+}
+
+/* =========================================================
+   How it works
+========================================================= */
+
+.how-it-works {
+  margin-top: 34px;
+  /* Cleared by the sticky top nav when jumped to from the intro link. */
+  scroll-margin-top: 84px;
+  padding: 22px 24px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-warm);
+}
+
+.how-it-works-intro h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.how-it-works-intro p {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.how-it-works-steps {
+  margin: 18px 0 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+
+  list-style: none;
+  counter-reset: how-it-works;
+}
+
+.how-it-works-steps li {
+  position: relative;
+  min-width: 0;
+  padding: 14px 14px 14px 42px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--bg-white);
+}
+
+.how-it-works-step-number {
+  position: absolute;
+  top: 13px;
+  left: 14px;
+
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+
+  border-radius: var(--radius-pill);
+  background: var(--color-gold);
+  color: var(--text-light);
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.how-it-works-steps strong {
+  display: block;
+  color: var(--color-navy);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.how-it-works-steps li > span:last-child {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* =========================================================
+   Planner: trip header and place pickers
+========================================================= */
+
+.itinerary-trip-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-bottom: 26px;
+}
+
+.itinerary-trip-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Sizing lives with the canonical page-title rules at the end of this file. */
+.itinerary-trip-header h1 {
+  margin: 0;
+  color: var(--color-navy);
+  overflow-wrap: anywhere;
+}
+
+.my-itinerary .itinerary-trip-name-edit {
+  padding: 6px 9px;
+
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+
+  font-size: 16px;
+}
+
+.my-itinerary .itinerary-trip-name-edit:hover:not(:disabled) {
+  background: var(--bg-warm);
+  color: var(--color-navy);
+}
+
+.itinerary-trip-name-input {
+  width: min(100%, 460px);
+  min-height: 52px;
+  padding: 8px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-white);
+  color: var(--color-navy);
+
+  font-family: inherit;
+  font-size: clamp(26px, 3.8vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.itinerary-trip-name-input:focus {
+  border-color: var(--color-navy);
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.my-itinerary .trip-date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.my-itinerary .trip-date-chip:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+  color: var(--color-navy);
+}
+
+/*
+  Deliberately quiet: searching is the fallback route into the trip, behind
+  Saved and Popular Picks, so the field should not read as the primary action.
+*/
+.itinerary-search-bar {
+  margin-bottom: 26px;
+}
+
+.itinerary-search-bar .search-field {
+  max-width: none;
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  box-shadow: none;
+}
+
+.itinerary-search-bar .search-field:focus-within {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+}
+
+.itinerary-search-results {
+  margin-top: 10px;
+  padding: 4px 18px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  box-shadow: var(--shadow-sm);
 }
 
 .itinerary-planner-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
   gap: 24px;
-  margin-top: 30px;
 }
 
-.itinerary-search-section,
-.selected-pois-section,
+.itinerary-picker-column {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+
 .saved-pois-section,
 .popular-pois-section {
   min-width: 0;
   padding: 24px;
 }
 
-.itinerary-search-section h2,
-.selected-pois-section h2,
 .saved-pois-section h2,
-.popular-pois-section h2,
-.itinerary-generate-panel h2,
-.generated-itinerary-section h2 {
+.popular-pois-section h2 {
   margin: 0;
   color: var(--color-navy);
   font-size: 24px;
@@ -1563,32 +2048,190 @@ a {
   letter-spacing: -0.025em;
 }
 
-.itinerary-search-section > p,
-.selected-pois-section > p,
 .saved-pois-section > p,
-.popular-pois-section > p,
-.itinerary-generate-panel p {
+.popular-pois-section > p {
   margin: 8px 0 0;
   color: var(--text-muted);
   font-size: 14px;
   line-height: 23px;
 }
 
-.itinerary-search-section .search {
-  max-width: none;
-  margin-top: 18px;
+.saved-pois-section .section-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
 }
 
-.itinerary-search-results {
-  margin-top: 18px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-soft);
+.section-heading-link {
+  color: var(--color-brick);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
 }
 
-.itinerary-search-results h3 {
-  margin: 0 0 8px;
+.section-heading-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Your Selections panel
+========================================================= */
+
+/*
+  Given visual weight over the picker column on purpose: it is the running
+  state of the trip, and it stays in view while the user scrolls the lists.
+*/
+.selections-panel {
+  position: sticky;
+  top: 96px;
+  min-width: 0;
+  padding: 22px;
+
+  border: 1px solid var(--border-soft);
+  border-top: 3px solid var(--color-brick);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  box-shadow: var(--shadow-md);
+}
+
+.selections-panel-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.selections-panel-header h2 {
+  margin: 0;
   color: var(--color-navy);
+  font-size: 19px;
+  letter-spacing: -0.015em;
+}
+
+.selections-count {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.selections-progress {
+  height: 4px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--border-soft);
+}
+
+.selections-progress span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-brick);
+  transition: width 0.25s ease;
+}
+
+.selections-list {
+  margin-top: 6px;
+}
+
+.selections-panel .itinerary-poi-row {
+  min-height: 56px;
+  padding: 11px 0;
+}
+
+.selections-panel .itinerary-poi-thumbnail {
+  width: 42px;
+  height: 36px;
+  flex-basis: 42px;
+}
+
+.my-itinerary .selection-remove-button {
+  padding: 4px 9px;
+
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+
   font-size: 16px;
+  line-height: 1;
+}
+
+.my-itinerary .selection-remove-button:hover:not(:disabled) {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.selections-capacity {
+  margin: 14px 0 0;
+  padding: 12px;
+
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-warm);
+  color: var(--text-muted);
+
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.selections-tip {
+  margin: 14px 0 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* =========================================================
+   POI details link
+========================================================= */
+
+.itinerary-poi-row-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.poi-details-link {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-muted);
+
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.poi-details-link:hover {
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+}
+
+.poi-details-link:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+.timeline-details-link {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  margin-top: 14px;
+  padding: 6px 10px;
+
+  border-color: var(--border-soft);
+  color: var(--color-brick);
+  font-size: 12px;
 }
 
 .itinerary-poi-row {
@@ -1674,14 +2317,9 @@ a {
   color: var(--text-light);
 }
 
-.itinerary-generate-panel {
-  margin-top: 30px;
-  padding: 26px;
-
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  align-items: center;
-  gap: 24px;
+/* Fixed width so the label swapping to "Added" does not reflow the row. */
+.my-itinerary .itinerary-add-button {
+  min-width: 88px;
 }
 
 .generate-itinerary-button {
@@ -1701,38 +2339,56 @@ a {
    Generated itinerary
 ========================================================= */
 
-.generated-itinerary-section {
-  margin-top: 30px;
-  padding: 28px;
+/* =========================================================
+   Itinerary detail page
+========================================================= */
+
+.itinerary-detail-heading {
+  margin-bottom: 12px;
 }
 
-.itinerary-section-header {
-  margin-bottom: 26px;
-  padding-bottom: 22px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-
-  border-bottom: 1px solid var(--border-soft);
+/* Sizing lives with the canonical page-title rules at the end of this file. */
+.itinerary-detail-heading h1 {
+  margin: 10px 0 0;
+  color: var(--color-navy);
 }
 
-.itinerary-section-header p {
-  margin: 7px 0 0;
+.itinerary-detail-meta {
+  margin: 6px 0 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
-.save-itinerary-button {
-  flex: 0 0 auto;
-  background: var(--color-brick) !important;
-  border-color: var(--color-brick) !important;
+/*
+  There is no global button reset in this file, so a bare <button> keeps the
+  UA's 2px outset square border. Setting border-color alone left that default
+  showing, which is why this looked unstyled -- the border and radius have to
+  be declared outright.
+*/
+.itinerary-detail .itinerary-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-white);
+  color: var(--color-navy);
+
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.save-itinerary-button:hover:not(:disabled) {
-  background: var(--color-brick-dark) !important;
-  border-color: var(--color-brick-dark) !important;
+.itinerary-detail .itinerary-detail-back:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--text-light);
+}
+
+.itinerary-detail > .fallback-message,
+.itinerary-detail > .error-message {
+  margin-bottom: 18px;
 }
 
 .itinerary-timeline {
@@ -1874,27 +2530,6 @@ a {
   background: transparent;
   color: var(--color-navy);
   font-weight: 900;
-}
-
-.timeline-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 17px;
-}
-
-.timeline-actions button {
-  padding: 8px 11px;
-  border-color: var(--border-soft);
-  background: var(--bg-white);
-  color: var(--color-navy);
-  font-size: 11px;
-}
-
-.timeline-actions button:hover:not(:disabled) {
-  border-color: var(--color-navy);
-  background: var(--color-navy);
-  color: var(--text-light);
 }
 
 .stop-accessibility-list,
@@ -2914,9 +3549,13 @@ a {
 
   .itinerary-date-grid,
   .itinerary-planner-grid,
-  .itinerary-generate-panel,
+  .how-it-works-steps,
   .profile-account-card {
     grid-template-columns: 1fr;
+  }
+
+  .selections-panel {
+    position: static;
   }
 
   .itinerary-timeline-row {
@@ -3054,19 +3693,15 @@ a {
   }
 
   .itinerary-date-panel,
-  .itinerary-search-section,
-  .selected-pois-section,
   .saved-pois-section,
   .popular-pois-section,
-  .itinerary-generate-panel,
-  .generated-itinerary-section,
+  .selections-panel,
   .saved-itinerary-detail,
   .profile-section,
   .ai-planner-card {
     padding: 20px;
   }
 
-  .itinerary-section-header,
   .saved-itineraries-heading,
   .saved-itinerary-detail-heading,
   .profile-signout-section {
@@ -3074,7 +3709,6 @@ a {
     align-items: stretch;
   }
 
-  .save-itinerary-button,
   .saved-itineraries-heading > button,
   .saved-itinerary-detail-heading > button,
   .profile-signout-button {
@@ -4326,11 +4960,6 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-top: 0;
 }
 
-/* The planner now has the three agreed sections: search, selections and saved. */
-.itinerary-search-section {
-  grid-column: 1 / -1;
-}
-
 @media (max-width: 780px) {
   .explore-search-panel {
     grid-template-columns: 1fr;
@@ -4340,8 +4969,12 @@ input[type="search"]::-webkit-search-cancel-button {
     grid-template-columns: 1fr;
   }
 
-  .itinerary-search-section {
-    grid-column: auto;
+  .how-it-works-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .my-trips-carousel {
+    grid-auto-columns: minmax(196px, 216px);
   }
 }
 
@@ -4620,22 +5253,18 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 /* =========================================================
-   Generated itinerary — day tabs and image-led timeline
+   Itinerary plan — day tabs and image-led timeline
 ========================================================= */
 
-.generated-itinerary-section {
-  padding: 0;
+/*
+  The plan itself is a bordered card inside the detail page, so the page section
+  stays plain and the card carries the frame.
+*/
+.itinerary-detail .itinerary-plan {
   overflow: hidden;
-  box-shadow: none;
-}
-
-.generated-itinerary-section .itinerary-section-header {
-  margin: 0;
-  padding: 28px 30px 24px;
-}
-
-.generated-itinerary-section > .fallback-message {
-  margin: 20px 30px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
 }
 
 .itinerary-day-tabs {
@@ -4645,9 +5274,14 @@ input[type="search"]::-webkit-search-cancel-button {
   background: #fff;
 }
 
-.my-itinerary .itinerary-day-tabs button {
-  min-width: 190px;
-  padding: 15px 24px 13px;
+/*
+  Scoped to the plan itself rather than to a host page. The timeline is shared,
+  so tying its styling to .my-itinerary left the tabs as bare browser buttons
+  once the plan moved to its own detail page.
+*/
+.itinerary-plan .itinerary-day-tabs button {
+  min-width: 180px;
+  padding: 10px 20px 8px;
   display: grid;
   gap: 3px;
   border: 0;
@@ -4655,11 +5289,12 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 0;
   background: transparent;
   color: var(--text-muted);
+  font-weight: 700;
   text-align: left;
 }
 
-.my-itinerary .itinerary-day-tabs button:hover,
-.my-itinerary .itinerary-day-tabs button.active {
+.itinerary-plan .itinerary-day-tabs button:hover,
+.itinerary-plan .itinerary-day-tabs button.active {
   border-bottom-color: var(--color-navy);
   background: var(--bg-warm);
   color: var(--color-navy);
@@ -4677,27 +5312,27 @@ input[type="search"]::-webkit-search-cancel-button {
   white-space: nowrap;
 }
 
-.generated-itinerary-section .itinerary-days {
+.itinerary-detail .itinerary-days {
   gap: 0;
 }
 
-.generated-itinerary-section .itinerary-day-group {
-  padding: 28px 30px 34px;
+.itinerary-detail .itinerary-day-group {
+  padding: 14px 24px 20px;
   border: 0;
   border-radius: 0;
   background: transparent;
 }
 
-.generated-itinerary-section .itinerary-day-heading {
-  margin-bottom: 24px;
+.itinerary-detail .itinerary-day-heading {
+  margin-bottom: 14px;
 }
 
-.generated-itinerary-section .itinerary-timeline {
+.itinerary-detail .itinerary-timeline {
   position: relative;
-  gap: 28px;
+  gap: 12px;
 }
 
-.generated-itinerary-section .itinerary-timeline::before {
+.itinerary-detail .itinerary-timeline::before {
   content: "";
   position: absolute;
   top: 0;
@@ -4707,49 +5342,49 @@ input[type="search"]::-webkit-search-cancel-button {
   background: var(--border-soft);
 }
 
-.generated-itinerary-section .itinerary-timeline-row {
+.itinerary-detail .itinerary-timeline-row {
   position: relative;
   grid-template-columns: 125px minmax(0, 1fr);
   gap: 24px;
 }
 
-.generated-itinerary-section .timeline-time {
-  padding: 19px 18px 0 0;
+.itinerary-detail .timeline-time {
+  padding: 14px 16px 0 0;
   display: grid;
   gap: 4px;
   color: var(--color-navy);
 }
 
-.generated-itinerary-section .timeline-time strong {
+.itinerary-detail .timeline-time strong {
   color: var(--color-navy);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.generated-itinerary-section .timeline-time span {
+.itinerary-detail .timeline-time span {
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 700;
   line-height: 17px;
 }
 
-.generated-itinerary-section .timeline-card {
+.itinerary-detail .timeline-card {
   padding: 0;
   display: grid;
-  grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(190px, 0.6fr) minmax(0, 1.4fr);
   overflow: hidden;
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 8px 22px rgba(8, 43, 61, 0.06);
 }
 
-.generated-itinerary-section .timeline-card:hover {
+.itinerary-detail .timeline-card:hover {
   transform: none;
 }
 
 .timeline-card-image {
-  min-height: 300px;
+  min-height: 0;
   background: linear-gradient(145deg, var(--color-navy), var(--color-navy-soft));
 }
 
@@ -4773,6 +5408,10 @@ input[type="search"]::-webkit-search-cancel-button {
   padding: 24px;
 }
 
+.itinerary-detail .timeline-card-content {
+  padding: 12px 18px;
+}
+
 .timeline-card-heading {
   display: flex;
   align-items: flex-start;
@@ -4780,7 +5419,7 @@ input[type="search"]::-webkit-search-cancel-button {
   gap: 16px;
 }
 
-.generated-itinerary-section .timeline-card-heading h3 {
+.itinerary-detail .timeline-card-heading h3 {
   margin-top: 0;
 }
 
@@ -4825,18 +5464,202 @@ input[type="search"]::-webkit-search-cancel-button {
   font-weight: 750;
 }
 
-.generated-itinerary-section .busyness-forecast {
+.itinerary-detail .busyness-forecast {
   margin-top: 18px;
   padding: 13px;
   box-shadow: none;
 }
 
-.generated-itinerary-section .mini-busyness-chart {
-  min-height: 76px;
+.itinerary-detail .mini-busyness-chart {
+  min-height: 34px;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+
+.itinerary-detail .busyness-forecast {
+  margin-top: 8px;
+  padding: 10px 12px;
+}
+
+.itinerary-detail-editor {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+}
+
+.itinerary-detail-editor > summary {
+  width: fit-content;
+  list-style: none;
+  cursor: pointer;
+
+  color: var(--color-navy);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.itinerary-detail-editor > summary::-webkit-details-marker {
+  display: none;
+}
+
+.itinerary-detail-editor[open] > summary {
+  margin-bottom: 4px;
+  color: var(--color-brick);
+}
+
+.itinerary-detail-editor > summary:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 3px;
+}
+
+.itinerary-detail-editor-heading p {
+  margin: 4px 0 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.itinerary-detail-editor .search-field {
+  max-width: none;
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  box-shadow: none;
+}
+
+.itinerary-detail-editor .search-field:focus-within {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+}
+
+.itinerary-detail-poi-results {
+  margin-top: 4px;
+}
+
+.itinerary-detail .itinerary-add-button {
+  min-width: 88px;
+  padding: 8px 11px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: 9px;
+  background: var(--bg-card);
+  color: var(--color-navy);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.itinerary-detail .itinerary-add-button:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--text-light);
+}
+
+/* Sits in the time rail, under the slot hours. */
+.timeline-remove-stop {
+  justify-self: start;
+  margin-top: 6px;
+  padding: 4px 9px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.timeline-remove-stop:hover:not(:disabled) {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.timeline-remove-stop:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* Opt-in hourly chart. Native <details>, so it needs no component state. */
+.timeline-forecast {
+  margin-top: 10px;
+}
+
+.timeline-forecast > summary {
+  width: fit-content;
+  padding: 5px 10px;
+  list-style: none;
+  cursor: pointer;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.timeline-forecast > summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline-forecast > summary::after {
+  content: " \25be";
+}
+
+.timeline-forecast[open] > summary::after {
+  content: " \25b4";
+}
+
+.timeline-forecast > summary:hover {
+  border-color: var(--color-navy);
+}
+
+.timeline-forecast > summary:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+.itinerary-detail .recommended-window {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+}
+
+.itinerary-detail .why-this-time {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.itinerary-detail .timeline-card-details {
+  margin-top: 10px;
+  padding-top: 9px;
+}
+
+/* Sits inline in the meta row, so it drops the block-level spacing. */
+.itinerary-detail .timeline-details-link {
+  margin-top: 0;
+  padding: 0;
+  border-color: transparent;
+}
+
+.itinerary-detail .timeline-details-link:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+.itinerary-detail .itinerary-day-heading {
+  margin-bottom: 12px;
+}
+
+.itinerary-detail .itinerary-day-heading h3 {
+  font-size: 19px;
 }
 
 @media (max-width: 860px) {
-  .generated-itinerary-section .timeline-card {
+  .itinerary-detail .timeline-card {
     grid-template-columns: 1fr;
   }
 
@@ -4851,22 +5674,21 @@ input[type="search"]::-webkit-search-cancel-button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .generated-itinerary-section .itinerary-section-header,
-  .generated-itinerary-section .itinerary-day-group {
+  .itinerary-detail .itinerary-day-group {
     padding-right: 18px;
     padding-left: 18px;
   }
 
-  .generated-itinerary-section .itinerary-timeline::before {
+  .itinerary-detail .itinerary-timeline::before {
     display: none;
   }
 
-  .generated-itinerary-section .itinerary-timeline-row {
+  .itinerary-detail .itinerary-timeline-row {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .generated-itinerary-section .timeline-time {
+  .itinerary-detail .timeline-time {
     padding: 0;
   }
 
@@ -5102,7 +5924,12 @@ input[type="search"]::-webkit-search-cancel-button {
    Authentication accessibility option
 ========================================================= */
 
-.auth-accessibility-option {
+/*
+  One styled checkbox shared by registration and the itinerary planner, because
+  both are asking the same single question. The native input stays in the
+  accessibility tree and only its paint is replaced by the adjacent span.
+*/
+.accessibility-option {
   display: grid !important;
   grid-template-columns: auto 1fr;
   align-items: start;
@@ -5114,13 +5941,13 @@ input[type="search"]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
-.auth-accessibility-option input {
+.accessibility-option input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-.auth-accessibility-check {
+.accessibility-option-check {
   width: 20px;
   height: 20px;
   display: grid;
@@ -5130,34 +5957,55 @@ input[type="search"]::-webkit-search-cancel-button {
   background: var(--bg-white);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check {
+.accessibility-option input:checked + .accessibility-option-check {
   border-color: var(--color-navy);
   background: var(--color-navy);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check::after {
+.accessibility-option input:checked + .accessibility-option-check::after {
   content: "✓";
   color: white;
   font-size: 13px;
   font-weight: 900;
 }
 
-.auth-accessibility-option input:focus-visible + .auth-accessibility-check {
+.accessibility-option input:focus-visible + .accessibility-option-check {
   outline: 3px solid rgba(170, 53, 46, 0.24);
   outline-offset: 3px;
 }
 
-.auth-accessibility-option strong,
-.auth-accessibility-option small {
+.accessibility-option strong,
+.accessibility-option small {
   display: block;
 }
 
-.auth-accessibility-option small {
+.accessibility-option small {
   margin-top: 4px;
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   line-height: 17px;
+}
+
+/*
+  In the trip setup row the checkbox shares a grid track with the 48px date and
+  name fields, so it drops the helper copy and matches their height instead.
+*/
+.itinerary-accessibility-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itinerary-accessibility-control .accessibility-option {
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 14px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* =========================================================
@@ -5874,6 +6722,19 @@ input[type="search"]::-webkit-search-cancel-button {
   font-size: clamp(40px, 6vw, 64px);
   font-weight: 800;
   line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+/*
+  A trip name is content, not a page title, so it sits a step below the
+  canonical size in both places it appears while keeping the weight and
+  tracking consistent with them.
+*/
+.itinerary-trip-header h1,
+.itinerary-detail-heading h1 {
+  font-size: clamp(30px, 4.4vw, 46px);
+  font-weight: 800;
+  line-height: 1.06;
   letter-spacing: -0.02em;
 }
 
