@@ -5,6 +5,7 @@ import HowItWorks from "./HowItWorks";
 import MyTripsCarousel from "./MyTripsCarousel";
 import TripDateRangeField from "./TripDateRangeField";
 import { apiFetch, isAuthenticationError } from "../api";
+import { isWheelchairAccessible } from "../accessibility";
 import { countInclusiveDays, parseIsoDate } from "../itinerary";
 import poiPhotoFallback from "../assets/poi-photo-fallback.svg";
 
@@ -44,57 +45,6 @@ function canUseInItinerary(poi: Poi): boolean {
   return (
     poi.opening_hours !== null &&
     Object.keys(poi.opening_hours).length > 0
-  );
-}
-
-/*
-  Accessibility labels come from the POI API. A full wheelchair requirement
-  only accepts the full wheelchair label; the limited option accepts either
-  full or limited access.
-*/
-function matchesAccessibilityNeed(poi: Poi, need: string): boolean {
-  if (need === "") {
-    return true;
-  }
-
-  const labels = (poi.accessibility_labels ?? []).map((label) =>
-    label.toLowerCase().replaceAll("-", "_")
-  );
-
-  if (need === "wheelchair") {
-    return labels.includes("wheelchair");
-  }
-
-  if (need === "wheelchair-limited") {
-    return (
-      labels.includes("wheelchair") ||
-      labels.includes("wheelchair_limited")
-    );
-  }
-
-  return true;
-}
-
-function isConfirmedAccessible(poi: Poi): boolean {
-  const labels = (poi.accessibility_labels ?? []).map((label) =>
-    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
-  );
-
-  return labels.some(
-    (label) =>
-      label === "wheelchair" ||
-      label === "wheelchair_yes" ||
-      label.includes("step_free")
-  );
-}
-
-function hasLimitedAccessibility(poi: Poi): boolean {
-  return (poi.accessibility_labels ?? []).some((label) =>
-    label
-      .toLowerCase()
-      .replaceAll("-", "_")
-      .replaceAll(" ", "_")
-      .includes("wheelchair_limited")
   );
 }
 
@@ -205,7 +155,15 @@ function MyItinerary({
   const [endDate, setEndDate] = useState(
     initialItinerary?.end_date ?? ""
   );
-  const [accessibilityNeed, setAccessibilityNeed] = useState("");
+  /*
+    Seeded from the saved profile preference so people who already told us they
+    need step-free access do not have to say it again on every trip. Safe as a
+    plain initial value because App loads the user and their preferences
+    synchronously from localStorage before this page can mount.
+  */
+  const [wheelchairOnly, setWheelchairOnly] = useState(
+    preferAccessiblePlaces
+  );
   const [pendingAccessibilityPoi, setPendingAccessibilityPoi] =
     useState<Poi | null>(null);
 
@@ -294,25 +252,14 @@ function MyItinerary({
   */
   const normalisedSearchTerm = searchTerm.trim().toLowerCase();
 
-  const accessibilityPriorityActive =
-    preferAccessiblePlaces || accessibilityNeed !== "";
-
-  function meetsCurrentAccessibilityPreference(poi: Poi): boolean {
-    if (accessibilityNeed !== "") {
-      return matchesAccessibilityNeed(poi, accessibilityNeed);
-    }
-
-    return isConfirmedAccessible(poi);
-  }
-
   function byAccessibilityPreference(firstPoi: Poi, secondPoi: Poi): number {
-    if (!accessibilityPriorityActive) {
+    if (!wheelchairOnly) {
       return 0;
     }
 
     return (
-      Number(meetsCurrentAccessibilityPreference(secondPoi)) -
-      Number(meetsCurrentAccessibilityPreference(firstPoi))
+      Number(isWheelchairAccessible(secondPoi)) -
+      Number(isWheelchairAccessible(firstPoi))
     );
   }
 
@@ -461,10 +408,7 @@ function MyItinerary({
       return;
     }
 
-    if (
-      accessibilityPriorityActive &&
-      !meetsCurrentAccessibilityPreference(poi)
-    ) {
+    if (wheelchairOnly && !isWheelchairAccessible(poi)) {
       setPendingAccessibilityPoi(poi);
       return;
     }
@@ -483,19 +427,13 @@ function MyItinerary({
   }
 
   /*
-    The backend expects accessibility requirements as a list.
-
-    Examples:
-    []
-    ["wheelchair"]
-    ["wheelchair-limited"]
+    The backend still expects a list of requirement labels, so the single
+    wheelchair requirement is sent as [] or ["wheelchair"]. Only the confirmed
+    label is ever sent: the backend matches labels exactly, and partial access
+    does not satisfy the requirement.
   */
   function buildAccessibilityList(): string[] {
-    if (accessibilityNeed === "") {
-      return [];
-    }
-
-    return [accessibilityNeed];
+    return wheelchairOnly ? ["wheelchair"] : [];
   }
 
   /*
@@ -690,24 +628,33 @@ function MyItinerary({
                 />
               </div>
 
-              <label htmlFor="accessibility-need">
-                Accessibility
-                <select
-                  id="accessibility-need"
-                  value={accessibilityNeed}
-                  onChange={(event) => {
-                    setAccessibilityNeed(event.target.value);
-                    setUnsavedItinerary(null);
-                    setStatusMessage("");
-                  }}
-                >
-                  <option value="">No specific requirement</option>
-                  <option value="wheelchair">Wheelchair accessible</option>
-                  <option value="wheelchair-limited">
-                    Limited wheelchair access
-                  </option>
-                </select>
-              </label>
+              {/*
+                One tickbox rather than a dropdown: wheelchair access is the
+                only requirement the POI data can answer, and it is either
+                needed or not. Partially accessible places do not satisfy it.
+              */}
+              <div className="itinerary-accessibility-control">
+                <span className="trip-date-control-label">Accessibility</span>
+
+                <label className="accessibility-option">
+                  <input
+                    type="checkbox"
+                    checked={wheelchairOnly}
+                    onChange={(event) => {
+                      setWheelchairOnly(event.target.checked);
+                      setUnsavedItinerary(null);
+                      setStatusMessage("");
+                    }}
+                  />
+
+                  <span
+                    className="accessibility-option-check"
+                    aria-hidden="true"
+                  />
+
+                  <span>Wheelchair access required</span>
+                </label>
+              </div>
 
               <button
                 type="button"
@@ -773,7 +720,12 @@ function MyItinerary({
             </button>
           </header>
 
-          {preferAccessiblePlaces && (
+          {/*
+            Follows the tickbox rather than the saved profile preference, so
+            clearing the requirement for one trip also drops the claim that
+            accessible places are being prioritised.
+          */}
+          {wheelchairOnly && (
             <section className="accessibility-preference-banner" role="status">
               <span aria-hidden="true">♿</span>
               <div>
@@ -1003,15 +955,11 @@ function MyItinerary({
             <p className="section-eyebrow">Accessibility check</p>
 
             <h2 id="itinerary-accessibility-warning-title">
-              {hasLimitedAccessibility(pendingAccessibilityPoi)
-                ? "Limited accessibility reported"
-                : "Accessibility information not confirmed"}
+              Accessibility information not confirmed
             </h2>
 
             <p id="itinerary-accessibility-warning-description">
-              {hasLimitedAccessibility(pendingAccessibilityPoi)
-                ? `${pendingAccessibilityPoi.name} reports limited wheelchair access. Some areas or facilities may not be accessible.`
-                : `${pendingAccessibilityPoi.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
+              {`${pendingAccessibilityPoi.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
             </p>
 
             <div className="accessibility-warning-actions">

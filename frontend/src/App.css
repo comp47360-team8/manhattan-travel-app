@@ -1227,6 +1227,22 @@ a {
   color: var(--text-light);
 }
 
+/*
+  Sits inside a sentence rather than standing alone as a chip, so it keeps the
+  surrounding text size and only carries link affordances. Brick on the white
+  fallback panel measures about 6.2:1, so it passes AA without relying on
+  colour alone -- the underline does that.
+*/
+.inline-website-link {
+  color: var(--color-brick);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.inline-website-link:hover {
+  color: var(--color-brick-dark);
+}
+
 /* =========================================================
    Authentication modal
 ========================================================= */
@@ -5647,7 +5663,12 @@ input[type="search"]::-webkit-search-cancel-button {
    Authentication accessibility option
 ========================================================= */
 
-.auth-accessibility-option {
+/*
+  One styled checkbox shared by registration and the itinerary planner, because
+  both are asking the same single question. The native input stays in the
+  accessibility tree and only its paint is replaced by the adjacent span.
+*/
+.accessibility-option {
   display: grid !important;
   grid-template-columns: auto 1fr;
   align-items: start;
@@ -5659,13 +5680,13 @@ input[type="search"]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
-.auth-accessibility-option input {
+.accessibility-option input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-.auth-accessibility-check {
+.accessibility-option-check {
   width: 20px;
   height: 20px;
   display: grid;
@@ -5675,34 +5696,55 @@ input[type="search"]::-webkit-search-cancel-button {
   background: var(--bg-white);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check {
+.accessibility-option input:checked + .accessibility-option-check {
   border-color: var(--color-navy);
   background: var(--color-navy);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check::after {
+.accessibility-option input:checked + .accessibility-option-check::after {
   content: "✓";
   color: white;
   font-size: 13px;
   font-weight: 900;
 }
 
-.auth-accessibility-option input:focus-visible + .auth-accessibility-check {
+.accessibility-option input:focus-visible + .accessibility-option-check {
   outline: 3px solid rgba(170, 53, 46, 0.24);
   outline-offset: 3px;
 }
 
-.auth-accessibility-option strong,
-.auth-accessibility-option small {
+.accessibility-option strong,
+.accessibility-option small {
   display: block;
 }
 
-.auth-accessibility-option small {
+.accessibility-option small {
   margin-top: 4px;
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   line-height: 17px;
+}
+
+/*
+  In the trip setup row the checkbox shares a grid track with the 48px date and
+  name fields, so it drops the helper copy and matches their height instead.
+*/
+.itinerary-accessibility-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itinerary-accessibility-control .accessibility-option {
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 14px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* =========================================================

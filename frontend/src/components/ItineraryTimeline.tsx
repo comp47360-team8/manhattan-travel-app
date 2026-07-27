@@ -1,4 +1,5 @@
 import BusynessChart from "./BusynessChart";
+import { accessibilitySummary } from "../accessibility";
 import {
   crowdLevelClass,
   formatClockTime,
@@ -167,12 +168,14 @@ function ItineraryTimeline({
                             accessibility comes straight from the POI's
                             nullable accessibility_labels column, so a saved
                             stop can send null here where a freshly generated
-                            one always sends an array.
+                            one always sends an array. Only confirmed labels
+                            are shown, because the chip reads "Accessible" and
+                            partial access does not qualify.
                           */}
-                          {(stop.accessibility?.length ?? 0) > 0 && (
+                          {accessibilitySummary(stop.accessibility) && (
                             <span>
                               Accessible:{" "}
-                              {stop.accessibility?.map(String).join(", ")}
+                              {accessibilitySummary(stop.accessibility)}
                             </span>
                           )}
                         </div>

@@ -20,6 +20,19 @@ def test_excludes_pois_with_no_accessibility_data(make_poi):
     assert filter_accessibility(pois, ["wheelchair"]) == []
 
 
+def test_excludes_pois_with_only_limited_wheelchair_access(make_poi):
+    # Partial access is presented to visitors as no access, so the stored
+    # "wheelchair_limited" label must not satisfy a wheelchair requirement.
+    pois = [
+        make_poi("cloisters", accessibility_labels=["wheelchair_limited"]),
+        make_poi("met", accessibility_labels=["wheelchair"]),
+    ]
+
+    result = filter_accessibility(pois, ["wheelchair"])
+
+    assert [p.slug for p in result] == ["met"]
+
+
 def test_empty_requirement_list_filters_everything(make_poi):
     # Documents current behaviour: an empty requirements list matches
     # nothing (any() over empty -> False). Callers must only invoke the

@@ -32,11 +32,11 @@ The application is **live at [https://offpeak.live/](https://offpeak.live/)**.
 
 The app is organised into five tabs, available on both web and mobile:
 
-- **Explore** — Browse and search Manhattan points of interest. Each POI card shows a photo, name, neighbourhood, rating, crowd level, and a best-time-to-visit hint, plus an accessibility icon (♿) where applicable. Tapping a card opens its detail page, with a 6-slot Crowd Forecast chart (colour-coded Quiet / Moderate / Busy), a "Best Time to Visit" window, and an accessibility section (wheelchair access, accessible restroom, step-free entry) shown by default.
+- **Explore** — Browse and search Manhattan points of interest. Each POI card shows a photo, name, neighbourhood, rating, crowd level, and a best-time-to-visit hint, plus an accessibility icon (♿) where applicable. Tapping a card opens its detail page, with a 6-slot Crowd Forecast chart (colour-coded Quiet / Moderate / Busy), a "Best Time to Visit" window, and an accessibility section shown by default, listing confirmed wheelchair or step-free access and otherwise linking to the venue's own site.
 - **AI Planner** — A conversational planner: the assistant asks whether you're starting a new trip or refining an existing one in My Itinerary, then gathers trip dates, interests, and accessibility needs through dialogue. Once confirmed, the generated itinerary is saved into My Itinerary.
 - **My Itinerary** (manual, main flow) — Pick POIs and trip dates directly; the system auto-schedules them into a time-slotted itinerary based on predicted crowd level and location, prioritising Quiet/Moderate slots where possible. Stops can be reordered (drag-and-drop on web, long-press on mobile) or removed, with the schedule reflowing automatically.
 - **Saved** — POIs can be saved straight from Explore (no itinerary needed) and appear here immediately; saved itineraries can also be reopened in full or deleted.
-- **Profile** — Account info (username, joined date) and an accessibility setting (e.g. step-free routes), which filters itineraries to only include wheelchair-accessible POIs and routes when enabled.
+- **Profile** — Account info (username, joined date) and an accessibility setting (e.g. step-free routes). When enabled, itineraries are restricted to POIs with *confirmed* wheelchair access; places with only partial access, or with no accessibility data, are left out and a warning is shown if you add one anyway.
 
 ---
 

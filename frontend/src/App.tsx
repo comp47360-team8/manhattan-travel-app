@@ -21,6 +21,12 @@ import {
   AUTHENTICATION_REQUIRED_EVENT,
 } from "./api";
 
+import {
+  confirmedAccessibilityLabels,
+  formatAccessibilityLabel,
+  isWheelchairAccessible,
+} from "./accessibility";
+
 import type {
   ApiMessageResponse,
   AuthMode,
@@ -122,8 +128,6 @@ const USER_STORAGE_KEY = "offpeak_user";
 const PROFILE_PREFERENCES_KEY = "offpeak_profile_preferences";
 
 type ForecastPeriod = "today" | "tomorrow" | "weekend";
-
-type AccessibilitySupport = "confirmed" | "limited" | "unknown";
 
 /*
   Reads the locally stored display information for the logged-in user.
@@ -228,46 +232,6 @@ function isAuthenticationError(error: unknown): boolean {
     message.includes("access token") ||
     message.includes("refresh token")
   );
-}
-
-/*
-  Checks whether a POI contains a wheelchair-related accessibility label.
-*/
-function isWheelchairAccessible(poi: Poi): boolean {
-  return (
-    poi.accessibility_labels?.some((label) => {
-      const normalisedLabel = label.toLowerCase();
-
-      return (
-        normalisedLabel.includes("wheelchair") ||
-        normalisedLabel.includes("step-free") ||
-        normalisedLabel.includes("step free")
-      );
-    }) ?? false
-  );
-}
-
-function getAccessibilitySupport(poi: Poi): AccessibilitySupport {
-  const labels = (poi.accessibility_labels ?? []).map((label) =>
-    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
-  );
-
-  if (
-    labels.some(
-      (label) =>
-        label === "wheelchair" ||
-        label === "wheelchair_yes" ||
-        label.includes("step_free")
-    )
-  ) {
-    return "confirmed";
-  }
-
-  if (labels.some((label) => label.includes("wheelchair_limited"))) {
-    return "limited";
-  }
-
-  return "unknown";
 }
 
 /*
@@ -485,6 +449,14 @@ function App() {
   const selectedPoiIsClosedToday = selectedPoi
     ? isPoiClosedToday(selectedPoi)
     : false;
+  /*
+    Only confirmed labels are listed. A place tagged as having limited
+    wheelchair access falls through to the same fallback as a place with no
+    OSM data at all, because partial access is not access.
+  */
+  const selectedPoiAccessibility = confirmedAccessibilityLabels(
+    selectedPoi?.accessibility_labels
+  );
   const [crowdSummaryBySlug, setCrowdSummaryBySlug] = useState<
     Record<string, string>
   >({});
@@ -860,7 +832,7 @@ function App() {
     suitable options, not only a small featured sample.
   */
   const accessiblePreferredPois = [...pois]
-    .filter((poi) => getAccessibilitySupport(poi) === "confirmed")
+    .filter(isWheelchairAccessible)
     .sort((firstPoi, secondPoi) => {
       const ratingDifference =
         (secondPoi.google_review_star ?? 0) -
@@ -1050,7 +1022,7 @@ function App() {
       poi &&
       !isCurrentlySaved &&
       profilePreferences.stepFreeRoutes &&
-      getAccessibilitySupport(poi) !== "confirmed"
+      !isWheelchairAccessible(poi)
     ) {
       setPendingAccessibleSave(poi);
       return;
@@ -1503,23 +1475,32 @@ function App() {
                   <section className="accessibility-panel">
                     <h2>Accessibility</h2>
 
-                    {selectedPoi.accessibility_labels &&
-                    selectedPoi.accessibility_labels.length >
-                      0 ? (
+                    {selectedPoiAccessibility.length > 0 ? (
                       <div className="accessibility-grid">
-                        {selectedPoi.accessibility_labels.map(
-                          (label) => (
-                            <p key={label}>
-                              <span aria-hidden="true">✓</span>{" "}
-                              {label.replaceAll("_", " ")}
-                            </p>
-                          )
-                        )}
+                        {selectedPoiAccessibility.map((label) => (
+                          <p key={label}>
+                            <span aria-hidden="true">✓</span>{" "}
+                            {formatAccessibilityLabel(label)}
+                          </p>
+                        ))}
                       </div>
+                    ) : selectedPoi.website_url ? (
+                      <p className="fallback-message">
+                        Check the{" "}
+                        <a
+                          className="inline-website-link"
+                          href={selectedPoi.website_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          official website
+                        </a>{" "}
+                        for accessibility features.
+                      </p>
                     ) : (
                       <p className="fallback-message">
-                        Accessibility information has not been
-                        supplied for this attraction.
+                        Accessibility information is not
+                        available for this attraction.
                       </p>
                     )}
                   </section>
@@ -1762,15 +1743,11 @@ function App() {
             <p className="section-eyebrow">Accessibility check</p>
 
             <h2 id="save-accessibility-warning-title">
-              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
-                ? "Limited accessibility reported"
-                : "Accessibility information not confirmed"}
+              Accessibility information not confirmed
             </h2>
 
             <p id="save-accessibility-warning-description">
-              {getAccessibilitySupport(pendingAccessibleSave) === "limited"
-                ? `${pendingAccessibleSave.name} reports limited wheelchair access, so some areas or facilities may not be accessible.`
-                : `${pendingAccessibleSave.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
+              {`${pendingAccessibleSave.name} does not have confirmed wheelchair-accessibility information. Missing information does not necessarily mean the attraction is inaccessible.`}
             </p>
 
             <div className="accessibility-warning-actions">

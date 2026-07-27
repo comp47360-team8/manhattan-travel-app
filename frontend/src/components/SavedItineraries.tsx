@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { apiFetch } from "../api";
+import {
+  accessibilitySummary,
+  isWheelchairAccessible,
+} from "../accessibility";
 import { groupStopsByDay } from "../itinerary";
 import BusynessChart from "./BusynessChart";
 import poiPhotoFallback from "../assets/poi-photo-fallback.svg";
@@ -89,29 +93,6 @@ function isAuthenticationError(error: unknown): boolean {
     message.includes("authentication") ||
     message.includes("access token") ||
     message.includes("refresh token")
-  );
-}
-
-function isConfirmedAccessible(poi: Poi): boolean {
-  const labels = (poi.accessibility_labels ?? []).map((label) =>
-    label.toLowerCase().replaceAll("-", "_").replaceAll(" ", "_")
-  );
-
-  return labels.some(
-    (label) =>
-      label === "wheelchair" ||
-      label === "wheelchair_yes" ||
-      label.includes("step_free")
-  );
-}
-
-function hasLimitedAccessibility(poi: Poi): boolean {
-  return (poi.accessibility_labels ?? []).some((label) =>
-    label
-      .toLowerCase()
-      .replaceAll("-", "_")
-      .replaceAll(" ", "_")
-      .includes("wheelchair_limited")
   );
 }
 
@@ -242,8 +223,8 @@ function SavedItineraries({
     .sort(
       (firstPoi, secondPoi) =>
         preferAccessiblePlaces
-          ? Number(isConfirmedAccessible(secondPoi)) -
-            Number(isConfirmedAccessible(firstPoi))
+          ? Number(isWheelchairAccessible(secondPoi)) -
+            Number(isWheelchairAccessible(firstPoi))
           : 0
     )
     .slice(0, 6);
@@ -557,7 +538,7 @@ function SavedItineraries({
     if (
       poi &&
       preferAccessiblePlaces &&
-      !isConfirmedAccessible(poi)
+      !isWheelchairAccessible(poi)
     ) {
       setPendingAccessibilityPoi(poi);
       return;
@@ -834,15 +815,9 @@ function SavedItineraries({
                               "Crowd update pending"}
                           </span>
 
-                          {poi.accessibility_labels &&
-                            poi
-                              .accessibility_labels
-                              .length > 0 && (
-                              <span>
-                                ♿ Accessibility
-                                information
-                              </span>
-                            )}
+                          {isWheelchairAccessible(poi) && (
+                            <span>♿ Accessible</span>
+                          )}
                         </div>
                       </div>
                     </article>
@@ -1170,10 +1145,14 @@ function SavedItineraries({
                                           {stop.suggested_duration} minutes
                                         </span>
 
-                                        {(stop.accessibility?.length ?? 0) > 0 && (
+                                        {accessibilitySummary(
+                                          stop.accessibility
+                                        ) && (
                                           <span>
                                             Accessible:{" "}
-                                            {stop.accessibility?.join(", ")}
+                                            {accessibilitySummary(
+                                              stop.accessibility
+                                            )}
                                           </span>
                                         )}
                                       </div>
@@ -1406,15 +1385,11 @@ function SavedItineraries({
             <p className="section-eyebrow">Accessibility check</p>
 
             <h2 id="saved-itinerary-accessibility-warning-title">
-              {hasLimitedAccessibility(pendingAccessibilityPoi)
-                ? "Limited accessibility reported"
-                : "Accessibility information not confirmed"}
+              Accessibility information not confirmed
             </h2>
 
             <p id="saved-itinerary-accessibility-warning-description">
-              {hasLimitedAccessibility(pendingAccessibilityPoi)
-                ? `${pendingAccessibilityPoi.name} reports limited wheelchair access. Some areas or facilities may not be accessible.`
-                : `${pendingAccessibilityPoi.name} does not have confirmed wheelchair-accessibility information. You can still add it and review the plan.`}
+              {`${pendingAccessibilityPoi.name} does not have confirmed wheelchair-accessibility information. You can still add it and review the plan.`}
             </p>
 
             <div className="accessibility-warning-actions">

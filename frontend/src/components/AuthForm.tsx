@@ -347,7 +347,7 @@ function AuthForm({
         )}
 
         {!isLogin && (
-          <label className="auth-accessibility-option">
+          <label className="accessibility-option">
             <input
               type="checkbox"
               checked={accessibility}
@@ -355,7 +355,7 @@ function AuthForm({
               disabled={isSubmitting}
             />
 
-            <span className="auth-accessibility-check" aria-hidden="true" />
+            <span className="accessibility-option-check" aria-hidden="true" />
 
             <span>
               <strong>I need wheelchair-accessible attractions</strong>
