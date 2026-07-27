@@ -1227,6 +1227,22 @@ a {
   color: var(--text-light);
 }
 
+/*
+  Sits inside a sentence rather than standing alone as a chip, so it keeps the
+  surrounding text size and only carries link affordances. Brick on the white
+  fallback panel measures about 6.2:1, so it passes AA without relying on
+  colour alone -- the underline does that.
+*/
+.inline-website-link {
+  color: var(--color-brick);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.inline-website-link:hover {
+  color: var(--color-brick-dark);
+}
+
 /* =========================================================
    Authentication modal
 ========================================================= */
@@ -1423,7 +1439,15 @@ a {
 .itinerary-detail {
   width: min(100%, 1120px);
   margin: 0 auto;
-  padding: 64px 0 80px;
+  padding: 28px 0 72px;
+}
+
+/*
+  The plan is a reading surface, so it opens tighter than the marketing-style
+  pages: on a 13" laptop two stops must be visible without scrolling.
+*/
+.itinerary-detail {
+  padding: 24px 0 64px;
 }
 
 .my-itinerary > h1 {
@@ -1435,10 +1459,52 @@ a {
 
 .my-itinerary > p {
   max-width: 680px;
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   color: var(--text-muted);
-  font-size: 17px;
-  line-height: 29px;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+/*
+  Eyebrow and the explainer shortcut share one row so the shortcut costs no
+  vertical space on a laptop screen.
+*/
+.itinerary-intro-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.itinerary-intro-row .section-eyebrow {
+  margin: 0;
+}
+
+.how-it-works-jump {
+  padding: 6px 13px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-white);
+  color: var(--color-brick);
+
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.how-it-works-jump:hover {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.how-it-works-jump:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
 }
 
 .itinerary-date-panel,
@@ -1451,14 +1517,19 @@ a {
 }
 
 .itinerary-date-panel {
-  margin-top: 34px;
-  padding: 26px;
+  margin-top: 22px;
+  padding: 20px;
 }
 
+/*
+  One row: name, dates, accessibility and the button. On a 13" laptop this is
+  what keeps the title, the create card and the trips carousel on one screen.
+*/
 .itinerary-date-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 14px 16px;
 }
 
 /*
@@ -1466,11 +1537,10 @@ a {
   competing with the three fields above it.
 */
 .itinerary-date-grid .start-planning-button {
-  grid-column: 1 / -1;
-  justify-self: end;
-  min-height: 48px;
-  padding: 12px 26px;
+  min-height: 46px;
+  padding: 10px 22px;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .my-itinerary label {
@@ -1653,7 +1723,7 @@ a {
 ========================================================= */
 
 .my-trips-section {
-  margin-top: 44px;
+  margin-top: 26px;
 }
 
 .my-trips-heading h2 {
@@ -1665,7 +1735,7 @@ a {
 }
 
 .my-trips-heading p {
-  margin: 8px 0 0;
+  margin: 5px 0 0;
   color: var(--text-muted);
   font-size: 14px;
   line-height: 23px;
@@ -1677,12 +1747,12 @@ a {
   approach as the Explore category strip.
 */
 .my-trips-carousel {
-  margin: 22px 0 0;
+  margin: 16px 0 0;
   padding: 0 4px 6px;
 
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(232px, 262px);
+  grid-auto-columns: minmax(212px, 240px);
   gap: 22px;
 
   list-style: none;
@@ -1718,7 +1788,7 @@ a {
 .my-trip-card-image {
   display: block;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
   background: var(--bg-warm);
@@ -1757,7 +1827,9 @@ a {
 ========================================================= */
 
 .how-it-works {
-  margin-top: 40px;
+  margin-top: 34px;
+  /* Cleared by the sticky top nav when jumped to from the intro link. */
+  scroll-margin-top: 84px;
   padding: 22px 24px;
 
   border: 1px solid var(--border-soft);
@@ -2272,29 +2344,40 @@ a {
 ========================================================= */
 
 .itinerary-detail-heading {
-  margin-bottom: 26px;
+  margin-bottom: 12px;
 }
 
 /* Sizing lives with the canonical page-title rules at the end of this file. */
 .itinerary-detail-heading h1 {
-  margin: 14px 0 0;
+  margin: 10px 0 0;
   color: var(--color-navy);
 }
 
 .itinerary-detail-meta {
-  margin: 10px 0 0;
+  margin: 6px 0 0;
   color: var(--text-muted);
   font-size: 15px;
 }
 
+/*
+  There is no global button reset in this file, so a bare <button> keeps the
+  UA's 2px outset square border. Setting border-color alone left that default
+  showing, which is why this looked unstyled -- the border and radius have to
+  be declared outright.
+*/
 .itinerary-detail .itinerary-detail-back {
-  padding: 7px 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
 
-  border-color: var(--border-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
   background: var(--bg-white);
   color: var(--color-navy);
 
   font-size: 12px;
+  font-weight: 800;
 }
 
 .itinerary-detail .itinerary-detail-back:hover:not(:disabled) {
@@ -5177,7 +5260,7 @@ input[type="search"]::-webkit-search-cancel-button {
   The plan itself is a bordered card inside the detail page, so the page section
   stays plain and the card carries the frame.
 */
-.itinerary-detail .generated-itinerary-plan {
+.itinerary-detail .itinerary-plan {
   overflow: hidden;
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
@@ -5191,9 +5274,14 @@ input[type="search"]::-webkit-search-cancel-button {
   background: #fff;
 }
 
-.my-itinerary .itinerary-day-tabs button {
-  min-width: 190px;
-  padding: 15px 24px 13px;
+/*
+  Scoped to the plan itself rather than to a host page. The timeline is shared,
+  so tying its styling to .my-itinerary left the tabs as bare browser buttons
+  once the plan moved to its own detail page.
+*/
+.itinerary-plan .itinerary-day-tabs button {
+  min-width: 180px;
+  padding: 10px 20px 8px;
   display: grid;
   gap: 3px;
   border: 0;
@@ -5201,11 +5289,12 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 0;
   background: transparent;
   color: var(--text-muted);
+  font-weight: 700;
   text-align: left;
 }
 
-.my-itinerary .itinerary-day-tabs button:hover,
-.my-itinerary .itinerary-day-tabs button.active {
+.itinerary-plan .itinerary-day-tabs button:hover,
+.itinerary-plan .itinerary-day-tabs button.active {
   border-bottom-color: var(--color-navy);
   background: var(--bg-warm);
   color: var(--color-navy);
@@ -5228,19 +5317,19 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .itinerary-detail .itinerary-day-group {
-  padding: 28px 30px 34px;
+  padding: 14px 24px 20px;
   border: 0;
   border-radius: 0;
   background: transparent;
 }
 
 .itinerary-detail .itinerary-day-heading {
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 .itinerary-detail .itinerary-timeline {
   position: relative;
-  gap: 28px;
+  gap: 12px;
 }
 
 .itinerary-detail .itinerary-timeline::before {
@@ -5260,7 +5349,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .itinerary-detail .timeline-time {
-  padding: 19px 18px 0 0;
+  padding: 14px 16px 0 0;
   display: grid;
   gap: 4px;
   color: var(--color-navy);
@@ -5283,7 +5372,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .itinerary-detail .timeline-card {
   padding: 0;
   display: grid;
-  grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(190px, 0.6fr) minmax(0, 1.4fr);
   overflow: hidden;
   border-radius: 14px;
   background: #fff;
@@ -5295,7 +5384,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .timeline-card-image {
-  min-height: 300px;
+  min-height: 0;
   background: linear-gradient(145deg, var(--color-navy), var(--color-navy-soft));
 }
 
@@ -5317,6 +5406,10 @@ input[type="search"]::-webkit-search-cancel-button {
 .timeline-card-content {
   min-width: 0;
   padding: 24px;
+}
+
+.itinerary-detail .timeline-card-content {
+  padding: 12px 18px;
 }
 
 .timeline-card-heading {
@@ -5378,7 +5471,191 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .itinerary-detail .mini-busyness-chart {
-  min-height: 76px;
+  min-height: 34px;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+
+.itinerary-detail .busyness-forecast {
+  margin-top: 8px;
+  padding: 10px 12px;
+}
+
+.itinerary-detail-editor {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+}
+
+.itinerary-detail-editor > summary {
+  width: fit-content;
+  list-style: none;
+  cursor: pointer;
+
+  color: var(--color-navy);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.itinerary-detail-editor > summary::-webkit-details-marker {
+  display: none;
+}
+
+.itinerary-detail-editor[open] > summary {
+  margin-bottom: 4px;
+  color: var(--color-brick);
+}
+
+.itinerary-detail-editor > summary:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 3px;
+}
+
+.itinerary-detail-editor-heading p {
+  margin: 4px 0 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.itinerary-detail-editor .search-field {
+  max-width: none;
+  border-color: var(--border-soft);
+  background: var(--bg-warm);
+  box-shadow: none;
+}
+
+.itinerary-detail-editor .search-field:focus-within {
+  border-color: var(--color-navy);
+  background: var(--bg-white);
+}
+
+.itinerary-detail-poi-results {
+  margin-top: 4px;
+}
+
+.itinerary-detail .itinerary-add-button {
+  min-width: 88px;
+  padding: 8px 11px;
+
+  border: 1px solid var(--border-soft);
+  border-radius: 9px;
+  background: var(--bg-card);
+  color: var(--color-navy);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.itinerary-detail .itinerary-add-button:hover:not(:disabled) {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--text-light);
+}
+
+/* Sits in the time rail, under the slot hours. */
+.timeline-remove-stop {
+  justify-self: start;
+  margin-top: 6px;
+  padding: 4px 9px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.timeline-remove-stop:hover:not(:disabled) {
+  border-color: var(--color-brick);
+  background: var(--color-brick);
+  color: var(--text-light);
+}
+
+.timeline-remove-stop:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* Opt-in hourly chart. Native <details>, so it needs no component state. */
+.timeline-forecast {
+  margin-top: 10px;
+}
+
+.timeline-forecast > summary {
+  width: fit-content;
+  padding: 5px 10px;
+  list-style: none;
+  cursor: pointer;
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--bg-warm);
+  color: var(--color-navy);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.timeline-forecast > summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline-forecast > summary::after {
+  content: " \25be";
+}
+
+.timeline-forecast[open] > summary::after {
+  content: " \25b4";
+}
+
+.timeline-forecast > summary:hover {
+  border-color: var(--color-navy);
+}
+
+.timeline-forecast > summary:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+.itinerary-detail .recommended-window {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+}
+
+.itinerary-detail .why-this-time {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.itinerary-detail .timeline-card-details {
+  margin-top: 10px;
+  padding-top: 9px;
+}
+
+/* Sits inline in the meta row, so it drops the block-level spacing. */
+.itinerary-detail .timeline-details-link {
+  margin-top: 0;
+  padding: 0;
+  border-color: transparent;
+}
+
+.itinerary-detail .timeline-details-link:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+.itinerary-detail .itinerary-day-heading {
+  margin-bottom: 12px;
+}
+
+.itinerary-detail .itinerary-day-heading h3 {
+  font-size: 19px;
 }
 
 @media (max-width: 860px) {
@@ -5647,7 +5924,12 @@ input[type="search"]::-webkit-search-cancel-button {
    Authentication accessibility option
 ========================================================= */
 
-.auth-accessibility-option {
+/*
+  One styled checkbox shared by registration and the itinerary planner, because
+  both are asking the same single question. The native input stays in the
+  accessibility tree and only its paint is replaced by the adjacent span.
+*/
+.accessibility-option {
   display: grid !important;
   grid-template-columns: auto 1fr;
   align-items: start;
@@ -5659,13 +5941,13 @@ input[type="search"]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
-.auth-accessibility-option input {
+.accessibility-option input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-.auth-accessibility-check {
+.accessibility-option-check {
   width: 20px;
   height: 20px;
   display: grid;
@@ -5675,34 +5957,55 @@ input[type="search"]::-webkit-search-cancel-button {
   background: var(--bg-white);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check {
+.accessibility-option input:checked + .accessibility-option-check {
   border-color: var(--color-navy);
   background: var(--color-navy);
 }
 
-.auth-accessibility-option input:checked + .auth-accessibility-check::after {
+.accessibility-option input:checked + .accessibility-option-check::after {
   content: "✓";
   color: white;
   font-size: 13px;
   font-weight: 900;
 }
 
-.auth-accessibility-option input:focus-visible + .auth-accessibility-check {
+.accessibility-option input:focus-visible + .accessibility-option-check {
   outline: 3px solid rgba(170, 53, 46, 0.24);
   outline-offset: 3px;
 }
 
-.auth-accessibility-option strong,
-.auth-accessibility-option small {
+.accessibility-option strong,
+.accessibility-option small {
   display: block;
 }
 
-.auth-accessibility-option small {
+.accessibility-option small {
   margin-top: 4px;
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   line-height: 17px;
+}
+
+/*
+  In the trip setup row the checkbox shares a grid track with the 48px date and
+  name fields, so it drops the helper copy and matches their height instead.
+*/
+.itinerary-accessibility-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itinerary-accessibility-control .accessibility-option {
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 14px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 /* =========================================================
@@ -6415,8 +6718,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .my-itinerary > h1,
 .saved-itineraries-heading h1,
 .profile-heading h1,
-.poi-detail h1,
-.itinerary-detail-heading h1 {
+.poi-detail h1 {
   font-size: clamp(40px, 6vw, 64px);
   font-weight: 800;
   line-height: 1.04;
@@ -6424,11 +6726,12 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 /*
-  The trip name is content inside the planner rather than a page title, so it
-  sits a step below the canonical size while keeping the same weight and
-  tracking.
+  A trip name is content, not a page title, so it sits a step below the
+  canonical size in both places it appears while keeping the weight and
+  tracking consistent with them.
 */
-.itinerary-trip-header h1 {
+.itinerary-trip-header h1,
+.itinerary-detail-heading h1 {
   font-size: clamp(30px, 4.4vw, 46px);
   font-weight: 800;
   line-height: 1.06;

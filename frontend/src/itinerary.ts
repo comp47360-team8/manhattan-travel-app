@@ -70,33 +70,13 @@ export function crowdLevelClass(crowdLevel: string): string {
 }
 
 /*
-  The backend can place two POIs in the same slot when a day is packed. That is
-  a non-blocking warning rather than an error, so the plan still renders and the
-  overlap is called out above it.
+  There is deliberately no client-side overlap check here. Slot windows are
+  fixed (morning 09:00-12:00, afternoon 12:00-18:00, evening 18:00-22:00), so
+  any two places sharing a slot report identical start and end times -- and two
+  per slot is the scheduler's designed maximum, not a fault. Comparing those
+  times flagged a conflict on perfectly normal days. The backend already sends a
+  `warning` when a slot genuinely overflows, and that is what the UI shows.
 */
-export function hasOverlappingStops(stops: ItineraryStop[]): boolean {
-  const stopsByDate = new Map<string, ItineraryStop[]>();
-
-  stops.forEach((stop) => {
-    const stopsForDate = stopsByDate.get(stop.visit_date) ?? [];
-    stopsForDate.push(stop);
-    stopsByDate.set(stop.visit_date, stopsForDate);
-  });
-
-  return Array.from(stopsByDate.values()).some((dayStops) => {
-    const orderedStops = [...dayStops].sort((firstStop, secondStop) =>
-      firstStop.slot_start.localeCompare(secondStop.slot_start)
-    );
-
-    return orderedStops.some((stop, index) => {
-      if (index === 0) {
-        return false;
-      }
-
-      return stop.slot_start < orderedStops[index - 1].slot_end;
-    });
-  });
-}
 
 /*
   The backend returns broad morning, afternoon, or evening windows. I group

@@ -1,4 +1,5 @@
 import BusynessChart from "./BusynessChart";
+import { accessibilitySummary } from "../accessibility";
 import {
   crowdLevelClass,
   formatClockTime,
@@ -28,6 +29,9 @@ type ItineraryTimelineProps = {
   pois: Poi[];
   activeDayNumber: number | null;
   onDayChange: (dayNumber: number) => void;
+  onRemoveStop: (stopId: string) => void;
+  /* Slug of the stop currently being removed, so its button can show progress. */
+  removingStopId: string | null;
 };
 
 function ItineraryTimeline({
@@ -35,6 +39,8 @@ function ItineraryTimeline({
   pois,
   activeDayNumber,
   onDayChange,
+  onRemoveStop,
+  removingStopId,
 }: ItineraryTimelineProps) {
   const days = groupStopsByDay(stops);
   const activeDay =
@@ -49,7 +55,7 @@ function ItineraryTimeline({
   }
 
   return (
-    <div className="generated-itinerary-plan">
+    <div className="itinerary-plan">
       <div
         className="itinerary-day-tabs"
         role="tablist"
@@ -84,7 +90,7 @@ function ItineraryTimeline({
             >
               <header className="itinerary-day-heading">
                 <div>
-                  <p className="section-eyebrow">Day {day.dayNumber}</p>
+                  {/* No "Day N" eyebrow: the active tab above already says it. */}
                   <h3>{formatItineraryDate(day.visitDate)}</h3>
                 </div>
 
@@ -106,6 +112,23 @@ function ItineraryTimeline({
                         {formatClockTime(stop.slot_start)} –{" "}
                         {formatClockTime(stop.slot_end)}
                       </span>
+
+                      {/*
+                        The row control lives in the time rail, which has spare
+                        room. In the card's meta row it wrapped onto a second
+                        line and cost every card ~25px.
+                      */}
+                      <button
+                        type="button"
+                        className="timeline-remove-stop"
+                        onClick={() => onRemoveStop(stop.stop_id)}
+                        disabled={removingStopId === stop.stop_id}
+                        aria-label={`Remove ${stop.poi_name} from this itinerary`}
+                      >
+                        {removingStopId === stop.stop_id
+                          ? "Removing..."
+                          : "Remove"}
+                      </button>
                     </div>
 
                     <article className="timeline-card">
@@ -141,14 +164,12 @@ function ItineraryTimeline({
                           </span>
                         </div>
 
-                        <p className="recommended-window">
-                          <strong>Recommended {stop.slot} window</strong>
-                          <span>
-                            {stop.slot_start.slice(0, 5)}–
-                            {stop.slot_end.slice(0, 5)} · {stop.crowd_level}
-                          </span>
-                        </p>
-
+                        {/*
+                          No "Recommended {slot} window" block here: the time
+                          rail on the left already gives the slot and hours, and
+                          the pill above gives the crowd level, so it repeated
+                          both and cost a stop's worth of vertical space.
+                        */}
                         <p className="why-this-time">
                           <strong>Why this time:</strong>{" "}
                           {pois
@@ -167,14 +188,26 @@ function ItineraryTimeline({
                             accessibility comes straight from the POI's
                             nullable accessibility_labels column, so a saved
                             stop can send null here where a freshly generated
-                            one always sends an array.
+                            one always sends an array. Only confirmed labels
+                            are shown, because the chip reads "Accessible" and
+                            partial access does not qualify.
                           */}
-                          {(stop.accessibility?.length ?? 0) > 0 && (
+                          {accessibilitySummary(stop.accessibility) && (
                             <span>
                               Accessible:{" "}
-                              {stop.accessibility?.map(String).join(", ")}
+                              {accessibilitySummary(stop.accessibility)}
                             </span>
                           )}
+
+                          {/* Shares the meta row rather than taking its own. */}
+                          <a
+                            className="poi-details-link timeline-details-link"
+                            href={`/explore/${encodeURIComponent(stop.slug)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            View place details ↗
+                          </a>
                         </div>
 
                         {stop.flags.length > 0 && (
@@ -185,20 +218,23 @@ function ItineraryTimeline({
                           </div>
                         )}
 
-                        <a
-                          className="poi-details-link timeline-details-link"
-                          href={`/explore/${encodeURIComponent(stop.slug)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          View place details ↗
-                        </a>
-
+                        {/*
+                          Collapsed by default. Expanded, the chart is 161px --
+                          repeated on every stop it pushed the second place of
+                          the day off a laptop screen, which is the one thing a
+                          day view has to show. The crowd pill above already
+                          gives the level for the scheduled window, so the full
+                          24-hour breakdown is opt-in.
+                        */}
                         {stop.busyness_for_day.length > 0 ? (
-                          <BusynessChart
-                            hours={stop.busyness_for_day}
-                            poiName={stop.poi_name}
-                          />
+                          <details className="timeline-forecast">
+                            <summary>Crowd by hour</summary>
+
+                            <BusynessChart
+                              hours={stop.busyness_for_day}
+                              poiName={stop.poi_name}
+                            />
+                          </details>
                         ) : (
                           <p className="fallback-message">
                             Hourly crowd forecast is not available for this

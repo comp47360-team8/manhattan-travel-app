@@ -33,7 +33,11 @@ const STEPS = [
 
 function HowItWorks() {
   return (
-    <section className="how-it-works" aria-labelledby="how-it-works-title">
+    <section
+      className="how-it-works"
+      id="how-it-works"
+      aria-labelledby="how-it-works-title"
+    >
       <div className="how-it-works-intro">
         <h2 id="how-it-works-title">How we build your itinerary</h2>
 
