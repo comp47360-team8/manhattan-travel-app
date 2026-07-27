@@ -22,13 +22,9 @@ class UIOption(BaseModel):
     value: str
 
 class UIAction(BaseModel):
-    component: Literal[
-        "poi_type_selector",
-    ]
-    field: str
-    selection: Literal[
-        "multiple"
-    ]
+    component: Literal["poi_type_selector"]
+    field: Literal["preferences", "excluded_types"]
+    selection: Literal["multiple"]
     options: list[UIOption]
 
 class ChatResponse(BaseModel):
