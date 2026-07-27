@@ -23,7 +23,7 @@ def attach_current_busyness(pois: list[POI], db: Session):
             poi.current_busyness_pct = current["pct"]
 
         else:
-            poi.current_busyness = "Closed"
+            poi.current_busyness = "closed"
             poi.current_busyness_pct = None
 
     return pois
