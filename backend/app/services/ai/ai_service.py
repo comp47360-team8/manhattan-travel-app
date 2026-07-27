@@ -12,11 +12,11 @@ from app.core.config import settings
 provider = LLMSelector.create(settings.AI_PROVIDER)
 
 def chat(conversation_id, prompt, db, user):
-    save_message(prompt, USER, conversation_id, db, user)
+    save_message(prompt, USER, conversation_id, db)
 
-    last_message = get_last_message(conversation_id, db, user)
     trip_details = get_trip_details(conversation_id, db)
-    
+    last_message = get_last_message(conversation_id, db, user)
+
     extracted = provider.extract_trip_parameters(prompt, last_message, trip_details)
    
     pois = get_all_pois(db)
@@ -31,7 +31,9 @@ def chat(conversation_id, prompt, db, user):
     chat_response = provider.generate_chat_response(history, summary, trip_details, conversation_id, db, user)
 
     if chat_response.save_to_history:
-        save_message(chat_response.message, ASSISTANT, conversation_id, db, user)
+        save_message(chat_response.message, ASSISTANT, conversation_id, db)
+        if chat_response.ui_action:
+            save_message(f"This selection is for {chat_response.ui_action.field}.", ASSISTANT, conversation_id, db)
         
     if len(history) >= 10:
         update_summary(conversation_id, history, db, user)
