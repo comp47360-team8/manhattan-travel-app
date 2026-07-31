@@ -27,22 +27,39 @@ final class ExploreViewModel: ObservableObject {
         }
 
         if pois.isEmpty { isLoading = true }
-        errorMessage = nil
+        // Only publish when it actually changes: assigning the same value still
+        // fires objectWillChange, which rebuilds the view and cancels the
+        // in-flight `.refreshable` task (pull-to-refresh then does nothing).
+        if errorMessage != nil { errorMessage = nil }
         do {
             let fresh = try await service.fetchPOIs()
             pois = fresh
             saveCache(fresh)
         } catch is CancellationError {
         } catch {
-            if pois.isEmpty { errorMessage = error.localizedDescription }  
+            if pois.isEmpty { errorMessage = error.localizedDescription }
         }
         isLoading = false
     }
 
     private func saveCache(_ pois: [POI]) {
-        if let data = try? JSONEncoder().encode(pois) {
-            UserDefaults.standard.set(data, forKey: cacheKey)
-            UserDefaults.standard.set(Date(), forKey: cacheDateKey)  
+        // Encode + write off the main thread so it doesn't delay the first paint:
+        // the cards should show the instant `pois` is set, with the 600KB cache
+        // write happening in the background.
+        let key = cacheKey, dateKey = cacheDateKey
+        Task.detached(priority: .utility) {
+            // Busyness is time-sensitive ("NOW"); don't persist it, or an offline
+            // launch would show a hours-old level as if it were live. Strip it so
+            // cached cards simply omit the indicator until a fresh fetch fills it in.
+            let stripped = pois.map { poi -> POI in
+                var p = poi
+                p.currentBusyness = nil
+                p.currentBusynessPct = nil
+                return p
+            }
+            guard let data = try? JSONEncoder().encode(stripped) else { return }
+            UserDefaults.standard.set(data, forKey: key)
+            UserDefaults.standard.set(Date(), forKey: dateKey)
         }
     }
 
