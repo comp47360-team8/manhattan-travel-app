@@ -157,7 +157,7 @@ struct AIPlannerView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
             }
-            .scrollDismissesKeyboard(.interactively)   // 往下拖列表 → 收键盘
+            .scrollDismissesKeyboard(.interactively)   // drag the list down → dismiss keyboard
             .onChange(of: vm.messages.count) {
                 withAnimation {
                     proxy.scrollTo(vm.messages.last?.id, anchor: .bottom)

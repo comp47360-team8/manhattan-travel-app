@@ -147,11 +147,6 @@ struct LoginView: View {
             }
             .font(.footnote)
             .frame(maxWidth: .infinity, alignment: .center)
-
-//            Text("Mock sign-in — any email and a 6+ character password works")
-//                .font(.caption)
-//                .foregroundColor(.secondary)
-//                .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(.horizontal, 10)
     }
