@@ -142,21 +142,21 @@ final class AuthManager: ObservableObject {
         }
     }
 
-    func logout() async{
-        if let refresh = TokenStore.refreshToken {
-            do {
-                _ = try await authService.logout(LogoutRequest(refreshToken: refresh))
-            } catch {
-                //
-            }
-        }
+    func logout() {
+        
+        let refresh = TokenStore.refreshToken
         TokenStore.clear()
         AuthManager.clearProfile()
         currentUser = nil
         isLoggedIn = false
         clearErrors()
+
         
+        if let refresh {
+            Task { try? await authService.logout(LogoutRequest(refreshToken: refresh)) }
+        }
     }
+
     
     func clearErrors() {
         emailError = nil
