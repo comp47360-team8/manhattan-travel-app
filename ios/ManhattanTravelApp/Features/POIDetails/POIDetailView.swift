@@ -180,14 +180,20 @@ struct POIDetailView: View {
 
                 Divider()
 
-                HStack(spacing: 16) {
-                    legend(.quiet, "Quiet"); legend(.moderate, "Moderate"); legend(.busy, "Busy")
-                    Spacer()
-                    if day == .today {
-                        HStack(spacing: 5) {
-                            Circle().fill(OffpeakTheme.brand).frame(width: 8, height: 8)
-                            Text("Now").font(.system(size: 12, weight: .semibold)).foregroundColor(OffpeakTheme.brand)
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 16) {
+                        legend(.quiet); legend(.moderate)
+                        Spacer()
+                        if day == .today {
+                            HStack(spacing: 5) {
+                                Circle().fill(OffpeakTheme.brand).frame(width: 8, height: 8)
+                                Text("Now").font(.system(size: 12, weight: .semibold)).foregroundColor(OffpeakTheme.brand)
+                            }
                         }
+                    }
+                    HStack(spacing: 16) {
+                        legend(.busy); legend(.veryBusy)
+                        Spacer()
                     }
                 }
             }
@@ -225,7 +231,7 @@ struct POIDetailView: View {
                         ZStack(alignment: .bottom) {
                             Capsule().fill(isNow ? OffpeakTheme.brand.opacity(0.20) : OffpeakTheme.navy.opacity(0.06))
                             if bar.hasData {
-                                Capsule().fill(bar.level.color)
+                                Capsule().fill(bar.level.dot)
                                     .frame(height: max(6, 120 * bar.value))
                             }
                         }
@@ -248,10 +254,11 @@ struct POIDetailView: View {
         }
     }
 
-    private func legend(_ level: CrowdLevel, _ text: String) -> some View {
+    private func legend(_ level: BusynessLevel) -> some View {
         HStack(spacing: 5) {
-            Circle().fill(level.color).frame(width: 8, height: 8)
-            Text(text).font(.system(size: 12)).foregroundColor(OffpeakTheme.textSecondary)
+            Circle().fill(level.dot).frame(width: 8, height: 8)
+            Text(level.label).font(.system(size: 12)).foregroundColor(OffpeakTheme.textSecondary)
+                .fixedSize()
         }
     }
 
@@ -294,13 +301,13 @@ struct POIDetailView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("CLOSEST SUBWAY").font(.system(size: 10, weight: .bold)).tracking(0.6).foregroundColor(OffpeakTheme.textTertiary)
                     if !lines.isEmpty {
-                        HStack(spacing: 5) {
+                        FlowLayout(spacing: 5) {
                             ForEach(lines, id: \.self) { SubwayBullet(line: $0) }
                         }
                     }
                     Text(subway.subwayStations).font(.system(size: 15, weight: .semibold)).foregroundColor(OffpeakTheme.ink)
                 }
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.vertical, 10)
         }
@@ -367,13 +374,13 @@ struct POIDetailView: View {
         return cal.component(.hour, from: Date())
     }
     
-    private var currentLevel: CrowdLevel? {
+    private var currentLevel: BusynessLevel? {
         vm.forecast?.bars(for: .today).first(where: { $0.hour == manhattanHour && $0.hasData })?.level
     }
-    
-    private func busynessBadge(_ level: CrowdLevel) -> some View {
+
+    private func busynessBadge(_ level: BusynessLevel) -> some View {
         HStack(spacing: 6) {
-            Circle().fill(level.color).frame(width: 8, height: 8)
+            Circle().fill(level.dot).frame(width: 8, height: 8)
             Text("\(level.label) right now")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(OffpeakTheme.ink)
