@@ -25,7 +25,7 @@ struct ProfileView: View {
         .background(OffpeakTheme.backGround)
         .alert("Log out?", isPresented: $showLogoutConfirmation) {
             Button("Log Out", role: .destructive) {
-                Task { await authManager.logout() }
+                authManager.logout()
             }
             Button("Cancel", role: .cancel) {}
         } message: {

@@ -51,4 +51,10 @@ struct RefreshRequest: Encodable {
     let refreshToken: String
 }
 
-typealias RefreshResponse = LoginResponse
+// Refresh only needs the tokens. Decoupled from LoginResponse so a missing
+// `display_name` in the refresh response can't fail decoding — which would drop
+// the rotated tokens and eventually log the user out.
+struct RefreshResponse: Decodable {
+    let accessToken: String
+    let refreshToken: String
+}
