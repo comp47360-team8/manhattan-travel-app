@@ -29,6 +29,7 @@ struct NewTripDatesView: View {
                     }
                     .padding(20)
                 }
+                .scrollDismissesKeyboard(.interactively)
                 .safeAreaInset(edge: .top, spacing: 0) { pinnedHeader }
                 .safeAreaInset(edge: .bottom, spacing: 0) { continueBar }
             }

@@ -71,13 +71,18 @@ struct OptimizedItineraryView: View {
     // MARK: Day selector
 
     private var daySelector: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(Array(itinerary.days.enumerated()), id: \.element.id) { idx, day in
-                    dayPill(idx, day)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Array(itinerary.days.enumerated()), id: \.element.id) { idx, day in
+                        dayPill(idx, day).id(idx)
+                    }
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
+            .onChange(of: selectedDay) { _, newValue in
+                withAnimation { proxy.scrollTo(newValue, anchor: .center) }
+            }
         }
         .padding(.bottom, 6)
     }
@@ -179,8 +184,7 @@ struct StopCard: View {
                     crowdBadge
                 }
                 BusynessSparkline(hourly: stop.hourly,
-                                  tint: stop.crowd.dot,
-                                  highlightHour: stop.part.centerHour)
+                                  highlightRange: stop.part.hourRange)
             }
         }
         .padding(12)
@@ -210,32 +214,38 @@ struct StopCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
+    @ViewBuilder
     private var crowdBadge: some View {
-        HStack(spacing: 5) {
-            Circle().fill(stop.crowd.dot).frame(width: 7, height: 7)
-            Text(stop.crowd.badge)
-                .font(.system(size: 11, weight: .bold))
-                .foregroundColor(stop.crowd.text)
+        if let crowd = stop.crowd {
+            HStack(spacing: 5) {
+                Circle().fill(crowd.dot).frame(width: 7, height: 7)
+                Text(crowd.label)
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(crowd.text)
+            }
+            .padding(.horizontal, 9).frame(height: 24)
+            .background(crowd.dot.opacity(0.16), in: Capsule())
         }
-        .padding(.horizontal, 9).frame(height: 24)
-        .background(stop.crowd.dot.opacity(0.16), in: Capsule())
     }
 }
 
 // MARK: - Busyness sparkline
 
 /// A 24-bar mini chart of hourly busyness, highlighting the planned visit hour.
+///
+/// 
 struct BusynessSparkline: View {
     let hourly: [Int]
-    var tint: Color = OffpeakTheme.sage
-    var highlightHour: Int? = nil
+    var highlightRange: ClosedRange<Int>? = nil
 
     var body: some View {
         VStack(spacing: 4) {
             HStack(alignment: .bottom, spacing: 2) {
                 ForEach(Array(hourly.enumerated()), id: \.offset) { hour, value in
+                    let color = BusynessLevel.from(pct: value).dot
+                    let highlighted = highlightRange?.contains(hour) ?? false
                     RoundedRectangle(cornerRadius: 1, style: .continuous)
-                        .fill(hour == highlightHour ? tint : tint.opacity(0.3))
+                        .fill(highlighted ? color : color.opacity(highlightRange == nil ? 1 : 0.3))
                         .frame(height: max(2, CGFloat(value) / 100 * 26))
                         .frame(maxWidth: .infinity)
                 }
@@ -243,11 +253,7 @@ struct BusynessSparkline: View {
             .frame(height: 26)
 
             HStack {
-                Text("0H")
-                Spacer()
-                Text("12H")
-                Spacer()
-                Text("24H")
+                Text("0H"); Spacer(); Text("12H"); Spacer(); Text("24H")
             }
             .font(.system(size: 8, weight: .medium))
             .foregroundColor(OffpeakTheme.textTertiary)

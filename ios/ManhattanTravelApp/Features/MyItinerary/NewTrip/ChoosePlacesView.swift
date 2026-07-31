@@ -42,6 +42,7 @@ struct ChoosePlacesView: View {
             .padding(.top, 8)
             .padding(.bottom, 20)
         }
+            .scrollDismissesKeyboard(.interactively)
             .safeAreaInset(edge: .top, spacing: 0) { pinnedHeader }
             .safeAreaInset(edge: .bottom, spacing: 0) { generateBar }
         }
