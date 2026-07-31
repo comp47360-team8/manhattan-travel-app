@@ -23,7 +23,8 @@ final class ItineraryViewModel: ObservableObject {
             isLoading = true
         }
         errorMessage = nil
-        do { itineraries = try await service.fetchItineraries() }
+        do { itineraries = try await service.fetchItineraries()
+                .sorted { $0.startDate < $1.startDate } }
         catch is CancellationError {}
         catch { errorMessage = error.localizedDescription }
         isLoading = false
