@@ -15,6 +15,7 @@ struct ExploreView: View {
     @State private var searchText = ""
     @State private var selectedCategory: POICategory = .all
     @State private var accessFilter: Access? = nil
+    @FocusState private var searchFocused: Bool
     
     private let accessOptions: [Access?] = [nil, .full, .partial]
 
@@ -35,9 +36,13 @@ struct ExploreView: View {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !query.isEmpty {
             result = result.filter {
-                $0.name.localizedCaseInsensitiveContains(query) || ($0.neighborhood?.localizedCaseInsensitiveContains(query) ?? false)
+                $0.name.localizedCaseInsensitiveContains(query)
             }
         }
+
+        // sort by rating, high → low; unrated places sink to the bottom
+        result.sort { ($0.googleReviewStar ?? -1) > ($1.googleReviewStar ?? -1) }
+
         return result
     }
         
@@ -50,6 +55,8 @@ struct ExploreView: View {
                     .padding(.top, 8)
                     .padding(.bottom, 32)
             }
+            .scrollDismissesKeyboard(.immediately)
+            .simultaneousGesture(TapGesture().onEnded { searchFocused = false })
             .refreshable {
                 await viewModel.loadPOIs(force: true)
             }
@@ -124,6 +131,7 @@ struct ExploreView: View {
                 .foregroundColor(OffpeakTheme.ink)
                 .tint(OffpeakTheme.navy)
                 .submitLabel(.search)
+                .focused($searchFocused)
             if !searchText.isEmpty {
                 Button {
                     searchText = ""
@@ -270,7 +278,6 @@ struct ExploreView: View {
     }
     
     private func handleToggleSave(slug: String){
-        print("🔖 handleToggleSave called, slug:", slug, "isLoggedIn:", authManager.isLoggedIn)
         guard authManager.isLoggedIn else {
             authManager.requireLogin()
             return

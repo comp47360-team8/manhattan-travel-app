@@ -7,41 +7,6 @@
 
 import SwiftUI
 
-/// Crowd forecast level shown on each optimized stop.
-enum StopCrowd {
-    case low, moderate, high
-
-    var badge: String {
-        switch self {
-        case .low:      return "Low"
-        case .moderate: return "Mod"
-        case .high:     return "High"
-        }
-    }
-    var dot: Color {
-        switch self {
-        case .low:      return OffpeakTheme.sage
-        case .moderate: return OffpeakTheme.amber
-        case .high:     return OffpeakTheme.coral
-        }
-    }
-    var text: Color {
-        switch self {
-        case .low:      return Color(hex: 0x3D5E42)
-        case .moderate: return Color(hex: 0x8A6A00)
-        case .high:     return Color(hex: 0xA23E36)
-        }
-    }
-
-    static func from(busyness value: Int) -> StopCrowd {
-        switch value {
-        case ..<40: return .low
-        case ..<75: return .moderate
-        default:    return .high
-        }
-    }
-}
-
 /// Time-of-day bucket a stop is scheduled in.
 enum DayPart: Int, CaseIterable, Hashable {
     case morning, afternoon, evening
@@ -68,6 +33,14 @@ enum DayPart: Int, CaseIterable, Hashable {
         case .evening:   return 19
         }
     }
+    /// Full hour span of the window (matches `window`) — highlighted on the sparkline.
+    var hourRange: ClosedRange<Int> {
+        switch self {
+        case .morning:   return 9...12
+        case .afternoon: return 13...17
+        case .evening:   return 18...21
+        }
+    }
 }
 
 struct ItineraryStop: Identifiable {
@@ -75,7 +48,7 @@ struct ItineraryStop: Identifiable {
     let poi: POI
     let part: DayPart
     let reason: String
-    let crowd: StopCrowd
+    let crowd: BusynessLevel?
     /// 24 hourly busyness values (0–100) driving the sparkline.
     let hourly: [Int]
 }
@@ -129,8 +102,8 @@ extension OptimizedItinerary {
             let stops: [ItineraryStop] = dayPois.enumerated().map { i, poi in
                 let part = DayPart.allCases[i % DayPart.allCases.count]
                 let hourly = busynessCurve(for: poi)
-                let level = StopCrowd.from(busyness: hourly[part.centerHour])
-                let reason = level == .low
+                let level = BusynessLevel.from(pct: hourly[part.centerHour])
+                let reason = level == .quiet
                     ? reasonsCalm[i % reasonsCalm.count]
                     : reasonsBusy[i % reasonsBusy.count]
                 return ItineraryStop(poi: poi, part: part, reason: reason, crowd: level, hourly: hourly)
@@ -147,7 +120,7 @@ extension OptimizedItinerary {
     ]
 
     private static func busynessCurve(for poi: POI) -> [Int] {
-        let base = Double(poi.currentBusyness?.value ?? 55)
+        let base = Double(poi.currentBusynessPct ?? 55)
         let intensity = 0.6 + 0.4 * (base / 100)
         return hourShape.map { shape in
             min(100, max(4, Int((shape * intensity * 100).rounded())))
@@ -169,7 +142,7 @@ extension OptimizedItinerary {
         let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"
         return build(name: "Long Weekend in NYC",
                      startDate: f.date(from: "2026-06-12") ?? .now,
-                     dayCount: 3, pois: pois)
+                     dayCount: 5, pois: pois)
     }
 }
 #endif

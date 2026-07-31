@@ -7,30 +7,12 @@
 
 import SwiftUI
 
-enum CrowdLevel {
-    case quiet, moderate, busy
-    var color: Color {
-        switch self {
-        case .quiet:    return Color(hex: 0x5FA766)
-        case .moderate: return OffpeakTheme.amber
-        case .busy:     return OffpeakTheme.coral
-        }
-    }
-    var label: String {
-        switch self {
-            case .quiet:    return "Quiet"
-            case .moderate: return "Moderate"
-            case .busy:     return "Busy"
-        }
-    }
-}
-
 struct HourBar: Identifiable {
     let id = UUID()
     let hour: Int
     let label: String
     let value: Double
-    let level: CrowdLevel
+    let level: BusynessLevel
     let hasData: Bool
 }
 
@@ -75,8 +57,8 @@ extension POIBusynessResponse {
 
         return (0..<24).map { hour in
             if let busyness = byHour[hour] {
-                let value = busyness / 100
-                let level: CrowdLevel = value < 0.45 ? .quiet : (value < 0.8 ? .moderate : .busy)
+                let value = busyness / 100                              // bar height (0–1)
+                let level = BusynessLevel.from(pct: Int(busyness.rounded()))  // classify off the raw 0–100 to avoid float round-trip mis-bucketing (e.g. 70 → busy)
                 return HourBar(hour: hour, label: hourLabel(hour), value: value, level: level, hasData: true)
             } else {
                 return HourBar(hour: hour, label: hourLabel(hour), value: 0, level: .quiet, hasData: false)

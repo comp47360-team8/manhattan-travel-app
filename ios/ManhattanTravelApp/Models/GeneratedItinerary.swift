@@ -93,16 +93,6 @@ extension DayPart {
     }
 }
 
-extension StopCrowd {
-    static func from(level: String) -> StopCrowd {
-        switch level.lowercased() {
-        case "quiet":              return .low
-        case "busy", "very busy":  return .high
-        default:                   return .moderate   // "Moderate" / "Unavailable"
-        }
-    }
-}
-
 extension APIStop {
     /// 24 hourly busyness values (0–100) for the sparkline; missing hours are 0.
     var hourlyCurve: [Int] {
@@ -123,7 +113,7 @@ extension APIStop {
                      accessibilityLabels: (accessibility?.isEmpty ?? true) ? nil : accessibility),
             part: DayPart.from(slot: slot),
             reason: "\(neighborhood) · \(suggestedDuration) min",
-            crowd: StopCrowd.from(level: crowdLevel),
+            crowd: BusynessLevel.from(level: crowdLevel),
             hourly: hourlyCurve
         )
     }

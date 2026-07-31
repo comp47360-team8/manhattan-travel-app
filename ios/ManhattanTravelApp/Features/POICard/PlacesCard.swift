@@ -6,32 +6,6 @@
 //
 import SwiftUI
 
-enum Busyness {
-    case quiet, moderate, busy
-
-    var label: String {
-        switch self {
-        case .quiet:    return "Quiet"
-        case .moderate: return "Moderate"
-        case .busy:     return "Busy"
-        }
-    }
-    var dot: Color {
-        switch self {
-        case .quiet:    return OffpeakTheme.sage
-        case .moderate: return OffpeakTheme.amber
-        case .busy:     return OffpeakTheme.coral
-        }
-    }
-    var text: Color {
-        switch self {
-        case .quiet:    return Color(hex: 0x3D5E42)
-        case .moderate: return Color(hex: 0x8A6A00)
-        case .busy:     return Color(hex: 0xA23E36)
-        }
-    }
-}
-
 enum Access {
     case full
     case partial
@@ -100,8 +74,8 @@ struct PlaceCard: View {
             VStack(alignment: .leading, spacing: 0) {
                 if let busyness = poi.busyness {
                     HStack(spacing: 7) {
-                        Circle().fill(busyness.dot).frame(width: 8, height: 8)
-                        Text(busyness.label)
+                        BreathingDot(color: busyness.dot)
+                        Text("\(busyness.label) · NOW" )
                             .font(.system(size: 11, weight: .bold))
                             .tracking(1.3)
                             .textCase(.uppercase)
@@ -231,6 +205,28 @@ struct PlaceCard: View {
                 .frame(width: 38, height: 38)
                 .background(Color.white.opacity(0.8), in: Circle())
                 .shadow(color: Color(hex: 0x142850, alpha: 0.2), radius: 6, y: 3)
+        }
+    }
+    
+    struct BreathingDot: View {
+        let color: Color
+        var size: CGFloat = 8
+        @State private var animate = false
+
+        var body: some View {
+            ZStack {
+                Circle().fill(color.opacity(0.45))
+                    .frame(width: size, height: size)
+                    .scaleEffect(animate ? 2.8 : 1)
+                    .opacity(animate ? 0 : 0.6)
+                Circle().fill(color)
+                    .frame(width: size, height: size)
+            }
+            .onAppear {
+                withAnimation(.easeOut(duration: 1.4).repeatForever(autoreverses: false)) {
+                    animate = true
+                }
+            }
         }
     }
     

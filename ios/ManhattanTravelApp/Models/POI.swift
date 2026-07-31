@@ -57,7 +57,8 @@ struct POI: Identifiable, Codable, POIImageRepresentable {
         var heroImageUrl: String? = nil       // cover image
         var galleryImageUrls: [String]? = nil
         var googleReviewStar: Double? = nil   // rating
-        var currentBusyness: FlexibleInt? = nil       // 0–100 busyness eyebrow
+        var currentBusyness: String? = nil
+        var currentBusynessPct: Int? = nil
         var accessibilityLabels: [String]? = nil
         var admissionFee: Int? = nil          // priceLabel
         
@@ -72,21 +73,35 @@ struct POI: Identifiable, Codable, POIImageRepresentable {
             admissionFee.map { "$\($0)" }
         }
     
-        var busyness: Busyness? {
-            guard let p = currentBusyness?.value else { return nil }
-            switch p {
-            case ..<40:  return .quiet
-            case ..<75:  return .moderate
-            default:     return .busy
-            }
+        // Classify from the raw percentage (same path as the forecast chart:
+        // BusynessLevel.from(pct:)) so the card and the detail forecast always
+        // agree. We deliberately ignore the backend's `current_busyness` level
+        // string — its DB `level` column uses different cut points (~25/50/75)
+        // and disagrees at the boundaries (e.g. pct 70 reads "busy" there but
+        // "very busy" here). A missing or 0 pct means no data / closed → hide.
+        var busyness: BusynessLevel? {
+            guard let pct = currentBusynessPct, pct > 0 else { return nil }
+            return BusynessLevel.from(pct: pct)
         }
     
-        var tagline: String? {
-            guard let s = summary?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !s.isEmpty else { return nil }
-            if let dot = s.range(of: ". ") { return String(s[..<dot.lowerBound]) }
-            return s
+    // return the first sentence with first dot (ignore abbrevation)
+    var tagline: String? {
+        guard let s = summary?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !s.isEmpty else { return nil }
+
+        let abbreviations: Set<String> = ["St", "Mt", "Ave", "Rd", "Dr", "No", "Ft", "Blvd", "Sq", "Jr", "Sr"]
+
+        var searchStart = s.startIndex
+        while let dot = s.range(of: ". ", range: searchStart..<s.endIndex) {
+            let before = s[..<dot.lowerBound]
+            let lastWord = before.split(separator: " ").last.map(String.init) ?? ""
+            if !abbreviations.contains(lastWord) {
+                return String(s[..<dot.lowerBound])
+            }
+            searchStart = dot.upperBound
         }
+        return s
+    }
     
         var access: Access? {
             guard let labels = accessibilityLabels else { return nil }

@@ -55,11 +55,11 @@ struct RangeCalendar: View {
             .font(.system(size: 15, weight: selected ? .bold : .regular))
             .foregroundColor(
                         selected ? .white
-                        : disabled ? OffpeakTheme.textTertiary.opacity(0.35)   // ← 灰掉
+                        : disabled ? OffpeakTheme.textTertiary.opacity(0.35)   // greyed out
                         : OffpeakTheme.ink
                     )
             .frame(maxWidth: .infinity, minHeight: 40)
-            .background { if inRange { OffpeakTheme.accent.opacity(0.14) } }   // 中间连接带
+            .background { if inRange { OffpeakTheme.accent.opacity(0.14) } }   // middle connecting band
             .background { if selected { Circle().fill(OffpeakTheme.accent).frame(width: 40, height: 40) } }
             .contentShape(Rectangle())
             .onTapGesture { if !disabled { select(day) } }

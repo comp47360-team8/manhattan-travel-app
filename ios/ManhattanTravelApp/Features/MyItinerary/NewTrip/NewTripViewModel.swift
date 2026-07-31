@@ -12,7 +12,7 @@ final class NewTripViewModel: ObservableObject {
     @Published var name = ""
     @Published var startDate: Date?
     @Published var endDate: Date?
-    @Published var selectedPOIs: [POI] = []      // Step 2 用
+    @Published var selectedPOIs: [POI] = []      // used in Step 2
     @Published var allPOIs: [POI] = []
     @Published var isLoadingPlaces = false
 
