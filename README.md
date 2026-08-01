@@ -51,7 +51,7 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
 - Yu Ning Chen
 - Hansel Oduah
 - Eoin Conroy
-- Shida Cai
+- Shida Cai (@Seanchoy)
 - Fan Chi Meng
 
 > Developed as part of the **COMP47360** Research Project.
@@ -214,9 +214,95 @@ npm run dev
 
 The web app should now be running at `http://localhost:5173`.
 
-### 📱 iOS Setup
+### 📱 iOS Setup — Simulator Setup & Run Guide
 
-> 🚧 **TODO (iOS team):** Setup instructions to be added. Please cover: opening the Xcode project (`ios/ManhattanTravelApp.xcodeproj`), setting the backend API base URL, selecting a simulator or device (iOS 26), and running the app.
+Build and run the **Offpeak** iOS app in the Xcode **iOS Simulator** on a Mac.
+No physical device or Apple Developer account is required.
+
+> **Assumption:** your backend is successfully set up and running locally.
+> For Backend setup, please refer to the top-level of this section if you need it.
+
+---
+
+#### 1. Prerequisites
+
+| Requirement | Version / Notes |
+|---|---|
+| macOS | Recent enough to run Xcode 26 |
+| **Xcode** | **26 or newer** — the app targets **iOS 26.0** |
+| iOS Simulator runtime | **iOS 26.0**  |
+
+> Check with `xcodebuild -version`. If the iOS 26 simulator is missing, install it
+> from **Xcode - Settings - Components - Platform Support**.
+
+---
+
+#### 2. Get the code & open the project
+
+```bash
+git clone https://github.com/comp47360-team8/manhattan-travel-app.git
+cd manhattan-travel-app/ios
+open ManhattanTravelApp.xcodeproj
+```
+
+*(Already have the repo? Just `git pull origin main`.)*
+
+- Scheme: **ManhattanTravelApp**
+- Bundle identifier: `com.sean.offpeak`
+
+---
+
+#### 3. Confirm the backend URL
+
+A Debug build already points at default local backend, change accordingly if needed.
+see `ManhattanTravelApp/Core/Networking/APIConfig.swift`:
+
+```swift
+#if DEBUG
+static let baseURL = URL(string: "http://127.0.0.1:8000")! // change accordingly
+#endif
+```
+
+---
+
+#### 4. Select a simulator and run
+
+1. In Xcode's toolbar (top center), open the run-destination dropdown.
+2. Choose any **iPhone** simulator on **iOS 26** (e.g. *iPhone 17 Pro*).
+3. Press **⌘R** (or the ▶️ Run button).
+
+Xcode builds, boots the simulator, installs, and launches automatically. The
+first build takes a little longer while it compiles from scratch.
+
+**Command-line alternative** (build without launching):
+
+```bash
+xcodebuild build \
+  -scheme ManhattanTravelApp \
+  -project ManhattanTravelApp.xcodeproj \
+  -destination 'generic/platform=iOS Simulator' \
+  -configuration Debug
+```
+
+---
+
+#### 5. Verify it works
+
+- **Explore** loads a list of Manhattan POIs with photos.
+- Tapping a card opens the detail page with a crowd-forecast chart.
+- Sign up / log in, then check Saved and Itinerary.
+
+---
+
+#### 6. Troubleshooting
+
+| Symptom | Likely cause / fix |
+|---|---|
+| Explore is empty or shows a network error | Backend not reachable. Confirm server is running. |
+| "iOS 26.0 is not installed" / no matching destination | Install the iOS 26 runtime: **Xcode - Settings - Components**. |
+| Build fails on an old Xcode | The project targets iOS 26 — update to **Xcode 26+**. |
+| Photos don't load | Usually transient network; images cache to disk after first load, so a second launch shows them instantly. |
+| Can't log in | No user in your local DB yet, sign up first. |
 
 ---
 
