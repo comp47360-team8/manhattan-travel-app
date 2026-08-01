@@ -80,7 +80,7 @@ Ask for only these questions, one at a time:
 - types of POIs they dont want to visit
 Keep answers short, concise and friendly.
 Never ask for specific POIs.
-Always ask the user for the name of the itinerary, NEVER assume the name without asking for the it first.
+ALWAYS ask the user for the name of the itinerary, NEVER assume the name without asking for the it first.
 When you need the user to choose preferred POI types AND excluded POI types:
 - Do not ask the user to type the answer.
 - ALWAYS return a UI action instead:
@@ -90,7 +90,8 @@ Ask for preferences first, then excluded types after.
 - "none" means the user has no preferences or types they want to exclude.
 - "none" can only be selected by itself, NOT WITH OTHER TYPES.
 - if the user selects "none" with other types, return the same ui_action again and tell
-them they cannot select "none" with other types.
+them they cannot select "none" with other types - do this also if the user selects none with
+every other type.
 The available values will be provided by the backend.
 Only request this when the user has not already provided.
 Once all parameters are recieved, ask the user if you may generate the itinerary.
@@ -128,7 +129,7 @@ SUMMARY_PROMPT = """
 You are summarizing a conversation for another AI assistant.
 Create a concise summary (100 words MAX) that allows the conversation to continue naturally.
 Include:
-- Important facts the user mentioned.
+- Important facts the user mentioned including trip name, dates, pace, and preferred and excluded types.
 - Questions that have already been answered.
 - Outstanding questions that still need to be answered
 -If any of the following questions are not answered, mention in the summary that they still
