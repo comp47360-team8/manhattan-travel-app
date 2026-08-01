@@ -85,7 +85,7 @@ The app is organised into five tabs, available on both web and mobile:
 - **Backend:** [Python](https://www.python.org/) — [FastAPI](https://fastapi.tiangolo.com/) (REST API), [SQLAlchemy](https://www.sqlalchemy.org/) (ORM), [Alembic](https://alembic.sqlalchemy.org/) (database migrations)
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
 - **Frontend (Web):** [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vitejs.dev/)
-- **Mobile:** Native iOS ([Swift](https://developer.apple.com/swift/))
+- **Mobile:** Native iOS ([Swift](https://developer.apple.com/swift/) + [SwiftUI](https://developer.apple.com/swiftui/)
 - **Machine Learning:** [NYC Open Data](https://opendata.cityofnewyork.us/), [Google Maps API](https://developers.google.com/maps), [Pandas](https://pandas.pydata.org/), [Python](https://www.python.org/), [DuckDB](https://duckdb.org/)
 - **Design / Mockups:** [Figma](https://www.figma.com/), [Stitch](https://stitch.withgoogle.com/)
 - **Deployment:** Backend on [Render](https://render.com/), frontend on [Vercel](https://vercel.com/) — live at [https://offpeak.live/](https://offpeak.live/)
