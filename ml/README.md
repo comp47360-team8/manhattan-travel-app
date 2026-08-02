@@ -1,25 +1,34 @@
-# ml/ — Data & ML side
+# ml/ — Data & ML
 
-This folder holds the **data-science / machine-learning outputs** that feed the
-Manhattan busyness feature: the intermediate and processed datasets used to model
-POI busyness, plus the SQL that seeds the `poi` table the backend serves.
-
-The full ML pipeline (fetch → clean → feature-engineer → model) lives in a separate
-project (**Offpeak**), which is the **source of truth**. The files here are synced
-copies so the team has the data and DB seed in one place.
+This folder holds the **data and machine-learning artifacts** behind the Manhattan
+busyness feature: the datasets used to model POI busyness, and the SQL that builds
+and seeds the POI / busyness-forecast layer.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
-| `data/interim/` | Cleaned, per-source intermediate tables (13 CSVs, ~22 MB) — POI registry, spatial joins (taxi zone / subway / Citi Bike / nearest station), typical-week transport aggregates, weather, holidays, PLUTO capacity, signal-validation. |
+| `data/interim/` | Cleaned, per-source intermediate tables (13 CSVs) — POI registry, spatial joins (taxi zone / subway / Citi Bike / nearest station), typical-week transport aggregates, weather, holidays, PLUTO capacity, signal-validation. |
 | `data/processed/` | Model-ready tables: `modeling_table.parquet` (one row per POI × day-of-week × hour), `model_dataset.parquet` (transformed + split-tagged features), and `forecast_model.csv` (gbm_v1 busyness scores for the 67 POIs with no Google label). |
-| `db/` | PostgreSQL for the POI layer (1:1 mirror of Offpeak `db/`): `01_ddl_create_poi_table.sql`, `02_dml_seed_poi_table.sql`, `03_ddl_create_busyness_forecast_table.sql`, `04_dml_seed_busyness_forecast.sql` (hybrid: 12,895 observed + 8,999 model rows), `05_dml_update_poi_best_time.sql`. |
+| `db/` | PostgreSQL DDL + seed for the POI and busyness-forecast layer: `01_ddl_create_poi_table.sql`, `02_dml_seed_poi_table.sql`, `03_ddl_create_busyness_forecast_table.sql`, `04_dml_seed_busyness_forecast.sql` (hybrid: 12,895 observed + 8,999 model rows), `05_dml_update_poi_best_time.sql`. |
 
-> **Note on `db/`:** these are the ML-side source-of-truth copies. The backend's own
-> schema is managed by Alembic (`backend/alembic/`) and its seed lives in
-> `backend/db/`. Reconcile against these when the POI schema or seed changes — don't
-> assume they are byte-identical.
+> **`db/` vs `backend/db/`:** the schema the running app uses is managed by Alembic
+> (`backend/alembic/`), with its seed in `backend/db/` — treat that as authoritative
+> for the app. The SQL here is the ML-side origin of the POI/forecast data; the two
+> have diverged, so reconcile against `backend/db/` when the POI schema or seed changes.
+
+## Data sources
+
+The busyness model is built from a POI registry (Google Places, MapPLUTO,
+OpenStreetMap, NYC POI/LION) combined with demand and context signals — Citi Bike,
+yellow/green taxi, FHVHV (Uber/Lyft), MTA subway/turnstile/bus ridership, DOT
+pedestrian counts, traffic volume counts, weather, holidays, and events — each
+pulled from a public API (NYC Open Data, TLC, MTA, Open-Meteo).
+
+**Defining "busy":** after comparing candidate signals (OpenStreetMap capacity
+tags, an NYC city-facilities dataset, live line-camera feeds), the target is
+**Google Popular Times** — a busyness score normalised 0–100 relative to each
+place's own typical peak, available for over 60% of the selected POIs.
 
 ## Key semantics
 
@@ -29,9 +38,3 @@ copies so the team has the data and DB seed in one place.
   (mean demand per `(dow, hour)` cell across the window).
 - The modeling table joins each POI to nearby transport demand within distance
   buffers, plus POI attributes, weather, and calendar features.
-
-## Keeping this in sync
-
-These files are **regenerated in Offpeak**. Whenever the interim/processed datasets
-or the DB seed change there, update the copies here via a PR (see the root
-`README.md` → *Data / ML* section for the rule).
