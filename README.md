@@ -86,23 +86,17 @@ The app is organised into five tabs, available on both web and mobile:
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
 - **Frontend (Web):** [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vitejs.dev/)
 - **Mobile:** Native iOS ([Swift](https://developer.apple.com/swift/) + [SwiftUI](https://developer.apple.com/swiftui/))
-- **Machine Learning:** [NYC Open Data](https://opendata.cityofnewyork.us/), [Google Maps API](https://developers.google.com/maps), [Pandas](https://pandas.pydata.org/), [Python](https://www.python.org/), [DuckDB](https://duckdb.org/)
+- **Machine Learning:** [Python](https://www.python.org/), [Pandas](https://pandas.pydata.org/), [DuckDB](https://duckdb.org/)
 - **Design / Mockups:** [Figma](https://www.figma.com/), [Stitch](https://stitch.withgoogle.com/)
-- **Deployment:** Backend on [Render](https://render.com/), frontend on [Vercel](https://vercel.com/) — live at [https://offpeak.live/](https://offpeak.live/)
+- **Deployment:** Backend on [Google Cloud Run](https://cloud.google.com/run), database on [Neon](https://neon.tech/), frontend on [Vercel](https://vercel.com/)
 
 ---
 
 ## 🧠 Machine Learning / Busyness Prediction
 
-The busyness estimation model and its training data live in a separate project (**Offpeak** data-science repo), which is the **source of truth**. The `ml/` folder in this repository holds synced copies the team needs:
+Offpeak's crowd forecasts come from a busyness model built on a curated Manhattan POI registry plus public demand signals (transit, taxi, Citi Bike, pedestrian counts, weather, holidays). The target is **Google Popular Times** — a 0–100 score normalised to each place's own typical peak — modelled as a typical-week (day-of-week × hour) profile that the backend serves as the crowd forecast.
 
-- `ml/data/interim/` — cleaned per-source intermediate tables (POI registry, spatial joins, typical-week transport aggregates, weather, holidays, capacity).
-- `ml/data/processed/` — model-ready tables (`modeling_table.parquet`, `model_dataset.parquet`).
-- `ml/db/` — PostgreSQL DDL + generated seed for the `poi` layer.
-
-**Defining "busy":** after comparing several candidate signals (OpenStreetMap capacity tags, an NYC city-facilities dataset, live line-camera feeds), the team settled on **Google Popular Times** as the target — a busyness score normalised 0–100 relative to each place's own typical peak, available for over 60% of the selected POIs.
-
-**Data sources:** a POI registry (Google Places, MapPLUTO, OpenStreetMap, NYC POI/LION) is combined with demand and context signals — Citi Bike, yellow/green taxi, FHVHV (Uber/Lyft), MTA subway/turnstile/bus ridership, DOT pedestrian counts, traffic volume counts, weather, holidays, and events — each pulled via a reproducible script against a public API (NYC Open Data, TLC, MTA, Open-Meteo).
+The datasets and DB seed that power this live in [`ml/`](ml/README.md).
 
 ---
 
@@ -319,11 +313,29 @@ xcodebuild build \
 
 ## 🌐 Deployment
 
-Offpeak is deployed and publicly accessible at **[https://offpeak.live/](https://offpeak.live/)**.
+Offpeak is live at **[https://offpeak.live/](https://offpeak.live/)**. See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full hosting architecture, DNS, and CI/CD.
 
-- **Backend:** FastAPI app hosted on [Render](https://render.com/), with the PostgreSQL database also hosted on Render.
-- **Frontend:** React app hosted on [Vercel](https://vercel.com/).
-- **Domain:** `offpeak.live`
+- **Frontend:** React + Vite static build on [Vercel](https://vercel.com/) — `offpeak.live`.
+- **Backend:** FastAPI on [Google Cloud Run](https://cloud.google.com/run) (`us-west1`) — reached at `api.offpeak.live`.
+- **Database:** PostgreSQL + PostGIS on [Neon](https://neon.tech/) (US West).
+- **CI/CD:** merging `main` → `production` triggers GitHub Actions ([`deploy.yml`](.github/workflows/deploy.yml)) to run migrations, deploy the backend to Cloud Run, and deploy the frontend to Vercel.
+
+### 🔑 Environment variables
+
+The backend reads the variables below (template: [`backend/.env.example`](backend/.env.example)). Locally they live in `backend/.env`; in production they are set on Cloud Run — sensitive ones via **GCP Secret Manager**, the rest as plain env vars.
+
+| Variable | Purpose | Required |
+|---|---|---|
+| `DATABASE_URL` | Postgres connection string (pooled in prod) | yes |
+| `JWT_SECRET_KEY` | signs auth tokens | yes |
+| `GEMINI_API_KEY` | Gemini — primary LLM | yes |
+| `GROQ_API_KEY` | Groq / Llama — fallback LLM | yes |
+| `AI_PROVIDER` | LLM strategy; `fallback` = Gemini with Groq fallback | yes |
+| `GOOGLE_PLACES_API_KEY` | POI photos; endpoint returns none if unset | optional |
+| `ALLOWED_ORIGINS` | browser CORS allowlist | optional¹ |
+| `ALGORITHM`, `ACCESS_TOKEN_EXPIRE_MINUTES`, `REFRESH_TOKEN_EXPIRE_DAYS` | auth-token settings; have code defaults | optional |
+
+¹ Production doesn't depend on CORS — the web app is same-origin via the Vercel rewrite and iOS is native.
 
 ---
 
