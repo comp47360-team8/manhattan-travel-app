@@ -78,10 +78,9 @@ if __name__ == "__main__":
     
     db = SessionLocal()
     try:
-        for i in range(5):
-            print(f"Starting benchmark {i+1}/5", flush=True)
-            benchmark(db)
-            print(f"Finished benchmark {i+1}/5", flush=True)
+        print(f"Starting benchmark {i+1}/5", flush=True)
+        benchmark(db)
+        print(f"Finished benchmark {i+1}/5", flush=True)
 
     finally:
         db.close()
