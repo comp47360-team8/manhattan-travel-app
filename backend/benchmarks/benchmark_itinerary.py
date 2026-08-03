@@ -20,10 +20,14 @@ def get_all_slugs(db: Session):
     return [poi.slug for poi in pois]
 
 def create_request(db: Session):
+    print("Fetching POIs", flush=True)
+    pois = get_all_pois(db)
+    print(f"Fetched {len(pois)} POIs", flush=True)
+    
     return ItineraryRequest(
         trip_name="mock_itinerary",
         trip_dates=["2026-08-03", "2026-08-05"],
-        pois=random.sample(get_all_slugs(db), 15),
+        pois=random.sample([poi.slug for poi in pois], 15),
         accessibility=[],
     )
 
@@ -67,10 +71,16 @@ def benchmark(db: Session):
     print("-----------------------")
 
 if __name__ == "__main__":
+    print("Benchmark container started", flush=True)
+    
     db = SessionLocal()
     try:
-        for _ in range(5):
+        for i in range(5):
+            print(f"Starting benchmark {i+1}/5", flush=True)
             benchmark(db)
+            print(f"Finished benchmark {i+1}/5", flush=True)
 
     finally:
         db.close()
+        
+    print("Benchmark finished", flush=True)
