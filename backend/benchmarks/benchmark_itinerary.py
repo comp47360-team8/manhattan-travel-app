@@ -1,3 +1,4 @@
+print("SCRIPT STARTED", flush=True)
 """
 Measure runtime of itinerary generation algorithm.
 
@@ -5,13 +6,15 @@ Run file locally:
     cd backend
     python -m benchmarks.benchmark_itinerary
 """
-
 import random
 import time
 import statistics
+print("IMPORTS COMPLETE", flush=True)
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
+print("DATABASE IMPORT COMPLETE", flush=True)
 from app.services.itinerary.itinerary_service import create_itinerary
+print("ITINERARY IMPORT COMPLETE", flush=True)
 from app.services.poi_service import get_all_pois
 from app.schemas.itinerary import ItineraryRequest
 
