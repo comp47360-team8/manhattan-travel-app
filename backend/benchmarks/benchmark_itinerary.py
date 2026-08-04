@@ -19,7 +19,6 @@ def get_all_slugs(db: Session):
     return [poi.slug for poi in pois]
 
 def create_request(db: Session):
-    print("Fetching POIs", flush=True)
     pois = get_all_pois(db)
     print(f"Fetched {len(pois)} POIs", flush=True)
     
@@ -62,17 +61,14 @@ def benchmark(db: Session):
     percentage = (quiet_or_moderate / total) * 100
     
     # show results
-    print("-----------------------", flush=True)
-    print(f"Total POIs in test set: {total}", flush=True)
-    print(f"Average itinerary generation runtime: {average_runtime:.2f}ms.", flush=True)
-    print(f"P95 runtime: {p95:.2f}ms.", flush=True)
-    print(f"Quiet & Moderate POIs: {percentage:.1f}%.", flush=True)
-    print("-----------------------", flush=True)
+    print(f"Test set length: {total}", flush=True)
+    print(f"Mean itinerary generation runtime: {average_runtime:.2f} ms", flush=True)
+    print(f"P95 runtime: {p95:.2f} ms", flush=True)
+    print(f"Quiet & Moderate POIs: {percentage:.1f}%", flush=True)
 
 if __name__ == "__main__":
-    print("Benchmark container started", flush=True)
-    
     db = SessionLocal()
+    
     try:
         print(f"Starting benchmark", flush=True)
         benchmark(db)
@@ -80,5 +76,3 @@ if __name__ == "__main__":
 
     finally:
         db.close()
-        
-    print("Benchmark container finished", flush=True)
