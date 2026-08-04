@@ -5,7 +5,6 @@ Run file locally:
     cd backend
     python -m benchmarks.benchmark_itinerary
 """
-
 import random
 import time
 import statistics
@@ -20,16 +19,20 @@ def get_all_slugs(db: Session):
     return [poi.slug for poi in pois]
 
 def create_request(db: Session):
+    print("Fetching POIs", flush=True)
+    pois = get_all_pois(db)
+    print(f"Fetched {len(pois)} POIs", flush=True)
+    
     return ItineraryRequest(
         trip_name="mock_itinerary",
         trip_dates=["2026-08-03", "2026-08-05"],
-        pois=random.sample(get_all_slugs(db), 15),
-        accessibility=[],
-    )
+        pois=random.sample([poi.slug for poi in pois], 15),
+        accessibility=[]
+        )
 
 # calculate create_itinerary metrics
 def benchmark(db: Session):
-    random.seed(27)
+    random.seed(50)
     
     request = create_request(db)
     
@@ -59,18 +62,23 @@ def benchmark(db: Session):
     percentage = (quiet_or_moderate / total) * 100
     
     # show results
-    print("-----------------------")
-    print(f"Total POIs in test set: {total}")
-    print(f"Average itinerary generation runtime: {average_runtime:.2f}ms.")
-    print(f"P95 runtime: {p95:.2f}ms.")
-    print(f"Quiet/Moderate POIs: {percentage:.1f}%.")
-    print("-----------------------")
+    print("-----------------------", flush=True)
+    print(f"Total POIs in test set: {total}", flush=True)
+    print(f"Average itinerary generation runtime: {average_runtime:.2f}ms.", flush=True)
+    print(f"P95 runtime: {p95:.2f}ms.", flush=True)
+    print(f"Quiet & Moderate POIs: {percentage:.1f}%.", flush=True)
+    print("-----------------------", flush=True)
 
 if __name__ == "__main__":
+    print("Benchmark container started", flush=True)
+    
     db = SessionLocal()
     try:
-        for _ in range(5):
-            benchmark(db)
+        print(f"Starting benchmark", flush=True)
+        benchmark(db)
+        print(f"Finished benchmark", flush=True)
 
     finally:
         db.close()
+        
+    print("Benchmark container finished", flush=True)
