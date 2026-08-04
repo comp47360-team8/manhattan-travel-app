@@ -1,4 +1,3 @@
-print("SCRIPT STARTED", flush=True)
 """
 Measure runtime of itinerary generation algorithm.
 
@@ -9,12 +8,9 @@ Run file locally:
 import random
 import time
 import statistics
-print("IMPORTS COMPLETE", flush=True)
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-print("DATABASE IMPORT COMPLETE", flush=True)
 from app.services.itinerary.itinerary_service import create_itinerary
-print("ITINERARY IMPORT COMPLETE", flush=True)
 from app.services.poi_service import get_all_pois
 from app.schemas.itinerary import ItineraryRequest
 
@@ -27,16 +23,20 @@ def create_request(db: Session):
     pois = get_all_pois(db)
     print(f"Fetched {len(pois)} POIs", flush=True)
     
+    print("Fetching POIs", flush=True)
+    pois = get_all_pois(db)
+    print(f"Fetched {len(pois)} POIs", flush=True)
+    
     return ItineraryRequest(
         trip_name="mock_itinerary",
         trip_dates=["2026-08-03", "2026-08-05"],
         pois=random.sample([poi.slug for poi in pois], 15),
-        accessibility=[],
-    )
+        accessibility=[]
+        )
 
 # calculate create_itinerary metrics
 def benchmark(db: Session):
-    random.seed(27)
+    random.seed(50)
     
     request = create_request(db)
     
@@ -66,23 +66,25 @@ def benchmark(db: Session):
     percentage = (quiet_or_moderate / total) * 100
     
     # show results
-    print("-----------------------")
-    print(f"Total POIs in test set: {total}")
-    print(f"Average itinerary generation runtime: {average_runtime:.2f}ms.")
-    print(f"P95 runtime: {p95:.2f}ms.")
-    print(f"Quiet/Moderate POIs: {percentage:.1f}%.")
-    print("-----------------------")
+    print("-----------------------", flush=True)
+    print(f"Total POIs in test set: {total}", flush=True)
+    print(f"Average itinerary generation runtime: {average_runtime:.2f}ms.", flush=True)
+    print(f"P95 runtime: {p95:.2f}ms.", flush=True)
+    print(f"Quiet & Moderate POIs: {percentage:.1f}%.", flush=True)
+    print("-----------------------", flush=True)
 
 if __name__ == "__main__":
     print("Benchmark container started", flush=True)
     
+    print("Benchmark container started", flush=True)
+    
     db = SessionLocal()
     try:
-        print(f"Starting benchmark {i+1}/5", flush=True)
+        print("Starting benchmark", flush=True)
         benchmark(db)
-        print(f"Finished benchmark {i+1}/5", flush=True)
+        print("Finished benchmark", flush=True)
 
     finally:
         db.close()
         
-    print("Benchmark finished", flush=True)
+    print("Benchmark container finished", flush=True)
