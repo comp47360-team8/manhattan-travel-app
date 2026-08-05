@@ -16,3 +16,5 @@ Additional measurements:
 - Total Blocking Time: 10 milliseconds
 - Cumulative Layout Shift: 0
 - Speed Index: 1.0 seconds
+
+The full self-contained report is available in [offpeak-explore-desktop.html](offpeak-explore-desktop.html).
