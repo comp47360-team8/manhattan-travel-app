@@ -20,12 +20,15 @@
 Offpeak solves this by combining a curated Points-of-Interest (POI) database for Manhattan with a machine-learning busyness prediction model, letting users generate and save personalised itineraries that account for predicted crowd levels, accessibility needs, and trip dates.
 
 <p align="center">
-  <img src="docs/images/web-explore.png" alt="Offpeak web app — Explore" width="62%" />
-  &nbsp;
-  <img src="docs/images/mobile-explore-ai-planner-poi.png" alt="Offpeak iOS app — Explore, AI Planner, and POI detail" width="34%" />
+  <img src="docs/images/web-explore.png" alt="Offpeak web app — Explore" width="85%" />
+  <br />
+  <em>Web interface - Explore </em>
 </p>
-
-<p align="center"><em>Web (left) and native iOS (right) interfaces.</em></p>
+<p align="center">
+  <img src="docs/images/mobile-explore-ai-planner-poi.png" alt="Offpeak iOS app — Explore, AI Planner, and POI detail" width="60%" />
+  <br />
+  <em>Native iOS interface — Explore, AI Planner, and POI detail</em>
+</p>
 
 🌏 Website: https://offpeak.live/
 
