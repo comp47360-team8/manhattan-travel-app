@@ -42,6 +42,7 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
   - [📂 Repository Layout](#-repository-layout)
   - [🌐 Deployment](#-deployment)
   - [🤝 Contributing](#-contributing)
+  - [📎 Supporting Material](#-supporting-material)
   - [📝 License](#-license)
 </details>
 
@@ -381,6 +382,31 @@ We follow a branch-and-PR workflow — see the [Git Workflow](git-workflow.md) f
    git push origin feature/your-feature-name
    ```
 4. Open a pull request. 🚀
+
+---
+
+## 📎 Supporting Material
+
+Extra contribution — material produced alongside the required deliverables.
+
+### 🎨 Design & Mockups
+
+Design mockups for the mobile and web clients. These are **product drafts only**, indicating that the UI shifted considerably over the course of development, so they may not match the final product. They are included to give an intuitive sense of what the product is; the shipped web and iOS clients are the source of truth.
+
+**📱 Mobile (iOS)**
+
+| Version | Tool | Link |
+|---|---|---|
+| v1 | Figma Make | [Mobile mockup — v1](https://www.figma.com/make/Wy0N0YTlQOuGQF3VM3zpON/Mobile?code-node-id=0-9&p=f&t=VQL2LLW06JQlqGgr-0&fullscreen=1) |
+| v2 | Figma | [Mobile mockup — v2](https://www.figma.com/design/JyAbBv5QKWtzuI1hCzXgCP/html.to.design-%E2%80%94-by-%E2%80%B9div%E2%80%BARIOTS-%E2%80%94-Import-websites-to-Figma-designs--web-html-css---Community-?node-id=0-1&t=OF2hU1V1JeuWJarb-1) |
+
+**💻 Web**
+
+| Tool | Link |
+|---|---|
+| Google Stitch | [Web mockup](https://stitch.withgoogle.com/projects/6161260565705765353) |
+
+> Note: these links point at Figma / Stitch projects and may require the relevant sharing permissions to open — please contact the team for access if needed.
 
 ---
 
