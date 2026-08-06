@@ -38,6 +38,7 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
     - [🔧 Backend Setup](#-backend-setup)
     - [🎨 Frontend Setup](#-frontend-setup)
     - [📱 iOS Setup](#-ios-setup)
+  - [🧪 Testing](#-testing)
   - [📂 Repository Layout](#-repository-layout)
   - [🌐 Deployment](#-deployment)
   - [🤝 Contributing](#-contributing)
@@ -297,6 +298,30 @@ xcodebuild build \
 | Build fails on an old Xcode | The project targets iOS 26 — update to **Xcode 26+**. |
 | Photos don't load | Usually transient network; images cache to disk after first load, so a second launch shows them instantly. |
 | Can't log in | No user in your local DB yet, sign up first. |
+
+---
+
+## 🧪 Testing
+
+The backend has a [pytest](https://docs.pytest.org/) suite for the **itinerary scheduling engine** — the app's core algorithm. The tests are pure-logic (no database or network), so they're fast and deterministic.
+
+```bash
+cd backend
+pip install -r requirements.txt -r requirements-dev.txt   # requirements-dev.txt adds pytest
+python -m pytest
+```
+
+They run automatically in CI on every push and pull request (see [`ci.yml`](.github/workflows/ci.yml)).
+
+| Test file | What it covers |
+|---|---|
+| `tests/test_scheduler.py` | day/slot assignment, closed-POI handling, overflow, and warnings (integration-style) |
+| `tests/test_find_best_slot.py` | the "busyness-first" rule that places each POI in its quietest open slot |
+| `tests/test_overflow.py` | the overflow cost model (70% busyness / 30% geography) |
+| `tests/test_accessibility.py` | the wheelchair-confirmed-only accessibility filter |
+| `tests/test_utils.py` | POI-per-day distribution and day-of-week range helpers |
+
+> The web frontend and iOS client do not yet have automated tests.
 
 ---
 

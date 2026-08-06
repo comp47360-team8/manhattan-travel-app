@@ -18,11 +18,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt -r requirements-dev.txt
 
-      # No pytest suite exists yet in backend/ — this at least catches import
-      # and syntax errors. Replace with `pytest` once tests are added.
+      # compileall catches syntax/import errors across every module (including
+      # code the tests don't reach); pytest runs the itinerary-scheduler suite.
       - run: python -m compileall app
+      - run: python -m pytest -q
 
   frontend:
     runs-on: ubuntu-latest
