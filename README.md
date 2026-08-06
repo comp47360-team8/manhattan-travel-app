@@ -58,11 +58,11 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
 
 ## 👩‍💻🧑‍💻 Group Members
 
-- Yu Ning Chen
-- Hansel Oduah
-- Eoin Conroy
+- Yu Ning Chen (@Nancyuning)
+- Hansel Oduah (@hansel-3)
+- Eoin Conroy (@conroy96)
 - Shida Cai (@Seanchoy)
-- Fan Chi Meng
+- Fan Chi Meng (@alisonmeng)
 
 > Developed as part of the **COMP47360** Research Project.
 
