@@ -271,6 +271,6 @@ Three workflows in `.github/workflows/`:
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | every push / PR | backend: install deps + `compileall`; frontend: `npm ci` + lint + build |
+| [`ci.yml`](.github/workflows/ci.yml) | every push / PR | backend: install deps + `compileall` + `pytest`; frontend: `npm ci` + lint + build |
 | [`seed-db.yml`](.github/workflows/seed-db.yml) | manual | re-runs the POI seed SQL (see [§8](#8-common-operational-tasks)) |
 | [`deploy.yml`](.github/workflows/deploy.yml) | CI success on `production` | migrate → deploy backend to Cloud Run (WIF) → deploy frontend to Vercel |
