@@ -10,6 +10,11 @@ import sys
 
 os.environ.setdefault("DATABASE_URL", "sqlite://")
 os.environ.setdefault("JWT_SECRET_KEY", "test-secret-not-real")
+# The remaining required Settings fields. CI has no backend/.env to supply
+# these, so they must be injected here or Settings() fails at import time.
+os.environ.setdefault("GEMINI_API_KEY", "test-gemini-key")
+os.environ.setdefault("GROQ_API_KEY", "test-groq-key")
+os.environ.setdefault("AI_PROVIDER", "fallback")
 
 # Make `app` importable regardless of where pytest is invoked from.
 BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
