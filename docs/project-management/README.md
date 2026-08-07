@@ -1,10 +1,19 @@
-# 💰 Budget & Timeline
+# 📊 Backlog, Budget & Timeline
 
-Project management artifacts for **Offpeak** (COMP47360 Research Practicum) — the full sprint backlog, budget, timesheets, burndown charts, and Gantt timeline.
+Project management artifacts for **Offpeak** — the full sprint backlog, budget, timesheets, burndown charts, and Gantt timeline.
 
 📄 **Full workbook:** [`Sprint_Backlog_and_Budget.xlsx`](Sprint_Backlog_and_Budget.xlsx)
 
-The workbook has five tabs: **Summary**, **Backlog** (per-task breakdown), **Burndown chart** (one chart per sprint, Sprints 1–5), **Gantt** (per-person timeline), and **Budget** (planned vs actual hours & cost). Planned/actual hours and costs are auto-linked between tabs, so updating the Backlog refreshes the Summary and Budget.
+The workbook has **five tabs**:
+
+- **Summary** — headline totals (hours and cost roll-up)
+- **Backlog** — per-task breakdown
+- **Burndown chart** — one chart per sprint (Sprints 1–5)
+- **Gantt Timeline** — per-person timeline
+- **Budget** — planned vs actual hours & cost
+
+Planned/actual hours and costs are auto-linked between tabs, so updating the Backlog refreshes the Summary and Budget.
+
 ---
 
 ## 🗓️ Timeline
