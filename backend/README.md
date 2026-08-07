@@ -1,4 +1,4 @@
-# Offpeak - Backend
+# Offpeak - Backend Guide
 
 The Offpeak backend is a REST API built with **FastAPI** that powers the itinerary planning application. It provides authentication, POI management, itinerary generation, and AI-assisted trip planning using a hybrid architecture that combines LLM-based conversational input with a deterministic scheduling engine.
 
@@ -63,31 +63,6 @@ pip install -r requirements.txt
 
 ---
 
-## Environment Variables
-
-Create a `.env` file in the backend directory:
-
-
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/offpeak
-
-JWT_SECRET_KEY=your_secret_key
-
-ALGORITHM=HS256
-
-ACCESS_TOKEN_EXPIRE_MINUTES=15
-
-REFRESH_TOKEN_EXPIRE_DAYS=30
-
-GEMINI_API_KEY=your_gemini_api_key
-
-GROQ_API_KEY=your_groq_api_key
-
-AI_PROVIDER=fallback
-```
-
----
-
 
 ## PostgreSQL Setup
 
@@ -123,6 +98,31 @@ psql -d <database_name> -f 04_dml_seed_busyness_forecast.sql
 psql -d <database_name> -f 05_insert_poi_availability_mode.sql
 psql -d <database_name> -f 06_dml_update_poi_best_time.sql
 psql -d <database_name> -f 07_dml_update_poi_content.sql
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the backend directory:
+
+
+```env
+DATABASE_URL=postgresql://username:password@localhost:5432/offpeak
+
+JWT_SECRET_KEY=your_secret_key
+
+ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=15
+
+REFRESH_TOKEN_EXPIRE_DAYS=30
+
+GEMINI_API_KEY=your_gemini_api_key
+
+GROQ_API_KEY=your_groq_api_key
+
+AI_PROVIDER=fallback
 ```
 
 ---
@@ -185,6 +185,8 @@ Authentication endpoints include:
 | `/auth/login` | POST | Authenticate a user |
 | `/auth/refresh` | POST | Refresh access token |
 | `/auth/logout` | POST | Invalidate session |
+
+---
 
 ## Project Structure
 
@@ -253,7 +255,7 @@ The `benchmarks/` directory contains scripts used to evaluate the performance of
 
 ## Running Tests
 
-Run the test suite using:
+Run the test suite by navigating to `backend/tests/` and using:
 
 ```bash
 pytest
