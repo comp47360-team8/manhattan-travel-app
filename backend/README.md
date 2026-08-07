@@ -2,6 +2,29 @@
 
 The Offpeak backend is a REST API built with **FastAPI** that powers the itinerary planning application. It provides authentication, POI management, itinerary generation, and AI-assisted trip planning using a hybrid architecture that combines LLM-based conversational input with a deterministic scheduling engine.
 
+---
+
+## Table of Contents
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [PostgreSQL Setup](#postgresql-setup)
+- [Database Seeding](#database-seeding)
+- [Environment Variables](#environment-variables)
+- [Running the Backend](#running-the-backend)
+- [API Documentation](#api-documentation)
+- [Frontend Integration](#frontend-integration)
+- [Authentication](#authentication)
+- [Project Structure](#project-structure)
+- [Itinerary Generation](#itinerary-generation)
+- [AI Planner](#ai-planner)
+- [Benchmarks](#benchmarks)
+- [Running Tests](#running-tests)
+- [Troubleshooting](#troubleshooting)
+
+
+---
+
 ## Tech Stack
 
 * FastAPI 
@@ -296,15 +319,3 @@ If port `8000` is already in use, either stop the process using that port or run
 ```bash
 uvicorn app.main:app --reload --port 8001
 ```
-
----
-
-
-## Contributing
-
-1. Create a new branch.
-2. Make your changes.
-3. Run the test suite.
-4. Submit a pull request.
-
-Please ensure all new functionality includes appropriate tests where applicable.
