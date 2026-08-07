@@ -5,6 +5,19 @@ from app.services.ai.providers.fallback import FallbackProvider
 class LLMSelector:
     @staticmethod
     def create(ai_provider: str):
+        """
+        Create an LLM provider based on the configured provider name.
+
+        Args:
+            ai_provider: Provider name, such as "gemini", "llama", or
+                "fallback".
+
+        Returns:
+            An instance of the selected LLM provider.
+
+        Raises:
+            ValueError: If the provider name is not recognised.
+        """
         if ai_provider == "fallback":
             return FallbackProvider()
         

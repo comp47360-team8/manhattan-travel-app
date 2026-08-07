@@ -5,6 +5,25 @@ from app.repositories.poi_repository import load_coordinates
 from app.services.itinerary.assignment.utils import normalize_cost
 
 def calculate_geographic_cost(poi: POIProfile, slot: dict, db: Session):
+    """
+    Calculate the geographic impact of moving a POI within a time slot.
+
+    The function compares the current route distance with the distance
+    after removing each candidate POI. This estimates which POIs contribute
+    most to route inefficiency and allows the overflow resolver to select
+    lower-cost replacements.
+
+    The route distance is estimated using a nearest-neighbour heuristic.
+
+    Args:
+        poi: POI being evaluated for insertion into the slot.
+        slot: Current itinerary slot containing assigned POIs.
+        db: Database session used to retrieve coordinates.
+
+    Returns:
+        A list of dictionaries containing each POI's geographic cost and
+        normalized cost value.
+    """
     candidates = [dest for dest in slot["pois"]]
     candidates.append(poi)
 
@@ -39,6 +58,21 @@ def calculate_geographic_cost(poi: POIProfile, slot: dict, db: Session):
     return cost_list
 
 def nearest_neighbour_route(pois: list[str], coordinates: dict[str, tuple[float, float]]):
+    """
+    Generate an approximate shortest route using the nearest-neighbour heuristic.
+
+    Starting from the first POI, repeatedly selects the closest unvisited POI.
+    This provides a lightweight route estimate without requiring an expensive
+    optimal travelling salesman solver.
+
+    Args:
+        pois: POIs to order.
+        coordinates: Mapping of POI slugs to latitude/longitude pairs.
+
+    Returns:
+        Ordered list of POIs representing the estimated route.
+    """
+
     if len(pois) <= 1:
         return pois
 
@@ -62,6 +96,20 @@ def nearest_neighbour_route(pois: list[str], coordinates: dict[str, tuple[float,
     return route
 
 def route_distance(route: list[str], coordinates: dict[str, tuple[float, float]]):
+    """
+    Calculate the total distance travelled along a POI route.
+
+    Distances between consecutive POIs are calculated using the Haversine
+    formula.
+
+    Args:
+        route: Ordered POI route.
+        coordinates: Mapping of POI identifiers to coordinates.
+
+    Returns:
+        Total route distance in kilometres.
+    """
+
     total = 0
     for i in range(len(route) - 1):
         lat1, lng1 = coordinates[route[i].slug]
@@ -71,6 +119,8 @@ def route_distance(route: list[str], coordinates: dict[str, tuple[float, float]]
     return total
 
 def haversine(lat1, lng1, lat2, lng2):
+    """Calculate the great-circle distance between two geographic coordinates."""
+    
     R = 6371
 
     phi1 = math.radians(lat1)

@@ -1,3 +1,5 @@
+"""Database operations for conversational trip parameters."""
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.ai_model import Trip, TripExcludedPOI, Conversation
@@ -5,10 +7,16 @@ from app.schemas.ai import TripParameters
 from app.services.poi_service import get_pois_by_slug
 
 def get_trip(conv_id, db: Session):
+    """Retrieve the trip associated with a conversation."""
+
     statement = select(Trip).where(Trip.conversation_id == conv_id)
     return db.execute(statement).scalar_one_or_none()
 
 def update_trip(conv_id: str, extracted: TripParameters, exclude_pois: list[str] | None, db: Session, user):
+    """
+    Update a conversation's trip using extracted user preferences
+    and add any newly excluded POIs.
+    """
     statement = select(Trip).join(Conversation).where(
         Trip.conversation_id == conv_id,
         Conversation.user_id == user

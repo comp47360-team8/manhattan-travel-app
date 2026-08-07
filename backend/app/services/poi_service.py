@@ -1,4 +1,6 @@
-from datetime import date, datetime
+"""Services for retrieving, serialising, and managing points of interest."""
+
+from datetime import datetime
 from zoneinfo import ZoneInfo
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -44,22 +46,35 @@ def serialise_poi(poi: POI) -> POIDetailedResponse:
     return response
 
 def get_all_pois(db: Session):
+    """Retrieve all POIs and attach their current busyness information."""
+
     statement = select(POI)
     pois = db.execute(statement).scalars().all()
     return attach_current_busyness(pois, db)
 
 
 def get_poi_by_slug(slug: str, db: Session):
+    """Retrieve a POI by its URL slug."""
+
     statement = select(POI).where(POI.slug == slug.lower().strip())
     result = db.execute(statement)
     return result.scalar_one_or_none()
 
 def get_poi_by_id(poi_id, db: Session):
+    """Retrieve a POI by its database identifier."""
+
     statement = select(POI).where(POI.id == poi_id)
     result = db.execute(statement)
     return result.scalar_one_or_none()
 
 def get_pois_by_slug(slugs: list[str], db: Session):
+    """
+    Retrieve multiple POIs by slug.
+
+    Input slugs are normalised before querying and returned in the same
+    order as the provided list.
+    """
+
     normalized_slugs = [slug.lower().strip() for slug in slugs]
     
     statement = select(POI).where(POI.slug.in_(normalized_slugs))
@@ -71,6 +86,12 @@ def get_pois_by_slug(slugs: list[str], db: Session):
 
 
 def save_poi_for_user(slug: str, db: Session, user: int):
+    """
+    Save a POI for a user.
+
+    Does nothing if the POI has already been saved by the user.
+    """
+
     poi = get_poi_by_slug(slug, db)
 
     if poi is None:
@@ -99,6 +120,8 @@ def save_poi_for_user(slug: str, db: Session, user: int):
 
 
 def get_saved_poi(slug: str, db: Session, user: int):
+    """Retrieve a user's saved POI record for a specific POI."""
+
     poi = get_poi_by_slug(slug, db)
 
     if not poi:
@@ -113,6 +136,8 @@ def get_saved_poi(slug: str, db: Session, user: int):
 
 
 def get_saved_pois(db: Session, user: int):
+    """Retrieve all POIs saved by a user with current busyness attached."""
+
     statement = (
         select(POI).join(SavedPOI, POI.id == SavedPOI.poi_id).where(SavedPOI.user_id == user)
     )
@@ -121,6 +146,8 @@ def get_saved_pois(db: Session, user: int):
 
 
 def unsave_poi_for_user(slug: str, db: Session, user: int):
+    """Remove a POI from a user's saved POIs."""
+
     saved_poi = get_saved_poi(slug, db, user)
 
     if not saved_poi:
@@ -130,6 +157,11 @@ def unsave_poi_for_user(slug: str, db: Session, user: int):
     db.commit()
 
 def get_poi_busyness(poi: POI, db: Session):
+    """
+    Retrieve predicted crowd levels for today, tomorrow, and the weekend.
+
+    Uses New York local time to determine the current day.
+    """
     today = datetime.now(ZoneInfo("America/New_York")).weekday()
     tomorrow = (today + 1) % 7
 
