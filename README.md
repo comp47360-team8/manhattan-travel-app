@@ -52,8 +52,8 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
   - [🧪 Testing](#-testing)
   - [📂 Repository Layout](#-repository-layout)
   - [🌐 Deployment](#-deployment)
-  - [🤝 Contributing](#-contributing)
   - [📎 Supporting Material](#-supporting-material)
+  - [🤝 Contributing](#-contributing)
   - [📝 License](#-license)
 </details>
 
@@ -75,9 +75,9 @@ Offpeak solves this by combining a curated Points-of-Interest (POI) database for
 
 - [Deployment Guide](DEPLOYMENT.md)
 - [Git Workflow](git-workflow.md)
-- [Budget & Timeline](budget-and-timeline/README.md)
 - [Machine Learning / Data](ml/README.md)
 - [POI Column Dictionary](backend/db/poi_column_dictionary.md)
+- [Project Management (backlog, budget, timeline)](docs/project-management/) — see [Supporting Material](#-supporting-material)
 
 ---
 
@@ -376,29 +376,18 @@ The backend reads the variables below (template: [`backend/.env.example`](backen
 
 ---
 
-## 🤝 Contributing
-
-We follow a branch-and-PR workflow — see the [Git Workflow](git-workflow.md) for the full details.
-
-1. Create a new branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-2. Commit your changes:
-   ```bash
-   git commit -m "Add your awesome feature"
-   ```
-3. Push to the branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-4. Open a pull request. 🚀
-
----
-
 ## 📎 Supporting Material
 
-Extra contribution — material produced alongside the required deliverables.
+### 📊 Project Management
+
+The project-management artifacts live in **[`docs/project-management/`](docs/project-management/)**:
+
+- **Product backlog & sprint backlog** — the per-task breakdown across Sprints 1–5
+- **Timeline** — sprint schedule and a per-person Gantt
+- **Budget** — planned vs actual hours and cost, with a 30% buffer
+- **Burndown charts & timesheets** — one burndown per sprint
+
+See the [folder README](docs/project-management/README.md) for a summary, or open the full workbook [`Sprint_Backlog_and_Budget.xlsx`](docs/project-management/Sprint_Backlog_and_Budget.xlsx) (Summary · Backlog · Burndown · Gantt · Budget tabs).
 
 ### 🎨 Design & Mockups
 
@@ -418,6 +407,26 @@ Design mockups for the mobile and web clients. These are **product drafts only**
 | Google Stitch | [Web mockup](https://stitch.withgoogle.com/projects/6161260565705765353) |
 
 > Note: these links point at Figma / Stitch projects and may require the relevant sharing permissions to open — please contact the team for access if needed.
+
+---
+
+## 🤝 Contributing
+
+We follow a branch-and-PR workflow — see the [Git Workflow](git-workflow.md) for the full details.
+
+1. Create a new branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+2. Commit your changes:
+   ```bash
+   git commit -m "Add your awesome feature"
+   ```
+3. Push to the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+4. Open a pull request. 🚀
 
 ---
 
