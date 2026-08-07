@@ -223,6 +223,8 @@ The web app should now be running at `http://localhost:5173`.
 
 ### 📱 iOS Setup
 
+> For more iOS specific guide — see the [iOS README](ios/README.md).
+
 Build and run the **Offpeak** iOS app in the Xcode **iOS Simulator** on a Mac.
 No physical device or Apple Developer account is required.
 
