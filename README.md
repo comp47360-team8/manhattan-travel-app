@@ -139,7 +139,7 @@ pip install -r requirements.txt
 
 **2. Create your `.env` file**
 
-A `.env.example` template file is provided inside `/backend`. Copy it to `.env` and fill in your own values — **anything marked with `**` must be left unchanged** so the variable names match the backend code. Never commit `.env` to GitHub.
+A `.env.example` template file is provided inside `/backend`. Copy it to `.env` and fill in your own values. Never commit `.env` to GitHub.
 
 **3. Set up a local PostgreSQL database**
 
@@ -182,7 +182,6 @@ Run the following seed scripts **in order**:
 
 ```bash
 cd backend/db
-psql -d your_database_name -f 01_create_poi.sql
 psql -d your_database_name -f 03_dml_seed_poi_table.sql
 psql -d your_database_name -f 04_dml_seed_busyness_forecast.sql
 psql -d your_database_name -f 05_insert_poi_availability_mode.sql
