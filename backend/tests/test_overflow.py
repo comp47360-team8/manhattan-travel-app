@@ -1,7 +1,7 @@
 """Unit tests for the overflow cost model (70% busyness / 30% geography)."""
 from decimal import Decimal
 
-from tests.conftest import make_profile
+from conftest import make_profile
 
 from app.services.itinerary.assignment.overflow import (
     calculate_combined_cost,
