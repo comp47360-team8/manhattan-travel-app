@@ -1,6 +1,6 @@
 # Offpeak - Backend Guide
 
-The Offpeak backend is a REST API built with **FastAPI** that powers the itinerary planning application. It provides authentication, POI management, itinerary generation, and AI-assisted trip planning using a hybrid architecture that combines LLM-based conversational input with a deterministic scheduling engine.
+The Offpeak backend is a REST API built with **FastAPI** that powers the itinerary planning application. It provides authentication, POI management, itinerary generation, and AI-assisted trip planning.
 
 ---
 
