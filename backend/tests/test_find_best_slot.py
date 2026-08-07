@@ -3,7 +3,7 @@
 Paper reference (III-C): each POI is assigned to the time slot where its
 predicted busyness is lowest, among slots where the POI is open.
 """
-from tests.conftest import make_profile
+from conftest import make_profile
 
 from app.services.itinerary.assignment.busyness import find_best_slot
 

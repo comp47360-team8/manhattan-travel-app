@@ -8,7 +8,7 @@ warning rather than a hard failure.
 """
 import pytest
 
-from tests.conftest import make_profile, FakePOI
+from conftest import make_profile, FakePOI
 
 from app.core.exceptions import POINotOpenDuringTrip
 from app.services.itinerary.assignment import scheduler
