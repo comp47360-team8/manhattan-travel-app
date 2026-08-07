@@ -1,3 +1,5 @@
+"""Database queries for POI services."""
+
 from sqlalchemy import select, func
 from zoneinfo import ZoneInfo
 from datetime import datetime
@@ -7,6 +9,8 @@ from app.domains.scheduling import POIProfile
 from app.models.ai_model import TripExcludedPOI, Trip, Conversation
 
 def load_coordinates(pois: list[POIProfile], db: Session):
+    """Retrieve latitude and longitude coordinates for the given POIs."""
+
     coordinates = {}
 
     for poi in pois:
@@ -18,6 +22,8 @@ def load_coordinates(pois: list[POIProfile], db: Session):
     return coordinates
 
 def get_poi_busyness_forecast(pois: list[POI], trip_days: list, db: Session):
+    """Retrieve average busyness forecasts for POIs across the selected trip days."""
+
     statement = (
         select(
             POI.slug.label("slug"),
@@ -41,12 +47,16 @@ def get_poi_busyness_forecast(pois: list[POI], trip_days: list, db: Session):
     return result
 
 def get_excluded_pois(conv_id, db: Session):
+    """Retrieve POI IDs excluded by the user in a conversation."""
+
     statement = select(TripExcludedPOI.poi_id).join(Trip).join(Conversation).where(
         Conversation.id == conv_id
     )
     return db.execute(statement).scalars().all()
 
 def get_busyness_for_day(id, day: int, db: Session):
+    """Retrieve hourly predicted busyness for a POI on a specified day."""
+
     statement = select(
         POIBusynessForecast.hour_of_day,
         POIBusynessForecast.busyness_pct
@@ -67,6 +77,8 @@ def get_busyness_for_day(id, day: int, db: Session):
         ]
 
 def get_hourly_busyness(days, poi_id, db: Session):
+    """Retrieve hourly busyness forecasts for a POI across the specified days."""
+
     statement = select(
         POIBusynessForecast
     ).where(
@@ -79,6 +91,8 @@ def get_hourly_busyness(days, poi_id, db: Session):
     return db.execute(statement).scalars().all()
 
 def get_weekend_hourly_busyness(poi_id, db: Session):
+    """Retrieve average hourly busyness for a POI across Saturday and Sunday."""
+
     statement = select(
         POIBusynessForecast.hour_of_day,
         func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct")
@@ -94,6 +108,8 @@ def get_weekend_hourly_busyness(poi_id, db: Session):
     return db.execute(statement).all()
 
 def get_current_busyness(pois: list[POI], db: Session):
+    """Retrieve the current predicted busyness level for each POI in New York time."""
+
     ny_now = datetime.now(ZoneInfo("America/New_York"))
     hour = ny_now.hour
     day = ny_now.weekday()

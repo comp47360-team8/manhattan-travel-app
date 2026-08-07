@@ -1,7 +1,7 @@
 import math
 from sqlalchemy.orm import Session
 from collections import defaultdict
-from datetime import date, timedelta, time
+from datetime import timedelta, time
 from app.services.itinerary.assignment.utils import convert_to_days
 from app.services.itinerary.accessibility import filter_accessibility
 from app.services.itinerary.poi_profile import get_poi_profiles
@@ -18,7 +18,31 @@ from app.models.user_model import User
 from app.repositories.poi_repository import get_excluded_pois
 from app.services.user_services import get_user_by_id
 
-def create_itinerary(request: ItineraryRequest, db):
+def create_itinerary(request: ItineraryRequest, db: Session):
+    """
+    Generate a complete itinerary from an itinerary request.
+
+    The scheduling pipeline validates the requested POIs, creates POI
+    profiles containing availability information, assigns POIs to days
+    and time slots based on busyness, geographically orders visits, and
+    transforms the scheduled result into the API response format.
+
+    Args:
+        request: Itinerary request containing trip dates, POIs, and
+            accessibility requirements.
+        db: Database session used to retrieve POI and busyness data.
+
+    Returns:
+        A dictionary containing the generated itinerary and its scheduled
+        stops.
+
+    Raises:
+        MaximumPOIsExceeded: If the request contains too many POIs for
+            the duration of the trip.
+        POINotFoundError: If a requested POI does not exist.
+        RepeatingPOI: If the request contains duplicate POIs.
+        POINotOpenDuringTrip: If a requested POI is not open during the trip.
+    """
     pois, full_trip_days = validate_request(request, db)
 
     poi_profiles = get_poi_profiles(pois, full_trip_days)
@@ -34,6 +58,27 @@ def create_itinerary(request: ItineraryRequest, db):
     return final_itinerary
 
 def validate_request(request: ItineraryRequest, db: Session):
+    """
+    Validate an itinerary request and retrieve its requested POIs.
+
+    Checks that the requested number of POIs does not exceed the daily limit,
+    verifies that all requested POIs exist, prevents duplicate POIs, and
+    applies accessibility filtering when required.
+
+    Args:
+        request: Itinerary request containing trip dates, POIs, and accessibility
+            requirements.
+        db: Database session used to retrieve POIs.
+
+    Returns:
+        A tuple containing the validated POIs and the trip days.
+
+    Raises:
+        MaximumPOIsExceeded: If the request contains too many POIs for the
+            duration of the trip.
+        POINotFoundError: If a requested POI does not exist.
+        RepeatingPOI: If the request contains duplicate POIs.
+    """
     full_trip_days = convert_to_days(request.trip_dates)
 
     if len(full_trip_days) * MAX_POIS_PER_DAY < len(request.pois):
@@ -54,6 +99,22 @@ def validate_request(request: ItineraryRequest, db: Session):
     return pois, full_trip_days
 
 def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str | None, db: Session):
+    """
+    Transform the scheduled itinerary into the response format used by the API.
+
+    Enriches each scheduled POI with database information, crowd levels,
+    busyness data, opening time slots, location details, accessibility
+    information, and its image URL.
+
+    Args:
+        request: Original itinerary request containing trip details and dates.
+        itinerary: Scheduled POIs organised by week, day, and time slot.
+        warning: Optional warning generated during itinerary scheduling.
+        db: Database session used to retrieve POI and busyness information.
+
+    Returns:
+        A dictionary containing trip details and the scheduled itinerary stops.
+    """
     day_number = 1
     current_date = request.trip_dates[0]
 
@@ -111,6 +172,24 @@ def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str
     return final_itinerary
 
 def auto_generate_itinerary(trip: Trip, conv_id, db: Session, user):
+    """
+    Automatically generate an itinerary from a user's trip preferences.
+
+    Retrieves the user's profile, selects suitable POI candidates based on
+    the trip requirements, builds an itinerary request, and passes it to
+    the itinerary scheduling engine.
+
+    Args:
+        trip: Trip containing the user's dates, pace, preferences, and
+            excluded POI types.
+        conv_id: Conversation ID used to identify POIs excluded during
+            the conversation.
+        db: Database session used to retrieve user and POI data.
+        user: ID of the user requesting the itinerary.
+
+    Returns:
+        A generated itinerary containing the scheduled POI stops.
+    """
     user_profile = get_user_by_id(user, db)
     pois = get_poi_candidates(trip, conv_id, db, user_profile)
 
@@ -125,6 +204,18 @@ def auto_generate_itinerary(trip: Trip, conv_id, db: Session, user):
     return itinerary
 
 def get_poi_candidates(trip: Trip, conv_id, db: Session, user: User):
+    """
+    Selects candidate POIs for AI-generated itineraries.
+
+    Retrieves POIs from the database and filters them according to:
+    - accessibility requirements
+    - opening availability
+    - user exclusions
+    - preferred POI categories
+    - busyness forecasts
+
+    Returns a list of POI slugs suitable for itinerary generation.
+    """
     pois = get_all_pois(db)
 
     if user.accessibility:

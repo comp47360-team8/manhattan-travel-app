@@ -5,6 +5,22 @@ from app.services.itinerary.assignment.utils import normalize_cost
 from app.core.constants import TIME_SLOTS
 
 def build_busyness_matrix(pois: list[POIProfile], trip_days: list, db: Session):
+    """
+    Build a lookup matrix containing predicted busyness values for each POI,
+    day, and time slot.
+
+    The matrix is used by the scheduling algorithm to efficiently compare
+    available visit times without repeatedly querying the database.
+
+    Args:
+        pois: POI profiles included in the itinerary.
+        trip_days: Days included in the user's trip.
+        db: Database session used to retrieve forecasts.
+
+    Returns:
+        A nested dictionary mapping:
+        POI slug -> day -> time slot -> average busyness percentage.
+    """
     percentages = get_poi_busyness_forecast(pois, trip_days, db)
 
     busyness_matrix = {
@@ -18,6 +34,22 @@ def build_busyness_matrix(pois: list[POIProfile], trip_days: list, db: Session):
     return busyness_matrix
 
 def find_best_slot(poi: POIProfile, day: int, matrix: dict[str, dict]):
+    """
+    Find the lowest-busyness available time slot for a POI on a given day.
+
+    The function evaluates all supported time slots and selects the slot
+    with the lowest predicted busyness score while respecting POI availability.
+
+    Args:
+        poi: POI profile containing opening availability information.
+        day: Day of the week being evaluated.
+        matrix: Busyness forecast for the POI.
+
+    Returns:
+        A dictionary containing the selected day, time slot, POI slug,
+        and predicted busyness score. Returns None if no valid slot exists.
+    """
+
     lowest_score = float("inf")
     best_day = None
     best_time_slot = None
@@ -45,6 +77,23 @@ def find_best_slot(poi: POIProfile, day: int, matrix: dict[str, dict]):
     }
 
 def calculate_busyness_cost(poi: POIProfile, slot: dict, matrix: dict):
+    """
+    Calculate the cost of moving POIs to the next available time slot.
+
+    Used during overflow handling to evaluate whether moving a POI reduces
+    or increases expected crowd levels. Costs are normalized so that they can
+    be combined with geographic costs during slot optimisation.
+
+    Args:
+        poi: POI being evaluated for relocation.
+        slot: Current itinerary slot containing assigned POIs.
+        matrix: Busyness forecast matrix for all POIs.
+
+    Returns:
+        A list of POIs with their calculated and normalized busyness costs.
+        Returns None if no valid relocation is possible.
+    """
+    
     candidates = [dest for dest in slot["pois"]]
     candidates.append(poi)
 

@@ -4,6 +4,22 @@ from app.domains.scheduling import POIProfile
 from itertools import permutations, product
 
 def reorder_pois(pois_list: list[POI], profiles_list: list[POIProfile], itinerary: dict):
+    """
+    Reorder POIs within each day to reduce total travel distance.
+
+    Each day's time slots are optimized jointly, after which the resulting
+    POIs are converted back to POI profiles for downstream itinerary
+    transformation.
+
+    Args:
+        pois_list: POI database objects used to retrieve geographic data.
+        profiles_list: POI profiles produced by the scheduling pipeline.
+        itinerary: Itinerary grouped by week, day, and time slot.
+
+    Returns:
+        The itinerary with POIs reordered geographically within each day.
+    """
+
     profile_map = {p.slug: p for p in profiles_list}
     
     for week, week_days in itinerary.items():
@@ -19,6 +35,21 @@ def reorder_pois(pois_list: list[POI], profiles_list: list[POIProfile], itinerar
     return itinerary
 
 def optimize_day(slots, pois_list: list[POI]):
+    """
+    Find the lowest-distance ordering of POIs across a single day.
+
+    Generates possible orderings within each time slot and evaluates their
+    combined travel distance. The ordering with the lowest total distance
+    is selected.
+
+    Args:
+        slots: POIs grouped by time slot for one day.
+        pois_list: POI database objects containing geographic coordinates.
+
+    Returns:
+        A dictionary containing the optimized POI ordering for each time slot.
+    """
+
     poi_map = {p.slug: p for p in pois_list}
 
     slot_names = list(slots.keys())
@@ -51,6 +82,18 @@ def optimize_day(slots, pois_list: list[POI]):
     return optimized_slots
     
 def calculate_distance(itinerary):
+    """
+    Calculate the total geographic distance travelled during a day.
+
+    The distance is calculated between consecutive POIs across all time
+    slots using the Haversine formula.
+
+    Args:
+        itinerary: Ordered POIs grouped by time slot.
+
+    Returns:
+        Total travel distance in kilometres.
+    """
     total = 0
     previous_poi = None
 

@@ -10,6 +10,24 @@ INVALID_TOKEN="Invalid or expired refresh token."
 
 
 def authenticate_user(email: str, password: str, db: Session):
+    """
+    Authenticate a user and create access and refresh tokens.
+
+    Verifies the supplied credentials and, when successful, creates a new
+    refresh-token session and returns the authentication tokens and user
+    information.
+
+    Args:
+        email: User's email address.
+        password: User's plaintext password.
+        db: Database session.
+
+    Returns:
+        A dictionary containing access and refresh tokens and basic user data.
+
+    Raises:
+        AuthenticationError: If the email or password is incorrect.
+    """
     existing_user = get_user_by_email(email, db)
 
     if existing_user is None:
@@ -38,6 +56,23 @@ def authenticate_user(email: str, password: str, db: Session):
         }
 
 def refresh_session(refresh_token: str, db: Session):
+    """
+    Refresh a user's access and refresh tokens.
+
+    Validates the supplied refresh token and associated session before
+    rotating the session and issuing a new pair of tokens.
+
+    Args:
+        refresh_token: The user's current refresh token.
+        db: Database session.
+
+    Returns:
+        A dictionary containing a new access token and refresh token.
+
+    Raises:
+        AuthenticationError: If the refresh token is invalid, expired,
+            revoked, or is not a refresh token.
+    """
     payload = decode_token(refresh_token)
 
     if payload.get("type") != "refresh":

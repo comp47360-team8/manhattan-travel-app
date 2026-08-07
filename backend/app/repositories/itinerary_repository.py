@@ -1,3 +1,5 @@
+"""Services for busyness data and saved itinerary management."""
+
 import uuid
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -10,6 +12,8 @@ from app.services.poi_service import get_poi_by_slug
 from app.services.photo_service import poi_photo_url
 
 def get_crowd_level(id, day, slot, db: Session):
+    """Return the crowd-level label for a POI at a specified day and time slot."""
+
     statement = select(
         func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct"),
         POIBusynessForecast.poi_id,
@@ -42,6 +46,8 @@ def get_crowd_level(id, day, slot, db: Session):
     return "Very Busy"
 
 def get_busyness_for_day(id, day: int, db: Session):
+    """Return hourly predicted busyness percentages for a POI on a given day."""
+
     statement = select(
         POIBusynessForecast.hour_of_day,
         POIBusynessForecast.busyness_pct
@@ -62,6 +68,8 @@ def get_busyness_for_day(id, day: int, db: Session):
          ]
 
 def get_busyness_for_trip(poi_ids, trip_days: list[int], db: Session):
+    """Return average predicted busyness for each POI across the selected trip days."""
+
     statement = select(
         POIBusynessForecast.poi_id,
         func.avg(POIBusynessForecast.busyness_pct).label("avg_busyness_pct"),
@@ -83,6 +91,8 @@ def get_busyness_for_trip(poi_ids, trip_days: list[int], db: Session):
 ]
 
 def save_itinerary_for_user(itinerary: ItineraryResponse, db: Session, user: uuid.UUID):
+    """Save a generated itinerary and its stops for an authenticated user."""
+
     itinerary_entry = SavedItinerary(
         user_id=user,
         name=itinerary.trip_name,
@@ -118,6 +128,8 @@ def save_itinerary_for_user(itinerary: ItineraryResponse, db: Session, user: uui
     return itinerary_entry
 
 def serialize_itinerary(itinerary: SavedItinerary):
+    """Convert a saved itinerary database object into a frontend-ready dictionary."""
+
     return {
         "itinerary_id": str(itinerary.id),
         "trip_name" : itinerary.name,
@@ -150,6 +162,8 @@ def serialize_itinerary(itinerary: SavedItinerary):
     }
 
 def get_saved_itineraries(db: Session, user: uuid.UUID):
+    """Return all saved itineraries belonging to a specified user."""
+
     statement = select(SavedItinerary).where(SavedItinerary.user_id == user)
     all_itineraries = db.execute(statement).scalars().all()
 
@@ -167,6 +181,8 @@ def get_saved_itineraries(db: Session, user: uuid.UUID):
     for itinerary in all_itineraries]
 
 def get_saved_itinerary(itinerary_id, db: Session, user: uuid.UUID):
+    """Retrieve and serialize a saved itinerary belonging to the user."""
+
     statement = select(SavedItinerary).where(
         SavedItinerary.id == itinerary_id,
         SavedItinerary.user_id == user
@@ -179,6 +195,8 @@ def get_saved_itinerary(itinerary_id, db: Session, user: uuid.UUID):
     return serialize_itinerary(itinerary)
 
 def unsave_itinerary_for_user(itinerary_id, db: Session, user: uuid.UUID):
+    """Delete a saved itinerary belonging to the authenticated user."""
+
     statement = select(SavedItinerary).where(
         SavedItinerary.id == itinerary_id,
         SavedItinerary.user_id == user
@@ -192,6 +210,8 @@ def unsave_itinerary_for_user(itinerary_id, db: Session, user: uuid.UUID):
     db.commit()
 
 def create_new_request(itinerary_id, slug: str | None, stop_id: str | None, db: Session, user):
+    """Create an itinerary request by adding or removing a POI from a saved itinerary."""
+
     statement = select(SavedItinerary).where(
         SavedItinerary.id == itinerary_id,
         SavedItinerary.user_id == user
@@ -206,6 +226,7 @@ def create_new_request(itinerary_id, slug: str | None, stop_id: str | None, db: 
     end_date = itinerary.end_date
     accessibility_labels = itinerary.accessibility_requirements 
 
+    # adding a stop
     if slug:
         slug_found = get_poi_by_slug(slug, db)
         if not slug_found:
@@ -214,6 +235,7 @@ def create_new_request(itinerary_id, slug: str | None, stop_id: str | None, db: 
         pois = [stop.poi.slug for stop in itinerary.stops]
         pois.append(slug)
 
+    # removing a stop
     elif stop_id:
         stop_found = False
         for stop in itinerary.stops:
@@ -234,6 +256,8 @@ def create_new_request(itinerary_id, slug: str | None, stop_id: str | None, db: 
     return request
 
 def update_saved_itinerary(new_itinerary, itinerary_id, db: Session, user: uuid.UUID):
+    """Replace the stops and warning of an existing saved itinerary."""
+
     statement = select(SavedItinerary).where(
         SavedItinerary.id == itinerary_id,
         SavedItinerary.user_id == user

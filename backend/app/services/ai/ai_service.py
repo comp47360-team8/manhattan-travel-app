@@ -12,6 +12,22 @@ from app.core.config import settings
 provider = LLMSelector.create(settings.AI_PROVIDER)
 
 def chat(conversation_id, prompt, db, user):
+    """
+    Process a user message through the conversational trip-planning workflow.
+
+    Saves the user's message, extracts trip preferences using the configured
+    LLM provider, updates the trip, generates a response, and maintains the
+    conversation history and summary.
+
+    Args:
+        conversation_id: Identifier of the current conversation.
+        prompt: User's message.
+        db: Database session.
+        user: Authenticated user identifier.
+
+    Returns:
+        A ChatResponse containing the generated response and any UI action.
+    """
     save_message(prompt, USER, conversation_id, db)
 
     trip_details = get_trip_details(conversation_id, db)
