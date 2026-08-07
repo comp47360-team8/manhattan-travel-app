@@ -1,4 +1,4 @@
-# Offpeak - Backend Guide
+# Offpeak - Backend
 
 The Offpeak backend is a REST API built with **FastAPI** that powers the itinerary planning application. It provides authentication, POI management, itinerary generation, and AI-assisted trip planning.
 
@@ -207,7 +207,9 @@ Authentication endpoints include:
 | `/auth/signup` | POST | Create a user account |
 | `/auth/login` | POST | Authenticate a user |
 | `/auth/refresh` | POST | Refresh access token |
-| `/auth/logout` | POST | Invalidate session |
+| `/auth/logout` | POST | Invalidate session |   
+
+Access tokens are used for authentication. The web client stores tokens using secure HTTP-only cookies, while mobile clients send the access token through the `Authorization` header in HTTP requests.
 
 ---
 
