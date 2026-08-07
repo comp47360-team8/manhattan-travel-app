@@ -123,7 +123,7 @@ The datasets and DB seed that power this live in [`ml/`](ml/README.md).
 - Xcode (for iOS development) — iOS 26
 
 ### 🔧 Backend Setup
-> For the backend specific guide, see [Backend README](backend/README.md).
+> For the backend specific guide, see [Backend README](backend/README.md).  
 Backend code resides in the `backend/app` folder:
 
 - FastAPI application entry point: `backend/app/main.py`
