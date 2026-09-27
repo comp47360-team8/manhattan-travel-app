@@ -14,14 +14,18 @@ import requests
 import time
 import statistics
 import getpass
+import os
 
-BASE_URL = "https://api.offpeak.live/api"
+# BASE_URL = "https://api.offpeak.live/api"
+BASE_URL = os.environ.get("OFFPEAK_API", "http://127.0.0.1:8000/api")
+
 AI_PAYLOAD = {
     "prompt": "Plan a trip to Manhattan focusing on museums and landmarks"
     }
 
 def benchmark_endpoint(url, title, runs, payload=None):
     times = []
+    counts = []
     
     # warm up (in case of cold start)
     warmup_start = time.perf_counter()
@@ -32,6 +36,10 @@ def benchmark_endpoint(url, title, runs, payload=None):
         response = requests.get(url)
     
     response.raise_for_status()
+
+    if "X-Query-Count" not in response.headers:
+        raise SystemExit(
+            f"X-Query-Count header missing from {response.url}. Set ENABLE_QUERY_COUNTER=true in backend/.env and restart uvicorn.")
 
     warmup_end = time.perf_counter()
 
@@ -51,10 +59,15 @@ def benchmark_endpoint(url, title, runs, payload=None):
         end = time.perf_counter()
 
         times.append((end - start) * 1000)
+
+        # SQL request count
+        counts.append(int(response.headers["X-Query-Count"]))
+
     
     # time metric calculation
     median_time = statistics.median(times)
     p95 = statistics.quantiles(times, n=100)[94]
+    median_count = statistics.median(counts)
    
    # show results
     print("-----------------------")
@@ -62,6 +75,7 @@ def benchmark_endpoint(url, title, runs, payload=None):
     print(f"Initial request latency: {initial_request_time:.2f} ms")
     print(f"Median latency: {median_time:.2f} ms")
     print(f"P95 latency: {p95:.2f} ms")
+    print(f"Median count: {median_count:.2f} times")
     
 # test /pois, /pois/{slug} and /itinerary/generate endpoints
 benchmark_endpoint(
