@@ -64,9 +64,9 @@ def assign_days(pois_list: list[POI], pois: list[POIProfile], trip_days: list[in
     i = 0
     poi_list_index = 0
     for week, days in trip.items():
-        for day, pois in days.items():
-            while len(pois) < target_pois_per_day[i]:
-                pois.append(filtered_pois[poi_list_index])
+        for day, day_pois in days.items():
+            while len(day_pois) < target_pois_per_day[i]:
+                day_pois.append(filtered_pois[poi_list_index])
                 poi_list_index += 1
             i += 1
 
@@ -75,11 +75,11 @@ def assign_days(pois_list: list[POI], pois: list[POIProfile], trip_days: list[in
         day_selected = None
         least_pois = float("inf")
         for week, days in trip.items():
-            for day, pois in days.items():
-                if day in poi.opening_days and len(pois) < least_pois:
+            for day, day_pois in days.items():
+                if day in poi.opening_days and len(day_pois) < least_pois:
                     week_selected = week
                     day_selected = day
-                    least_pois = len(pois)
+                    least_pois = len(day_pois)
 
         trip[week_selected][day_selected].append(poi)
                 
@@ -133,12 +133,12 @@ def assign_slots(pois: list[POIProfile], calendar: dict[int, dict[int, list]], t
     # remove empty slots, cleaner for tranform itinerary function
     for week, week_days in itinerary.items():
         for weekday, slots in week_days.items():
-            for slot_name, pois in slots.items():
-                if pois:
+            for slot_name, slot_pois in slots.items():
+                if slot_pois:
                     cleaned_itinerary.setdefault(week, {})
                     cleaned_itinerary[week].setdefault(weekday, {})
-                    cleaned_itinerary[week][weekday][slot_name] = pois
-                if len(pois) > MAX_POIS_PER_SLOT:
+                    cleaned_itinerary[week][weekday][slot_name] = slot_pois
+                if len(slot_pois) > MAX_POIS_PER_SLOT:
                     warning = "Some visits may overlap — you've got a packed trip! Consider adjusting your schedule."
     
     return cleaned_itinerary, warning
