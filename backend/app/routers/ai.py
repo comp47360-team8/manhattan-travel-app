@@ -28,7 +28,7 @@ def conversation(conversation_id, request: ChatRequest, db: Session = Depends(ge
             detail="Conversation not found."
         )
     
-    except Exception as e:
+    except Exception as e: # noqa: BLE001 
         print(f"Conversation endpoint failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

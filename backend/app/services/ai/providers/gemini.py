@@ -110,7 +110,7 @@ class GeminiProvider(LLMProvider):
                 # client has been closed." Binding it here prevents that.
                 client = self._client(proxy)
                 return client.models.generate_content(**kwargs)
-            except Exception as e:
+            except Exception as e: # noqa: BLE001
                 # Broad by design: this wraps only the network call, and any
                 # failure (API error, transport/proxy error) should rotate/retry
                 # and ultimately fall back to Llama rather than 500 the request.

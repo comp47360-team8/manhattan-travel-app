@@ -62,10 +62,13 @@ def save_itinerary(request: ItineraryResponse, db: Session = Depends(get_db), us
         itinerary = save_itinerary_for_user(request, db, user)
         return serialize_itinerary(itinerary)
     
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 details stay in server log
+        print(f"Saved Itinerary Failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Something went wrong while processing your itinerary: {e!s}"
+            # detail=f"Something went wrong while processing your itinerary: {e!s}"
+            # BLE01: details stay in server logs
+            detail="Something went wrong while processing your itinerary. Please try again."
         )
     
 @router.delete("/{itinerary_id}", response_model=ItineraryUnsaveResponse)
@@ -82,10 +85,13 @@ def unsave_itinerary(itinerary_id, db: Session = Depends(get_db), user = Depends
             detail="Itinerary not found."
         )
     
-    except Exception as e:
-        raise HTTPException(
+    except Exception as e: # noqa: BLE001 details stay in server log
+        print(f"Unsaved itinerary failed: {e}")
+        raise HTTPException(     
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Something went wrong while processing your itinerary: {e!s}"
+            # detail=f"Something went wrong while processing your itinerary: {e!s}"
+            # BLE01: details stay in server logs
+            detail="Something went wrong while processing your itinerary. Please try again."
         )
 
 @router.post("/{itinerary_id}/stops", response_model=ItinerarySavedResponse)
