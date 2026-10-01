@@ -3,7 +3,7 @@
 app/database.py builds an engine at import time from Settings, which
 requires DATABASE_URL and JWT_SECRET_KEY. We inject harmless fake values
 BEFORE any app import so the pure-logic modules can be imported without
-a real database or .env file. (sqlite:// is lazy — nothing connects.)
+a real database or .env file. (postgresql:// is lazy — nothing connects.) 
 """
 import os
 import sys
