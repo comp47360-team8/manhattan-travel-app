@@ -1,6 +1,7 @@
+from app.services.ai.providers.fallback import FallbackProvider
 from app.services.ai.providers.gemini import GeminiProvider
 from app.services.ai.providers.llama import LlamaProvider
-from app.services.ai.providers.fallback import FallbackProvider
+
 
 class LLMSelector:
     @staticmethod

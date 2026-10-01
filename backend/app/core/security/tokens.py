@@ -1,8 +1,10 @@
 import uuid
-from app.core.config import settings
 from datetime import datetime, timedelta, timezone
+
 from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
+
+from app.core.config import settings
 from app.core.exceptions import AuthenticationError
 
 SESSION_EXPIRED = "Your session has expired. Please log in again."

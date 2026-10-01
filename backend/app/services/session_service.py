@@ -1,11 +1,14 @@
 """Database operations for managing user authentication sessions."""
 
 import uuid
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.models.user_model import UserSession
-from app.core.security.tokens import create_refresh_token, decode_token
+
 from app.core.security.passwords import hash_token
+from app.core.security.tokens import create_refresh_token, decode_token
+from app.models.user_model import UserSession
+
 
 def get_session_by_sid(sid: str, db: Session):
     """Retrieve an authentication session by its session identifier."""

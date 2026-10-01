@@ -1,9 +1,14 @@
 from sqlalchemy.orm import Session
-from app.core.security.passwords import verify_password, verify_token
-from app.core.security.tokens import create_access_token,decode_token
+
 from app.core.exceptions import AuthenticationError
+from app.core.security.passwords import verify_password, verify_token
+from app.core.security.tokens import create_access_token, decode_token
+from app.services.session_service import (
+    create_session,
+    get_session_by_sid,
+    rotate_session,
+)
 from app.services.user_services import get_user_by_email
-from app.services.session_service import create_session, get_session_by_sid, rotate_session
 
 INVALID_CREDENTIALS="Incorrect email or password. Please try again."
 INVALID_TOKEN="Invalid or expired refresh token."

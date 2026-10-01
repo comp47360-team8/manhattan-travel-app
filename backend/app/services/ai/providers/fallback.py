@@ -1,9 +1,11 @@
 import json
+
+from app.core.exceptions import LLMUnresponsiveError
+from app.schemas.ai import ChatResponse
 from app.services.ai.base import LLMProvider
 from app.services.ai.providers.gemini import GeminiProvider
 from app.services.ai.providers.llama import LlamaProvider
-from app.core.exceptions import LLMUnresponsiveError
-from app.schemas.ai import ChatResponse
+
 
 class FallbackProvider(LLMProvider):
     """

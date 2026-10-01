@@ -1,12 +1,18 @@
 from sqlalchemy.orm import Session
+
+from app.core.constants import MAX_POIS_PER_SLOT, TIME_SLOTS
+from app.core.exceptions import POINotOpenDuringTrip
 from app.domains.scheduling import POIProfile
 from app.models.poi_model import POI
-from app.core.constants import TIME_SLOTS, MAX_POIS_PER_SLOT
-from app.core.exceptions import POINotOpenDuringTrip
-from app.services.itinerary.assignment.utils import split_evenly, number_of_weeks
-from app.services.itinerary.assignment.busyness import build_busyness_matrix, find_best_slot, calculate_busyness_cost
-from app.services.itinerary.assignment.overflow import find_combined_costs, replace
+from app.services.itinerary.assignment.busyness import (
+    build_busyness_matrix,
+    calculate_busyness_cost,
+    find_best_slot,
+)
 from app.services.itinerary.assignment.geography import calculate_geographic_cost
+from app.services.itinerary.assignment.overflow import find_combined_costs, replace
+from app.services.itinerary.assignment.utils import number_of_weeks, split_evenly
+
 
 def assign_days(pois_list: list[POI], pois: list[POIProfile], trip_days: list[int]):
     """

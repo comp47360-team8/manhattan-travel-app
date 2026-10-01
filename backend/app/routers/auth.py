@@ -1,15 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-from app.schemas.user import UserResponse, UserCreate
-from app.schemas.auth import (
-  RefreshTokenRequest, LogoutRequest, MobileRefreshResponse, LogoutResponse, 
-  UserLogin, MobileLoginResponse, WebLoginResponse, WebRefreshResponse
-  )
+
+from app.core.exceptions import AuthenticationError, UserAlreadyExists
 from app.database import get_db
-from app.services.user_services import create_user
+from app.schemas.auth import (
+    LogoutRequest,
+    LogoutResponse,
+    MobileLoginResponse,
+    MobileRefreshResponse,
+    RefreshTokenRequest,
+    UserLogin,
+    WebLoginResponse,
+    WebRefreshResponse,
+)
+from app.schemas.user import UserCreate, UserResponse
 from app.services.auth_service import authenticate_user, refresh_session
 from app.services.session_service import revoke_session
-from app.core.exceptions import UserAlreadyExists, AuthenticationError
+from app.services.user_services import create_user
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 

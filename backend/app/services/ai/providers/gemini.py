@@ -1,17 +1,23 @@
 import random
-from google import genai
-from google.genai import types
 from datetime import date, datetime, time
 from zoneinfo import ZoneInfo
+
+from google import genai
+from google.genai import types
+
+from app.core.config import settings
+from app.core.constants import (
+        EXTRACTION_PROMPT,
+        POI_TYPE_OPTIONS,
+        SUMMARY_PROMPT,
+        SYSTEM_PROMPT,
+)
+from app.core.exceptions import LLMUnresponsiveError
+from app.models.ai_model import Message, Trip
+from app.schemas.ai import ChatResponse, GeminiResponse, TripParameters, UIOption
 from app.services.ai.base import LLMProvider
-from app.models.ai_model import Message
-from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS
-from app.schemas.ai import TripParameters, ChatResponse, UIOption, GeminiResponse
-from app.models.ai_model import Trip
 from app.services.itinerary.itinerary_service import auto_generate_itinerary
 from app.services.user_services import get_user_by_id
-from app.core.config import settings
-from app.core.exceptions import LLMUnresponsiveError
 
 tools = [
     types.Tool(

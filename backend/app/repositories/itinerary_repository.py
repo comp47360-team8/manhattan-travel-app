@@ -1,15 +1,17 @@
 """Services for busyness data and saved itinerary management."""
 
 import uuid
-from sqlalchemy import select, func
+
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
+
+from app.core.exceptions import ItineraryNotFound, POINotFoundError, StopNotFound
+from app.models.itinerary_model import ItineraryStop, SavedItinerary
 from app.models.poi_model import POIBusynessForecast
-from app.models.itinerary_model import SavedItinerary, ItineraryStop
-from app.schemas.itinerary import ItineraryResponse
-from app.core.exceptions import ItineraryNotFound, StopNotFound, POINotFoundError
-from app.schemas.itinerary import ItineraryRequest
-from app.services.poi_service import get_poi_by_slug
+from app.schemas.itinerary import ItineraryRequest, ItineraryResponse
 from app.services.photo_service import poi_photo_url
+from app.services.poi_service import get_poi_by_slug
+
 
 def get_crowd_level(id, day, slot, db: Session):
     """Return the crowd-level label for a POI at a specified day and time slot."""

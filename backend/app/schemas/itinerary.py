@@ -1,5 +1,7 @@
-from pydantic import BaseModel
 from datetime import date, time
+
+from pydantic import BaseModel
+
 
 class ItineraryRequest(BaseModel):
     trip_name: str

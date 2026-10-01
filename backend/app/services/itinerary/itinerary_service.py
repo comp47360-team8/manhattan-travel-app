@@ -1,22 +1,34 @@
 import math
-from sqlalchemy.orm import Session
 from collections import defaultdict
-from datetime import timedelta, time
-from app.services.itinerary.assignment.utils import convert_to_days
-from app.services.itinerary.accessibility import filter_accessibility
-from app.services.itinerary.poi_profile import get_poi_profiles
-from app.services.itinerary.assignment.scheduler import assign_days, assign_slots
-from app.schemas.itinerary import ItineraryRequest
-from app.services.poi_service import get_pois_by_slug, get_poi_by_slug, get_all_pois, get_poi_by_id
-from app.services.photo_service import poi_photo_url
-from app.repositories.itinerary_repository import get_crowd_level, get_busyness_for_day, get_busyness_for_trip
-from app.services.itinerary.ordering import reorder_pois
+from datetime import time, timedelta
+
+from sqlalchemy.orm import Session
+
 from app.core.constants import MAX_POIS_PER_DAY
 from app.core.exceptions import MaximumPOIsExceeded, POINotFoundError, RepeatingPOI
 from app.models.ai_model import Trip
 from app.models.user_model import User
+from app.repositories.itinerary_repository import (
+    get_busyness_for_day,
+    get_busyness_for_trip,
+    get_crowd_level,
+)
 from app.repositories.poi_repository import get_excluded_pois
+from app.schemas.itinerary import ItineraryRequest
+from app.services.itinerary.accessibility import filter_accessibility
+from app.services.itinerary.assignment.scheduler import assign_days, assign_slots
+from app.services.itinerary.assignment.utils import convert_to_days
+from app.services.itinerary.ordering import reorder_pois
+from app.services.itinerary.poi_profile import get_poi_profiles
+from app.services.photo_service import poi_photo_url
+from app.services.poi_service import (
+    get_all_pois,
+    get_poi_by_id,
+    get_poi_by_slug,
+    get_pois_by_slug,
+)
 from app.services.user_services import get_user_by_id
+
 
 def create_itinerary(request: ItineraryRequest, db: Session):
     """

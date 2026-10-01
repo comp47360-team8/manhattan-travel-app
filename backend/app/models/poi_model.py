@@ -1,18 +1,32 @@
 import enum
 import uuid
-from app.database import Base
-from sqlalchemy import (
-    BigInteger, String, Enum, Text, Double, 
-    CheckConstraint, ARRAY, Numeric, Integer, 
-    DateTime, Time, Boolean, text, func, ForeignKey,
-    SmallInteger, Index
-    )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import relationship
-from geoalchemy2 import Geography
-from decimal import Decimal
-from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime, time
+from decimal import Decimal
+
+from sqlalchemy import (
+    ARRAY,
+    BigInteger,
+    Boolean,
+    CheckConstraint,
+    DateTime,
+    Double,
+    Enum,
+    ForeignKey,
+    Index,
+    Integer,
+    Numeric,
+    SmallInteger,
+    String,
+    Text,
+    Time,
+    func,
+    text,
+)
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
+
 
 class POIType(str, enum.Enum):
     landmark = "landmark"

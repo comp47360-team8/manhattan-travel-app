@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
-from app.models.poi_model import POI
-from app.domains.scheduling import POIProfile
 from app.core.constants import TIME_SLOTS
+from app.domains.scheduling import POIProfile
+from app.models.poi_model import POI
+
 
 def get_poi_profiles(pois: list[POI], dates: list):
     """
