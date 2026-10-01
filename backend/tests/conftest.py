@@ -21,10 +21,10 @@ BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BACKEND_ROOT not in sys.path:
     sys.path.insert(0, BACKEND_ROOT)
 
-import pytest  # noqa: E402
+import pytest
 
-from app.core.constants import TIME_SLOTS  # noqa: E402
-from app.domains.scheduling import POIProfile  # noqa: E402
+from app.core.constants import TIME_SLOTS
+from app.domains.scheduling import POIProfile
 
 ALL_SLOTS = tuple(s.name for s in TIME_SLOTS)
 
