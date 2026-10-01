@@ -1,9 +1,12 @@
 import uuid
-from sqlalchemy import String, DateTime, Boolean, func, Text, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import UTC, datetime, timedelta
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
-from datetime import datetime, timezone, timedelta
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -69,7 +72,7 @@ class UserSession(Base):
 
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc) + timedelta(days=30),
+        default=lambda: datetime.now(UTC) + timedelta(days=30),
         nullable=False,
     )
 

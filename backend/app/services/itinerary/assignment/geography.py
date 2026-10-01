@@ -1,8 +1,11 @@
 import math
+
 from sqlalchemy.orm import Session
+
 from app.domains.scheduling import POIProfile
 from app.repositories.poi_repository import load_coordinates
 from app.services.itinerary.assignment.utils import normalize_cost
+
 
 def calculate_geographic_cost(poi: POIProfile, slot: dict, db: Session):
     """

@@ -2,10 +2,12 @@
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.schemas.user import UserCreate
-from app.models.user_model import User
-from app.core.security.passwords import hash_password
+
 from app.core.exceptions import UserAlreadyExists
+from app.core.security.passwords import hash_password
+from app.models.user_model import User
+from app.schemas.user import UserCreate
+
 
 def get_user_by_email(email: str, db: Session):
     """

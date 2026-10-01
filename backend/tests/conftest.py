@@ -3,12 +3,12 @@
 app/database.py builds an engine at import time from Settings, which
 requires DATABASE_URL and JWT_SECRET_KEY. We inject harmless fake values
 BEFORE any app import so the pure-logic modules can be imported without
-a real database or .env file. (sqlite:// is lazy — nothing connects.)
+a real database or .env file. (postgresql:// is lazy — nothing connects.) 
 """
 import os
 import sys
 
-os.environ.setdefault("DATABASE_URL", "sqlite://")
+os.environ.setdefault("DATABASE_URL", "postgresql://")
 os.environ.setdefault("JWT_SECRET_KEY", "test-secret-not-real")
 # The remaining required Settings fields. CI has no backend/.env to supply
 # these, so they must be injected here or Settings() fails at import time.
@@ -21,10 +21,10 @@ BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BACKEND_ROOT not in sys.path:
     sys.path.insert(0, BACKEND_ROOT)
 
-import pytest  # noqa: E402
+import pytest
 
-from app.core.constants import TIME_SLOTS  # noqa: E402
-from app.domains.scheduling import POIProfile  # noqa: E402
+from app.core.constants import TIME_SLOTS
+from app.domains.scheduling import POIProfile
 
 ALL_SLOTS = tuple(s.name for s in TIME_SLOTS)
 

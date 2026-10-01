@@ -1,5 +1,7 @@
 from decimal import Decimal
+
 from app.domains.scheduling import POIProfile
+
 
 def calculate_combined_cost(busyness, geographic):
     """

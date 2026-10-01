@@ -1,7 +1,9 @@
-from app.services.itinerary.assignment.geography import haversine
-from app.models.poi_model import POI
-from app.domains.scheduling import POIProfile
 from itertools import permutations, product
+
+from app.domains.scheduling import POIProfile
+from app.models.poi_model import POI
+from app.services.itinerary.assignment.geography import haversine
+
 
 def reorder_pois(pois_list: list[POI], profiles_list: list[POIProfile], itinerary: dict):
     """

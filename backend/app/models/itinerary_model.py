@@ -1,10 +1,23 @@
 import uuid
-from datetime import date, time, datetime
-from app.database import Base
-from sqlalchemy import ForeignKey, func, DateTime, String, BigInteger, Integer, Date, Time, Text
+from datetime import date, datetime, time
+
+from sqlalchemy import (
+    BigInteger,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    Time,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
 from app.schemas.itinerary import BusynessResponse
+
 
 class SavedItinerary(Base):
     __tablename__ = "saved_itineraries"
@@ -53,11 +66,6 @@ class SavedItinerary(Base):
         nullable=True,
     )
 
-    saved_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), 
-        server_default=func.now(), 
-        nullable=False
-    )
 
     user = relationship(
         "User",

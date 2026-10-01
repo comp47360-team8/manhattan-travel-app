@@ -1,7 +1,8 @@
 from contextvars import ContextVar
-from app.database import engine
+
 from sqlalchemy import event
 
+from app.database import engine
 
 query_count:ContextVar[list[int]|None] = ContextVar("query_count", default=None)
 

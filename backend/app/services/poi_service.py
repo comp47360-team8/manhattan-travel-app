@@ -2,13 +2,20 @@
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.models.poi_model import POI, SavedPOI
+
 from app.core.exceptions import POINotFoundError
-from app.repositories.poi_repository import get_hourly_busyness, get_weekend_hourly_busyness, get_current_busyness
+from app.models.poi_model import POI, SavedPOI
+from app.repositories.poi_repository import (
+    get_current_busyness,
+    get_hourly_busyness,
+    get_weekend_hourly_busyness,
+)
 from app.schemas.poi import POIDetailedResponse
 from app.services.photo_service import poi_photo_url
+
 
 def attach_current_busyness(pois: list[POI], db: Session):
     """Set the (non-persisted) current_busyness fields POIDetailedResponse needs.

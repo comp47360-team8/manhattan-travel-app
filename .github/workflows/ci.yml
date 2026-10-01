@@ -20,9 +20,23 @@ jobs:
 
       - run: pip install -r requirements.txt -r requirements-dev.txt
 
-      # compileall catches syntax/import errors across every module (including
-      # code the tests don't reach); pytest runs the itinerary-scheduler suite.
+      # Lint first: fastest feedback, and catches undefined names that compileall misses.
+      - run: ruff check app tests
+
       - run: python -m compileall app
+
+        # Smoke test: the app must import with only the required env vars set.
+        # Catches startup crashes (bad Settings defaults, broken engine args) that
+        # the pure-logic tests never touch.
+      - name: Smoke test (import app.main)
+        run: python -c "import app.main"
+        env:
+          DATABASE_URL: postgresql://
+          JWT_SECRET_KEY: ci-not-secret
+          GEMINI_API_KEY: ci-not-secret
+          GROQ_API_KEY: ci-not-secret
+          AI_PROVIDER: fallback
+
       - run: python -m pytest -q
 
   frontend:
