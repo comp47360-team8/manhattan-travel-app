@@ -6,7 +6,15 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 DATABASE_URL = settings.DATABASE_URL
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(
+    DATABASE_URL,
+    pool_size = 10, 
+    max_overflow = 10,
+    # a request can't get a connections within 5s errors out instead of hanging for 30s
+    pool_timeout = 5,
+    # Neon closes idle connection; ping before checkout so we never hand out a dead one
+    pool_pre_ping = True,
+    )
 
 SessionLocal = sessionmaker(
     autoflush=False,
