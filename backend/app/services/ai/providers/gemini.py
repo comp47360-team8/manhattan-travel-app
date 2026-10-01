@@ -237,12 +237,11 @@ class GeminiProvider(LLMProvider):
                 ui_action=None,
                 itinerary=None
             )
-        if gemini_response.ui_action:
-            if gemini_response.ui_action.component == "poi_type_selector":
-                gemini_response.ui_action.options = [
-                    UIOption(**option)
-                    for option in POI_TYPE_OPTIONS
-                    ]
+        if gemini_response.ui_action and gemini_response.ui_action.component == "poi_type_selector":
+            gemini_response.ui_action.options = [
+                UIOption(**option)
+                for option in POI_TYPE_OPTIONS
+                ]
                 
         return gemini_response
 

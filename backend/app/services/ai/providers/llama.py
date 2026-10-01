@@ -172,12 +172,11 @@ class LlamaProvider(LLMProvider):
             print("Failed to parse LLM JSON response")
             raise
         
-        if llama_response.ui_action:
-            if llama_response.ui_action.component == "poi_type_selector":
-                llama_response.ui_action.options = [
-                    UIOption(**option)
-                    for option in POI_TYPE_OPTIONS[:-1]
-                ]
+        if llama_response.ui_action and llama_response.ui_action.component == "poi_type_selector":
+            llama_response.ui_action.options = [
+                UIOption(**option)
+                for option in POI_TYPE_OPTIONS[:-1]
+            ]
         return llama_response
 
     def extract_trip_parameters(self, prompt, last_message, trip_details):
