@@ -8,7 +8,7 @@ a real database or .env file. (sqlite:// is lazy — nothing connects.)
 import os
 import sys
 
-os.environ.setdefault("DATABASE_URL", "postgresql+psycopg2://test:test@localhost/test")
+os.environ.setdefault("DATABASE_URL", "postgresql://")
 os.environ.setdefault("JWT_SECRET_KEY", "test-secret-not-real")
 # The remaining required Settings fields. CI has no backend/.env to supply
 # these, so they must be injected here or Settings() fails at import time.
