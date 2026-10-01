@@ -139,7 +139,7 @@ def transform_itinerary(request: ItineraryRequest, itinerary: dict, warning: str
         "stops": []
         }
     i = 1
-    for week, week_days in itinerary.items():
+    for week_days in itinerary.values():
         for weekday, slots in week_days.items():
             for slot_name, pois in slots.items():
                 for poi in pois:
