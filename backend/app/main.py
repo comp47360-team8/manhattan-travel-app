@@ -2,9 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.routers import health, auth, pois, users, itinerary, ai
+from app.core.query_counter import register_query_counter
+
 
 # instantiate app
 app = FastAPI()
+
+if settings.ENABLE_QUERY_COUNTER:
+    register_query_counter(app)
 
 # connect React frontend origin(s) to FastAPI backend origin via CORS
 app.add_middleware(
