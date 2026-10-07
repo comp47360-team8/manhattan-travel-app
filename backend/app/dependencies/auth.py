@@ -1,8 +1,10 @@
 """FastAPI dependencies for extracting and validating JWT access tokens"""
 
-from fastapi import Depends, HTTPException, status, Header, Cookie
-from app.core.security.tokens import decode_token
+from fastapi import Cookie, Depends, Header, HTTPException, status
+
 from app.core.exceptions import AuthenticationError
+from app.core.security.tokens import decode_token
+
 
 def get_access_token(authorization: str | None = Header(None), access_token: str | None = Cookie(None)):
     """

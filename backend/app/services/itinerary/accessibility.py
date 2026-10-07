@@ -13,8 +13,7 @@ at all means OSM had no data, which is likewise not enough to satisfy one.
 def filter_accessibility(pois: list[POI], accessibility: list[str]):
     filtered = []
     for poi in pois:
-        if poi.accessibility_labels != None:
-            if any(label in accessibility for label in poi.accessibility_labels):
-                filtered.append(poi)
+        if poi.accessibility_labels is not None and any(label in accessibility for label in poi.accessibility_labels):
+            filtered.append(poi)
 
     return filtered

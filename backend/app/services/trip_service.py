@@ -1,11 +1,14 @@
 """Helper functions for processing conversational trip data and POI matching."""
 
 import re
-from rapidfuzz import process, fuzz
-from app.models.poi_model import POI
+
+from rapidfuzz import fuzz, process
+
 from app.models.ai_model import Trip
+from app.models.poi_model import POI
 from app.repositories.trip_repository import get_trip
 from app.schemas.ai import TripParameters
+
 
 def get_trip_details(conv_id, db):
     """

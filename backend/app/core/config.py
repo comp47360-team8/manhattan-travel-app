@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     DATABASE_URL: str
     JWT_SECRET_KEY: str
@@ -27,6 +28,8 @@ class Settings(BaseSettings):
     # host confusion. Defaults to the production API host; override per env.
     PUBLIC_API_URL: str = "https://api.offpeak.live"
     ALLOWED_ORIGINS: str = "http://localhost:5173"
+    # config flag for query counter
+    ENABLE_QUERY_COUNTER: bool = False
 
     @property
     def allowed_origins_list(self) -> list[str]:

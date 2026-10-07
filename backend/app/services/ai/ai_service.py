@@ -1,13 +1,16 @@
+from app.core.config import settings
+from app.core.constants import ASSISTANT, USER
 from app.repositories.ai_repository import (
-    save_message, load_chat_history, update_summary,
-    load_chat_summary, get_last_message
-    )
-from app.core.constants import USER, ASSISTANT
-from app.services.poi_service import get_all_pois
-from app.services.trip_service import fuzzy_search, get_trip_details
+    get_last_message,
+    load_chat_history,
+    load_chat_summary,
+    save_message,
+    update_summary,
+)
 from app.repositories.trip_repository import update_trip
 from app.services.ai.selector import LLMSelector
-from app.core.config import settings
+from app.services.poi_service import get_all_pois
+from app.services.trip_service import fuzzy_search, get_trip_details
 
 provider = LLMSelector.create(settings.AI_PROVIDER)
 

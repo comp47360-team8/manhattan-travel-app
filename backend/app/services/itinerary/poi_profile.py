@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
-from app.models.poi_model import POI
-from app.domains.scheduling import POIProfile
 from app.core.constants import TIME_SLOTS
+from app.domains.scheduling import POIProfile
+from app.models.poi_model import POI
+
 
 def get_poi_profiles(pois: list[POI], dates: list):
     """
@@ -45,9 +45,7 @@ def build_poi_profile(poi: POI, dates: list):
 
     days_not_open = []
     for day, slots in availability.items():
-        openings = []
-        for slot, is_open in slots.items():
-            openings.append(is_open)
+        openings = list(slots.values())
         if all(is_open == False for is_open in openings):
             days_not_open.append(day)
 
@@ -85,16 +83,16 @@ def find_availabile_slots(poi: POI, days: list):
     flags = []
     # assume open
     if poi.availability_mode == "ASSUMED_OPEN":
-        for day in matrix:
-            for slot in matrix[day]:
-                matrix[day][slot] = True
+        for slots in matrix.values():
+            for slot in slots:
+                slots[slot] = True
         flags = ["No official opening hours."]
 
     # unknown opening hours
     if poi.availability_mode == "UNKNOWN":
-        for day in matrix:
-            for slot in matrix[day]:
-                matrix[day][slot] = True
+        for slots in matrix.values():
+            for slot in slots:
+                slots[slot] = True
         flags = ["Unverified hours, hours may be unavailable or event-booked only."]
 
     # strict opening hours
@@ -135,11 +133,11 @@ def convert_opening_hours(opening_hours: dict[str:[list]]):
         "sun": 6,
     }
 
-    for weekday in opening_hours:
-        if opening_hours[weekday] != None:
+    for weekday, hours in opening_hours.items():
+        if hours is not None:
             day = weekday_to_int[weekday]
-            start = opening_hours[weekday][0][0]
-            end = opening_hours[weekday][0][1]
+            start = hours[0][0]
+            end = hours[0][1]
             start_hours, end_hours = extract_hours(start, end)
             converted_opening_hours[day] = (start_hours, end_hours)
 

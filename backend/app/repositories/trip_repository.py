@@ -2,9 +2,11 @@
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.models.ai_model import Trip, TripExcludedPOI, Conversation
+
+from app.models.ai_model import Conversation, Trip, TripExcludedPOI
 from app.schemas.ai import TripParameters
 from app.services.poi_service import get_pois_by_slug
+
 
 def get_trip(conv_id, db: Session):
     """Retrieve the trip associated with a conversation."""

@@ -1,4 +1,5 @@
-from datetime import timedelta, date
+from datetime import date, timedelta
+
 
 def convert_to_days(date_range: list[date]):
     if len(date_range) == 1:
