@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
-from app.core.exceptions import ConversationNotFoundError
-from app.database import get_db
+from app.schemas.ai import ChatResponse, ChatRequest, ChatIDResponse
 from app.dependencies.auth import authorise_access
-from app.repositories.ai_repository import start_conversation
-from app.schemas.ai import ChatIDResponse, ChatRequest, ChatResponse
+from app.database import get_db
 from app.services.ai.ai_service import chat
+from app.repositories.ai_repository import start_conversation
+from app.core.exceptions import ConversationNotFoundError
 
 router = APIRouter(prefix="/api/ai", tags=["ai"])
 
@@ -28,7 +27,7 @@ def conversation(conversation_id, request: ChatRequest, db: Session = Depends(ge
             detail="Conversation not found."
         )
     
-    except Exception as e: # noqa: BLE001 
+    except Exception as e:
         print(f"Conversation endpoint failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

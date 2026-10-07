@@ -1,7 +1,5 @@
-from datetime import date, time
-
 from pydantic import BaseModel
-
+from datetime import date, time
 
 class ItineraryRequest(BaseModel):
     trip_name: str
@@ -32,6 +30,7 @@ class StopResponse(BaseModel):
     accessibility: list
     flags: list[str]
     busyness_for_day: list[BusynessResponse]
+    hero_image_url: str
 
 class ItineraryResponse(BaseModel):
     trip_name: str
@@ -39,6 +38,7 @@ class ItineraryResponse(BaseModel):
     end_date: date
     warning: str | None
     accessibility: list[str]
+    warning: str | None
     stops: list[StopResponse]
 
 class ItineraryUnsaveResponse(BaseModel):

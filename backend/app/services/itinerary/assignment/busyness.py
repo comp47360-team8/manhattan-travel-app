@@ -1,10 +1,8 @@
 from sqlalchemy.orm import Session
-
-from app.core.constants import TIME_SLOTS
 from app.domains.scheduling import POIProfile
 from app.repositories.poi_repository import get_poi_busyness_forecast
 from app.services.itinerary.assignment.utils import normalize_cost
-
+from app.core.constants import TIME_SLOTS
 
 def build_busyness_matrix(pois: list[POIProfile], trip_days: list, db: Session):
     """

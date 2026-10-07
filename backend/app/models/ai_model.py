@@ -1,24 +1,11 @@
-import enum
 import uuid
-from datetime import date, datetime
-
-from sqlalchemy import (
-    UUID,
-    BigInteger,
-    Date,
-    DateTime,
-    Enum,
-    ForeignKey,
-    String,
-    Text,
-    func,
-)
+import enum
+from datetime import datetime, date
+from app.database import Base
+from sqlalchemy import UUID, ForeignKey, Text, DateTime, func, Enum, Date, String, BigInteger
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.database import Base
-
 
 class MessageRole(str, enum.Enum):
     USER = "user"

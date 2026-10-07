@@ -1,23 +1,17 @@
 import random
-from datetime import date, datetime, time
-from zoneinfo import ZoneInfo
-
 from google import genai
 from google.genai import types
-
-from app.core.config import settings
-from app.core.constants import (
-        EXTRACTION_PROMPT,
-        POI_TYPE_OPTIONS,
-        SUMMARY_PROMPT,
-        SYSTEM_PROMPT,
-)
-from app.core.exceptions import LLMUnresponsiveError
-from app.models.ai_model import Message, Trip
-from app.schemas.ai import ChatResponse, GeminiResponse, TripParameters, UIOption
+from datetime import date, datetime, time
+from zoneinfo import ZoneInfo
 from app.services.ai.base import LLMProvider
+from app.models.ai_model import Message
+from app.core.constants import SYSTEM_PROMPT, EXTRACTION_PROMPT, SUMMARY_PROMPT, POI_TYPE_OPTIONS
+from app.schemas.ai import TripParameters, ChatResponse, UIOption, GeminiResponse
+from app.models.ai_model import Trip
 from app.services.itinerary.itinerary_service import auto_generate_itinerary
 from app.services.user_services import get_user_by_id
+from app.core.config import settings
+from app.core.exceptions import LLMUnresponsiveError
 
 tools = [
     types.Tool(
@@ -110,7 +104,7 @@ class GeminiProvider(LLMProvider):
                 # client has been closed." Binding it here prevents that.
                 client = self._client(proxy)
                 return client.models.generate_content(**kwargs)
-            except Exception as e: # noqa: BLE001
+            except Exception as e:
                 # Broad by design: this wraps only the network call, and any
                 # failure (API error, transport/proxy error) should rotate/retry
                 # and ultimately fall back to Llama rather than 500 the request.
@@ -237,11 +231,12 @@ class GeminiProvider(LLMProvider):
                 ui_action=None,
                 itinerary=None
             )
-        if gemini_response.ui_action and gemini_response.ui_action.component == "poi_type_selector":
-            gemini_response.ui_action.options = [
-                UIOption(**option)
-                for option in POI_TYPE_OPTIONS
-                ]
+        if gemini_response.ui_action:
+            if gemini_response.ui_action.component == "poi_type_selector":
+                gemini_response.ui_action.options = [
+                    UIOption(**option)
+                    for option in POI_TYPE_OPTIONS
+                    ]
                 
         return gemini_response
 

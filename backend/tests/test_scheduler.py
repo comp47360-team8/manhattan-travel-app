@@ -7,7 +7,8 @@ lowest-busyness feasible slot, (iv) over-scheduling yields a non-blocking
 warning rather than a hard failure.
 """
 import pytest
-from conftest import FakePOI, make_profile
+
+from conftest import make_profile, FakePOI
 
 from app.core.exceptions import POINotOpenDuringTrip
 from app.services.itinerary.assignment import scheduler

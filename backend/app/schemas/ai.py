@@ -1,8 +1,6 @@
+from pydantic import BaseModel
 from datetime import date
 from typing import Literal
-
-from pydantic import BaseModel
-
 
 class ChatRequest(BaseModel):
     prompt: str | list

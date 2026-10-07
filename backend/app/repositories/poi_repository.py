@@ -1,15 +1,12 @@
 """Database queries for POI services."""
 
-from datetime import datetime
+from sqlalchemy import select, func
 from zoneinfo import ZoneInfo
-
-from sqlalchemy import func, select
+from datetime import datetime
 from sqlalchemy.orm import Session
-
-from app.domains.scheduling import POIProfile
-from app.models.ai_model import Conversation, Trip, TripExcludedPOI
 from app.models.poi_model import POI, POIBusynessForecast
-
+from app.domains.scheduling import POIProfile
+from app.models.ai_model import TripExcludedPOI, Trip, Conversation
 
 def load_coordinates(pois: list[POIProfile], db: Session):
     """Retrieve latitude and longitude coordinates for the given POIs."""
