@@ -1,7 +1,5 @@
-from datetime import time
-
 from pydantic import BaseModel
-
+from datetime import time
 
 class POIDetailedResponse(BaseModel):
     slug: str

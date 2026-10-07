@@ -1,31 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
-from app.core.exceptions import (
-    ItineraryNotFound,
-    MaximumPOIsExceeded,
-    POINotFoundError,
-    POINotOpenDuringTrip,
-    RepeatingPOI,
-    StopNotFound,
-)
-from app.database import get_db
-from app.dependencies.auth import authorise_access
-from app.repositories.itinerary_repository import (
-    create_new_request,
-    save_itinerary_for_user,
-    serialize_itinerary,
-    unsave_itinerary_for_user,
-    update_saved_itinerary,
-)
-from app.schemas.itinerary import (
-    AddStopRequest,
-    ItineraryRequest,
-    ItineraryResponse,
-    ItinerarySavedResponse,
-    ItineraryUnsaveResponse,
-)
+from app.schemas.itinerary import ItineraryRequest
 from app.services.itinerary.itinerary_service import create_itinerary
+from app.database import get_db
+from app.core.exceptions import MaximumPOIsExceeded, POINotOpenDuringTrip, StopNotFound, RepeatingPOI, ItineraryNotFound, POINotFoundError
+from app.dependencies.auth import authorise_access
+from app.schemas.itinerary import ItineraryResponse, ItinerarySavedResponse, ItineraryUnsaveResponse, AddStopRequest
+from app.repositories.itinerary_repository import (
+    save_itinerary_for_user, unsave_itinerary_for_user, 
+    serialize_itinerary, create_new_request,
+    update_saved_itinerary)
 
 router = APIRouter(prefix="/api/itinerary", tags=["itinerary"])
 
@@ -53,7 +37,7 @@ def generate_itinerary(request: ItineraryRequest, db: Session = Depends(get_db))
     except RepeatingPOI:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="You cannot enter the same POI more than once. Please try again."
+            detail=f"You cannot enter the same POI more than once. Please try again."
         )
     
 @router.post("", response_model=ItinerarySavedResponse)
@@ -62,13 +46,10 @@ def save_itinerary(request: ItineraryResponse, db: Session = Depends(get_db), us
         itinerary = save_itinerary_for_user(request, db, user)
         return serialize_itinerary(itinerary)
     
-    except Exception as e:  # noqa: BLE001 details stay in server log
-        print(f"Saved Itinerary Failed: {e}")
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            # detail=f"Something went wrong while processing your itinerary: {e!s}"
-            # BLE01: details stay in server logs
-            detail="Something went wrong while processing your itinerary. Please try again."
+            detail=f"Something went wrong while processing your itinerary: {str(e)}"
         )
     
 @router.delete("/{itinerary_id}", response_model=ItineraryUnsaveResponse)
@@ -85,13 +66,10 @@ def unsave_itinerary(itinerary_id, db: Session = Depends(get_db), user = Depends
             detail="Itinerary not found."
         )
     
-    except Exception as e: # noqa: BLE001 details stay in server log
-        print(f"Unsaved itinerary failed: {e}")
-        raise HTTPException(     
+    except Exception as e:
+        raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            # detail=f"Something went wrong while processing your itinerary: {e!s}"
-            # BLE01: details stay in server logs
-            detail="Something went wrong while processing your itinerary. Please try again."
+            detail=f"Something went wrong while processing your itinerary: {str(e)}"
         )
 
 @router.post("/{itinerary_id}/stops", response_model=ItinerarySavedResponse)

@@ -5,9 +5,9 @@ import pytest
 
 from app.services.itinerary.assignment.utils import (
     convert_to_days,
-    normalize_cost,
     number_of_weeks,
     split_evenly,
+    normalize_cost,
 )
 
 
@@ -22,7 +22,7 @@ class TestSplitEvenly:
         assert split_evenly(1, 3) == [1, 0, 0]
 
     def test_total_is_preserved(self):
-        for total in range(12):
+        for total in range(0, 12):
             for parts in range(1, 5):
                 assert sum(split_evenly(total, parts)) == total
 

@@ -1,10 +1,8 @@
 import uuid
-from datetime import UTC, datetime, timedelta
-
+from app.core.config import settings
+from datetime import datetime, timedelta, timezone
 from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
-
-from app.core.config import settings
 from app.core.exceptions import AuthenticationError
 
 SESSION_EXPIRED = "Your session has expired. Please log in again."
@@ -14,7 +12,7 @@ def create_access_token(user_id: uuid):
     payload = {
         "sub": str(user_id),
         "type": "access",
-        "exp": datetime.now(UTC) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     }
     token = jwt.encode(
         payload,
@@ -28,7 +26,7 @@ def create_refresh_token(session_id: str):
     payload = {
         "sid": str(session_id),
         "type": "refresh",
-        "exp": datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
+        "exp": datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
     }
     token = jwt.encode(
         payload,

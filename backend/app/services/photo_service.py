@@ -15,7 +15,7 @@ Resolving a miss costs two calls:
   2. Place Photo media (skipHttpRedirect) -> a fresh photoUri as JSON, so the API
      key is never exposed in a browser-visible redirect.
 """
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import httpx
 from sqlalchemy.dialects.postgresql import insert
@@ -60,7 +60,7 @@ def get_photo_url(place_id: str | None, db: Session) -> str | None:
         return None
 
     cached = db.get(POIPhotoCache, place_id)
-    if cached and cached.fetched_at > datetime.now(UTC) - _CACHE_TTL:
+    if cached and cached.fetched_at > datetime.now(timezone.utc) - _CACHE_TTL:
         return cached.photo_uri
 
     fresh = _resolve(place_id)
@@ -75,7 +75,7 @@ def get_photo_url(place_id: str | None, db: Session) -> str | None:
 
 
 def _store(db: Session, place_id: str, photo_uri: str) -> None:
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     # Upsert: concurrent misses for the same place_id must not collide on the PK.
     statement = insert(POIPhotoCache).values(
         place_id=place_id, photo_uri=photo_uri, fetched_at=now

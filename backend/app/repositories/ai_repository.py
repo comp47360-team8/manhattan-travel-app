@@ -2,12 +2,11 @@
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.core.config import settings
-from app.core.constants import ASSISTANT
-from app.core.exceptions import ConversationNotFoundError
 from app.models.ai_model import Conversation, Message, Trip
 from app.services.ai.selector import LLMSelector
+from app.core.config import settings
+from app.core.exceptions import ConversationNotFoundError
+from app.core.constants import ASSISTANT
 
 provider = LLMSelector.create(settings.AI_PROVIDER)
 
